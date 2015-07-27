@@ -2,6 +2,8 @@
 *.mis
 *.zip
 *.rar
+*.cache
+*.i.cs
 WanTag.exe.config
 WanTai.Common.dll
 WanTai.Common.pdb
