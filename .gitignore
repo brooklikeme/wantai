@@ -4,6 +4,7 @@
 *.rar
 *.cache
 *.i.cs
+*.i.lref
 WanTag.exe.config
 WanTai.Common.dll
 WanTai.Common.pdb
