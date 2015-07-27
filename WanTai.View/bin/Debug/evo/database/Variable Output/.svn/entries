@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1195"
+   name=""
+   committed-date="2012-02-08T05:15:43.754711Z"
+   url="https://cm3.objectivasoftware.com/wantai/workspace/trunk/WanTai/WanTai.View/bin/Debug/evo/database/Variable%20Output"
+   last-author="exiao"
+   kind="dir"
+   uuid="439405ba-adaa-0410-b0b4-de79adcba793"
+   repos="https://cm3.objectivasoftware.com/wantai"
+   revision="1263"/>
+<entry
+   committed-rev="1195"
+   name="MIXSAMPLE_NUM_EX.csv"
+   text-time="2012-02-10T02:19:18.491265Z"
+   committed-date="2012-02-08T05:15:43.754711Z"
+   checksum="8a8cd18c0e03b5356c06ab74dacd178d"
+   last-author="exiao"
+   kind="file"
+   prop-time="2012-02-10T02:17:27.744100Z"/>
+<entry
+   committed-rev="1195"
+   name="SAMPLE_NUM_EX.csv"
+   text-time="2012-02-10T02:19:18.506890Z"
+   committed-date="2012-02-08T05:15:43.754711Z"
+   checksum="30febc1dded94c2a1042a7a36881a6b3"
+   last-author="exiao"
+   kind="file"
+   prop-time="2012-02-10T02:17:27.822223Z"/>
+</wc-entries>

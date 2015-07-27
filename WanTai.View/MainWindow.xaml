@@ -1,0 +1,199 @@
+﻿<Window xmlns:my="clr-namespace:Microsoft.Windows.Controls.Ribbon;assembly=RibbonControlsLibrary"  x:Class="WanTai.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="WanTag 全自动核酸提取系统" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d" MinHeight="768" MinWidth="1024"  
+        d:DesignHeight="768" d:DesignWidth="1024" xmlns:my1="clr-namespace:WanTai.View" Icon="/WanTag;component/logo.ico" WindowState="Maximized" xmlns:my2="clr-namespace:ImageExtender">
+    <Window.Resources>
+        <Style x:Key="ButtonFocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Stroke="Black" StrokeDashArray="1 2" StrokeThickness="1" Margin="3" SnapsToDevicePixels="true"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <LinearGradientBrush x:Key="ButtonNormalBackgroundFill" EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFFFFFFF" Offset="0"/>
+            <GradientStop Color="#FFF0F0EA" Offset="0.9"/>
+        </LinearGradientBrush>
+        <SolidColorBrush x:Key="ButtonBorder" Color="#FF003C74"/>
+        <Style x:Key="menu" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource ButtonNormalBackgroundFill}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonBorder}"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1" TargetType="{x:Type ButtonBase}">
+            <Border x:Name="border" Margin="0" BorderBrush="#FFAAABAB" BorderThickness="1" CornerRadius="2">
+                <Border.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFFAF6F6" Offset="0"/>
+                        <GradientStop Color="#FFE2E1E1" Offset="1"/>
+                        <GradientStop Color="#FFDEDDDD" Offset="0.49"/>
+                        <GradientStop Color="#FFF0ECEC" Offset="0.486"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid x:Name="grid" Margin="1">
+                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True"/>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ClickMode" Value="Release"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="grid">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFEFF6FC" Offset="0"/>
+                                <GradientStop Color="#FFC3D3E0" Offset="1"/>
+                                <GradientStop Color="#FFB4C9D8" Offset="0.498"/>
+                                <GradientStop Color="#FF8BA5BB" Offset="0.51"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF96B2C5"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="grid">
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFF4F2F2" Offset="0"/>
+                                <GradientStop Color="#FFFEFCFC" Offset="1"/>
+                                <GradientStop Color="#FFDDDCDC" Offset="0.47"/>
+                                <GradientStop Color="#FFDCDBDB" Offset="0.482"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+      
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Row="0" Grid.ColumnSpan="2" BorderThickness="0,0,0,1" BorderBrush="#FFE8B0B0">
+            <my:Ribbon Name="ribbon" FontSize="12"   Margin="0,-25,0,0"  Height="128"  VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" UseLayoutRounding="False" FlowDirection="LeftToRight">
+                <my:Ribbon.Title>
+                    <Style TargetType="my:Ribbon">
+                        <Setter Property="Height"  Value="0"></Setter>
+                    </Style>
+                </my:Ribbon.Title>
+                <my:Ribbon.ContextMenu>
+                    <ContextMenu />
+                </my:Ribbon.ContextMenu>
+                <my:Ribbon.ApplicationMenu>
+                    <my:RibbonApplicationMenu Width="0" Height="0"></my:RibbonApplicationMenu>
+                </my:Ribbon.ApplicationMenu>
+                <my:RibbonTab x:Name="TabMainMenu"    HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Center">
+                    <my:RibbonTab.Header>
+                        <Label Content="主菜单" FontSize="16"  FontWeight="Bold"></Label>
+                    </my:RibbonTab.Header>
+                        <my:RibbonGroup x:Name="Group1"
+                                VerticalAlignment="Center">
+                        <my:RibbonButton x:Name="btnNewExperiment" 
+                                          LargeImageSource="Resources\New_icon.gif" Label="新建实验" 
+                                         Click="btnNewExperiment_Click" 
+                                         HorizontalContentAlignment="Center" HorizontalAlignment="Center" 
+                                         VerticalContentAlignment="Center" />
+                        <my:RibbonButton x:Name="CloseExperiment_button"
+                                         LargeImageSource="Resources\Close_icon.gif"
+                                         Label="关闭实验" Click="CloseExperiment_button_Click" />
+                        <my:RibbonButton x:Name="CloseLamp_button" 
+                                         LargeImageSource="Resources\CloseAlarm_icon.gif"
+                                         Label="关闭报警" Click="CloseLamp_button_Click" />
+                    </my:RibbonGroup>
+                    <my:RibbonGroup  VerticalAlignment="Center" >
+                        
+                        <my:RibbonButton x:Name="QueryExperiment_Button"  
+                                         LargeImageSource="Resources\OpenFile_icon.gif"
+                                         Label="实验查询" Click="QueryExperiment_Button_Click"/>
+                        <my:RibbonButton x:Name="LogView_Button"   
+                                         LargeImageSource="Resources\SearchAlarm_icon.gif"
+                                         Label="系统日志" Click="LogView_Button_Click"/>
+                    </my:RibbonGroup>
+                    <my:RibbonGroup x:Name="Group2" VerticalAlignment="Center" >
+                       
+                        <my:RibbonButton x:Name="TecanMaintain_Button"   
+                                         LargeImageSource="Resources\Maintain_icon.gif"
+                                         Label="仪器维护" Click="TecanMaintain_Button_Click"/>
+                        <my:RibbonButton x:Name="TecanRestoration_Button" 
+                                         LargeImageSource="Resources\TecanRestoration_icon.gif"
+                                         Label="仪器复位" Click="TecanRestoration_Button_Click"/>
+                        
+                        <my:RibbonButton x:Name="OpenEVOware_Button"   
+                                         LargeImageSource="Resources\Tecan.gif"
+                                         Label="EvoWare" Click="OpenEVOware_Button_Click" />                                              
+                    </my:RibbonGroup>
+                    <my:RibbonGroup x:Name="Group3" VerticalAlignment="Center" >
+                      
+                        <my:RibbonButton x:Name="Help_button"
+                                         LargeImageSource="Resources\help.gif"
+                                         Label="系统帮助" Click="Help_button_Click" />
+                        <my:RibbonButton x:Name="exit_button" Click="exit_button_Click"
+                                          LargeImageSource="Resources\QuitSystem_icon.gif"
+                                         Label="退出系统" ></my:RibbonButton>
+                    </my:RibbonGroup>                    
+                </my:RibbonTab>                
+                <my:RibbonTab x:Name="TabSettings" >
+                    <my:RibbonTab.Header>
+                        <Label Content="配置" FontSize="16"  FontWeight="Bold"></Label>
+                    </my:RibbonTab.Header>
+                    <my:RibbonGroup  VerticalAlignment="Center" >
+                        <my:RibbonButton x:Name="PoolingRule_Button" LargeImageSource="Resources\PoolingRule.gif"                                 
+                                         Label="混样方式" Click="PoolingRulesConfig_Button_Click"/>
+                        <my:RibbonButton x:Name="TestingItem_Button"  LargeImageSource="Resources\TestingItem.gif"                               
+                                         Label="检测项目" Click="TestingItemsConfig_Button_Click" />
+                        <my:RibbonButton x:Name="LiquidConfig_Button"  LargeImageSource="Resources\LiquidConfig.gif"                              
+                                         Label="采血管位置区设定" Click="LiquidConfig_Button_Click" />
+                        <my:RibbonButton x:Name="ReagentSuppliesConfig_Button"  LargeImageSource="Resources\ReagentSuppliesConfig.gif"
+                                         Label="试剂、耗材配置" Click="ReagentSuppliesConfig_Button_Click" />
+                        <my:RibbonButton x:Name="Operation_Button"  LargeImageSource="Resources\Operation.gif"
+                                         Label="操作" Click="Operation_Button_Click" />
+                    </my:RibbonGroup>
+                </my:RibbonTab>
+                <my:RibbonTab x:Name="TabUserManagement" FontStyle="Normal" FontStretch="Normal">
+                    <my:RibbonTab.Header>
+                        <Label Content="用户管理" FontSize="16"  FontWeight="Bold"></Label>
+                    </my:RibbonTab.Header>
+                    <my:RibbonGroup  VerticalAlignment="Center" >
+                        <my:RibbonButton x:Name="CreateUser_Button"  LargeImageSource="Resources\CreateUser.gif"                                         
+                                         Label="新建用户" Click="CreateUser_Button_Click" />
+                        <my:RibbonButton x:Name="EditUser_Button"     LargeImageSource="Resources\EditUser.gif"                                    
+                                         Label="删除\修改" Click="EditUser_Button_Click" />
+                        <my:RibbonButton x:Name="EditPassword_Button"  LargeImageSource="Resources\EditPassword.gif"
+                                         Label="修改密码" Click="EditPassword_Button_Click" />
+                    </my:RibbonGroup>
+                </my:RibbonTab>
+            </my:Ribbon>
+        </Border>
+        <ScrollViewer  Grid.Row="1" Grid.ColumnSpan="2"  Name="mainFrame"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+            <StackPanel Orientation="Vertical" Margin="0,200,0,0">
+                <my2:ImageExpender Height="150" x:Name="imageExpender1" Stretch="Fill" Width="200" />
+                <Label  Content="初始化检测中……" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+            </StackPanel>
+        </ScrollViewer>
+        <!--<Frame Grid.Row="1" Grid.ColumnSpan="2" Name="mainFrame" Height="auto" Width="auto"></Frame>-->
+        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="0,1,0,0" BorderBrush="#FFE8B0B0">
+            <StatusBar  Height="30" >
+                <Label Name="EVOOfflineStatus" Content="" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+            </StatusBar>
+        </Border>
+     
+    </Grid>
+</Window>

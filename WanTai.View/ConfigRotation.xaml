@@ -1,0 +1,133 @@
+﻿<Page x:Class="WanTai.View.ConfigRotation"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="600"
+	Title="ConfigRotation" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+    <Page.Resources>
+        <!--<ObjectDataProvider x:Key="PoolingRulesConfigurations" IsAsynchronous="True" MethodName="GetActivePoolingRulesConfigurations" ObjectType="{x:Type Controller:PoolingRulesConfigurationController}">
+        </ObjectDataProvider>-->
+    </Page.Resources>
+        <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="15"></ColumnDefinition>         
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*" Name="Grid3"></RowDefinition>
+            <RowDefinition Height="83"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Column="1" Grid.Row="0">
+            <TextBlock Name="errorMessage" Foreground="Red"></TextBlock>
+        </DockPanel>
+        <Button Content="新建轮次" Grid.Column="1"  FontSize="12" Grid.Row="1" Height="28" HorizontalAlignment="Left" Name="create_button" VerticalAlignment="Center" Width="90" Click="create_button_Click" />
+        <DataGrid  Grid.Column="1"  Grid.Row="2"    VerticalContentAlignment="Center" ColumnHeaderHeight="30" RowHeight="30" FontSize="12" AutoGenerateColumns="False" CanUserAddRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False"  CanUserResizeRows="False" HorizontalAlignment="Stretch" Name="rotation_dataGrid" VerticalAlignment="Stretch" ItemsSource="{Binding}" >
+            <DataGrid.Columns >
+                <DataGridTemplateColumn Header="轮次" Width="80"  CanUserSort="False"  IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Label Content="{Binding Path=Sequence}"  />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridTemplateColumn Header="操作" Width="100" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <ComboBox Name="operation_column"   SelectionChanged="CmbOperation_SelectionChanged" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedItem="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
+                <!--<DataGridTextColumn Header="轮次" Binding="{Binding Sequence}" Width="80" CanUserSort="False"  IsReadOnly="True"></DataGridTextColumn>-->
+              
+                <DataGridComboBoxColumn x:Name="operation_column" Header="操作" SelectedItemBinding="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" CanUserSort="False" >
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="Control">
+                            <Setter Property="Margin" Value="0,5,0,0"></Setter>
+
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+                            <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+                            <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
+                            <EventSetter Event="SelectionChanged" Handler="CmbOperation_SelectionChanged"></EventSetter>
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
+                <!--<DataGridTextColumn x:Name="operation_viewcolumn"  Header="操作" Binding="{Binding OperationName}" Width="300" CanUserSort="False" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Background" Value="Red"></Setter>
+                            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>-->
+                <DataGridTemplateColumn x:Name="operation_viewcolumn"  Header="操作"  Width="300" CanUserSort="False" IsReadOnly="True">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate >
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Label Content="{Binding OperationName}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridHyperlinkColumn Header="采血管批次" ContentBinding="{Binding Path=TubesBatchName}" Width="150" CanUserSort="False" IsReadOnly="True">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="Hyperlink.Click" Handler="OnHyperlinkClick">                                
+                            </EventSetter>
+                            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+                            <Setter Property="Background" Value="Red"></Setter>
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>-->
+                <DataGridTemplateColumn Header="采血管批次"  Width="150" CanUserSort="False" IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <TextBlock  >
+                                       <Hyperlink Click="OnHyperlinkClick"  Foreground="Blue"> <TextBlock Text="{Binding Path=TubesBatchName}"/></Hyperlink>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn Header="名称"   Width="150" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Label Content="{Binding Path=RotationName}"   />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="100*" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="删除" Visibility="{Binding deleteIsVisible}" Height="23" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="Delete_Button_Click"></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>                
+            </DataGrid.Columns>
+        </DataGrid>
+
+      
+        
+        <StackPanel Grid.Column="1" Grid.Row="3"  HorizontalAlignment="Center" Name="stackPanel1" VerticalAlignment="Stretch" Orientation="Horizontal" >
+            <!--<Button Content="上一步" Height="23" Name="previous_button"  Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" />-->
+            <Button Content="保  存" Height="28" Name="save_button" IsEnabled="False" CommandParameter="ConfigRotationNext" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="0,0,0,0" Click="save_button_Click" />
+            <Button Content="下一步" Height="28" Name="next_button"   IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15,0,0,0" Click="next_button_Click"  />          
+         </StackPanel>
+    </Grid>
+</Page>

@@ -1,0 +1,18 @@
+﻿<Window x:Class="WanTai.View.LoadFrom"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="LoadFrom" Height="200" Width="260"  Style="{StaticResource window}" 
+        MouseLeftButtonDown="Window_MouseLeftButtonDown" FontFamily="Wingdings 2" 
+        FontSize="16" FontStretch="Normal" WindowStartupLocation="CenterScreen" 
+        ShowInTaskbar="False" xmlns:my="clr-namespace:ImageExtender"  Icon="/WanTag;component/Resources/logo.ico"
+        Loaded="Window_Loaded" Topmost="False" Closed="Window_Closed">
+<Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" ></RowDefinition>
+            <RowDefinition Height="30" ></RowDefinition>
+        </Grid.RowDefinitions>
+            <my:ImageExpender  HorizontalAlignment="Center" Grid.Row="0" x:Name="imageExpender1" Stretch="Fill" VerticalAlignment="Center"  />
+            <Label Content="扫描进行中……"  Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"  FontFamily="NSimSun"/>
+  
+    </Grid>
+</Window>

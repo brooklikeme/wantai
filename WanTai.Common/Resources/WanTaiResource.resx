@@ -1,0 +1,283 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BtnEnter" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="BtnHelp" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="btnOK" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="BtnOverwrite" xml:space="preserve">
+    <value>覆盖</value>
+  </data>
+  <data name="BtnRetry" xml:space="preserve">
+    <value>重试</value>
+  </data>
+  <data name="EVOAPI_EVENTLOG" xml:space="preserve">
+    <value>Evoware fired an event: 
+StartTime: {0} 
+EndTime: {1} 
+Device: {2} 
+Macro: {3} 
+Object: {4} 
+Message: {5} 
+Status: {6} 
+ProcessName: {7}
+ProcessID: {8} 
+MacroID: {9}</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="BtnCancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Enter" xml:space="preserve">
+    <value>输入</value>
+  </data>
+  <data name="ErrorReadingBarcode" xml:space="preserve">
+    <value>条码读取错误</value>
+  </data>
+  <data name="Ignore" xml:space="preserve">
+    <value>忽略</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>重试</value>
+  </data>
+  <data name="btnAbort" xml:space="preserve">
+    <value>终止</value>
+  </data>
+  <data name="btnAspAir" xml:space="preserve">
+    <value>吸取空气以代替液体</value>
+  </data>
+  <data name="btnContinueNothing" xml:space="preserve">
+    <value>继续，但报错通道不加样</value>
+  </data>
+  <data name="btnContinuePipette" xml:space="preserve">
+    <value>忽略错误并继续加样</value>
+  </data>
+  <data name="btnContLostDiTiPipet" xml:space="preserve">
+    <value>继续，但丢失吸头通道不加样</value>
+  </data>
+  <data name="btnDiTiContPipetNone" xml:space="preserve">
+    <value>继续，但报错吸头不加样</value>
+  </data>
+  <data name="btnEjectThenMountNewDiTi" xml:space="preserve">
+    <value>打掉报错通道吸头并重取</value>
+  </data>
+  <data name="btnMoveZMax" xml:space="preserve">
+    <value>到最底部吸液</value>
+  </data>
+  <data name="btnMoveZTravel" xml:space="preserve">
+    <value>把枪头缩回到最高位</value>
+  </data>
+  <data name="btnPipetNothing" xml:space="preserve">
+    <value>什么都不吸取</value>
+  </data>
+  <data name="btnRetryDetect" xml:space="preserve">
+    <value>重新探测</value>
+  </data>
+  <data name="BtnSwitchLock" xml:space="preserve">
+    <value>再次锁定</value>
+  </data>
+  <data name="DiluterOverflowError" xml:space="preserve">
+    <value>超出最大容量</value>
+  </data>
+  <data name="DiTialreadymounted" xml:space="preserve">
+    <value>吸头已经装配</value>
+  </data>
+  <data name="DiTifetched" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="DiTihasbeenlost" xml:space="preserve">
+    <value>吸头丢失</value>
+  </data>
+  <data name="DiTiNotfetched" xml:space="preserve">
+    <value>未取到枪头</value>
+  </data>
+  <data name="Ditinotproperlymounted" xml:space="preserve">
+    <value>吸头未能很好的装配</value>
+  </data>
+  <data name="Ditiproperlymounted" xml:space="preserve">
+    <value>吸头已经完全装配</value>
+  </data>
+  <data name="Doorlocknotactivated" xml:space="preserve">
+    <value>第{0}号门锁没有锁定</value>
+  </data>
+  <data name="Fixedtip" xml:space="preserve">
+    <value>固定针</value>
+  </data>
+  <data name="NoLiquid" xml:space="preserve">
+    <value>未探测到液体</value>
+  </data>
+  <data name="NotEnoughLiquid" xml:space="preserve">
+    <value>液体量不够</value>
+  </data>
+  <data name="OKautomatichandling" xml:space="preserve">
+    <value>正常/自动处理</value>
+  </data>
+  <data name="Racknotfetched" xml:space="preserve">
+    <value>夹取失败</value>
+  </data>
+  <data name="RetryAtNextPosition" xml:space="preserve">
+    <value>在下一位再试</value>
+  </data>
+  <data name="RetryAtSamePosition" xml:space="preserve">
+    <value>在原位重试</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Tip" xml:space="preserve">
+    <value>通道</value>
+  </data>
+  <data name="Volume" xml:space="preserve">
+    <value>体积[ul]</value>
+  </data>
+  <data name="btnContinueIgnore" xml:space="preserve">
+    <value>忽略凝块，并继续</value>
+  </data>
+  <data name="btnDispensePipetNone" xml:space="preserve">
+    <value>液体打回原位，然后放弃这个样本</value>
+  </data>
+  <data name="btnDispenseRetry" xml:space="preserve">
+    <value>液体打回到原有位置</value>
+  </data>
+  <data name="btnGoWithClot" xml:space="preserve">
+    <value>记录凝块信息，并继续</value>
+  </data>
+  <data name="clotdetected" xml:space="preserve">
+    <value>检测到凝块</value>
+  </data>
+  <data name="OffLineMessage" xml:space="preserve">
+    <value>联机失败，请检查是否打开仪器。是否重试？</value>
+  </data>
+  <data name="NO" xml:space="preserve">
+    <value>否</value>
+  </data>
+  <data name="YES" xml:space="preserve">
+    <value>是</value>
+  </data>
+  <data name="OffLineModeMessage" xml:space="preserve">
+    <value>EVO切换到脱机状态并终止脚本</value>
+  </data>
+</root>

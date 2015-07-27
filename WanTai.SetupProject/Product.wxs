@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:util='http://schemas.microsoft.com/wix/UtilExtension'  
+     xmlns:sql='http://schemas.microsoft.com/wix/SqlExtension'
+      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension" >
+  <Product Name='WanTag' Id='*' UpgradeCode="{87AE349D-19D4-47FC-8A76-D5D28A819529}" Language='1033' Codepage='1252' Version='1.0.0' Manufacturer='WanTai'>
+    <Package Id='*' Keywords='Installer' Description="WanTag"
+    Comments='万泰' Manufacturer='WanTai'
+    InstallerVersion='100' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+    <Property Id="NETFRAMEWORK40">
+      <RegistrySearch Id="NetFramework20"  Root="HKLM" Key="Software\Microsoft\NET Framework Setup\NDP\v2.0.50727"
+                      Name="Version" Type="raw" />
+    </Property>
+
+    <Condition Message="请选安装Framework 4.0!">
+      <![CDATA[Installed OR NETFRAMEWORK40]]>
+    </Condition>
+
+    <Property Id="THCAN">
+      <RegistrySearch Id="THCAN"  Root="HKLM" Key="Software\Tecan\EVOware"
+                      Name="Version" Type="raw" />
+    </Property>
+
+    <Condition Message="请选安装THCAN EVOware!">
+      <![CDATA[Installed OR THCAN]]>
+    </Condition> 
+    
+    <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' DiskPrompt="CD-ROM #1" />
+    <Property Id='DiskPrompt' Value="万泰安装程序 [1]" />
+ 
+
+    <Binary Id='CreateDBObj' SourceFile='CreateObject.sql' />
+    <Binary Id='CreateDBRecords' SourceFile='CreateRecords.sql' />
+    <Icon Id="WanTai.View.exe.config" SourceFile="../WanTai.View/bin/Debug/WanTag.exe.config" />
+    <Icon Id="WanTai.View.exe" SourceFile="../WanTai.View/bin/Debug/WanTag.exe" />
+    <!--<Icon Id="EVOApiErrorMsg.dll" SourceFile="../WanTai.View/bin/Debug/EVOApiErrorMsg.dll" />
+    <Icon Id="Interop.EVOAPILib.dll" SourceFile="../WanTai.View/bin/Debug/Interop.EVOAPILib.dll" />
+    <Icon Id="Microsoft.Windows.Shell.dll" SourceFile="../WanTai.View/bin/Debug/Microsoft.Windows.Shell.dll" />
+    <Icon Id="Interop.MCSLib.dll" SourceFile="../WanTai.View/bin/Debug/Interop.MCSLib.dll" />
+    <Icon Id="RibbonControlsLibrary.dll" SourceFile="../WanTai.View/bin/Debug/RibbonControlsLibrary.dll" />
+    <Icon Id="WanTai.Common.dll" SourceFile="../WanTai.View/bin/Debug/WanTai.Common.dll" />
+    <Icon Id="WanTai.Controller.dll" SourceFile="../WanTai.View/bin/Debug/WanTai.Controller.dll" />
+    <Icon Id="WanTai.DataModel.dll" SourceFile="../WanTai.View/bin/Debug/WanTai.DataModel.dll" />-->
+    <Feature Id='Complete' Title='WanTag' Description='The complete package.' Display='expand' Level='1' ConfigurableDirectory='INSTALLDIR'>
+      <Feature Id='MainProgram' Title='Program' Description='The main executable.' Level='1'>
+        <ComponentGroupRef Id='MainCompGroup' />
+        <ComponentRef Id='compProgramMenuDir' />
+        <ComponentRef Id='DBConfigCmp' />
+        <ComponentRef Id='EVOApiErrorMsg' />
+        <ComponentRef Id='Interop.EVOAPILib' />
+        <ComponentRef Id='Microsoft.Windows.Shell' />
+        <ComponentRef Id='Interop.MCSLib' />
+        <ComponentRef Id='RibbonControlsLibrary' />
+        <ComponentRef Id='WanTai.Common' />
+        <ComponentRef Id='WanTai.Controller' />
+        <ComponentRef Id='WanTai.DataModel' />
+        <ComponentRef Id='WPFToolkit.Extended' />
+        <ComponentRef Id='LumenWorks.Framework.IO' />
+        <ComponentRef Id='AIClientLib' />
+        <ComponentRef Id='PluginInterface' />
+        <ComponentRef Id='Tecan.MCS' />
+        <ComponentRef Id='WanTai.UserPrompt' />
+        <ComponentRef Id='WanTai.UserPrompt.Config' />
+        <ComponentRef Id='WanTagUserManual' />
+      </Feature>
+      <!--<Feature Id='Documentation' Title='Description' Description='The instruction manual.' Level='1000'>
+        <ComponentRef Id='compManual' />
+      </Feature>-->
+      <!--<Feature Id="Feature_DB_DUMMY" Title="Database" Level="1">
+        <ComponentRef Id="Feature_DB_WinAuth" />
+        <ComponentRef Id="Feature_DB_SqlAuth" />
+      </Feature>-->
+      <Feature Id="Feature_DB_WinAuth" Title="Database" Level="1" Display="hidden">
+        <ComponentRef Id="CreateDB_WinAuth" />
+        <!--<ComponentRef Id="DropDB_WinAuth" />-->
+      </Feature>
+      <Feature Id="Feature_DB_SqlAuth" Title="Database" Level="1" Display="hidden">
+        <ComponentRef Id="CreateDB_SqlAuth" />
+        <!--<ComponentRef Id="DropDB_SqlAuth" />-->
+      </Feature>
+    </Feature>
+    
+    <Binary Id='ConnectDBClass'  SourceFile='../WanTai.CustomAction/bin/Debug/WanTai.CustomAction.CA.dll' />
+    <CustomAction Id='LaunchFile'  FileKey='filFoobarEXE' ExeCommand='' Return='asyncNoWait' />
+    <CustomAction Id='ConnectDB' BinaryKey='ConnectDBClass' DllEntry='ConnectDBAction' />
+    <CustomAction Id='InstallDB' BinaryKey='ConnectDBClass' DllEntry='InstallDBAction' Execute="deferred"/>
+    <util:User Id='DBCreationUser' Name='[DBUSERNAME]' Password='[DBPASSWORD]' />
+    <util:User Id='DBCreationWinUser' Name='Administrator'  Domain='domain' />
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+    <CustomAction Id="FillDBServerName" BinaryKey="ConnectDBClass" DllEntry="FillDBServerNameAction" Execute="immediate" />
+    <UI Id="MyWixUI_Mondo">
+      <UIRef Id="WixUI_Mondo" />
+      <UIRef Id="WixUI_ErrorProgressText" />
+      <DialogRef Id="DBConfigDlg" />
+      <Publish Dialog="DBConfigDlg" Control="Authentication" Property="CONNECTSUCCESS"  Value="0" Order="1" ></Publish>
+      <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="CONNECTIONSTRINGA"  Value="data source=[DBSERVER];user=[DBUSERNAME];password=[DBPASSWORD];initial catalog=master;Persist Security Info=;" Order="1" >NOT Installed</Publish>
+      <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="CONNECTIONSTRINGB"  Value="Data Source=[DBSERVER];Initial Catalog=master;Integrated Security=True" Order="2" >NOT Installed</Publish>
+      <!--<Publish Dialog="DBConfigDlg" Control="TestConnect" Property="CONNECTIONSTRING"  Value="Data Source=[DBSERVER];Initial Catalog=master;Integrated Security=True" Order="3" >NOT Installed</Publish>-->
+      
+      <Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="DBConfigDlg" Order="2">  LicenseAccepted = "1" </Publish>
+      <Publish Dialog="SetupTypeDlg" Control="Back" Event="NewDialog" Value="DBConfigDlg">1</Publish>
+      <!--<Publish Dialog="ProgressDlg" Control="Install" Event="InstallDB" Value="DBConfigDlg" Order="5">1</Publish>-->
+      <!--<Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchFile" Order="1">1</Publish>-->
+      <!--<Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchFile" Order="1">1</Publish>-->
+    </UI>
+    <Property Id="CONNECTIONSTRING" Value="CONNECTIONSTRINGA"></Property>
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"  />
+    <!--<InstallExecuteSequence>
+      <Custom Action='InstallDB' After='InstallValidate' ></Custom>
+    </InstallExecuteSequence>-->
+   
+  </Product>
+  <Fragment>
+    <ComponentGroup Id ="MainCompGroup">
+      <Component Id='compMainExecutable' Guid='{0008EE68-EA36-4d5d-8BC5-713029E1909A}' Directory='INSTALLDIR'>
+        <File Id='filFoobarEXE' Name='WanTag.exe' DiskId='1' Source='../WanTai.View/bin/Debug/WanTag.exe' KeyPath='yes'>
+          <Shortcut Id="startmenuFoobar10" Directory="ProgramMenuDir" Name="WanTag" WorkingDirectory='INSTALLDIR' Icon="WanTai.View.exe" IconIndex="0" Advertise="yes" />
+          <Shortcut Id="desktopFoobar10" Directory="DesktopFolder" Name="WanTag" WorkingDirectory='INSTALLDIR' Icon="WanTai.View.exe" IconIndex="0" Advertise="yes" />
+        </File>
+        
+        <!--<File Id='WanTai.View.exe.config' Name='WanTai.View.exe.config' DiskId='1' Source='../WanTai.View/bin/Debug/WanTai.View.exe.config' KeyPath='yes'/>-->
+      </Component>
+      <Component Id='EVOApiErrorMsg' Guid='*' Directory='INSTALLDIR'>
+        <File Id='EVOApiErrorMsg.dll' Name='EVOApiErrorMsg.dll' DiskId='1' Source='../WanTai.View/bin/Debug/EVOApiErrorMsg.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='Interop.EVOAPILib' Guid='*' Directory='INSTALLDIR'>
+        <File Id='Interop.EVOAPILib.dll' Name='Interop.EVOAPILib.dll' DiskId='1' Source='../WanTai.View/bin/Debug/Interop.EVOAPILib.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='Microsoft.Windows.Shell' Guid='*' Directory='INSTALLDIR'>
+        <File Id='Microsoft.Windows.Shell.dll' Name='Microsoft.Windows.Shell.dll' DiskId='1' Source='../WanTai.View/bin/Debug/Microsoft.Windows.Shell.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='Interop.MCSLib' Guid='*' Directory='INSTALLDIR'>
+        <File Id='Interop.MCSLib.dll' Name='Interop.MCSLib.dll' DiskId='1' Source='../WanTai.View/bin/Debug/Interop.MCSLib.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='RibbonControlsLibrary' Guid='*' Directory='INSTALLDIR'>
+        <File Id='RibbonControlsLibrary.dll' Name='RibbonControlsLibrary.dll' DiskId='1' Source='../WanTai.View/bin/Debug/RibbonControlsLibrary.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='WanTai.Common' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WanTai.Common.dll' Name='WanTai.Common.dll' DiskId='1' Source='../WanTai.View/bin/Debug/WanTai.Common.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='WanTai.Controller' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WanTai.Controller.dll' Name='WanTai.Controller.dll' DiskId='1' Source='../WanTai.View/bin/Debug/WanTai.Controller.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='WanTai.DataModel' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WanTai.DataModel.dll' Name='WanTai.DataModel.dll' DiskId='1' Source='../WanTai.View/bin/Debug/WanTai.DataModel.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='WPFToolkit.Extended' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WPFToolkit.Extended.dll' Name='WPFToolkit.Extended.dll' DiskId='1' Source='../WanTai.View/bin/Debug/WPFToolkit.Extended.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='LumenWorks.Framework.IO' Guid='*' Directory='INSTALLDIR'>
+        <File Id='LumenWorks.Framework.IO.dll' Name='LumenWorks.Framework.IO.dll' DiskId='1' Source='../WanTai.View/bin/Debug/LumenWorks.Framework.IO.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='AIClientLib' Guid='*' Directory='INSTALLDIR'>
+        <File Id='AIClientLib.dll' Name='AIClientLib.dll' DiskId='1' Source='../WanTai.View/bin/Debug/AIClientLib.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='PluginInterface' Guid='*' Directory='INSTALLDIR'>
+        <File Id='PluginInterface.dll' Name='PluginInterface.dll' DiskId='1' Source='../WanTai.View/bin/Debug/PluginInterface.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='Tecan.MCS' Guid='*' Directory='INSTALLDIR'>
+        <File Id='Tecan.MCS.dll' Name='Tecan.MCS.dll' DiskId='1' Source='../WanTai.View/bin/Debug/Tecan.MCS.dll' KeyPath='yes'/>
+      </Component>
+      <Component Id='WanTai.UserPrompt' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WanTai.UserPrompt.exe' Name='WanTai.UserPrompt.exe' DiskId='1' Source='../WanTai.UserPrompt/bin/Debug/WanTai.UserPrompt.exe' KeyPath='yes'/>
+      </Component>
+      <Component Id='WanTai.UserPrompt.Config' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WanTai.UserPrompt.Config' Name='WanTai.UserPrompt.exe.config' DiskId='1' Source='../WanTai.UserPrompt/bin/Debug/WanTai.UserPrompt.exe.config' KeyPath='yes'/>
+      </Component>
+      <Component Id='WanTagUserManual' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WanTagUserManual' Name='WanTagUserManual.pdf' DiskId='1' Source='WanTagUserManual.pdf' KeyPath='yes'/>
+      </Component>
+      <Component Id="compProgramMenuDir" Guid="{6886685C-E1B1-48d9-B6A7-548175BD8F17}" Directory="ProgramMenuDir">
+        <RegistryKey Id='ProductKey' Action='createAndRemoveOnUninstall' Root='HKLM' Key='Software\[Manufacturer]\[ProductName]'>
+          <RegistryValue Id='SomeEXEValue' Action='write' Name='SomeEXEPath' Type='string' Value='[INSTALLDIR]Some.exe'/>
+          <RegistryValue Id='SomeOtherValue' Action='write' Name='Something else' Type='string' Value=''/>
+        </RegistryKey>
+        <Shortcut Id="UninstallProduct" Name="Uninstall" Directory="ProgramMenuDir"  Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Description="Uninstall"/>
+        <!--<RemoveFolder Id='UninstallProduct' On='uninstall'  />
+        <RemoveFolder Id='INSTALLDIR' On='uninstall'  />
+        <RemoveFolder Id='ManufacturerDir' On='uninstall'  />
+        <RemoveFolder Id='ProgramMenuDir' On='uninstall'  />-->
+        
+        <RemoveFolder Id='rmvProgramMenuDir' On='uninstall' Directory='ProgramMenuDir' />
+        <RemoveFolder Id='rmvProgramMenuDir1' On='uninstall' Property='ProgramFilesFolder' />
+        <RemoveFolder Id='rmvProgramMenuDir2' On='uninstall'  Directory='INSTALLDIR' />
+        <RemoveFolder Id='rmvProgramMenuDir3' On='uninstall' Directory='ManufacturerDir' />
+        <RemoveFolder Id='rmvProgramMenuDir4' On='uninstall' Property='compProgramMenuDir'  />
+        <RegistryValue Root='HKCU' Key='Software/[Manufacturer]/[ProductName]' Type='string' Value='WanTag' KeyPath='yes' />
+      </Component>
+    </ComponentGroup>
+    <!--<ComponentGroup Id='ExtraGroup'>
+      <Component Id='compHelperLibrary' Guid='{A30DAC3F-2902-479c-B530-B90A7BA8E514}' Directory='INSTALLDIR'>
+        <File Id='filHelperDLL' Name='Helper.dll' DiskId='1' Source='Helper.dll' KeyPath='yes' />
+      </Component>
+      <Component Id='compManual' Guid='{25518565-2E48-415c-B4FD-A20E2EA869D5}' Directory='INSTALLDIR'>
+        <File Id='filManual' Name='Manual.pdf' DiskId='1' Source='Manual.pdf' KeyPath='yes'>
+          <Shortcut Id="startmenuManual" Directory="ProgramMenuDir" Name="Instruction Manual" Icon="word.ico" Advertise="yes" />
+        </File>
+      </Component>
+    </ComponentGroup>-->
+    <ComponentGroup Id="DataBaseGroup">
+      <!--<Component KeyPath="yes" Id='SqlComponent' Directory ='INSTALLDIR' Guid='{94443B4E-46D4-4edb-A188-0C8074CFF946}'>
+        <sql:SqlDatabase Id='SqlDatabase' Database='[DBNAME]' User='SQLUser' Server='[SERVERNAME]' ConfirmOverwrite='yes' CreateOnInstall='yes' CreateOnReinstall='no' DropOnUninstall='no' DropOnReinstall='no' ContinueOnError='no'>
+          <sql:SqlScript Id='CreateObjSQLScript' ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='CreateDBObj' Sequence='1' />
+          <sql:SqlScript Id='CreateRecordsSQLScript' ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='CreateDBRecords' Sequence='2' />
+        </sql:SqlDatabase>
+      </Component>-->
+      <Component Id="CreateDB_WinAuth" Guid="3A10A7F9-E920-430a-88B1-E97584AC65E8" Directory='INSTALLDIR' KeyPath="yes">
+        <Condition>AUTHENTICATION = "0"</Condition>
+        <!-- Create a DB with Windows Authentication -->
+        <sql:SqlDatabase Id='SqlDatabaseWinAuth' Database='[DBNAME]' Server='[DBSERVER]' CreateOnInstall='yes' DropOnUninstall='no' ContinueOnError='no'>
+          <sql:SqlScript Id='CreateObjSQLScriptWinAuth' ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='CreateDBObj' Sequence='2' />
+          <sql:SqlString Id='CreateObjCollateWinAuth' SQL='alter database [DBNAME] collate  Chinese_PRC_90_CI_AS;'  ExecuteOnInstall='yes' ExecuteOnReinstall='no' Sequence='1'  />
+          <sql:SqlScript Id='CreateRecordsSQLScriptWinAuth' ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='CreateDBRecords' Sequence='3' />
+          <!--<sql:SqlString Id='DropRecordsSQLScriptWinAuth' ExecuteOnUninstall='no' SQL='use master' ExecuteOnReinstall='no'  Sequence='4' />-->
+          <!--DROP DATABASE [DBNAME]-->
+        </sql:SqlDatabase>
+      </Component>
+      <Component Id="CreateDB_SqlAuth" Guid="6FAE9F5E-AFF8-4b15-B9EE-BA427854D461" Directory='INSTALLDIR' KeyPath="yes">
+        <Condition>AUTHENTICATION = "1"</Condition>
+        <!-- Create a DB with SQL-Server Authentication -->
+        <sql:SqlDatabase Id='SqlDatabaseSQLAuth' Database='[DBNAME]'  User='DBCreationUser' Server='[DBSERVER]' CreateOnInstall='yes' DropOnUninstall='no' ContinueOnError='no'>
+          <sql:SqlScript Id='CreateObjSQLScriptSQLAuth'  ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='CreateDBObj' Sequence='2'  />
+          <sql:SqlString Id='CreateObjCollateSQLAuth' SQL='alter database [DBNAME] collate  Chinese_PRC_90_CI_AS ;'  ExecuteOnInstall='yes' ExecuteOnReinstall='no' Sequence='1'  />
+          <sql:SqlScript Id='CreateRecordsSQLScriptSQLAuth' ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='CreateDBRecords' Sequence='3' />
+          <!--<sql:SqlString Id='DropRecordsSQLScriptSQLAuth' ExecuteOnUninstall='no' SQL='use master' ExecuteOnReinstall='no'  Sequence='4' />-->
+          <!--DROP DATABASE [DBNAME]-->
+        </sql:SqlDatabase>
+      </Component>
+      <!--<Component Id="DropDB_WinAuth" Guid="3A10A7F9-E920-430a-88B1-E97584AC65E9" Directory='INSTALLDIR' KeyPath="yes">
+        <Condition>AUTHENTICATION = "0"</Condition>
+        --><!-- Create a DB with Windows Authentication --><!--
+        <sql:SqlDatabase Id='DropSqlDatabaseWinAuth' Database='master' Server='[DBSERVER]' CreateOnInstall='no' DropOnUninstall='yes' ContinueOnError='no'>
+          --><!--<sql:SqlString Id='DropRecordsSQLScriptWinAuth' ExecuteOnUninstall='yes' SQL='DROP DATABASE [DBNAME]' ExecuteOnReinstall='no'  Sequence='4' />--><!--
+        </sql:SqlDatabase>
+      </Component>
+      <Component Id="DropDB_SqlAuth" Guid="6FAE9F5E-AFF8-4b15-B9EE-BA427854D462" Directory='INSTALLDIR' KeyPath="yes">
+        <Condition>AUTHENTICATION = "1"</Condition>
+        --><!-- Create a DB with SQL-Server Authentication --><!--
+        <sql:SqlDatabase Id='DropSqlDatabaseSQLAuth' Database='[DBNAME]'  User='DBCreationUser' Server='[DBSERVER]' CreateOnInstall='no' DropOnUninstall='yes' ContinueOnError='no'>
+          --><!--<sql:SqlString Id='DropRecordsSQLScriptSQLAuth' ExecuteOnUninstall='yes' SQL='DROP DATABASE [DBNAME]' ExecuteOnReinstall='no'  Sequence='4' />--><!--
+        </sql:SqlDatabase>
+      </Component>-->
+    </ComponentGroup>
+  </Fragment>
+  <Fragment>
+    <Directory Id='TARGETDIR' Name='SourceDir'>
+      <Directory Id='ProgramFilesFolder' Name='PFiles'>
+        <Directory Id='ManufacturerDir' Name='WanTai'>
+          <Directory Id='INSTALLDIR' Name='WanTag'>
+          </Directory>
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="WanTag">
+        </Directory>
+      </Directory>
+
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    
+    <DirectoryRef Id="INSTALLDIR">
+      <!-- Component handling the web.config -->
+      <Component Id="DBConfigCmp" Guid="*">
+        <!-- Copy web.config to MYWEBWEBSITE folder. -->
+        <!--<File Id="WebConfigFile" KeyPath="yes"
+          Source="$(var.publishDir)\Web.config" Vital="yes" />
+        <util:XmlFile Id="ModifyConnectionString"
+                 Action="setValue"
+                 Permanent="yes"
+                 ElementPath="/configuration/connectionStrings/
+                                      add[\[]@name='MyConnectionString'[\]]"
+                 Name="connectionString"
+                 File="[#WebConfigFile]"
+                 Value="[CONNECTION_STRING]"
+                 SelectionLanguage="XSLPattern"
+                 Sequence="1" />
+              </Component>-->
+
+        <File Id="MyConfigfile" Source="../WanTai.View/bin/Debug/WanTag.exe.config" KeyPath="yes" />
+        <!-- update a connection string  -->
+        <util:XmlFile Id="UpdateConnectionString"  SelectionLanguage="XSLPattern" Permanent="yes"
+                 Sequence="1"  File="[#MyConfigfile]"    Action="setValue"
+                    Name="connectionString"
+          ElementPath="/configuration/connectionStrings/add[\[]@name='WanTaiConnectionString'[\]]"
+                      Value="[CONNECTIONSTRING]"/>
+        
+        <!-- update a connection string  -->
+        <util:XmlFile Id="UpdateConnectionStringLinq"  SelectionLanguage="XSLPattern" Permanent="yes"
+                 Sequence="1"  File="[#MyConfigfile]"    Action="setValue"
+                    Name="connectionString"
+          ElementPath="/configuration/connectionStrings/add[\[]@name='WanTaiEntities'[\]]"
+                      Value="metadata=res://*/WanTai.csdl|res://*/WanTai.ssdl|res://*/WanTai.msl;provider=System.Data.SqlClient;provider connection string=&quot;[CONNECTIONSTRING]MultipleActiveResultSets=True&quot;"/>
+        <!-- update an application setting  -->
+        <!--<util:XmlFile Id="UpdateMySetting"
+          File="[#MyConfigfile]"
+          Action="setValue"
+          SelectionLanguage="XSLPattern"
+          Permanent="yes"
+          Sequence="1"
+          ElementPath="//configuration/appSettings/add[[]@key=’MySetting’[]]/@value"
+          Value="[TARGETVALUE]" />-->
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>

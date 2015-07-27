@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{563DD7AE-ED03-4B92-8364-36116F26B25C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WanTai.Controller</RootNamespace>
+    <AssemblyName>WanTai.Controller</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AIClientLib">
+      <HintPath>..\WanTai.Common\lib\AIClientLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.MSScriptControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\WanTai.Common\lib\Interop.MSScriptControl.dll</HintPath>
+    </Reference>
+    <Reference Include="EVOApiErrorMsg">
+      <HintPath>..\WanTai.Common\lib\EVOApiErrorMsg.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.EVOAPILib">
+      <HintPath>..\WanTai.Common\lib\Interop.EVOAPILib.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.MCSLib">
+      <HintPath>..\WanTai.Common\lib\Interop.MCSLib.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.3.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WanTai.Common\lib\LumenWorks.Framework.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="PluginInterface">
+      <HintPath>..\WanTai.Common\lib\PluginInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="Tecan.MCS">
+      <HintPath>..\WanTai.Common\lib\Tecan.MCS.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfigRotationController.cs" />
+    <Compile Include="CarrierController.cs" />
+    <Compile Include="Configuration\OperationConfigurationController.cs" />
+    <Compile Include="Configuration\ReagentSuppliesConfigurationController.cs" />
+    <Compile Include="Configuration\LiquidConfigurationController.cs" />
+    <Compile Include="Configuration\RoleInfoController.cs" />
+    <Compile Include="Configuration\UserInfoController.cs" />
+    <Compile Include="EVO\CEDHandler\CEDForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\CEDHandler\CEDForm.Designer.cs">
+      <DependentUpon>CEDForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\CEDHandler\CEDHandler.cs" />
+    <Compile Include="EVO\EVOApiProcessor.cs" />
+    <Compile Include="EVO\EVOErrorBox\BarcodeError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\BarcodeError.Designer.cs">
+      <DependentUpon>BarcodeError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\ClotError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\ClotError.designer.cs">
+      <DependentUpon>ClotError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\GripError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\GripError.Designer.cs">
+      <DependentUpon>GripError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DoorLockError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DoorLockError.Designer.cs">
+      <DependentUpon>DoorLockError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiMountedError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiMountedError.designer.cs">
+      <DependentUpon>DiTiMountedError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiLostError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiLostError.designer.cs">
+      <DependentUpon>DiTiLostError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiNotMountedError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiNotMountedError.designer.cs">
+      <DependentUpon>DiTiNotMountedError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiFetchError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiTiFetchError.designer.cs">
+      <DependentUpon>DiTiFetchError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiluterCheckError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\DiluterCheckError.Designer.cs">
+      <DependentUpon>DiluterCheckError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\MsgDetectError.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\MsgDetectError.designer.cs">
+      <DependentUpon>MsgDetectError.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\MsgMessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\MsgMessageBox.Designer.cs">
+      <DependentUpon>MsgMessageBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\MsgUserPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EVO\EVOErrorBox\MsgUserPrompt.Designer.cs">
+      <DependentUpon>MsgUserPrompt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EVO\IProcessor.cs" />
+    <Compile Include="EVO\MockProcessor.cs" />
+    <Compile Include="EVO\ProcessorFactory.cs" />
+    <Compile Include="ExperimentController.cs" />
+    <Compile Include="HistoryQuery\LogViewController.cs" />
+    <Compile Include="HistoryQuery\ExperimentsController.cs" />
+    <Compile Include="LoginController.cs" />
+    <Compile Include="LogInfoController.cs" />
+    <Compile Include="OperationController.cs" />
+    <Compile Include="PCR\EditPCRTestResultController.cs" />
+    <Compile Include="PCR\PCRTestResultViewListController.cs" />
+    <Compile Include="PCR\ImportPCRTestResultFileController.cs" />
+    <Compile Include="PlateController.cs" />
+    <Compile Include="PoolingRulesConfigurationController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ReagentAndSuppliesController.cs" />
+    <Compile Include="ReagentsAndSuppliesConsumptionController.cs" />
+    <Compile Include="RotationController.cs" />
+    <Compile Include="RotationInfoController.cs" />
+    <Compile Include="SampleTrackingController.cs" />
+    <Compile Include="TestItemController.cs" />
+    <Compile Include="Thermo\ThermoProcessor.cs" />
+    <Compile Include="TubesController.cs" />
+    <Compile Include="TubesGroupController.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WanTai.Common\WanTai.Common.csproj">
+      <Project>{17DD5C13-CC4A-4D5A-9266-AFA182801699}</Project>
+      <Name>WanTai.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WanTai.DataModel\WanTai.DataModel.csproj">
+      <Project>{AB47AF45-8AD9-446F-AFD7-126DB3919507}</Project>
+      <Name>WanTai.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WanTai.UserPrompt\WanTai.UserPrompt.csproj">
+      <Project>{7D40E2B2-4137-4684-92D5-F3F44A0A918C}</Project>
+      <Name>WanTai.UserPrompt</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

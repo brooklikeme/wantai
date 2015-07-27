@@ -1,0 +1,14 @@
+*.exe
+*.mis
+*.zip
+*.rar
+WanTai.Common.dll
+WanTai.Common.pdb
+WanTai.Controller.dll
+WanTai.Controller.pdb
+WanTai.DataModel.dll
+WanTai.DataModel.pdb
+WanTai.UserPrompt.pdb
+WanTag.CustomAction.dll
+WanTag.CustomAction.pdb
+

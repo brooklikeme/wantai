@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="WanTaiModelStoreContainer" CdmEntityContainer="WanTaiEntities">
+    <EntitySetMapping Name="Carriers">
+      <EntityTypeMapping TypeName="WanTaiModel.Carrier">
+        <MappingFragment StoreEntitySet="Carrier">
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Heigh" ColumnName="Heigh" />
+          <ScalarProperty Name="Width" ColumnName="Width" />
+          <ScalarProperty Name="Grid" ColumnName="Grid" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="CarrierName" ColumnName="CarrierName" />
+          <ScalarProperty Name="CarrierID" ColumnName="CarrierID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DWPlatePositions">
+      <EntityTypeMapping TypeName="WanTaiModel.DWPlatePosition">
+        <MappingFragment StoreEntitySet="DWPlatePosition">
+          <ScalarProperty Name="PlateID" ColumnName="PlateID" />
+          <ScalarProperty Name="TubeGroupID" ColumnName="TubeGroupID" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="DWPlatePositionID" ColumnName="DWPlatePositionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ExperimentsInfoes">
+      <EntityTypeMapping TypeName="WanTaiModel.ExperimentsInfo">
+        <MappingFragment StoreEntitySet="ExperimentsInfo">
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="ExperimentName" ColumnName="ExperimentName" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LogInfoes">
+      <EntityTypeMapping TypeName="WanTaiModel.LogInfo">
+        <MappingFragment StoreEntitySet="LogInfo">
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="Module" ColumnName="Module" />
+          <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+          <ScalarProperty Name="CreaterTime" ColumnName="CreaterTime" />
+          <ScalarProperty Name="LogLevel" ColumnName="LogLevel" />
+          <ScalarProperty Name="LogContent" ColumnName="LogContent" />
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OperationConfigurations">
+      <EntityTypeMapping TypeName="WanTaiModel.OperationConfiguration">
+        <MappingFragment StoreEntitySet="OperationConfiguration">
+          <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+          <ScalarProperty Name="EndOperationFileName" ColumnName="EndOperationFileName" />
+          <ScalarProperty Name="StartOperationFileName" ColumnName="StartOperationFileName" />
+          <ScalarProperty Name="RunTime" ColumnName="RunTime" />
+          <ScalarProperty Name="ScriptFileName" ColumnName="ScriptFileName" />
+          <ScalarProperty Name="DisplayFlag" ColumnName="DisplayFlag" />
+          <ScalarProperty Name="SubOperationIDs" ColumnName="SubOperationIDs" />
+          <ScalarProperty Name="OperationSequence" ColumnName="OperationSequence" />
+          <ScalarProperty Name="OperationType" ColumnName="OperationType" />
+          <ScalarProperty Name="OperationName" ColumnName="OperationName" />
+          <ScalarProperty Name="OperationID" ColumnName="OperationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PCRPlatePositions">
+      <EntityTypeMapping TypeName="WanTaiModel.PCRPlatePosition">
+        <MappingFragment StoreEntitySet="PCRPlatePosition">
+          <ScalarProperty Name="TestName" ColumnName="TestName" />
+          <ScalarProperty Name="PlateID" ColumnName="PlateID" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="PCRPlatePositionID" ColumnName="PCRPlatePositionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PCRTestResults">
+      <EntityTypeMapping TypeName="WanTaiModel.PCRTestResult">
+        <MappingFragment StoreEntitySet="PCRTestResult">
+          <ScalarProperty Name="PlateID" ColumnName="PlateID" />
+          <ScalarProperty Name="PCRContent" ColumnName="PCRContent" />
+          <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="Result" ColumnName="Result" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="RotationID" ColumnName="RotationID" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Plates">
+      <EntityTypeMapping TypeName="WanTaiModel.Plate">
+        <MappingFragment StoreEntitySet="Plates">
+          <ScalarProperty Name="TubesBatchID" ColumnName="TubesBatchID" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="PlateType" ColumnName="PlateType" />
+          <ScalarProperty Name="RotationID" ColumnName="RotationID" />
+          <ScalarProperty Name="PlateName" ColumnName="PlateName" />
+          <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+          <ScalarProperty Name="PlateID" ColumnName="PlateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PoolingRulesConfigurations">
+      <EntityTypeMapping TypeName="WanTaiModel.PoolingRulesConfiguration">
+        <MappingFragment StoreEntitySet="PoolingRulesConfiguration">
+          <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+          <ScalarProperty Name="TubeNumber" ColumnName="TubeNumber" />
+          <ScalarProperty Name="PoolingRulesName" ColumnName="PoolingRulesName" />
+          <ScalarProperty Name="PoolingRulesID" ColumnName="PoolingRulesID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReagentAndSupplies">
+      <EntityTypeMapping TypeName="WanTaiModel.ReagentAndSupply">
+        <MappingFragment StoreEntitySet="ReagentAndSupplies">
+          <ScalarProperty Name="ConfigurationItemID" ColumnName="ConfigurationItemID" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+          <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReagentAndSuppliesConfigurations">
+      <EntityTypeMapping TypeName="WanTaiModel.ReagentAndSuppliesConfiguration">
+        <MappingFragment StoreEntitySet="ReagentAndSuppliesConfiguration">
+          <ScalarProperty Name="SimpleTrackingVolumn" ColumnName="SimpleTrackingVolumn" />
+          <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="BarcodePrefix" ColumnName="BarcodePrefix" />
+          <ScalarProperty Name="ContainerName" ColumnName="ContainerName" />
+          <ScalarProperty Name="CalculationFormula" ColumnName="CalculationFormula" />
+          <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+          <ScalarProperty Name="Unit" ColumnName="Unit" />
+          <ScalarProperty Name="Grid" ColumnName="Grid" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+          <ScalarProperty Name="EnglishName" ColumnName="EnglishName" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ReagentsAndSuppliesConsumptions">
+      <EntityTypeMapping TypeName="WanTaiModel.ReagentsAndSuppliesConsumption">
+        <MappingFragment StoreEntitySet="ReagentsAndSuppliesConsumption">
+          <ScalarProperty Name="RotationID" ColumnName="RotationID" />
+          <ScalarProperty Name="ReagentAndSupplieID" ColumnName="ReagentAndSupplieID" />
+          <ScalarProperty Name="VolumeType" ColumnName="VolumeType" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RotationInfoes">
+      <EntityTypeMapping TypeName="WanTaiModel.RotationInfo">
+        <MappingFragment StoreEntitySet="RotationInfo">
+          <ScalarProperty Name="RotationSequence" ColumnName="RotationSequence" />
+          <ScalarProperty Name="OperationName" ColumnName="OperationName" />
+          <ScalarProperty Name="OperationID" ColumnName="OperationID" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="RotationName" ColumnName="RotationName" />
+          <ScalarProperty Name="TubesBatchID" ColumnName="TubesBatchID" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="RotationID" ColumnName="RotationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RotationOperates">
+      <EntityTypeMapping TypeName="WanTaiModel.RotationOperate">
+        <MappingFragment StoreEntitySet="RotationOperate">
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="ErrorLog" ColumnName="ErrorLog" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="RotationID" ColumnName="RotationID" />
+          <ScalarProperty Name="OperationID" ColumnName="OperationID" />
+          <ScalarProperty Name="RotationOperateID" ColumnName="RotationOperateID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="WanTaiModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SystemFluidConfigurations">
+      <EntityTypeMapping TypeName="WanTaiModel.SystemFluidConfiguration">
+        <MappingFragment StoreEntitySet="SystemFluidConfiguration">
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="ItemType" ColumnName="ItemType" />
+          <ScalarProperty Name="Grid" ColumnName="Grid" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TestingItemConfigurations">
+      <EntityTypeMapping TypeName="WanTaiModel.TestingItemConfiguration">
+        <MappingFragment StoreEntitySet="TestingItemConfiguration">
+          <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+          <ScalarProperty Name="WorkListFileName" ColumnName="WorkListFileName" />
+          <ScalarProperty Name="DisplaySequence" ColumnName="DisplaySequence" />
+          <ScalarProperty Name="TestingItemColor" ColumnName="TestingItemColor" />
+          <ScalarProperty Name="TestingItemName" ColumnName="TestingItemName" />
+          <ScalarProperty Name="TestingItemID" ColumnName="TestingItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TubeGroups">
+      <EntityTypeMapping TypeName="WanTaiModel.TubeGroup">
+        <MappingFragment StoreEntitySet="TubeGroup">
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="TubesBatchID" ColumnName="TubesBatchID" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="PoolingRulesID" ColumnName="PoolingRulesID" />
+          <ScalarProperty Name="TubeGroupID" ColumnName="TubeGroupID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tubes">
+      <EntityTypeMapping TypeName="WanTaiModel.Tube">
+        <MappingFragment StoreEntitySet="Tubes">
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="TubeType" ColumnName="TubeType" />
+          <ScalarProperty Name="Grid" ColumnName="Grid" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="TubePosBarCode" ColumnName="TubePosBarCode" />
+          <ScalarProperty Name="BarCode" ColumnName="BarCode" />
+          <ScalarProperty Name="TubeGroupID" ColumnName="TubeGroupID" />
+          <ScalarProperty Name="TubeID" ColumnName="TubeID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TubesBatches">
+      <EntityTypeMapping TypeName="WanTaiModel.TubesBatch">
+        <MappingFragment StoreEntitySet="TubesBatch">
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
+          <ScalarProperty Name="TubesBatchName" ColumnName="TubesBatchName" />
+          <ScalarProperty Name="TubesBatchID" ColumnName="TubesBatchID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserInfoes">
+      <EntityTypeMapping TypeName="WanTaiModel.UserInfo">
+        <MappingFragment StoreEntitySet="UserInfo">
+          <ScalarProperty Name="UpdateTime" ColumnName="UpdateTime" />
+          <ScalarProperty Name="CreateName" ColumnName="CreateName" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="LoginPassWord" ColumnName="LoginPassWord" />
+          <ScalarProperty Name="LoginName" ColumnName="LoginName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="PCRPlatePosition_DWPlatePosition" TypeName="WanTaiModel.PCRPlatePosition_DWPlatePosition" StoreEntitySet="PCRPlatePosition_DWPlatePosition">
+      <EndProperty Name="PCRPlatePosition">
+        <ScalarProperty Name="PCRPlatePositionID" ColumnName="PCRPlatePositionID" />
+      </EndProperty>
+      <EndProperty Name="DWPlatePosition">
+        <ScalarProperty Name="DWPlatePositionID" ColumnName="DWPlatePositionID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TestItem_TubeGroup" TypeName="WanTaiModel.TestItem_TubeGroup" StoreEntitySet="TestItem_TubeGroup">
+      <EndProperty Name="TubeGroup">
+        <ScalarProperty Name="TubeGroupID" ColumnName="TubeGroupID" />
+      </EndProperty>
+      <EndProperty Name="TestingItemConfiguration">
+        <ScalarProperty Name="TestingItemID" ColumnName="TestingItemID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Tube_PlatePosition" TypeName="WanTaiModel.Tube_PlatePosition" StoreEntitySet="Tube_PlatePosition">
+      <EndProperty Name="Tube">
+        <ScalarProperty Name="TubeID" ColumnName="TubeID" />
+      </EndProperty>
+      <EndProperty Name="DWPlatePosition">
+        <ScalarProperty Name="DWPlatePositionID" ColumnName="DWPlatePositionID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="RoleInfoes">
+      <EntityTypeMapping TypeName="WanTaiModel.RoleInfo">
+        <MappingFragment StoreEntitySet="RoleInfo">
+          <ScalarProperty Name="RoleLevel" ColumnName="RoleLevel" />
+          <ScalarProperty Name="RoleModules" ColumnName="RoleModules" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SampleTrackings">
+      <EntityTypeMapping TypeName="WanTaiModel.SampleTracking">
+        <MappingFragment StoreEntitySet="SampleTracking">
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="IsKeeping" ColumnName="IsKeeping" />
+          <ScalarProperty Name="SampleErrors" ColumnName="SampleErrors" />
+          <ScalarProperty Name="VOLUME" ColumnName="VOLUME" />
+          <ScalarProperty Name="CONCENTRATION" ColumnName="CONCENTRATION" />
+          <ScalarProperty Name="SampleID" ColumnName="SampleID" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="CavityID" ColumnName="CavityID" />
+          <ScalarProperty Name="RackID" ColumnName="RackID" />
+          <ScalarProperty Name="OperationID" ColumnName="OperationID" />
+          <ScalarProperty Name="OperationSequence" ColumnName="OperationSequence" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="ExperimentsID" ColumnName="ExperimentsID" />
+          <ScalarProperty Name="RotationID" ColumnName="RotationID" />
+          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

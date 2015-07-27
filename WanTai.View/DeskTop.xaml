@@ -1,0 +1,146 @@
+﻿<Page x:Class="WanTai.View.DeskTop"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:WanTai.View"
+      mc:Ignorable="d" 
+     d:DesignHeight="850" d:DesignWidth="1000" FontSize="12" Title="Page1"  Loaded="Page_Loaded" Unloaded="Page_Unloaded">
+    <Page.Resources>
+        <local:VisibilityConverter x:Key="visibilityConverter"></local:VisibilityConverter>
+        <local:EnabledConverter x:Key="enabledConverter"></local:EnabledConverter>
+        <Style x:Key="Body_Content_DataGrid_Centering"
+	 TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Name="row0" Height="24"></RowDefinition>
+            <RowDefinition Name="row1" Height="Auto"></RowDefinition>
+            <RowDefinition Name="row2" Height="Auto"></RowDefinition>
+            <RowDefinition Name="row3" Height="0"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Label Name="labelRotationName" ></Label>
+            <Label Content="1000µl枪头" Name="labDiTi1000"  Margin="120,0,0,0" Panel.ZIndex="999" />
+            <Label Content="200µl枪头" Name="labDiTi200" VerticalAlignment="Center" Margin="260,0,0,0" Panel.ZIndex="999" />
+        </StackPanel>
+        <Canvas Grid.Row="1" Grid.Column="0"  Name="DeskTopWithGrid" Background="#FFf2f2f2" >
+            <!--#FFf2f2f2-->
+
+        </Canvas>
+        <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+            <Image Name="imgKingFisher" Source="/WanTag;component/Resources/kingfisher.gif" Width="240" Height="240"  ></Image>
+        </Border>
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" ></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Column="0" Grid.Row="0" Margin="5,5,30,5">
+            <DataGrid  Name="dgSupplies" AutoGenerateColumns="False" ItemsSource="{Binding}"
+                      SelectionMode="Extended" CanUserAddRows="False" SelectionUnit="CellOrRowHeader" 
+                      CanUserResizeColumns="False" CanUserResizeRows="False" CellStyle="{StaticResource Body_Content_DataGrid_Centering}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn x:Name="DisplayName" MinWidth="130"  Header="耗材" Binding="{Binding DisplayName}" IsReadOnly="True" CanUserReorder="False" CanUserSort="False"></DataGridTextColumn>
+                        <DataGridTextColumn Header="需求量" Binding="{Binding NeedVolume}" IsReadOnly="True" CanUserReorder="False" CanUserSort="False"></DataGridTextColumn>
+                        <DataGridTextColumn Header="剩余量" Binding="{Binding CurrentVolume}" IsReadOnly="True" CanUserReorder="False" CanUserSort="False" Visibility="Hidden"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="添加量" CanUserReorder="False" CanUserSort="False" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                        <TextBox Name="txtAddVolume" VerticalAlignment="Center" Text="{Binding FirstAddVolume, Mode=TwoWay}" Width="50" MaxLength="6" IsEnabled="{Binding Correct,Converter={StaticResource enabledConverter}}"></TextBox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="单位" Binding="{Binding Unit}" IsReadOnly="True" CanUserReorder="True" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTemplateColumn CanUserReorder="True" CanUserSort="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Button x:Name="btnConfirm" Visibility="{Binding Path=Correct,  Converter={StaticResource visibilityConverter}}" CommandParameter="supplies" Content="确认" Click="btnConfirm_Click"></Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+                <Button Name="btnSupplies"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Click="btnNeedVolume_Click" Height="25" Width="100" Margin="0,5,0,0" Content="添加需要量"></Button>
+
+            </StackPanel>
+            <!--Binding="{Binding CurrentVolume,StringFormat='{0:#.##}'}"-->
+            <StackPanel Grid.Column="1" Grid.Row="0" Margin="5,5,30,5">
+            <DataGrid   AutoGenerateColumns="False" Name="dgReagent" ItemsSource="{Binding}"
+                      SelectionMode="Extended" SelectionUnit="CellOrRowHeader" CanUserAddRows="False"
+                      CanUserResizeColumns="False" CanUserResizeRows="False" CellStyle="{StaticResource Body_Content_DataGrid_Centering}">
+                <DataGrid.Columns>
+                        <DataGridTextColumn Header="提取试剂" MinWidth="130" Binding="{Binding DisplayName}" IsReadOnly="True" CanUserReorder="False" CanUserSort="False"></DataGridTextColumn>
+                        <DataGridTextColumn Header="需求量" Binding="{Binding NeedVolume,StringFormat='{}{0:0.00}'}" IsReadOnly="True" CanUserReorder="False" CanUserSort="False"></DataGridTextColumn>
+                        <DataGridTextColumn Header="剩余量" Binding="{Binding CurrentVolume,StringFormat='{}{0:0.00}'}" IsReadOnly="True" CanUserReorder="False" CanUserSort="False" Visibility="Hidden"/>                          
+                    <DataGridTemplateColumn Header="添加量" CanUserReorder="False" CanUserSort="False" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                        <TextBox Name="txtAddVolume" Text="{Binding FirstAddVolume, Mode=TwoWay}" Width="50" MaxLength="6" IsEnabled="{Binding Correct,Converter={StaticResource enabledConverter}}"></TextBox>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="单位" Binding="{Binding Unit}" IsReadOnly="True" CanUserReorder="False" CanUserSort="False"></DataGridTextColumn>
+                    <DataGridTemplateColumn CanUserReorder="True" CanUserSort="False">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <Button x:Name="btnConfirm" Visibility="{Binding Path=Correct,  Converter={StaticResource visibilityConverter}}" CommandParameter="reagent"  Content="确认" Click="btnConfirm_Click"></Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+                <Button Name="btnReagent" Click="btnNeedVolume_Click"   VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,5,0,0" Height="25" Width="100" Content="添加需要量"></Button>
+            </StackPanel>
+
+            <StackPanel Name="stackPanelTestItem" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="5">
+
+               
+            </StackPanel>
+            <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="30,0,0,0">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                <TextBlock Text="请在图示位置添加相应耗材。请检查系统液是否充足。" VerticalAlignment="Center" Foreground="DarkBlue" Margin="5,0,0,0"></TextBlock>
+                <TextBlock Text="请检查防护门是否关闭。" VerticalAlignment="Center" Foreground="DarkBlue"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <Button Name="btnScan" Click="Scan_Click" Height="25" Width="100" Content="仪器复核" ></Button>
+                    <Button Name="btnManual" Click="btnManual_Click"  Height="25" Width="100" Content="人工复核" Margin="5,0,0,0"></Button>
+                    <Button Name="btnSave" Click="btnSave_Click"  Height="25" Width="100" Content="保存" IsEnabled="False" Margin="5,0,0,0"></Button>
+                    <Button Name="btnNext" Click="btnNext_Click"  Height="25" Width="100" Content="下一步" IsEnabled="False" Margin="5,0,0,0"></Button>
+                </StackPanel>
+            </StackPanel>
+           
+        </Grid>
+     
+        <!--<DockPanel Grid.Row="3"  Grid.Column="0" Margin="5" Grid.ColumnSpan="2">
+         
+        </DockPanel>-->
+    </Grid>
+</Page>

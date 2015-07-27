@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1195"
+   name=""
+   committed-date="2012-02-08T05:15:43.754711Z"
+   url="https://cm3.objectivasoftware.com/wantai/workspace/trunk/WanTai/WanTai.View/bin/Debug/evo/worklist"
+   last-author="exiao"
+   kind="dir"
+   uuid="439405ba-adaa-0410-b0b4-de79adcba793"
+   repos="https://cm3.objectivasoftware.com/wantai"
+   revision="1263"/>
+<entry
+   committed-rev="1195"
+   name="ADD TEMPLATE HCV.csv"
+   text-time="2012-02-16T14:01:23.087829Z"
+   committed-date="2012-02-08T05:15:43.754711Z"
+   checksum="0c8134e2e37b2c63c3d3d04599eb0815"
+   last-author="exiao"
+   kind="file"
+   prop-time="2012-02-10T02:17:27.962845Z"/>
+<entry
+   committed-rev="1195"
+   name="ADD TEMPLATE HIV.csv"
+   text-time="2012-02-16T14:01:23.103454Z"
+   committed-date="2012-02-08T05:15:43.754711Z"
+   checksum="12cbe184f6780788a94ff1ff12b525c6"
+   last-author="exiao"
+   kind="file"
+   prop-time="2012-02-10T02:17:28.056592Z"/>
+<entry
+   committed-rev="1195"
+   name="Add Samples.csv"
+   text-time="2012-02-10T02:19:02.694795Z"
+   committed-date="2012-02-08T05:15:43.754711Z"
+   checksum="31844f97ad0252d77e19d691406f873e"
+   last-author="exiao"
+   kind="file"
+   prop-time="2012-02-10T02:17:28.369084Z"/>
+<entry
+   committed-rev="1195"
+   name="ADD TEMPLATE HBV.csv"
+   text-time="2012-02-10T02:19:02.710419Z"
+   committed-date="2012-02-08T05:15:43.754711Z"
+   checksum="51504b2a5c8d92068073559668905caa"
+   last-author="exiao"
+   kind="file"
+   prop-time="2012-02-10T02:17:28.603453Z"/>
+</wc-entries>

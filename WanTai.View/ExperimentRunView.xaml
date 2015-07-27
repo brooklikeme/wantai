@@ -1,0 +1,318 @@
+﻿<UserControl x:Class="WanTai.View.ExperimentRunView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1024" xmlns:my="http://schemas.microsoft.com/winfx/2006/xaml/presentation/ribbon">
+    <UserControl.Resources>
+        <Storyboard x:Key="StoryBoardTrash" RepeatBehavior="Forever" AutoReverse="True">
+            <DoubleAnimation From="0" By="0.1" To="1.0" Storyboard.TargetName="btnTrash"   Duration="0:0:1" Storyboard.TargetProperty="Opacity"/>
+        </Storyboard>
+        <Storyboard x:Key="Storyboard1" RepeatBehavior="Forever" AutoReverse="True">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ellipse1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="2"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ellipse1" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
+                <SplineDoubleKeyFrame KeyTime="00:00:01" Value="2"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <LinearGradientBrush x:Key="Operation1"  EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF898952" Offset="1"/>
+            <GradientStop Color="#FFFDFD98" Offset="0.001"/>
+            <GradientStop Color="#FFC8C878" Offset="0.52"/>
+            <GradientStop Color="#FFE6E68A" Offset="0.295"/>
+            <GradientStop Color="#FF9D9D5F" Offset="0.769"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="Operation2"   StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FF627B7B" Offset="1"/>
+            <GradientStop Color="#FFCAFCFC" Offset="0.001"/>
+            <GradientStop Color="#FFA0C8C8" Offset="0.52"/>
+            <GradientStop Color="#FFBBEAEA" Offset="0.26"/>
+            <GradientStop Color="#FF7E9D9D" Offset="0.811"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="Operation3"  EndPoint="0,1" StartPoint="0,0">
+            <GradientStop Color="#FF496079" Offset="1"/>
+            <GradientStop Color="#FF97CAFC" Offset="0.001"/>
+            <GradientStop Color="#FF7096BB" Offset="0.52"/>
+            <GradientStop Color="#FF8CBBEA" Offset="0.248"/>
+            <GradientStop Color="#FF5F7E9D" Offset="0.792"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="Operation4"  EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FF607960" Offset="1"/>
+            <GradientStop Color="#FFC8FBC8" Offset="0.001"/>
+            <GradientStop Color="#FF96BB96" Offset="0.546"/>
+            <GradientStop Color="#FFB8E6B8" Offset="0.276"/>
+            <GradientStop Color="#FF799879" Offset="0.79"/>
+        </LinearGradientBrush>
+        <LinearGradientBrush x:Key="Operation5"  EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFF3FFA7" Offset="0.075"/>
+            <GradientStop Color="#FFADDA4F" Offset="0.8"/>
+            <GradientStop Color="#FFCFEC31" Offset="0.129"/>
+            <GradientStop Color="#FF8AC118" Offset="0.871"/>
+            <GradientStop Color="#FFA8DC3B" Offset="1"/>
+        </LinearGradientBrush>
+        <Style x:Key="ProgressBarStyle1" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid>
+                            <Label Name="labValue"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Panel.ZIndex="999"></Label>
+                            <!--背景框-->
+                            <Rectangle Margin="0" VerticalAlignment="Stretch" Height="Auto" Stroke="#FF7C8C9A" RadiusX="1" RadiusY="1">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFDEDEDE" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--进度低槽 不要改这个DockPanel的名字-->
+                            <DockPanel x:Name="PART_Track" Margin="1" LastChildFill="false">
+                                <!--进度填充条 不要改这个Rec的名字-->
+                                <Rectangle x:Name="PART_Indicator" Fill="{DynamicResource Operation1}">
+                                  
+                                </Rectangle>
+                            </DockPanel>
+                            <!--边缘的一像素高光-->
+                            <Rectangle Margin="1" Height="Auto" Stroke="White" Opacity="0.25"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ProgressBarStyle2" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid>
+                            <Label Name="labValue"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Panel.ZIndex="999"></Label>
+                            <!--背景框-->
+                            <Rectangle Margin="0" VerticalAlignment="Stretch" Height="Auto" Stroke="#FF7C8C9A" RadiusX="1" RadiusY="1">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFDEDEDE" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--进度低槽 不要改这个DockPanel的名字-->
+                            <DockPanel x:Name="PART_Track" Margin="1" LastChildFill="false">
+                                <!--进度填充条 不要改这个Rec的名字-->
+                                <Rectangle x:Name="PART_Indicator" Fill="{DynamicResource Operation2}">
+
+                                </Rectangle>
+                            </DockPanel>
+                            <!--边缘的一像素高光-->
+                            <Rectangle Margin="1" Height="Auto" Stroke="White" Opacity="0.25"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ProgressBarStyle3" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid>
+                            <Label Name="labValue"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Panel.ZIndex="999"></Label>
+                            <!--背景框-->
+                            <Rectangle Margin="0" VerticalAlignment="Stretch" Height="Auto" Stroke="#FF7C8C9A" RadiusX="1" RadiusY="1">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFDEDEDE" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--进度低槽 不要改这个DockPanel的名字-->
+                            <DockPanel x:Name="PART_Track" Margin="1" LastChildFill="false">
+                                <!--进度填充条 不要改这个Rec的名字-->
+                                <Rectangle x:Name="PART_Indicator" Fill="{DynamicResource Operation3}">
+
+                                </Rectangle>
+                            </DockPanel>
+                            <!--边缘的一像素高光-->
+                            <Rectangle Margin="1" Height="Auto" Stroke="White" Opacity="0.25"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ProgressBarStyle4" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid>
+                            <Label Name="labValue"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Panel.ZIndex="999"></Label>
+                            <!--背景框-->
+                            <Rectangle Margin="0" VerticalAlignment="Stretch" Height="Auto" Stroke="#FF7C8C9A" RadiusX="1" RadiusY="1">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFDEDEDE" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--进度低槽 不要改这个DockPanel的名字-->
+                            <DockPanel x:Name="PART_Track" Margin="1" LastChildFill="false">
+                                <!--进度填充条 不要改这个Rec的名字-->
+                                <Rectangle x:Name="PART_Indicator" Fill="{DynamicResource Operation4}">
+
+                                </Rectangle>
+                            </DockPanel>
+                            <!--边缘的一像素高光-->
+                            <Rectangle Margin="1" Height="Auto" Stroke="White" Opacity="0.25"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ProgressBarStyle5" TargetType="{x:Type ProgressBar}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ProgressBar}">
+                        <Grid>
+                            <Label Name="labValue"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Panel.ZIndex="999"></Label>
+                            <!--背景框-->
+                            <Rectangle Margin="0" VerticalAlignment="Stretch" Height="Auto" Stroke="#FF7C8C9A" RadiusX="1" RadiusY="1">
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="#FFDEDEDE" Offset="0"/>
+                                        <GradientStop Color="White" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <!--进度低槽 不要改这个DockPanel的名字-->
+                            <DockPanel x:Name="PART_Track" Margin="1" LastChildFill="false">
+                                <!--进度填充条 不要改这个Rec的名字-->
+                                <Rectangle x:Name="PART_Indicator" Fill="{DynamicResource Operation5}">
+
+                                </Rectangle>
+                            </DockPanel>
+                            <!--边缘的一像素高光-->
+                            <Rectangle Margin="1" Height="Auto" Stroke="White" Opacity="0.25"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="buttonIsEnabled" TargetType="{x:Type Button}">
+            <Setter Property="Button.Uid" Value="NoError"></Setter>
+            <Style.Triggers>
+                <Trigger Property="Button.Uid" Value="Error">
+                    <Setter Property="Button.Background" Value="Red"></Setter>
+                    <Setter Property="Button.Opacity" Value="1.0"></Setter>
+                    <Trigger.EnterActions>
+                        <BeginStoryboard Name="BeginStoryboardIsEnable">
+                            <Storyboard FillBehavior="Stop">
+                                <DoubleAnimation From="1.0"   To="0.3"  AutoReverse="True"  RepeatBehavior="Forever" Duration="0:0:0.5" Storyboard.TargetProperty="Opacity"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+                <Trigger Property="Button.Uid" Value="NoError">
+                    <Setter Property="Button.Opacity" Value="1.0"></Setter>
+                    <Setter Property="Button.Background" Value="#F7F7F9"></Setter>
+                    <Trigger.EnterActions>
+                        <StopStoryboard BeginStoryboardName="BeginStoryboardIsEnable"></StopStoryboard>
+                    </Trigger.EnterActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="120"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Border BorderBrush="Silver"  Grid.Column="0" Grid.Row="0" BorderThickness="2,2,2,0"    Background="#F2F2F2"  >
+            <!--<Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="200"></ColumnDefinition>
+                    <ColumnDefinition Width="440"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="10"></RowDefinition>
+                </Grid.RowDefinitions>-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" Width="200">
+                    <Label x:Name="labRotation" Content="共0轮次" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="10,0,0,0"/>
+                    <Label  Content="运行时间"  HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="10,0,0,0"/>
+                    <Label x:Name="labRunTime" Content="00:00:00" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
+                </StackPanel>
+
+                <StackPanel  Width="440" Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" Name="spOperationView">
+                </StackPanel>
+            </StackPanel>
+            <!--</Grid>-->
+        </Border>
+        <Border BorderBrush="Silver" Grid.Column="0" Grid.Row="1" BorderThickness="2" x:Name="RotationRunView" HorizontalAlignment="Stretch"   Background="#F2F2F2"  VerticalAlignment="Stretch">
+            <StackPanel HorizontalAlignment="Stretch" Name="stackPanel"></StackPanel>
+        </Border>
+        <StackPanel Grid.Column="1" Grid.Row="1" >
+            <Button Name="btnAddReagent" HorizontalAlignment="Stretch"  Style="{StaticResource buttonIsEnabled}" Margin="0,0,0,0"  HorizontalContentAlignment="Center" Width="100"  VerticalContentAlignment="Center"   VerticalAlignment="Center" Click="btnAddReagent_Click" >
+                <Button.Content>
+                    <StackPanel Margin="10,3">
+                        <Image  Source="/WanTag;component/Resources/Reagent.gif" Width="60" Height="32"/>
+                        <Label Content="试剂" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button  Name="btnTrash" HorizontalAlignment="Stretch" Margin="0,40,0,0" Style="{StaticResource buttonIsEnabled}" HorizontalContentAlignment="Center" Width="100"  VerticalContentAlignment="Center"   VerticalAlignment="Center" Click="btnTrash_Click">
+                <Button.Content>
+                    <StackPanel Margin="10,3">
+                        <Image  Source="/WanTag;component/Resources/Trash.gif" Width="60" Height="32"/>
+                        <Label Content="垃圾" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="btnDoorLock" HorizontalAlignment="Stretch" Margin="0,40,0,0" HorizontalContentAlignment="Center" Width="100"  VerticalContentAlignment="Center"   VerticalAlignment="Center" Visibility="Hidden" >
+                <Button.Content>
+                    <StackPanel Margin="10,3">
+                        <Image  Source="/WanTag;component/Resources/logoutIcon.png" Width="60" Height="32"/>
+                        <Label Content="防护门" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+                <!--<Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation From="#FE0000"  By="#419E29" To="#FFE500" AutoReverse="True"  RepeatBehavior="Forever" Duration="0:0:1" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>-->
+            </Button>
+            <!--<Button Name="btnNextRotation" HorizontalAlignment="Stretch" Margin="0,40,0,0" Background="Green" HorizontalContentAlignment="Center" Width="120"  VerticalContentAlignment="Center"   VerticalAlignment="Center">
+                <Button.Content>
+                    <StackPanel Margin="10,5">
+                        <Image  Source="/WanTai.View;component/Resources/logoutIcon.png" Width="60" Height="32"/>
+                        <Label Content="开始下个轮次" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation From="#FE0000"  By="#419E29" To="#FFE500" AutoReverse="True"  RepeatBehavior="Forever" Duration="0:0:1" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>-->
+        </StackPanel>
+
+    </Grid>
+</UserControl>
+

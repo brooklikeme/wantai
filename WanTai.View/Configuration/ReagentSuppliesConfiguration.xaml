@@ -1,0 +1,53 @@
+﻿<Window x:Class="WanTai.View.Configuration.ReagentSuppliesConfiguration"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="试剂、耗材配置" Height="600" Width="600" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Icon="/WanTag;component/Resources/logo.ico">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="46"></ColumnDefinition>
+            <ColumnDefinition Width="127"></ColumnDefinition>
+            <ColumnDefinition Width="291"></ColumnDefinition>
+            <ColumnDefinition Width="114*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="*" Name="Grid3"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Content="名称：" Grid.Column="1" HorizontalAlignment="Right" Name="label1" VerticalAlignment="Center" Grid.Row="1" />
+        <TextBox Grid.Column="2" Grid.Row="1" HorizontalAlignment="Stretch" Name="name_textBox" VerticalAlignment="Center"   />
+        <Label Content="显示名称：" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Name="label2" VerticalAlignment="Center" />
+        <TextBox Grid.Column="2" Grid.Row="2" HorizontalAlignment="Stretch" Name="displayName_textBox" VerticalAlignment="Center"  />
+        <Label Content="类型：" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Right" Name="label3" VerticalAlignment="Center" />
+        <ComboBox Grid.Column="2" Grid.Row="3" HorizontalAlignment="Stretch" Name="type_comboBox" VerticalAlignment="Center" SelectionChanged="type_comboBox_SelectionChanged" />
+        <Label Content="条码(Barcode)前缀：" Grid.Column="1" HorizontalAlignment="Right" Name="barcode_label" VerticalAlignment="Center" Grid.Row="4" />
+        <TextBox Grid.Column="2" Grid.Row="4" HorizontalAlignment="Stretch" Name="barcode_textBox" VerticalAlignment="Center"   />
+
+        <Label Content="Carrier名称：" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Right" Name="label4" VerticalAlignment="Center" />
+        <ComboBox Grid.Column="2" Grid.Row="5" HorizontalAlignment="Stretch" Name="carrier_comboBox" VerticalAlignment="Center"   />
+        <Label Content="Grid：" Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right" Name="label5" VerticalAlignment="Center" />
+        <TextBox Grid.Column="2" Grid.Row="6" HorizontalAlignment="Stretch" Name="grid_textBox" VerticalAlignment="Center"  />
+        <Label Content="Position：" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Right" Name="label6" VerticalAlignment="Center" />
+        <TextBox Grid.Column="2" Grid.Row="7" HorizontalAlignment="Stretch" Name="position_textBox" VerticalAlignment="Center"  />
+        <Label Content="显示颜色：" Grid.Column="1" Grid.Row="8"  HorizontalAlignment="Right" Name="label7" VerticalAlignment="Center" />
+        <TextBlock Grid.Column="2" Grid.Row="8" Height="20" Width="20" Name="color_Control" HorizontalAlignment="Left"  Background="Gray" VerticalAlignment="Center" MouseDown="color_Control_MouseDown" />
+        
+        <Label Content="单位：" Grid.Column="1" Grid.Row="9" Name="label8" VerticalAlignment="Center"  HorizontalAlignment="Left" Margin="78,10,0,10" />
+        <Label Content="" Grid.Column="2" Grid.Row="9" HorizontalAlignment="Left" Name="unit_label" VerticalAlignment="Center" />
+        <Label Content="检测公式：" Grid.Column="1" Grid.Row="10" HorizontalAlignment="Right" Name="label9" VerticalAlignment="Center" />
+        <TextBox Grid.Column="2" Grid.Row="10" HorizontalAlignment="Stretch" Name="calculation_textBox" VerticalAlignment="Center"   />
+        <StackPanel Grid.ColumnSpan="4" Grid.Row="11"  HorizontalAlignment="Center" Name="stackPanel1" VerticalAlignment="Stretch" Orientation="Horizontal" >
+            <Button Content="保存"  Name="save" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="save_Click" />
+            <Button Content="取消"  Name="cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Margin="30,0,0,0" Click="cancel_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="WanTaiModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="WanTaiEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Carriers" EntityType="WanTaiModel.Carrier" />
+    <EntitySet Name="DWPlatePositions" EntityType="WanTaiModel.DWPlatePosition" />
+    <EntitySet Name="ExperimentsInfoes" EntityType="WanTaiModel.ExperimentsInfo" />
+    <EntitySet Name="LogInfoes" EntityType="WanTaiModel.LogInfo" />
+    <EntitySet Name="OperationConfigurations" EntityType="WanTaiModel.OperationConfiguration" />
+    <EntitySet Name="PCRPlatePositions" EntityType="WanTaiModel.PCRPlatePosition" />
+    <EntitySet Name="PCRTestResults" EntityType="WanTaiModel.PCRTestResult" />
+    <EntitySet Name="Plates" EntityType="WanTaiModel.Plate" />
+    <EntitySet Name="PoolingRulesConfigurations" EntityType="WanTaiModel.PoolingRulesConfiguration" />
+    <EntitySet Name="ReagentAndSupplies" EntityType="WanTaiModel.ReagentAndSupply" />
+    <EntitySet Name="ReagentAndSuppliesConfigurations" EntityType="WanTaiModel.ReagentAndSuppliesConfiguration" />
+    <EntitySet Name="ReagentsAndSuppliesConsumptions" EntityType="WanTaiModel.ReagentsAndSuppliesConsumption" />
+    <EntitySet Name="RotationInfoes" EntityType="WanTaiModel.RotationInfo" />
+    <EntitySet Name="RotationOperates" EntityType="WanTaiModel.RotationOperate" />
+    <EntitySet Name="sysdiagrams" EntityType="WanTaiModel.sysdiagram" />
+    <EntitySet Name="SystemFluidConfigurations" EntityType="WanTaiModel.SystemFluidConfiguration" />
+    <EntitySet Name="TestingItemConfigurations" EntityType="WanTaiModel.TestingItemConfiguration" />
+    <EntitySet Name="TubeGroups" EntityType="WanTaiModel.TubeGroup" />
+    <EntitySet Name="Tubes" EntityType="WanTaiModel.Tube" />
+    <EntitySet Name="TubesBatches" EntityType="WanTaiModel.TubesBatch" />
+    <EntitySet Name="UserInfoes" EntityType="WanTaiModel.UserInfo" />
+    <AssociationSet Name="FK_DWPlatePosition_Plates" Association="WanTaiModel.FK_DWPlatePosition_Plates">
+      <End Role="Plate" EntitySet="Plates" />
+      <End Role="DWPlatePosition" EntitySet="DWPlatePositions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TubesBatch_ExperimentsInfo" Association="WanTaiModel.FK_TubesBatch_ExperimentsInfo">
+      <End Role="ExperimentsInfo" EntitySet="ExperimentsInfoes" />
+      <End Role="TubesBatch" EntitySet="TubesBatches" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RotationOperate_OperationConfiguration" Association="WanTaiModel.FK_RotationOperate_OperationConfiguration">
+      <End Role="OperationConfiguration" EntitySet="OperationConfigurations" />
+      <End Role="RotationOperate" EntitySet="RotationOperates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PCRPlatePosition_Plates" Association="WanTaiModel.FK_PCRPlatePosition_Plates">
+      <End Role="Plate" EntitySet="Plates" />
+      <End Role="PCRPlatePosition" EntitySet="PCRPlatePositions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TubeGroup_PoolingRulesConfiguration" Association="WanTaiModel.FK_TubeGroup_PoolingRulesConfiguration">
+      <End Role="PoolingRulesConfiguration" EntitySet="PoolingRulesConfigurations" />
+      <End Role="TubeGroup" EntitySet="TubeGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration" Association="WanTaiModel.FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration">
+      <End Role="ReagentAndSuppliesConfiguration" EntitySet="ReagentAndSuppliesConfigurations" />
+      <End Role="ReagentAndSupply" EntitySet="ReagentAndSupplies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies" Association="WanTaiModel.FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies">
+      <End Role="ReagentAndSupply" EntitySet="ReagentAndSupplies" />
+      <End Role="ReagentsAndSuppliesConsumption" EntitySet="ReagentsAndSuppliesConsumptions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RotationInfo_TubesBatch" Association="WanTaiModel.FK_RotationInfo_TubesBatch">
+      <End Role="TubesBatch" EntitySet="TubesBatches" />
+      <End Role="RotationInfo" EntitySet="RotationInfoes" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TubeGroup_TubesBatch" Association="WanTaiModel.FK_TubeGroup_TubesBatch">
+      <End Role="TubesBatch" EntitySet="TubesBatches" />
+      <End Role="TubeGroup" EntitySet="TubeGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Tubes_TubeGroup" Association="WanTaiModel.FK_Tubes_TubeGroup">
+      <End Role="TubeGroup" EntitySet="TubeGroups" />
+      <End Role="Tube" EntitySet="Tubes" />
+    </AssociationSet>
+    <AssociationSet Name="PCRPlatePosition_DWPlatePosition" Association="WanTaiModel.PCRPlatePosition_DWPlatePosition">
+      <End Role="DWPlatePosition" EntitySet="DWPlatePositions" />
+      <End Role="PCRPlatePosition" EntitySet="PCRPlatePositions" />
+    </AssociationSet>
+    <AssociationSet Name="TestItem_TubeGroup" Association="WanTaiModel.TestItem_TubeGroup">
+      <End Role="TestingItemConfiguration" EntitySet="TestingItemConfigurations" />
+      <End Role="TubeGroup" EntitySet="TubeGroups" />
+    </AssociationSet>
+    <AssociationSet Name="Tube_PlatePosition" Association="WanTaiModel.Tube_PlatePosition">
+      <End Role="DWPlatePosition" EntitySet="DWPlatePositions" />
+      <End Role="Tube" EntitySet="Tubes" />
+    </AssociationSet>
+    <EntitySet Name="RoleInfoes" EntityType="WanTaiModel.RoleInfo" />
+    <EntitySet Name="SampleTrackings" EntityType="WanTaiModel.SampleTracking" />
+  </EntityContainer>
+  <EntityType Name="Carrier">
+    <Key>
+      <PropertyRef Name="CarrierID" />
+    </Key>
+    <Property Type="Guid" Name="CarrierID" Nullable="false" />
+    <Property Type="String" Name="CarrierName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Double" Name="Position" Nullable="false" />
+    <Property Type="Double" Name="Grid" Nullable="false" />
+    <Property Type="Double" Name="Width" Nullable="false" />
+    <Property Type="Double" Name="Heigh" Nullable="false" />
+    <Property Type="String" Name="Color" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="Type" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DWPlatePosition">
+    <Key>
+      <PropertyRef Name="DWPlatePositionID" />
+    </Key>
+    <Property Type="Guid" Name="DWPlatePositionID" Nullable="false" />
+    <Property Type="Int32" Name="Position" Nullable="false" />
+    <Property Type="Guid" Name="TubeGroupID" />
+    <Property Type="Guid" Name="PlateID" Nullable="false" />
+    <NavigationProperty Name="Plate" Relationship="WanTaiModel.FK_DWPlatePosition_Plates" FromRole="DWPlatePosition" ToRole="Plate" />
+    <NavigationProperty Name="PCRPlatePositions" Relationship="WanTaiModel.PCRPlatePosition_DWPlatePosition" FromRole="DWPlatePosition" ToRole="PCRPlatePosition" />
+    <NavigationProperty Name="Tubes" Relationship="WanTaiModel.Tube_PlatePosition" FromRole="DWPlatePosition" ToRole="Tube" />
+  </EntityType>
+  <EntityType Name="ExperimentsInfo">
+    <Key>
+      <PropertyRef Name="ExperimentID" />
+    </Key>
+    <Property Type="Guid" Name="ExperimentID" Nullable="false" />
+    <Property Type="String" Name="ExperimentName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="StartTime" Nullable="false" />
+    <Property Type="DateTime" Name="EndTime" />
+    <Property Type="String" Name="LoginName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Remark" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="State" Nullable="false" />
+    <NavigationProperty Name="TubesBatches" Relationship="WanTaiModel.FK_TubesBatch_ExperimentsInfo" FromRole="ExperimentsInfo" ToRole="TubesBatch" />
+  </EntityType>
+  <EntityType Name="LogInfo">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Type="Guid" Name="LogID" Nullable="false" />
+    <Property Type="String" Name="LogContent" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="LogLevel" />
+    <Property Type="DateTime" Name="CreaterTime" />
+    <Property Type="String" Name="LoginName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Module" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Guid" Name="ExperimentID" />
+  </EntityType>
+  <EntityType Name="OperationConfiguration">
+    <Key>
+      <PropertyRef Name="OperationID" />
+    </Key>
+    <Property Type="Guid" Name="OperationID" Nullable="false" />
+    <Property Type="String" Name="OperationName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="OperationType" Nullable="false" />
+    <Property Type="Int16" Name="OperationSequence" Nullable="false" />
+    <Property Type="String" Name="SubOperationIDs" MaxLength="225" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="DisplayFlag" />
+    <Property Type="String" Name="ScriptFileName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="RotationOperates" Relationship="WanTaiModel.FK_RotationOperate_OperationConfiguration" FromRole="OperationConfiguration" ToRole="RotationOperate" />
+    <Property Type="Int32" Name="RunTime" />
+    <Property Type="String" Name="StartOperationFileName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="EndOperationFileName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="ActiveStatus" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PCRPlatePosition">
+    <Key>
+      <PropertyRef Name="PCRPlatePositionID" />
+    </Key>
+    <Property Type="Guid" Name="PCRPlatePositionID" Nullable="false" />
+    <Property Type="Int32" Name="Position" />
+    <Property Type="Guid" Name="PlateID" />
+    <Property Type="String" Name="TestName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Plate" Relationship="WanTaiModel.FK_PCRPlatePosition_Plates" FromRole="PCRPlatePosition" ToRole="Plate" />
+    <NavigationProperty Name="DWPlatePositions" Relationship="WanTaiModel.PCRPlatePosition_DWPlatePosition" FromRole="PCRPlatePosition" ToRole="DWPlatePosition" />
+  </EntityType>
+  <EntityType Name="PCRTestResult">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Type="Guid" Name="ItemID" Nullable="false" />
+    <Property Type="Guid" Name="RotationID" Nullable="false" />
+    <Property Type="Int32" Name="Position" Nullable="false" />
+    <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+    <Property Type="String" Name="Result" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <Property Type="Guid" Name="ExperimentID" />
+    <Property Type="String" Name="BarCode" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="PCRContent" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Guid" Name="PlateID" />
+  </EntityType>
+  <EntityType Name="Plate">
+    <Key>
+      <PropertyRef Name="PlateID" />
+    </Key>
+    <Property Type="Guid" Name="PlateID" Nullable="false" />
+    <Property Type="String" Name="BarCode" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="PlateName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Guid" Name="RotationID" />
+    <Property Type="Int16" Name="PlateType" />
+    <Property Type="Guid" Name="ExperimentID" />
+    <NavigationProperty Name="DWPlatePositions" Relationship="WanTaiModel.FK_DWPlatePosition_Plates" FromRole="Plate" ToRole="DWPlatePosition" />
+    <NavigationProperty Name="PCRPlatePositions" Relationship="WanTaiModel.FK_PCRPlatePosition_Plates" FromRole="Plate" ToRole="PCRPlatePosition" />
+    <Property Type="Guid" Name="TubesBatchID" />
+  </EntityType>
+  <EntityType Name="PoolingRulesConfiguration">
+    <Key>
+      <PropertyRef Name="PoolingRulesID" />
+    </Key>
+    <Property Type="Guid" Name="PoolingRulesID" Nullable="false" />
+    <Property Type="String" Name="PoolingRulesName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="TubeNumber" Nullable="false" />
+    <NavigationProperty Name="TubeGroups" Relationship="WanTaiModel.FK_TubeGroup_PoolingRulesConfiguration" FromRole="PoolingRulesConfiguration" ToRole="TubeGroup" />
+    <Property Type="Boolean" Name="ActiveStatus" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ReagentAndSupply">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Type="Guid" Name="ItemID" Nullable="false" />
+    <Property Type="String" Name="BarCode" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="ItemType" />
+    <Property Type="Guid" Name="ExperimentID" />
+    <Property Type="Guid" Name="ConfigurationItemID" />
+    <NavigationProperty Name="ReagentAndSuppliesConfiguration" Relationship="WanTaiModel.FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration" FromRole="ReagentAndSupply" ToRole="ReagentAndSuppliesConfiguration" />
+    <NavigationProperty Name="ReagentsAndSuppliesConsumptions" Relationship="WanTaiModel.FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies" FromRole="ReagentAndSupply" ToRole="ReagentsAndSuppliesConsumption" />
+  </EntityType>
+  <EntityType Name="ReagentAndSuppliesConfiguration">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Type="Guid" Name="ItemID" Nullable="false" />
+    <Property Type="String" Name="EnglishName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="DisplayName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="Position" Nullable="false" />
+    <Property Type="Int32" Name="Grid" Nullable="false" />
+    <Property Type="String" Name="Unit" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="ItemType" />
+    <Property Type="String" Name="CalculationFormula" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="ContainerName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="BarcodePrefix" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Color" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ReagentAndSupplies" Relationship="WanTaiModel.FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration" FromRole="ReagentAndSuppliesConfiguration" ToRole="ReagentAndSupply" />
+    <Property Type="Boolean" Name="ActiveStatus" Nullable="false" />
+    <Property Type="Double" Name="SimpleTrackingVolumn" />
+  </EntityType>
+  <EntityType Name="ReagentsAndSuppliesConsumption">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Type="Guid" Name="ItemID" Nullable="false" />
+    <Property Type="Double" Name="Volume" />
+    <Property Type="DateTime" Name="UpdateTime" />
+    <Property Type="Guid" Name="ExperimentID" Nullable="false" />
+    <Property Type="Int16" Name="VolumeType" />
+    <Property Type="Guid" Name="ReagentAndSupplieID" />
+    <NavigationProperty Name="ReagentAndSupply" Relationship="WanTaiModel.FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies" FromRole="ReagentsAndSuppliesConsumption" ToRole="ReagentAndSupply" />
+    <Property Type="Guid" Name="RotationID" />
+  </EntityType>
+  <EntityType Name="RotationInfo">
+    <Key>
+      <PropertyRef Name="RotationID" />
+    </Key>
+    <Property Type="Guid" Name="RotationID" Nullable="false" />
+    <Property Type="Guid" Name="ExperimentID" Nullable="false" />
+    <Property Type="Guid" Name="TubesBatchID" />
+    <Property Type="String" Name="RotationName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="State" Nullable="false" />
+    <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+    <Property Type="Guid" Name="OperationID" Nullable="false" />
+    <Property Type="String" Name="OperationName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TubesBatch" Relationship="WanTaiModel.FK_RotationInfo_TubesBatch" FromRole="RotationInfo" ToRole="TubesBatch" />
+    <Property Type="Int16" Name="RotationSequence" />
+  </EntityType>
+  <EntityType Name="RotationOperate">
+    <Key>
+      <PropertyRef Name="RotationOperateID" />
+    </Key>
+    <Property Type="Guid" Name="RotationOperateID" Nullable="false" />
+    <Property Type="Guid" Name="OperationID" Nullable="false" />
+    <Property Type="Guid" Name="RotationID" Nullable="false" />
+    <Property Type="Int16" Name="State" Nullable="false" />
+    <Property Type="Guid" Name="ExperimentID" Nullable="false" />
+    <Property Type="String" Name="ErrorLog" MaxLength="2000" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="StartTime" />
+    <Property Type="DateTime" Name="EndTime" />
+    <NavigationProperty Name="OperationConfiguration" Relationship="WanTaiModel.FK_RotationOperate_OperationConfiguration" FromRole="RotationOperate" ToRole="OperationConfiguration" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="principal_id" Nullable="false" />
+    <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="version" />
+    <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="SystemFluidConfiguration">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Type="Guid" Name="ItemID" Nullable="false" />
+    <Property Type="Int32" Name="Position" />
+    <Property Type="Int32" Name="Grid" />
+    <Property Type="Int16" Name="ItemType" />
+    <Property Type="Double" Name="Volume" />
+  </EntityType>
+  <EntityType Name="TestingItemConfiguration">
+    <Key>
+      <PropertyRef Name="TestingItemID" />
+    </Key>
+    <Property Type="Guid" Name="TestingItemID" Nullable="false" />
+    <Property Type="String" Name="TestingItemName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="TestingItemColor" MaxLength="255" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="TubeGroups" Relationship="WanTaiModel.TestItem_TubeGroup" FromRole="TestingItemConfiguration" ToRole="TubeGroup" />
+    <Property Type="Int16" Name="DisplaySequence" />
+    <Property Type="String" Name="WorkListFileName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="ActiveStatus" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TubeGroup">
+    <Key>
+      <PropertyRef Name="TubeGroupID" />
+    </Key>
+    <Property Type="Guid" Name="TubeGroupID" Nullable="false" />
+    <Property Type="Guid" Name="PoolingRulesID" Nullable="false" />
+    <Property Type="Guid" Name="ExperimentID" Nullable="false" />
+    <Property Type="Guid" Name="TubesBatchID" />
+    <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+    <NavigationProperty Name="PoolingRulesConfiguration" Relationship="WanTaiModel.FK_TubeGroup_PoolingRulesConfiguration" FromRole="TubeGroup" ToRole="PoolingRulesConfiguration" />
+    <NavigationProperty Name="TubesBatch" Relationship="WanTaiModel.FK_TubeGroup_TubesBatch" FromRole="TubeGroup" ToRole="TubesBatch" />
+    <NavigationProperty Name="Tubes" Relationship="WanTaiModel.FK_Tubes_TubeGroup" FromRole="TubeGroup" ToRole="Tube" />
+    <NavigationProperty Name="TestingItemConfigurations" Relationship="WanTaiModel.TestItem_TubeGroup" FromRole="TubeGroup" ToRole="TestingItemConfiguration" />
+  </EntityType>
+  <EntityType Name="Tube">
+    <Key>
+      <PropertyRef Name="TubeID" />
+    </Key>
+    <Property Type="Guid" Name="TubeID" Nullable="false" />
+    <Property Type="Guid" Name="TubeGroupID" Nullable="false" />
+    <Property Type="String" Name="BarCode" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="TubePosBarCode" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="Position" Nullable="false" />
+    <Property Type="Int32" Name="Grid" Nullable="false" />
+    <Property Type="Int16" Name="TubeType" Nullable="false" />
+    <Property Type="Guid" Name="ExperimentID" Nullable="false" />
+    <Property Type="Double" Name="Volume" />
+    <NavigationProperty Name="TubeGroup" Relationship="WanTaiModel.FK_Tubes_TubeGroup" FromRole="Tube" ToRole="TubeGroup" />
+    <NavigationProperty Name="DWPlatePositions" Relationship="WanTaiModel.Tube_PlatePosition" FromRole="Tube" ToRole="DWPlatePosition" />
+  </EntityType>
+  <EntityType Name="TubesBatch">
+    <Key>
+      <PropertyRef Name="TubesBatchID" />
+    </Key>
+    <Property Type="Guid" Name="TubesBatchID" Nullable="false" />
+    <Property Type="String" Name="TubesBatchName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Guid" Name="ExperimentID" Nullable="false" />
+    <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+    <NavigationProperty Name="ExperimentsInfo" Relationship="WanTaiModel.FK_TubesBatch_ExperimentsInfo" FromRole="TubesBatch" ToRole="ExperimentsInfo" />
+    <NavigationProperty Name="RotationInfoes" Relationship="WanTaiModel.FK_RotationInfo_TubesBatch" FromRole="TubesBatch" ToRole="RotationInfo" />
+    <NavigationProperty Name="TubeGroups" Relationship="WanTaiModel.FK_TubeGroup_TubesBatch" FromRole="TubesBatch" ToRole="TubeGroup" />
+  </EntityType>
+  <EntityType Name="UserInfo">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Type="Guid" Name="UserID" Nullable="false" />
+    <Property Type="String" Name="LoginName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="LoginPassWord" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="RoleName" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+    <Property Type="String" Name="CreateName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="UpdateTime" />
+  </EntityType>
+  <Association Name="FK_DWPlatePosition_Plates">
+    <End Type="WanTaiModel.Plate" Role="Plate" Multiplicity="1" />
+    <End Type="WanTaiModel.DWPlatePosition" Role="DWPlatePosition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Plate">
+        <PropertyRef Name="PlateID" />
+      </Principal>
+      <Dependent Role="DWPlatePosition">
+        <PropertyRef Name="PlateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TubesBatch_ExperimentsInfo">
+    <End Type="WanTaiModel.ExperimentsInfo" Role="ExperimentsInfo" Multiplicity="1" />
+    <End Type="WanTaiModel.TubesBatch" Role="TubesBatch" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ExperimentsInfo">
+        <PropertyRef Name="ExperimentID" />
+      </Principal>
+      <Dependent Role="TubesBatch">
+        <PropertyRef Name="ExperimentID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RotationOperate_OperationConfiguration">
+    <End Type="WanTaiModel.OperationConfiguration" Role="OperationConfiguration" Multiplicity="1" />
+    <End Type="WanTaiModel.RotationOperate" Role="RotationOperate" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OperationConfiguration">
+        <PropertyRef Name="OperationID" />
+      </Principal>
+      <Dependent Role="RotationOperate">
+        <PropertyRef Name="OperationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PCRPlatePosition_Plates">
+    <End Type="WanTaiModel.Plate" Role="Plate" Multiplicity="0..1" />
+    <End Type="WanTaiModel.PCRPlatePosition" Role="PCRPlatePosition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Plate">
+        <PropertyRef Name="PlateID" />
+      </Principal>
+      <Dependent Role="PCRPlatePosition">
+        <PropertyRef Name="PlateID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TubeGroup_PoolingRulesConfiguration">
+    <End Type="WanTaiModel.PoolingRulesConfiguration" Role="PoolingRulesConfiguration" Multiplicity="1" />
+    <End Type="WanTaiModel.TubeGroup" Role="TubeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PoolingRulesConfiguration">
+        <PropertyRef Name="PoolingRulesID" />
+      </Principal>
+      <Dependent Role="TubeGroup">
+        <PropertyRef Name="PoolingRulesID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration">
+    <End Type="WanTaiModel.ReagentAndSuppliesConfiguration" Role="ReagentAndSuppliesConfiguration" Multiplicity="0..1" />
+    <End Type="WanTaiModel.ReagentAndSupply" Role="ReagentAndSupply" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReagentAndSuppliesConfiguration">
+        <PropertyRef Name="ItemID" />
+      </Principal>
+      <Dependent Role="ReagentAndSupply">
+        <PropertyRef Name="ConfigurationItemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies">
+    <End Type="WanTaiModel.ReagentAndSupply" Role="ReagentAndSupply" Multiplicity="0..1" />
+    <End Type="WanTaiModel.ReagentsAndSuppliesConsumption" Role="ReagentsAndSuppliesConsumption" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReagentAndSupply">
+        <PropertyRef Name="ItemID" />
+      </Principal>
+      <Dependent Role="ReagentsAndSuppliesConsumption">
+        <PropertyRef Name="ReagentAndSupplieID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RotationInfo_TubesBatch">
+    <End Type="WanTaiModel.TubesBatch" Role="TubesBatch" Multiplicity="0..1" />
+    <End Type="WanTaiModel.RotationInfo" Role="RotationInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TubesBatch">
+        <PropertyRef Name="TubesBatchID" />
+      </Principal>
+      <Dependent Role="RotationInfo">
+        <PropertyRef Name="TubesBatchID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TubeGroup_TubesBatch">
+    <End Type="WanTaiModel.TubesBatch" Role="TubesBatch" Multiplicity="0..1" />
+    <End Type="WanTaiModel.TubeGroup" Role="TubeGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TubesBatch">
+        <PropertyRef Name="TubesBatchID" />
+      </Principal>
+      <Dependent Role="TubeGroup">
+        <PropertyRef Name="TubesBatchID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Tubes_TubeGroup">
+    <End Type="WanTaiModel.TubeGroup" Role="TubeGroup" Multiplicity="1" />
+    <End Type="WanTaiModel.Tube" Role="Tube" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TubeGroup">
+        <PropertyRef Name="TubeGroupID" />
+      </Principal>
+      <Dependent Role="Tube">
+        <PropertyRef Name="TubeGroupID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PCRPlatePosition_DWPlatePosition">
+    <End Type="WanTaiModel.DWPlatePosition" Role="DWPlatePosition" Multiplicity="*" />
+    <End Type="WanTaiModel.PCRPlatePosition" Role="PCRPlatePosition" Multiplicity="*" />
+  </Association>
+  <Association Name="TestItem_TubeGroup">
+    <End Type="WanTaiModel.TestingItemConfiguration" Role="TestingItemConfiguration" Multiplicity="*" />
+    <End Type="WanTaiModel.TubeGroup" Role="TubeGroup" Multiplicity="*" />
+  </Association>
+  <Association Name="Tube_PlatePosition">
+    <End Type="WanTaiModel.DWPlatePosition" Role="DWPlatePosition" Multiplicity="*" />
+    <End Type="WanTaiModel.Tube" Role="Tube" Multiplicity="*" />
+  </Association>
+  <EntityType Name="RoleInfo">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Type="Guid" Name="RoleID" Nullable="false" />
+    <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="RoleModules" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Type="Int16" Name="RoleLevel" Nullable="false" />
+  </EntityType>
+  <EntityType Name="SampleTracking">
+    <Key>
+      <PropertyRef Name="ItemID" />
+    </Key>
+    <Property Type="Guid" Name="ItemID" Nullable="false" />
+    <Property Type="Guid" Name="RotationID" />
+    <Property Type="Guid" Name="ExperimentsID" />
+    <Property Type="String" Name="FileName" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Int32" Name="OperationSequence" />
+    <Property Type="Guid" Name="OperationID" />
+    <Property Type="String" Name="RackID" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="CavityID" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Position" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="SampleID" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Double" Name="CONCENTRATION" />
+    <Property Type="Double" Name="VOLUME" />
+    <Property Type="String" Name="SampleErrors" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="IsKeeping" />
+    <Property Type="DateTime" Name="CreateTime" />
+  </EntityType>
+</Schema>

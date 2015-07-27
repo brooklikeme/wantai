@@ -1,0 +1,13 @@
+Rack Id,Cavity Id,Position,Sample Id,CONCENTRATION,CONCENTRATIONUNIT,VOLUME,USERDEFINED1,USERDEFINED2,USERDEFINED3,USERDEFINED4,USERDEFINED5,PlateErrors,SampleErrors,SAMPLEINSTANCEID,SAMPLEID
+52_3,52_3_A001,A01,52_3_A001,1,calculated                                        ,-160,,,,,,i4,i4,69,29
+52_3,52_3_A002,A02,52_3_A002,1,calculated                                        ,-160,,,,,,i4,i4,70,30
+52_3,52_3_A003,A03,52_3_A003,1,calculated                                        ,-160,,,,,,i4,i4,71,31
+52_3,52_3_A004,A04,52_3_A004,1,calculated                                        ,-160,,,,,,i4,i4,72,32
+52_3,52_3_A005,A05,52_3_A005,1,calculated                                        ,-160,,,,,,i4,i4,73,33
+52_3,52_3_A006,A06,52_3_A006,1,calculated                                        ,-160,,,,,,i4,i4,74,34
+52_3,52_3_A007,A07,52_3_A007,1,calculated                                        ,-160,,,,,,i4,i4,75,35
+52_3,52_3_A008,A08,52_3_A008,1,calculated                                        ,-160,,,,,,i4,i4,76,36
+Sample Tracking Report Name : Plate Report Extended
+Last action tracked : 10/25/2011 5:26:24 PM
+Created by Admin at 10/25/2011 5:26:27 PM
+:000011843285

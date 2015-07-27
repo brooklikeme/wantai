@@ -1,0 +1,43 @@
+﻿<Window x:Class="WanTai.View.TubeBarCodeEdit"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:my1="clr-namespace:ScottLogic.PieChart"
+             xmlns:local="clr-namespace:WanTai.View"
+        local:WindowCustomizer.CanMaximize="False"  Icon="/WanTag;component/Resources/logo.ico"
+         local:WindowCustomizer.CanMinimize="False" 
+        Title="编辑采血管条形码" Height="240" Width="360" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" RowHeaderWidth="20" ColumnHeaderHeight="30" Grid.Row="1" Margin="50,0" Grid.ColumnSpan="2" Grid.RowSpan="2"  HorizontalAlignment="Stretch" Name="dg_Tubes" VerticalAlignment="Stretch" LoadingRow="dg_Tubes_LoadingRow">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Header" Width="*">
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate />
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode}" PlottedProperty="{Binding Path=TextItemCount}" HorizontalAlignment="Center"  x:Name="pie" VerticalAlignment="Center" Width="24" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="条形码：" Grid.Row="3"  HorizontalAlignment="Right"  VerticalAlignment="Center" />
+        <TextBox Grid.Column="1" Grid.Row="3"  Height="23" HorizontalAlignment="Left"  Name="txt_BarCode" VerticalAlignment="Center" Width="200" />
+        <StackPanel Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"  VerticalAlignment="Center" Orientation="Horizontal"  >
+            <Button Content="保存" Height="30"  Name="btn_Save"  Width="75" Click="btn_Save_Click" />
+            <Button Content="取消" Height="30" Name="btn_Cancel" Margin="50,0,0,0"   Width="75" Click="btn_Cancel_Click" />
+        </StackPanel>
+       
+    </Grid>
+</Window>

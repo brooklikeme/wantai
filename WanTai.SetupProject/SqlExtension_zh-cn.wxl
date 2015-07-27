@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="zh-cn"  xmlns="http://schemas.microsoft.com/wix/2006/localization">
+  <String Id="msierrSQLFailedExecString" Overridable="yes"><![CDATA[错误 [2]: 执行SQL语句出错,错误信息: [3], SQL key: [4] SQL 语句: [5]]]></String>
+  <String Id="msierrSQLFailedDropDatabase" Overridable="yes"><![CDATA[错误 [2]: 删除SQL数据库出错： [3], 错误信息: [4].]]></String>
+  <String Id="ConfigureSql" Overridable="yes"><![CDATA[配置 SQL Server]]></String>
+  <String Id="msierrSQLDatabaseAlreadyExists" Overridable="yes"><![CDATA[数据库 [3] 已经存在, 确定要继续安装吗?]]></String>
+  <String Id="RollbackExecuteSqlStrings" Overridable="yes"><![CDATA[回滚执行 SQL 语句]]></String>
+  <String Id="msierrSQLFailedCreateDatabase" Overridable="yes"><![CDATA[错误 [2]: 创建数据库出错 [3], 错误信息 [4].]]></String>
+  <String Id="CreateDatabase" Overridable="yes"><![CDATA[创建数据库...]]></String>
+  <String Id="msierrSQLFailedConnectDatabase" Overridable="yes"><![CDATA[连接数据库出错.  ([2]   [3]   [4]   [5])]]></String>
+  <String Id="DropDatabase" Overridable="yes"><![CDATA[删除数据库...]]></String>
+  <String Id="ExecuteSqlStrings" Overridable="yes"><![CDATA[执行SQL语句...]]></String>
+</WixLocalization>

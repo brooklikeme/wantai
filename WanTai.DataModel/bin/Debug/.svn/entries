@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="15"
+   name=""
+   committed-date="2011-09-06T05:55:05.909588Z"
+   url="https://cm3.objectivasoftware.com/wantai/workspace/trunk/WanTai/WanTai.DataModel/bin/Debug"
+   last-author="jpeng"
+   kind="dir"
+   uuid="439405ba-adaa-0410-b0b4-de79adcba793"
+   repos="https://cm3.objectivasoftware.com/wantai"
+   revision="1263"/>
+</wc-entries>

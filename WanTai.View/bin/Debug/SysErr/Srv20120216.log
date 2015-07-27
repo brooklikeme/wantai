@@ -1,0 +1,570 @@
+Thursday, February 16, 2012 6:28:52 PM: Processing;ExperimentName:evo-369RunIndex:1;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 6:29:02 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 6:29:23 PM: Processing;ExperimentName:evo-369RunIndex:1;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 6:29:33 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 6:29:48 PM: Processing;ExperimentName:evo-369RunIndex:1;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 6:29:49 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 6:39:49 PM: Processing;ExperimentName:evo-370RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 6:39:59 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 6:42:01 PM: Processing;ExperimentName:evo-370RunIndex:1;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 6:42:11 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 6:42:31 PM: Processing;ExperimentName:evo-370RunIndex:1;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 6:42:41 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 6:42:56 PM: Processing;ExperimentName:evo-370RunIndex:1;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 6:42:57 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 6:44:33 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 6:44:33 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:44:33 PM: bytesRead ----> 12
+Thursday, February 16, 2012 6:44:33 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 6:44:33 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 6:44:33 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 6:44:34 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 6:45:11 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 6:45:11 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:45:11 PM: bytesRead ----> 4
+Thursday, February 16, 2012 6:45:11 PM: Message ----> exit
+Thursday, February 16, 2012 6:46:12 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 6:46:12 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:46:12 PM: bytesRead ----> 12
+Thursday, February 16, 2012 6:46:12 PM: Message ----> ScanFinished
+Thursday, February 16, 2012 6:46:12 PM: MessageReceived-----MessageReceived====》ScanFinished
+Thursday, February 16, 2012 6:46:13 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 6:47:13 PM:  client.stream.Write====>NextStepRun
+Thursday, February 16, 2012 6:47:13 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:47:13 PM: bytesRead ----> 11
+Thursday, February 16, 2012 6:47:13 PM: Message ----> ServerClose
+Thursday, February 16, 2012 6:47:13 PM: MessageReceived-----MessageReceived====》ServerClose
+Thursday, February 16, 2012 6:47:13 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 6:47:13 PM: !client.Connected || client.stream == null || client.clientHandle == null || client.clientHandle.IsClosed || client.clientHandle.IsInvalid
+Thursday, February 16, 2012 6:48:43 PM: True;Processing;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 6:50:03 PM: Processing;ExperimentName:evo-370RunIndex:1;Script--TEST_4_FENZHUANG.esc
+Thursday, February 16, 2012 6:50:13 PM: True;Processing;Script--TEST_4_FENZHUANG.esc
+Thursday, February 16, 2012 6:52:03 PM: Processing;ExperimentName:evo-370RunIndex:2;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 6:52:13 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 6:52:28 PM: Processing;ExperimentName:evo-370RunIndex:2;Script--TEST_3_TIQUANDMIX_NoPCRLiquid.esc
+Thursday, February 16, 2012 6:52:29 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 6:53:38 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 6:53:38 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:53:38 PM: bytesRead ----> 12
+Thursday, February 16, 2012 6:53:38 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 6:53:38 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 6:53:38 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 6:53:39 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 6:53:44 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 6:53:44 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:53:44 PM: bytesRead ----> 4
+Thursday, February 16, 2012 6:53:44 PM: Message ----> exit
+Thursday, February 16, 2012 6:54:44 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 6:54:44 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:54:44 PM: bytesRead ----> 12
+Thursday, February 16, 2012 6:54:44 PM: Message ----> ScanFinished
+Thursday, February 16, 2012 6:54:44 PM: MessageReceived-----MessageReceived====》ScanFinished
+Thursday, February 16, 2012 6:54:45 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 6:54:58 PM:  client.stream.Write====>NextStepRun
+Thursday, February 16, 2012 6:54:58 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 6:54:58 PM: bytesRead ----> 11
+Thursday, February 16, 2012 6:54:58 PM: Message ----> ServerClose
+Thursday, February 16, 2012 6:54:58 PM: MessageReceived-----MessageReceived====》ServerClose
+Thursday, February 16, 2012 6:54:58 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 6:54:59 PM: !client.Connected || client.stream == null || client.clientHandle == null || client.clientHandle.IsClosed || client.clientHandle.IsInvalid
+Thursday, February 16, 2012 6:56:29 PM: True;Processing;Script--TEST_3_TIQUANDMIX_NoPCRLiquid.esc
+Thursday, February 16, 2012 6:56:44 PM: Processing;ExperimentName:evo-370RunIndex:2;Script--TEST_4_FENZHUANG.esc
+Thursday, February 16, 2012 6:56:54 PM: True;Processing;Script--TEST_4_FENZHUANG.esc
+Thursday, February 16, 2012 6:59:03 PM: System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index
+   at System.ThrowHelper.ThrowArgumentOutOfRangeException()
+   at System.Collections.Generic.List`1.get_Item(Int32 index)
+   at WanTai.View.ExperimentRunView.Start(ExperimentRunStatus falg) in D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.View\ExperimentRunView.xaml.cs:line 398
+   at WanTai.View.ExperimentRunView.<>c__DisplayClass22.<Start>b__20(Object s, RunWorkerCompletedEventArgs args) in D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.View\ExperimentRunView.xaml.cs:line 1163
+   at System.ComponentModel.BackgroundWorker.OnRunWorkerCompleted(RunWorkerCompletedEventArgs e)
+   at System.ComponentModel.BackgroundWorker.AsyncOperationCompleted(Object arg)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
+   at System.Windows.Threading.DispatcherOperation.InvokeImpl()
+   at System.Windows.Threading.DispatcherOperation.InvokeInSecurityContext(Object state)
+   at System.Threading.ExecutionContext.runTryCode(Object userData)
+   at System.Runtime.CompilerServices.RuntimeHelpers.ExecuteCodeWithGuaranteedCleanup(TryCode code, CleanupCode backoutCode, Object userData)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean ignoreSyncCtx)
+   at System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Windows.Threading.DispatcherOperation.Invoke()
+   at System.Windows.Threading.Dispatcher.ProcessQueue()
+   at System.Windows.Threading.Dispatcher.WndProcHook(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndWrapper.WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, Boolean& handled)
+   at MS.Win32.HwndSubclass.DispatcherCallbackOperation(Object o)
+   at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
+   at MS.Internal.Threading.ExceptionFilterHelper.TryCatchWhen(Object source, Delegate method, Object args, Int32 numArgs, Delegate catchHandler)
+   at System.Windows.Threading.Dispatcher.InvokeImpl(DispatcherPriority priority, TimeSpan timeout, Delegate method, Object args, Int32 numArgs)
+   at MS.Win32.HwndSubclass.SubclassWndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam)
+   at MS.Win32.UnsafeNativeMethods.DispatchMessage(MSG& msg)
+   at System.Windows.Threading.Dispatcher.PushFrameImpl(DispatcherFrame frame)
+   at System.Windows.Threading.Dispatcher.PushFrame(DispatcherFrame frame)
+   at System.Windows.Window.ShowHelper(Object booleanBox)
+   at System.Windows.Window.Show()
+   at System.Windows.Window.ShowDialog()
+   at WanTai.View.App.OnStartup(StartupEventArgs e) in D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.View\App.xaml.cs:line 111
+Thursday, February 16, 2012 7:01:56 PM: Processing;ExperimentName:evo-380RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:02:06 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:02:22 PM: Processing;ExperimentName:evo-380RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:02:32 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:02:47 PM: Processing;ExperimentName:evo-380RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:02:48 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:03:57 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 7:14:49 PM: Processing;ExperimentName:evo-384RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:14:59 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:15:14 PM: Processing;ExperimentName:evo-384RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:15:24 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:15:40 PM: Processing;ExperimentName:evo-384RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:15:41 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:16:50 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 7:16:50 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 7:16:50 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:16:50 PM: bytesRead ----> 12
+Thursday, February 16, 2012 7:16:50 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 7:16:50 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 7:16:50 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 7:16:51 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:17:35 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 7:17:35 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:17:35 PM: bytesRead ----> 4
+Thursday, February 16, 2012 7:17:35 PM: Message ----> exit
+Thursday, February 16, 2012 7:18:21 PM: Processing;ExperimentName:evo-385RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:18:31 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:18:47 PM: Processing;ExperimentName:evo-385RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:18:57 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:19:12 PM: Processing;ExperimentName:evo-385RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:19:13 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:20:22 PM: CreateNamedPipe=====>success, Runing=False
+Thursday, February 16, 2012 7:24:49 PM: UserControl_Loaded
+Thursday, February 16, 2012 7:25:22 PM: Processing;ExperimentName:evo-386RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:25:32 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:25:48 PM: Processing;ExperimentName:evo-386RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:25:58 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:26:14 PM: Processing;ExperimentName:evo-386RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:26:14 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 7:26:14 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:26:15 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:27:24 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 7:27:24 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 7:27:24 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:27:24 PM: bytesRead ----> 12
+Thursday, February 16, 2012 7:27:24 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 7:27:24 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 7:27:24 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 7:27:25 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:27:30 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 7:27:30 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:27:30 PM: bytesRead ----> 4
+Thursday, February 16, 2012 7:27:30 PM: Message ----> exit
+Thursday, February 16, 2012 7:28:30 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 7:28:30 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 7:28:30 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:28:30 PM: bytesRead ----> 12
+Thursday, February 16, 2012 7:28:30 PM: Message ----> ScanFinished
+Thursday, February 16, 2012 7:28:30 PM: MessageReceived-----MessageReceived====》ScanFinished
+Thursday, February 16, 2012 7:28:31 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:28:48 PM: UserControl_Unloaded
+Thursday, February 16, 2012 7:28:48 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 7:28:48 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:28:48 PM: bytesRead ----> 4
+Thursday, February 16, 2012 7:28:48 PM: Message ----> exit
+Thursday, February 16, 2012 7:30:51 PM: UserControl_Loaded
+Thursday, February 16, 2012 7:31:23 PM: Processing;ExperimentName:evo-387RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:31:33 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:31:49 PM: Processing;ExperimentName:evo-387RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:31:59 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:32:14 PM: Processing;ExperimentName:evo-387RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:32:14 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 7:32:14 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:32:15 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:33:24 PM: CreateNamedPipe=====>success, Runing=False
+Thursday, February 16, 2012 7:40:08 PM: UserControl_Unloaded
+Thursday, February 16, 2012 7:40:37 PM: UserControl_Loaded
+Thursday, February 16, 2012 7:41:08 PM: Processing;ExperimentName:evo-388RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:41:18 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:41:34 PM: Processing;ExperimentName:evo-388RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:41:44 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:41:59 PM: Processing;ExperimentName:evo-388RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:41:59 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 7:41:59 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:42:28 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:46:06 PM: UserControl_Loaded
+Thursday, February 16, 2012 7:48:14 PM: Processing;ExperimentName:evo-390RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:48:24 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:48:40 PM: Processing;ExperimentName:evo-390RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:48:50 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:49:05 PM: Processing;ExperimentName:evo-390RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:49:05 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 7:49:05 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:49:10 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:50:23 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 7:50:23 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 7:50:26 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:50:26 PM: bytesRead ----> 24
+Thursday, February 16, 2012 7:50:26 PM: Message ----> GoToScanPageGoToScanPage
+Thursday, February 16, 2012 7:50:26 PM: MessageReceived-----MessageReceived====》GoToScanPageGoToScanPage
+Thursday, February 16, 2012 7:50:26 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 7:50:27 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:50:32 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 7:50:32 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:50:32 PM: bytesRead ----> 4
+Thursday, February 16, 2012 7:50:32 PM: Message ----> exit
+Thursday, February 16, 2012 7:51:37 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 7:51:37 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 7:51:40 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:51:40 PM: bytesRead ----> 24
+Thursday, February 16, 2012 7:51:40 PM: Message ----> ScanFinishedScanFinished
+Thursday, February 16, 2012 7:51:40 PM: MessageReceived-----MessageReceived====》ScanFinishedScanFinished
+Thursday, February 16, 2012 7:51:41 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:52:01 PM: UserControl_Unloaded
+Thursday, February 16, 2012 7:52:12 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 7:52:12 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 7:52:12 PM: bytesRead ----> 4
+Thursday, February 16, 2012 7:52:12 PM: Message ----> exit
+Thursday, February 16, 2012 7:52:36 PM: UserControl_Loaded
+Thursday, February 16, 2012 7:53:07 PM: Processing;ExperimentName:evo-392RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:53:17 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:53:33 PM: Processing;ExperimentName:evo-392RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:53:43 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 7:53:58 PM: Processing;ExperimentName:evo-392RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 7:53:58 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 7:53:58 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:54:07 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 7:55:30 PM: CreateNamedPipe=====>success, Runing=False
+Thursday, February 16, 2012 7:58:00 PM: UserControl_Loaded
+Thursday, February 16, 2012 7:59:44 PM: Processing;ExperimentName:evo-393RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 7:59:54 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:00:10 PM: Processing;ExperimentName:evo-393RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:00:20 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:00:35 PM: Processing;ExperimentName:evo-393RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:00:35 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:00:35 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:00:42 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:01:55 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 8:01:55 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 8:01:57 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:01:57 PM: bytesRead ----> 24
+Thursday, February 16, 2012 8:01:57 PM: Message ----> GoToScanPageGoToScanPage
+Thursday, February 16, 2012 8:01:57 PM: MessageReceived-----MessageReceived====》GoToScanPageGoToScanPage
+Thursday, February 16, 2012 8:01:57 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 8:01:57 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:02:04 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 8:02:04 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:02:04 PM: bytesRead ----> 4
+Thursday, February 16, 2012 8:02:04 PM: Message ----> exit
+Thursday, February 16, 2012 8:03:21 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 8:03:21 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 8:03:22 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:03:22 PM: bytesRead ----> 24
+Thursday, February 16, 2012 8:03:22 PM: Message ----> ScanFinishedScanFinished
+Thursday, February 16, 2012 8:03:22 PM: MessageReceived-----MessageReceived====》ScanFinishedScanFinished
+Thursday, February 16, 2012 8:03:23 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:03:45 PM: UserControl_Unloaded
+Thursday, February 16, 2012 8:03:55 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:03:55 PM: bytesRead ----> 4
+Thursday, February 16, 2012 8:03:55 PM: Message ----> exit
+Thursday, February 16, 2012 8:03:55 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 8:03:55 PM: UserControl_Unloaded,server=
+Thursday, February 16, 2012 8:04:25 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:05:26 PM: Processing;ExperimentName:evo-396RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:05:36 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:05:52 PM: Processing;ExperimentName:evo-396RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:06:02 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:06:17 PM: Processing;ExperimentName:evo-396RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:06:17 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:06:17 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:06:34 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:10:55 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:11:41 PM: Processing;ExperimentName:evo-398RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:11:51 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:12:07 PM: Processing;ExperimentName:evo-398RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:12:17 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:12:32 PM: Processing;ExperimentName:evo-398RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:12:32 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:12:32 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:12:39 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:13:51 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 8:13:51 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 8:13:52 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:13:52 PM: bytesRead ----> 12
+Thursday, February 16, 2012 8:13:52 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 8:13:52 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 8:13:52 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 8:13:53 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:14:12 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 8:14:12 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:14:12 PM: bytesRead ----> 4
+Thursday, February 16, 2012 8:14:12 PM: Message ----> exit
+Thursday, February 16, 2012 8:15:16 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 8:15:16 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 8:15:16 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:15:16 PM: bytesRead ----> 24
+Thursday, February 16, 2012 8:15:16 PM: Message ----> ScanFinishedScanFinished
+Thursday, February 16, 2012 8:15:17 PM: MessageReceived-----MessageReceived====》ScanFinishedScanFinished
+Thursday, February 16, 2012 8:15:17 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:16:50 PM: UserControl_Unloaded
+Thursday, February 16, 2012 8:16:52 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:16:52 PM: bytesRead ----> 4
+Thursday, February 16, 2012 8:16:52 PM: Message ----> exit
+Thursday, February 16, 2012 8:16:52 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 8:16:52 PM: UserControl_Unloaded,server=
+Thursday, February 16, 2012 8:17:01 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:18:01 PM: Processing;ExperimentName:evo-399RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:18:11 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:18:27 PM: Processing;ExperimentName:evo-399RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:18:37 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:18:52 PM: Processing;ExperimentName:evo-399RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:18:52 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:18:52 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:19:03 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:23:23 PM: UserControl_Unloaded
+Thursday, February 16, 2012 8:26:39 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:27:17 PM: Processing;ExperimentName:evo-400RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:27:27 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:27:43 PM: Processing;ExperimentName:evo-400RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:27:53 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:28:08 PM: Processing;ExperimentName:evo-400RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:28:08 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:28:08 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:28:12 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:29:27 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 8:29:29 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 8:29:53 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:29:53 PM: bytesRead ----> 24
+Thursday, February 16, 2012 8:29:53 PM: Message ----> GoToScanPageGoToScanPage
+Thursday, February 16, 2012 8:29:53 PM: MessageReceived-----MessageReceived====》GoToScanPageGoToScanPage
+Thursday, February 16, 2012 8:29:53 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 8:29:54 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:29:59 PM:  client.stream.Write====>0
+Thursday, February 16, 2012 8:29:59 PM:  client.stream.Write====>1
+Thursday, February 16, 2012 8:36:16 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:37:10 PM: Processing;ExperimentName:evo-402RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:37:20 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:37:36 PM: Processing;ExperimentName:evo-402RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:37:46 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:38:31 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:39:26 PM: Processing;ExperimentName:evo-404RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:39:36 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:39:53 PM: Processing;ExperimentName:evo-404RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:40:03 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:40:18 PM: Processing;ExperimentName:evo-404RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:40:18 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:40:18 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:40:30 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:41:48 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 8:41:52 PM: CreateNamedPipe=====>Connected=true
+Thursday, February 16, 2012 8:42:59 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:47:55 PM: UserControl_Unloaded
+Thursday, February 16, 2012 8:48:12 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 8:48:12 PM:  client.stream.Write====>1
+Thursday, February 16, 2012 8:48:12 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 8:48:13 PM: bytesRead ----> 4
+Thursday, February 16, 2012 8:48:13 PM: Message ----> exit
+Thursday, February 16, 2012 8:48:25 PM:  client.stream.Write====>0
+Thursday, February 16, 2012 8:48:25 PM:  client.stream.Write====>1
+Thursday, February 16, 2012 8:48:32 PM: UserControl_Unloaded,server=
+Thursday, February 16, 2012 8:48:40 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:49:15 PM: Processing;ExperimentName:evo-407RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:49:25 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:49:41 PM: Processing;ExperimentName:evo-407RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:49:51 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:50:06 PM: Processing;ExperimentName:evo-407RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:50:06 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:50:06 PM: into server start=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:50:14 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 8:56:30 PM: UserControl_Loaded
+Thursday, February 16, 2012 8:57:31 PM: Processing;ExperimentName:evo-405RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:57:41 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 8:57:57 PM: Processing;ExperimentName:evo-405RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:58:07 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 8:58:22 PM: Processing;ExperimentName:evo-405RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 8:58:22 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 8:58:30 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:00:01 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:00:07 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:02:55 PM: UserControl_Loaded
+Thursday, February 16, 2012 9:03:31 PM: Processing;ExperimentName:evo-410RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:03:41 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:03:57 PM: Processing;ExperimentName:evo-410RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:04:07 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:04:22 PM: Processing;ExperimentName:evo-410RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:04:22 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 9:04:27 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:05:39 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:05:42 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:05:42 PM: bytesRead ----> 12
+Thursday, February 16, 2012 9:05:42 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 9:05:42 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 9:05:42 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 9:05:43 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:05:53 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 9:05:53 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:05:53 PM: bytesRead ----> 4
+Thursday, February 16, 2012 9:05:53 PM: Message ----> exit
+Thursday, February 16, 2012 9:06:57 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:07:00 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:07:00 PM: bytesRead ----> 24
+Thursday, February 16, 2012 9:07:00 PM: Message ----> ScanFinishedScanFinished
+Thursday, February 16, 2012 9:07:00 PM: MessageReceived-----MessageReceived====》ScanFinishedScanFinished
+Thursday, February 16, 2012 9:07:01 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:07:14 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 9:07:14 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:07:14 PM: bytesRead ----> 4
+Thursday, February 16, 2012 9:07:14 PM: Message ----> exit
+Thursday, February 16, 2012 9:08:44 PM: True;Processing;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:09:00 PM: Processing;ExperimentName:evo-410RunIndex:0;Script--TEST_4_FENZHUANG.esc
+Thursday, February 16, 2012 9:09:10 PM: True;Processing;Script--TEST_4_FENZHUANG.esc
+Thursday, February 16, 2012 9:09:31 PM: Processing;ExperimentName:evo-410RunIndex:1;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:09:41 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:09:56 PM: Processing;ExperimentName:evo-410RunIndex:1;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:18:30 PM: UserControl_Loaded
+Thursday, February 16, 2012 9:19:04 PM: Processing;ExperimentName:evo-403RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:19:14 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:19:30 PM: Processing;ExperimentName:evo-403RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:19:40 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:19:55 PM: Processing;ExperimentName:evo-403RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:19:55 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 9:19:59 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:21:24 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:21:26 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:21:26 PM: bytesRead ----> 12
+Thursday, February 16, 2012 9:21:26 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 9:21:26 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 9:21:26 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 9:21:27 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:21:33 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:21:36 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:21:40 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:21:42 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:22:11 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:23:13 PM: UserControl_Loaded
+Thursday, February 16, 2012 9:23:44 PM: Processing;ExperimentName:evo-412RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:23:54 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:24:10 PM: Processing;ExperimentName:evo-412RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:24:20 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:24:36 PM: Processing;ExperimentName:evo-412RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:24:36 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 9:24:41 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:25:59 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:25:59 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:25:59 PM: bytesRead ----> 12
+Thursday, February 16, 2012 9:25:59 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 9:25:59 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 9:25:59 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 9:26:06 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 9:26:06 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:26:06 PM: bytesRead ----> 4
+Thursday, February 16, 2012 9:26:06 PM: Message ----> exit
+Thursday, February 16, 2012 9:29:29 PM: UserControl_Loaded
+Thursday, February 16, 2012 9:30:13 PM: Processing;ExperimentName:evo-415RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:30:23 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:30:39 PM: Processing;ExperimentName:evo-415RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:30:49 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:31:04 PM: Processing;ExperimentName:evo-415RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:31:04 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 9:31:09 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:32:21 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:32:21 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:32:21 PM: bytesRead ----> 12
+Thursday, February 16, 2012 9:32:21 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 9:32:21 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 9:32:21 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 9:32:27 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 9:32:27 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:32:27 PM: bytesRead ----> 4
+Thursday, February 16, 2012 9:32:27 PM: Message ----> exit
+Thursday, February 16, 2012 9:38:21 PM: UserControl_Loaded
+Thursday, February 16, 2012 9:39:01 PM: Processing;ExperimentName:evo-416RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:39:11 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:39:27 PM: Processing;ExperimentName:evo-416RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:39:37 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:39:52 PM: Processing;ExperimentName:evo-416RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:39:52 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 9:39:55 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:41:10 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:41:14 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:41:14 PM: bytesRead ----> 12
+Thursday, February 16, 2012 9:41:14 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 9:41:14 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 9:41:15 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 9:41:31 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 9:41:31 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:41:31 PM: bytesRead ----> 4
+Thursday, February 16, 2012 9:41:31 PM: Message ----> exit
+Thursday, February 16, 2012 9:41:31 PM: MessageReceived-----MessageReceived====》exit
+Thursday, February 16, 2012 9:41:53 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 9:53:40 PM: UserControl_Loaded
+Thursday, February 16, 2012 9:54:13 PM: Processing;ExperimentName:evo-420RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:54:23 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 9:54:39 PM: Processing;ExperimentName:evo-420RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:54:49 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 9:55:04 PM: Processing;ExperimentName:evo-420RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 9:55:04 PM: into server start=====>NextRotationEvent
+Thursday, February 16, 2012 9:55:12 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 9:56:36 PM: CreateNamedPipe=====>success, Runing=True
+Thursday, February 16, 2012 9:56:43 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:56:43 PM: bytesRead ----> 12
+Thursday, February 16, 2012 9:56:43 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 9:56:43 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 9:56:43 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 9:56:51 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 9:56:51 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 9:56:51 PM: bytesRead ----> 4
+Thursday, February 16, 2012 9:56:51 PM: Message ----> exit
+Thursday, February 16, 2012 9:56:51 PM: MessageReceived-----MessageReceived====》exit
+Thursday, February 16, 2012 9:57:24 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 10:04:02 PM: Processing;ExperimentName:evo-430RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 10:04:12 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 10:04:28 PM: Processing;ExperimentName:evo-430RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 10:04:38 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 10:04:53 PM: Processing;ExperimentName:evo-430RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 10:05:04 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 10:06:12 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 10:06:12 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:06:12 PM: bytesRead ----> 12
+Thursday, February 16, 2012 10:06:12 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 10:06:12 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 10:06:12 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 10:06:19 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 10:06:19 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:06:19 PM: bytesRead ----> 4
+Thursday, February 16, 2012 10:06:19 PM: Message ----> exit
+Thursday, February 16, 2012 10:06:20 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 10:07:19 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 10:07:20 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:07:20 PM: bytesRead ----> 12
+Thursday, February 16, 2012 10:07:20 PM: Message ----> ScanFinished
+Thursday, February 16, 2012 10:07:20 PM: MessageReceived-----MessageReceived====》ScanFinished
+Thursday, February 16, 2012 10:07:41 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 10:07:41 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:07:41 PM: bytesRead ----> 4
+Thursday, February 16, 2012 10:07:41 PM: Message ----> exit
+Thursday, February 16, 2012 10:08:20 PM: Processing;ExperimentName:evo-421RunIndex:0;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 10:08:30 PM: True;Processing;Script--TEST_1_MIX.esc
+Thursday, February 16, 2012 10:08:46 PM: Processing;ExperimentName:evo-421RunIndex:0;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 10:08:56 PM: True;Processing;Script--TEST_2_AddLiquidToMIX.esc
+Thursday, February 16, 2012 10:09:11 PM: Processing;ExperimentName:evo-421RunIndex:0;Script--TEST_3_TIQUANDMIX.esc
+Thursday, February 16, 2012 10:09:12 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 10:10:21 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 10:10:21 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:10:21 PM: bytesRead ----> 12
+Thursday, February 16, 2012 10:10:21 PM: Message ----> GoToScanPage
+Thursday, February 16, 2012 10:10:21 PM: MessageReceived-----MessageReceived====》GoToScanPage
+Thursday, February 16, 2012 10:10:21 PM: onShowNextRotationEvent-----else
+Thursday, February 16, 2012 10:10:30 PM:  client.stream.Write====>NextStepScan
+Thursday, February 16, 2012 10:10:30 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:10:30 PM: bytesRead ----> 4
+Thursday, February 16, 2012 10:10:30 PM: Message ----> exit
+Thursday, February 16, 2012 10:10:31 PM: CreateNamedPipe=====>\\.\pipe\exiao
+Thursday, February 16, 2012 10:11:30 PM: CreateNamedPipe=====>success
+Thursday, February 16, 2012 10:11:30 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:11:30 PM: bytesRead ----> 12
+Thursday, February 16, 2012 10:11:30 PM: Message ----> ScanFinished
+Thursday, February 16, 2012 10:11:30 PM: MessageReceived-----MessageReceived====》ScanFinished
+Thursday, February 16, 2012 10:12:58 PM:  client.stream.Write====>NextStepRun
+Thursday, February 16, 2012 10:12:58 PM: Read---- while (client.Connected)
+Thursday, February 16, 2012 10:12:58 PM: bytesRead ----> 11
+Thursday, February 16, 2012 10:12:58 PM: Message ----> ServerClose
+Thursday, February 16, 2012 10:12:58 PM: MessageReceived-----MessageReceived====》ServerClose
+Thursday, February 16, 2012 10:12:58 PM:  client.stream.Write====>exit
+Thursday, February 16, 2012 10:12:58 PM: !client.Connected || client.stream == null || client.clientHandle == null || client.clientHandle.IsClosed || client.clientHandle.IsInvalid

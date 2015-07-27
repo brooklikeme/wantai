@@ -1,0 +1,42 @@
+﻿<Window x:Class="WanTai.View.TecanMaintain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:local="clr-namespace:WanTai.View"
+        local:WindowCustomizer.CanMaximize="False" 
+         local:WindowCustomizer.CanMinimize="False" 
+        Title="仪器维护" Height="240" Width="360" WindowStyle="ThreeDBorderWindow"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Icon="/WanTag;component/logo.ico" ShowActivated="True" ShowInTaskbar="False" Unloaded="Window_Unloaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="22"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="36"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition ></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
+                <ColumnDefinition ></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="24"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Image Source="/WanTag;component/Resources/Arrow_Blue.png" Grid.Column="0" Grid.ColumnSpan="2" Width="18" Height="18"/>
+            <Image Source="/WanTag;component/Resources/Arrow_Blue.png" Grid.Column="1" Grid.ColumnSpan="2" Width="18" Height="18"/>
+            <Image Source="/WanTag;component/Resources/Arrow_Blue.png" Grid.Column="2" Grid.ColumnSpan="2" Width="18" Height="18"/>
+            <Image Source="/WanTag;component/Resources/liquid2.PNG" Grid.Column="0" Width="64" Height="64"/>
+            <Image Source="/WanTag;component/Resources/liquid2.PNG" Grid.Column="1" Width="64" Height="64"/>
+            <Image Source="/WanTag;component/Resources/liquid2.PNG" Grid.Column="2" Width="64" Height="64"/>
+            <Image Source="/WanTag;component/Resources/liquid2.PNG" Grid.Column="3" Width="64" Height="64"/>
+            <Label Content="洗液1" Grid.Row="1"  Grid.Column="0" HorizontalAlignment="Center"   VerticalAlignment="Center" />
+            <Label Content="洗液2" Grid.Row="1"  Grid.Column="1" HorizontalAlignment="Center"   VerticalAlignment="Center" />
+            <Label Content="洗液3" Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Center"   VerticalAlignment="Center" />
+            <Label Content="洗液2" Grid.Row="1"  Grid.Column="3" HorizontalAlignment="Center"   VerticalAlignment="Center" />
+        </Grid>
+        <ProgressBar Height="30" Name="progressBar1" Margin="5,0,5,0" Grid.Row="2"/>
+        <Button Grid.Row="3" Content="确认" Height="30" HorizontalAlignment="Right" Margin="0,0,30,0" Name="btnEnter" Width="80" Click="btnEnter_Click" />
+        <Label Content="点击确认后开始仪器维护。" Name="LabPromptingMessage" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" />
+    </Grid>
+</Window>

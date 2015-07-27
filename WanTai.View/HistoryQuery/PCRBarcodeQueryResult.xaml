@@ -1,0 +1,51 @@
+﻿<Window x:Class="WanTai.View.HistoryQuery.PCRBarcodeQueryResult"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             d:DesignHeight="550" d:DesignWidth="700" Title="样品条码PCR结果查询" Loaded="Window_Loaded">   
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Name="errorMessage_label" Grid.Row="0" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red"></Label>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,5,0,5" >
+            <Label Content="样品条码：" ></Label>
+            <Label Name="barcode"></Label>            
+        </StackPanel>
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" HorizontalAlignment="Stretch" Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="行号" Width="60" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Path=Number}" ></Label>
+                                <Ellipse Width="15" Height="15"  Fill="{Binding Path=TubeTypeColor}" Margin="0,0,0,0" Visibility="{Binding Path=TubeTypeColorVisible}"></Ellipse>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="混样方式" Width="80" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="检测项目" Width="80" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True"/>                
+                <DataGridTextColumn Header="检测结果" Width="150*" Binding="{Binding PCRTestResult}" CanUserSort="False" IsReadOnly="True" />
+                <DataGridTextColumn Header="实验名称" Binding="{Binding ExperimentName}" Width="180" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="开始时间" Width="120" Binding="{Binding StartTime}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="结束时间" Width="120" Binding="{Binding EndTime}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="操作员" Width="60" Binding="{Binding LoginName}" CanUserSort="False" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Name="StackPanel_contrast">            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button Content="关  闭"  Name="close_button"  Width="75" Click="close_button_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

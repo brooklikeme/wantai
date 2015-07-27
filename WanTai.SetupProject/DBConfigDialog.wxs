@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Fragment>
+    <UI>
+      <Dialog Id="DBConfigDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
+        <Control Id="ServerLabel" Type="Text" X="64" Y="68" Width="39" Height="15" TabSkip="no" Text="服务器：" />
+        <Control Id="DBServer" Type="ComboBox" X="110" Y="64" Sorted="yes" ComboList="yes" Width="150" Height="16" Property="DBSERVER">
+        </Control>
+        <Control Id="AuthenticationLabel" Type="Text" X="56" Y="98" Width="49" Height="10" TabSkip="no" Text="认证方式：" />
+        <Control Id="Authentication" Type="ComboBox" Sorted="yes" Default="yes" ComboList="yes" Property="AUTHENTICATION" X="110" Y="94" Width="150" Height="16">
+          <ComboBox Property="AUTHENTICATION">
+            <ListItem Text="Windows认证" Value="0"/>
+            <ListItem Text="Sql Server认证" Value="1" />
+          </ComboBox>
+          <!--<Publish Event="DoAction" Value="Authentication"></Publish>-->
+        </Control>
+        <Control Id="DBNameLabel" Type="Text" X="49" Y="124" Width="58" Height="15" TabSkip="no" Text="数据库名称：" />
+        <Control Id="DBNameEdit" Type="Edit" X="110" Y="120" Width="150" Height="15" Property="DBNAME" Text="{32}" />
+        
+        <Control Id="UserNameLable" Type="Text" X="64" Y="150" Width="40" Height="9" TabSkip="no">
+          <Text>用户名：</Text>
+        </Control>
+        <Control Id="ServerEdit" Type="Edit" X="110" Y="146" Width="150" Height="15" Property="DBUSERNAME" Text="{32}" >
+          <Condition Action="disable"><![CDATA[AUTHENTICATION<> "1"]]></Condition>
+          <Condition Action="enable">AUTHENTICATION = "1"</Condition>
+        </Control>
+
+        <Control Id="PasswordLabel" Type="Text" X="71" Y="180" Width="35" Height="15" TabSkip="no" Text="密码：" />
+        <Control Id="PasswordEdit" Type="Edit" Password="yes" X="110" Y="176" Width="150" Height="15" Property="DBPASSWORD" Text="{32}" >
+          <Condition Action="disable"><![CDATA[AUTHENTICATION<> "1"]]></Condition>
+          <Condition Action="enable">AUTHENTICATION = "1"</Condition>
+        </Control>
+        <Control Id="TestConnect" Type="PushButton" X="195" Y="210" Width="66" Height="17" Text="测试连接(&amp;T)" Property="CONNECTSUCCESS">
+          
+          <Publish Event="DoAction"  Value="ConnectDB" Order="2">1</Publish>
+          <Publish Event="SpawnDialog" Value="InvalidDBDlg" Order="3">1</Publish>
+        </Control>
+        <Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)">
+          <Publish Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
+        </Control>
+        <Control Id="Next" Type="PushButton" X="236" Y="243" Width="56"  Height="17" Text="!(loc.WixUINext)" >
+          <Condition Action="disable"><![CDATA[CONNECTSUCCESS <> "1"]]></Condition>
+          <Condition Action="enable">CONNECTSUCCESS = "1"</Condition>
+          <!--<Publish Event="Remove" Value="Feature_DB_SqlAuth">AUTHENTICATION = "0"</Publish>
+          <Publish Event="Remove" Value="Feature_DB_WinAuth">AUTHENTICATION = "1"</Publish>-->
+          <Publish Event="NewDialog" Value="SetupTypeDlg">1</Publish>
+        </Control>
+        <Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+          <Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+        </Control>
+        <Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+        <Control Id="Description" NoWrap="no" Type="Text" X="25" Y="23" Width="280" Height="30" Transparent="yes" NoPrefix="yes">
+          <Text>继续安装应用程序需要填写以下信息，确保数据库能够被正确安装，并且使应用程序能够在该数据库上运行。</Text>
+        </Control>
+        <Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+        <Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes"  NoPrefix="yes" >
+          <Text>!(loc.WixUIDBDialog)</Text>
+        </Control>
+        <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+      </Dialog>
+      <Property Id="CONNECTSUCCESS" Value="0" />
+      <Property Id="AUTHENTICATION" Value="0" />
+      <Property Id="DBNAME" Value="WanTag" />
+      <Property Id="DBUSERNAME" Value="sa" />
+      <Property Id="DBPASSWORD" Value="123456" />
+      <Property Id="DBSERVER"/>
+      <InstallUISequence>
+        <Custom Action="FillDBServerName" After="CostFinalize"/>
+      </InstallUISequence>
+    </UI>
+  </Fragment>
+  <Fragment>
+    <UI>
+      <Dialog Id="InvalidDBDlg" Width="250" Height="85" Title="[ProductName] [Setup]" NoMinimize="yes">
+        <Control Id="Return" Type="PushButton" X="100" Y="57" Width="56" Height="17" Default="yes" Cancel="yes" Text="返回(&amp;R)">
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+        </Control>
+        <Control Id="ConnError" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
+          <Text>数据库连接失败,用户名或密码错误。</Text>
+          <Condition Action="show">CONNECTSUCCESS = "0"</Condition>
+          <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "0"]]></Condition>
+        </Control>
+        <Control Id="ConnYes" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
+          <Text>数据库连接成功。</Text>
+          <Condition Action="show">CONNECTSUCCESS = "1"</Condition>
+          <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "1"]]></Condition>
+        </Control>
+        <Control Id="DBNAMEError" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
+          <Text>数据库[DBNAME]已存在!。</Text>
+          <Condition Action="show">CONNECTSUCCESS = "-1"</Condition>
+          <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-1"]]></Condition>
+        </Control>
+        <Control Id="DBNAMEIsEmpty" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
+          <Text>数据库名称为空!。</Text>
+          <Condition Action="show">CONNECTSUCCESS = "-2"</Condition>
+          <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-2"]]></Condition>
+        </Control>
+        <Control Id="DBServerIsEmpty" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
+          <Text>没有安装数据库服务!。</Text>
+          <Condition Action="show">CONNECTSUCCESS = "-3"</Condition>
+          <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-3"]]></Condition>
+        </Control>
+      </Dialog>
+    </UI>
+  </Fragment>
+</Wix>

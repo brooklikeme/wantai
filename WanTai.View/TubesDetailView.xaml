@@ -1,0 +1,557 @@
+﻿<Window x:Class="WanTai.View.TubesDetailView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:my1="clr-namespace:ScottLogic.PieChart"
+        xmlns:local="clr-namespace:WanTai.View"  Icon="/WanTag;component/Resources/logo.ico"
+        Title="样品详细信息" Height="540" Width="960" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" SizeChanged="Window_SizeChanged">
+    <Window.Resources>
+        <local:HeaderConverter   x:Key="hv"/>
+        <local:TubeShowID   x:Key="TubeShowID"/>
+    </Window.Resources>
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" ColumnHeaderHeight="30" SelectionMode="Extended" SelectionUnit="Cell" Margin="0" RowHeaderWidth="30" Padding="0" HorizontalAlignment="Stretch" Name="dg_Bules" VerticalAlignment="Stretch" ItemsSource="{Binding}"  ColumnWidth="160" LoadingRow="dg_Bules_LoadingRow">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode1}" Visibility="{Binding Path=Visibility1}"  PlottedProperty="{Binding Path=TextItemCount1}"   x:Name="pie_1"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode1}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView1,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode2}" Visibility="{Binding Path=Visibility2}"  PlottedProperty="{Binding Path=TextItemCount2}"   x:Name="pie_2"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode2}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView2,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode3}" Visibility="{Binding Path=Visibility3}"  PlottedProperty="{Binding Path=TextItemCount3}"   x:Name="pie_3"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode3}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView3,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode4}" Visibility="{Binding Path=Visibility4}"  PlottedProperty="{Binding Path=TextItemCount4}"   x:Name="pie_4"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode4}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView4,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode5}" Visibility="{Binding Path=Visibility5}"  PlottedProperty="{Binding Path=TextItemCount5}"   x:Name="pie_5"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode5}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView5,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode6}" Visibility="{Binding Path=Visibility6}"  PlottedProperty="{Binding Path=TextItemCount6}"   x:Name="pie_6"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode6}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView6,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode7}" Visibility="{Binding Path=Visibility7}"  PlottedProperty="{Binding Path=TextItemCount7}"   x:Name="pie_7"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode7}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView7,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode8}" Visibility="{Binding Path=Visibility8}"  PlottedProperty="{Binding Path=TextItemCount8}"   x:Name="pie_8"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode8}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView8,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode9}" Visibility="{Binding Path=Visibility9}"  PlottedProperty="{Binding Path=TextItemCount9}"   x:Name="pie_9"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode9}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView9,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode10}" Visibility="{Binding Path=Visibility10}"  PlottedProperty="{Binding Path=TextItemCount10}"   x:Name="pie_10"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode10}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView10,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode11}" Visibility="{Binding Path=Visibility11}"  PlottedProperty="{Binding Path=TextItemCount11}"   x:Name="pie_11"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode11}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView11,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode12}" Visibility="{Binding Path=Visibility12}"  PlottedProperty="{Binding Path=TextItemCount12}"   x:Name="pie_12"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode12}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView12,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode13}" Visibility="{Binding Path=Visibility13}"  PlottedProperty="{Binding Path=TextItemCount13}"   x:Name="pie_13"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode13}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView13,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode14}" Visibility="{Binding Path=Visibility14}"  PlottedProperty="{Binding Path=TextItemCount14}"   x:Name="pie_14"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode14}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView14,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode15}" Visibility="{Binding Path=Visibility15}"  PlottedProperty="{Binding Path=TextItemCount15}"   x:Name="pie_15"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode15}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView15,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode16}" Visibility="{Binding Path=Visibility16}"  PlottedProperty="{Binding Path=TextItemCount16}"   x:Name="pie_16"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode16}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView16,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode17}" Visibility="{Binding Path=Visibility17}"  PlottedProperty="{Binding Path=TextItemCount17}"   x:Name="pie_17"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode17}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView17,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode18}" Visibility="{Binding Path=Visibility18}"  PlottedProperty="{Binding Path=TextItemCount18}"   x:Name="pie_18"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode18}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView18,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode19}" Visibility="{Binding Path=Visibility19}"  PlottedProperty="{Binding Path=TextItemCount19}"   x:Name="pie_19"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode19}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView19,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode20}" Visibility="{Binding Path=Visibility20}"  PlottedProperty="{Binding Path=TextItemCount20}"   x:Name="pie_20"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode20}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView20,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode21}" Visibility="{Binding Path=Visibility21}"  PlottedProperty="{Binding Path=TextItemCount21}"   x:Name="pie_21"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode21}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView21,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode22}" Visibility="{Binding Path=Visibility22}"  PlottedProperty="{Binding Path=TextItemCount22}"   x:Name="pie_22"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode22}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView22,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode23}" Visibility="{Binding Path=Visibility23}"  PlottedProperty="{Binding Path=TextItemCount23}"   x:Name="pie_23"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode23}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView23,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode24}" Visibility="{Binding Path=Visibility24}"  PlottedProperty="{Binding Path=TextItemCount24}"   x:Name="pie_24"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode24}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView24,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode25}" Visibility="{Binding Path=Visibility25}"  PlottedProperty="{Binding Path=TextItemCount25}"   x:Name="pie_25"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode25}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView25,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode26}" Visibility="{Binding Path=Visibility26}"  PlottedProperty="{Binding Path=TextItemCount26}"   x:Name="pie_26"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode26}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView26,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode27}" Visibility="{Binding Path=Visibility27}"  PlottedProperty="{Binding Path=TextItemCount27}"   x:Name="pie_27"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode27}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView27,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode28}" Visibility="{Binding Path=Visibility28}"  PlottedProperty="{Binding Path=TextItemCount28}"   x:Name="pie_28"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode28}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView28,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode29}" Visibility="{Binding Path=Visibility29}"  PlottedProperty="{Binding Path=TextItemCount29}"   x:Name="pie_29"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode29}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView29,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode30}" Visibility="{Binding Path=Visibility30}"  PlottedProperty="{Binding Path=TextItemCount30}"   x:Name="pie_30"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode30}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView30,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode31}" Visibility="{Binding Path=Visibility31}"  PlottedProperty="{Binding Path=TextItemCount31}"   x:Name="pie_31"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode31}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView31,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode32}" Visibility="{Binding Path=Visibility32}"  PlottedProperty="{Binding Path=TextItemCount32}"   x:Name="pie_32"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode32}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView32,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode33}" Visibility="{Binding Path=Visibility33}"  PlottedProperty="{Binding Path=TextItemCount33}"   x:Name="pie_33"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode33}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView33,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode34}" Visibility="{Binding Path=Visibility34}"  PlottedProperty="{Binding Path=TextItemCount34}"   x:Name="pie_34"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode34}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView34,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode35}" Visibility="{Binding Path=Visibility35}"  PlottedProperty="{Binding Path=TextItemCount35}"   x:Name="pie_35"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode35}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView35,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel VerticalAlignment="Center">
+                                    <my1:PieLoayout  ToolTip="{Binding Path=BarCode36}" Visibility="{Binding Path=Visibility36}"  PlottedProperty="{Binding Path=TextItemCount36}"   x:Name="pie_36"   />
+                                </StackPanel>
+                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" VerticalAlignment="Center">
+                                    <TextBlock  HorizontalAlignment="Left"  Text="{Binding Path=BarCode36}" VerticalAlignment="Top" />
+                                    <ContentControl Content="{Binding Path=DetailView36,  Converter={StaticResource hv}}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

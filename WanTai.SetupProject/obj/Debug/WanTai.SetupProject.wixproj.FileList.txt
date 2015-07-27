@@ -1,0 +1,7 @@
+obj\Debug\DBConfigDialog.wixobj
+obj\Debug\Product.wixobj
+obj\Debug\WanTai.SetupProject.wixproj.BindContentsFileListzh-cn\.txt
+obj\Debug\WanTai.SetupProject.wixproj.BindOutputsFileListzh-cn\.txt
+obj\Debug\WanTai.SetupProject.wixproj.BindBuiltOutputsFileListzh-cn\.txt
+D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.SetupProject\bin\Debug\zh-cn\WanTag.Setup.msi
+D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.SetupProject\bin\Debug\zh-cn\WanTag.Setup.wixpdb

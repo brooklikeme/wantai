@@ -1,0 +1,32 @@
+﻿<Window x:Class="WanTai.View.NewExperiment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WanTai.View"
+        local:WindowCustomizer.CanMaximize="False" 
+        Title="新建实验" Height="300" Width="400" WindowStartupLocation="CenterScreen" Icon="/WanTag;component/Resources/logo.ico">
+    <Grid Margin="10" Focusable="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="160"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>            
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0">
+            <TextBlock Name="errInfo" Foreground="Red" TextWrapping="WrapWithOverflow"></TextBlock>
+        </DockPanel>
+        <DockPanel Grid.Row="1" VerticalAlignment="Center">
+            <TextBlock FontSize="12" VerticalAlignment="Center" >实验名称</TextBlock>
+            <TextBox Name="txtExperimentName" Width="120" Height="25" Margin="10 0 30 0" GotFocus="txtExperimentName_GotFocus"></TextBox>
+            <TextBlock FontSize="12" VerticalAlignment="Center">操作员</TextBlock>
+            <TextBox Name="txtOrperatorName" Width="120" Height="25" Focusable="False"></TextBox>
+        </DockPanel>
+        <GroupBox Grid.Row="2" Height="130">
+            <GroupBox.Header>描述</GroupBox.Header>
+            <TextBox Name="txtRemark"  Margin="5"></TextBox>
+        </GroupBox>
+        <StackPanel  Grid.Row="3"  HorizontalAlignment="Center" Orientation="Horizontal" >
+            <Button Name="btnSave" Height="30" HorizontalAlignment="Center" Width="70" Click="btnSave_Click">保存</Button>
+            <Button Name="btnCancel" Height="30" Margin="30,0,0,0" Width="70" Click="btnCancel_Click">取消</Button>
+        </StackPanel>        
+    </Grid>
+</Window>

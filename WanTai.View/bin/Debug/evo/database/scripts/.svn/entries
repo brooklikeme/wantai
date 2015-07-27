@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="401"
+   name=""
+   committed-date="2011-10-26T03:38:51.210337Z"
+   url="https://cm3.objectivasoftware.com/wantai/workspace/trunk/WanTai/WanTai.View/bin/Debug/evo/database/scripts"
+   last-author="exiao"
+   kind="dir"
+   repos="https://cm3.objectivasoftware.com/wantai"
+   revision="1263"/>
+</wc-entries>

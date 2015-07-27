@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="WanTai.View.PCR.PCRTestResultDataGridUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d"
+             d:DesignHeight="550" d:DesignWidth="480" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Style.Setters>
+                <Setter Property="Background" Value="{Binding Path=Color}"></Setter>
+            </Style.Setters>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,5,0,5">
+            <Label Content="样品条码：" ></Label>
+            <TextBox Name="tube_barcode" Width="200" ></TextBox>
+            <Button Name="barcodequery_button" Content="查询" Margin="10,0,0,0"  Click="barcodequery_button_Click"></Button>
+        </StackPanel>
+        <Label Name="errorMessage_label" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red"></Label>
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="12" CanUserAddRows="False" HorizontalAlignment="Stretch" Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="行号" Width="60" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="{Binding Path=Number}"></Label>
+                                <Ellipse Width="15" Height="15"  Fill="{Binding Path=TubeTypeColor}" Margin="0,0,0,0" Visibility="{Binding Path=TubeTypeColorVisible}"></Ellipse>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="采血管 BarCode" Width="110" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="采血管 位置" Width="110" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="混样方式" Width="80" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="检测项目" Width="80" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="PCR板 BarCode" Width="110" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="PCR板 Position" Width="110" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="检测结果" Width="150*" Binding="{Binding PCRTestResult}" CanUserSort="True" IsReadOnly="True" />
+                <DataGridTextColumn Header="实验记录" Width="200" Binding="{Binding SimpleTrackingResult}" CanUserSort="False" IsReadOnly="True" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" Name="StackPanel_contrast">
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -1,0 +1,707 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{ACDA56D8-5836-4D8B-95A5-AA507F92EAD8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WanTai.View</RootNamespace>
+    <AssemblyName>WanTag</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>wantag.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Windows.Shell, Version=3.5.41019.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>lib\Microsoft.Windows.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WanTai.Common\lib\RibbonControlsLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended, Version=1.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.1.5.0\lib\net40\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddReagentsAndSupplies.xaml.cs">
+      <DependentUpon>AddReagentsAndSupplies.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="APIHelper.cs" />
+    <Compile Include="ColorConvert.cs" />
+    <Compile Include="CommFuntion.cs" />
+    <Compile Include="ConfigRotation.xaml.cs">
+      <DependentUpon>ConfigRotation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\ActiveStatusConvert.cs" />
+    <Compile Include="Configuration\ButtonHeightConvert.cs" />
+    <Compile Include="Configuration\TestingItemConfigurationList.xaml.cs">
+      <DependentUpon>TestingItemConfigurationList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\CreateTestingItemConfiguration.xaml.cs">
+      <DependentUpon>CreateTestingItemConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\PoolingRulesConfigurationList.xaml.cs">
+      <DependentUpon>PoolingRulesConfigurationList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\CreatePoolingRulesConfiguration.xaml.cs">
+      <DependentUpon>CreatePoolingRulesConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\OperationConfigurationList.xaml.cs">
+      <DependentUpon>OperationConfigurationList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\CreateOperationConfiguration.xaml.cs">
+      <DependentUpon>CreateOperationConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\ReagentSuppliesConfigurationList.xaml.cs">
+      <DependentUpon>ReagentSuppliesConfigurationList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\LiquidConfigurationColorConvert.cs" />
+    <Compile Include="Configuration\LiquidConfiguration.xaml.cs">
+      <DependentUpon>LiquidConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\ReagentSuppliesConfiguration.xaml.cs">
+      <DependentUpon>ReagentSuppliesConfiguration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\BindableListBox.cs" />
+    <Compile Include="Control\Carrier.xaml.cs">
+      <DependentUpon>Carrier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\CarrierBase.cs" />
+    <Compile Include="Control\Coordinate.xaml.cs">
+      <DependentUpon>Coordinate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Heater.xaml.cs">
+      <DependentUpon>Heater.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\MultiComboBox.cs" />
+    <Compile Include="Control\Plate.xaml.cs">
+      <DependentUpon>Plate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PlateBase.cs" />
+    <Compile Include="Control\ReagentTub.xaml.cs">
+      <DependentUpon>ReagentTub.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Shelf.xaml.cs">
+      <DependentUpon>Shelf.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TecanRestoration.xaml.cs">
+      <DependentUpon>TecanRestoration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HistoryQuery\PCRBarcodeQueryResult.xaml.cs">
+      <DependentUpon>PCRBarcodeQueryResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ImageExtender\ImageAnimatiorExpender.cs" />
+    <Compile Include="ImageExtender\ImageExpender.cs" />
+    <Compile Include="ImageExtender\ImageInfoExpender.cs" />
+    <Compile Include="ImageExtender\ImageSourceExpender.cs" />
+    <Compile Include="LoadFrom.xaml.cs">
+      <DependentUpon>LoadFrom.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MaintainEvo.xaml.cs">
+      <DependentUpon>MaintainEvo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DeskTop.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExperimentRunView.xaml.cs">
+      <DependentUpon>ExperimentRunView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HeaderConverter.cs" />
+    <Compile Include="HistoryQuery\LogContentView.xaml.cs">
+      <DependentUpon>LogContentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HistoryQuery\LogViewList.xaml.cs">
+      <DependentUpon>LogViewList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HistoryQuery\ReagentAndSuppliesList.xaml.cs">
+      <DependentUpon>ReagentAndSuppliesList.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HistoryQuery\RotationOperatesViewDetail.xaml.cs">
+      <DependentUpon>RotationOperatesViewDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HistoryQuery\ExperimentsViewDetail.xaml.cs">
+      <DependentUpon>ExperimentsViewDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="HistoryQuery\ExperimentsViewList.xaml.cs">
+      <DependentUpon>ExperimentsViewList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LargeHeater.xaml.cs">
+      <DependentUpon>LargeHeater.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NameDpipes\NameDpipesServer.cs" />
+    <Compile Include="PCRRubbishAlert.xaml.cs">
+      <DependentUpon>PCRRubbishAlert.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PCR\ViewPCRTestResult.xaml.cs">
+      <DependentUpon>ViewPCRTestResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PCR\PCRTestResultHistoryView.xaml.cs">
+      <DependentUpon>PCRTestResultHistoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PCR\EditPCRTestResult.xaml.cs">
+      <DependentUpon>EditPCRTestResult.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PCR\ImportPCRTestResultFile.xaml.cs">
+      <DependentUpon>ImportPCRTestResultFile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PCR\PCRTestResultDataGridUserControl.xaml.cs">
+      <DependentUpon>PCRTestResultDataGridUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PCR\PCRTestResultViewList.xaml.cs">
+      <DependentUpon>PCRTestResultViewList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RubbishAlert.xaml.cs">
+      <DependentUpon>RubbishAlert.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScottLogic\BaseWPFHelpers.cs" />
+    <Compile Include="ScottLogic\PieChart\ColourConverter.cs" />
+    <Compile Include="ScottLogic\PieChart\IColorSelector.cs" />
+    <Compile Include="ScottLogic\PieChart\IndexedColourSelector.cs" />
+    <Compile Include="ScottLogic\PieChart\Legend.xaml.cs">
+      <DependentUpon>Legend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScottLogic\PieChart\LegendConverter.cs" />
+    <Compile Include="ScottLogic\PieChart\PieChartLayout.xaml.cs">
+      <DependentUpon>PieChartLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScottLogic\PieChart\PieLoayout.xaml.cs">
+      <DependentUpon>PieLoayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScottLogic\PieChart\PiePlotter.xaml.cs">
+      <DependentUpon>PiePlotter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ScottLogic\Shapes\PiePiece.cs" />
+    <Compile Include="ScottLogic\Util\FormattingConverter.cs" />
+    <Compile Include="ScottLogic\Util\Utils.cs" />
+    <Compile Include="Services\DeskTopService.cs" />
+    <Compile Include="Services\ReagentDetectService.cs" />
+    <Compile Include="TecanMaintain.xaml.cs">
+      <DependentUpon>TecanMaintain.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TubeBarCodeEdit.xaml.cs">
+      <DependentUpon>TubeBarCodeEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TubesDetailView.xaml.cs">
+      <DependentUpon>TubesDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TubeShowID.cs" />
+    <Compile Include="TubesScanParameter.xaml.cs">
+      <DependentUpon>TubesScanParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TubesView.xaml.cs">
+      <DependentUpon>TubesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement\AddUser.xaml.cs">
+      <DependentUpon>AddUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement\ChangePassword.xaml.cs">
+      <DependentUpon>ChangePassword.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement\UserList.xaml.cs">
+      <DependentUpon>UserList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowCustomizer.cs" />
+    <Page Include="AddReagentsAndSupplies.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewExperiment.xaml.cs">
+      <DependentUpon>NewExperiment.xaml</DependentUpon>
+    </Compile>
+    <Page Include="ConfigRotation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\TestingItemConfigurationList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\CreateTestingItemConfiguration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\PoolingRulesConfigurationList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\CreatePoolingRulesConfiguration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\OperationConfigurationList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\CreateOperationConfiguration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\ReagentSuppliesConfigurationList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\LiquidConfiguration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\ReagentSuppliesConfiguration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Control\Carrier.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Coordinate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Heater.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Plate.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\ReagentTub.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Control\Shelf.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TecanRestoration.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HistoryQuery\PCRBarcodeQueryResult.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoadFrom.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MaintainEvo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DeskTop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExperimentRunView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HistoryQuery\LogContentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HistoryQuery\LogViewList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HistoryQuery\ReagentAndSuppliesList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="HistoryQuery\RotationOperatesViewDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HistoryQuery\ExperimentsViewDetail.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HistoryQuery\ExperimentsViewList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LargeHeater.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NewExperiment.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PCRRubbishAlert.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PCR\ViewPCRTestResult.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PCR\PCRTestResultHistoryView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PCR\EditPCRTestResult.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PCR\ImportPCRTestResultFile.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PCR\PCRTestResultDataGridUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PCR\PCRTestResultViewList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="RubbishAlert.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScottLogic\PieChart\Legend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ScottLogic\PieChart\PieChartLayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ScottLogic\PieChart\PieLoayout.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ScottLogic\PieChart\PiePlotter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\BaseStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Style\MultiComboBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TecanMaintain.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubeBarCodeEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubesDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubesScanParameter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserManagement\AddUser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserManagement\ChangePassword.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UserManagement\UserList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WanTai.Common\WanTai.Common.csproj">
+      <Project>{17DD5C13-CC4A-4D5A-9266-AFA182801699}</Project>
+      <Name>WanTai.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WanTai.Controller\WanTai.Controller.csproj">
+      <Project>{563DD7AE-ED03-4B92-8364-36116F26B25C}</Project>
+      <Name>WanTai.Controller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WanTai.DataModel\WanTai.DataModel.csproj">
+      <Project>{AB47AF45-8AD9-446F-AFD7-126DB3919507}</Project>
+      <Name>WanTai.DataModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\liquid1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tube.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\trash_full.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logoutIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\liquid2.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\loading.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pause.png" />
+    <Resource Include="Resources\stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Login_Bg.gif" />
+    <Resource Include="Resources\Login_Btn.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Calendar_icon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CloseAlarm_icon.gif" />
+    <Resource Include="Resources\Close_icon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\help.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Left_FourBtn_BG.gif" />
+    <Resource Include="Resources\Left_FourBtn_Bg_hover.gif" />
+    <Resource Include="Resources\Left_TwoBtn_Bg.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logo.png" />
+    <Resource Include="Resources\Maintain_icon.gif" />
+    <Resource Include="Resources\MenuTop_Bg.gif" />
+    <Resource Include="Resources\Menu_CenterBg.gif" />
+    <Resource Include="Resources\New_icon.gif" />
+    <Resource Include="Resources\OpenFile_icon.gif" />
+    <Resource Include="Resources\pause1.png" />
+    <Resource Include="Resources\pauseA.png" />
+    <Resource Include="Resources\pauseB.png" />
+    <Resource Include="Resources\PCR_Importing.gif" />
+    <Resource Include="Resources\PCR_Importing_hover.gif" />
+    <Resource Include="Resources\QuitSystem_icon.gif" />
+    <Resource Include="Resources\Search.gif" />
+    <Resource Include="Resources\SearchAlarm_icon.gif" />
+    <Resource Include="Resources\Search_hover.gif" />
+    <Resource Include="Resources\startA.png" />
+    <Resource Include="Resources\startB.png" />
+    <Resource Include="Resources\stopA.png" />
+    <Resource Include="Resources\stopB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\CreateUser.gif" />
+    <Resource Include="Resources\EditPassword.gif" />
+    <Resource Include="Resources\EditUser.gif" />
+    <Resource Include="Resources\LiquidConfig.gif" />
+    <Resource Include="Resources\Operation.gif" />
+    <Resource Include="Resources\PoolingRule.gif" />
+    <Resource Include="Resources\Reagent.gif" />
+    <Resource Include="Resources\ReagentSuppliesConfig.gif" />
+    <Resource Include="Resources\TestingItem.gif" />
+    <Resource Include="Resources\Trash.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Blue.gif" />
+    <Resource Include="Resources\Arrow_Gray.gif" />
+    <Resource Include="Resources\Parse.gif" />
+    <Resource Include="Resources\Parse_Gray.gif" />
+    <Resource Include="Resources\Star_Gray.gif" />
+    <Resource Include="Resources\Stop_Gray.gif" />
+    <Resource Include="Resources\Stop_icon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tabItem1_icon.png" />
+    <Resource Include="Resources\tabItem2_icon.png" />
+    <Resource Include="Resources\tabItem3_icon.png" />
+    <Resource Include="Resources\tabItem4_icon.png" />
+    <Resource Include="Resources\Tecan.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\hammerhead.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\hammerhead.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\TecanRestoration_icon.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\kingfisher.gif" />
+    <Resource Include="Resources\kingfisher_rubbish.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="wantag.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Arrow_Blue.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
