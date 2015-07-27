@@ -2,6 +2,7 @@
 *.mis
 *.zip
 *.rar
+WanTag.exe.config
 WanTai.Common.dll
 WanTai.Common.pdb
 WanTai.Controller.dll
