@@ -1,8 +1,0 @@
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\bin\Debug\WanTai.CustomAction.dll
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\bin\Debug\WanTai.CustomAction.CA.dll
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\bin\Debug\WanTai.CustomAction.pdb
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\bin\Debug\Microsoft.Deployment.WindowsInstaller.dll
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\bin\Debug\Microsoft.Deployment.WindowsInstaller.xml
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\obj\x86\Debug\ResolveAssemblyReference.cache
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\obj\x86\Debug\WanTai.CustomAction.dll
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.CustomAction\obj\x86\Debug\WanTai.CustomAction.pdb

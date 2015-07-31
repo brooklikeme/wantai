@@ -1,6 +1,0 @@
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.DataModel\bin\Debug\WanTai.DataModel.dll.config
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.DataModel\bin\Debug\WanTai.DataModel.dll
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.DataModel\bin\Debug\WanTai.DataModel.pdb
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.DataModel\obj\Debug\ResolveAssemblyReference.cache
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.DataModel\obj\Debug\WanTai.DataModel.dll
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.DataModel\obj\Debug\WanTai.DataModel.pdb

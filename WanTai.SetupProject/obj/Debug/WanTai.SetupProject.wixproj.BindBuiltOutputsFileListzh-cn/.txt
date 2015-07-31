@@ -1,2 +1,0 @@
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.SetupProject\bin\Debug\zh-cn\WanTag.Setup.msi
-D:\project\Wantai\SVN\wantai\workspace\trunk\WanTai\WanTai.SetupProject\bin\Debug\zh-cn\WanTag.Setup.wixpdb
