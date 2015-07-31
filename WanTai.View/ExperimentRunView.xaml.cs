@@ -1336,8 +1336,11 @@ namespace WanTai.View
         {
             get
             {
+                byte[] bytes = new byte[16];
+                BitConverter.GetBytes(ReagentType.GeneralReagent).CopyTo(bytes, 0);
+
                 if (_CurrentReagentAndSupply == null)
-                    _CurrentReagentAndSupply = new ReagentSuppliesConfigurationController().GetByItemType((short)ReagentType.GeneralReagent);
+                    _CurrentReagentAndSupply = new ReagentSuppliesConfigurationController().GetByItemType(new Guid(bytes));
                 return _CurrentReagentAndSupply;
             }
         }

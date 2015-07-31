@@ -57,9 +57,8 @@
     <Reference Include="Interop.MCSLib">
       <HintPath>..\WanTai.Common\lib\Interop.MCSLib.dll</HintPath>
     </Reference>
-    <Reference Include="itextsharp, Version=5.3.4.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\itextsharp.dll</HintPath>
+    <Reference Include="itextsharp">
+      <HintPath>..\WanTai.Common\lib\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -239,6 +238,9 @@
       <Project>{7D40E2B2-4137-4684-92D5-F3F44A0A918C}</Project>
       <Name>WanTai.UserPrompt</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
