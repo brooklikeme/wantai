@@ -31,6 +31,9 @@ namespace WanTai.Common
         protected static string ScanTubesColumnNumberFileName = "ScanTubesColumnNumberFileName";
         protected static string TecanRestorationScriptName = "TecanRestorationScriptName";
         protected static string NextTurnStepScriptName = "NextTurnStepScriptName";
+
+        protected static string WorkDeskType = "WorkDeskType";
+
         public static string GetNextTurnStepScriptName()
         {
             return ConfigurationManager.AppSettings[NextTurnStepScriptName];
@@ -123,6 +126,11 @@ namespace WanTai.Common
         public static int GetWarningSleepTime()
         {
             return Convert.ToInt32(ConfigurationManager.AppSettings[WarningSleepTime]);
+        }
+
+        public static string GetWorkDeskType()
+        {
+            return ConfigurationManager.AppSettings[WorkDeskType];
         }
 
         public static List<LiquidType> GetLiquidTypes()

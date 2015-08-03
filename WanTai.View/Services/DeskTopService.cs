@@ -15,16 +15,16 @@ namespace WanTai.View.Services
 {
     public class DeskTopService
     {
-        public Canvas DrawCoordinate(double length, int num, double unit)
+        public Canvas DrawCoordinateOld(double length, int num, double unit)
         {
             Canvas CoordinateVanvas = new Canvas();
             Line xLine = new Line();
             xLine.Stroke = Brushes.Black;
             xLine.StrokeThickness = 1;
             xLine.X1 = 0;
-            xLine.Y1 = 5;
+            xLine.Y1 = 2;
             xLine.X2 = length;
-            xLine.Y2 = 5;
+            xLine.Y2 = 2;
             CoordinateVanvas.Children.Add(xLine);
 
             for (int i = 9; i <= num; i++)
@@ -49,6 +49,46 @@ namespace WanTai.View.Services
             return CoordinateVanvas;
         }
 
+        public Canvas DrawCoordinate(double length, int num, double unit)
+        {
+            int len = 15;
+            //int unit = 900 / 84;
+            Canvas CoordinateVanvas = new Canvas();
+            // 画刻度长度
+            Line xLine = new Line();
+            xLine.Stroke = Brushes.Black;
+            xLine.StrokeThickness = 1;
+            xLine.X1 = 11;
+            xLine.Y1 = 5;
+            xLine.X2 = length;
+            xLine.Y2 = 5;
+            CoordinateVanvas.Children.Add(xLine);
+
+            // 画刻度
+            for (int i = 1; i <= num; i++)
+            {
+                Line pointLine = new Line();
+                pointLine.Stroke = Brushes.Black;
+                pointLine.StrokeThickness = 1;
+                pointLine.X1 = len * i;
+                pointLine.Y1 = 5;
+                pointLine.X2 = len * i;
+                pointLine.Y2 = i % 5 == 0 ? 11 : 8;
+                CoordinateVanvas.Children.Add(pointLine);
+
+                // 刻度数字
+                if (i % 5 == 0 || i == 1)
+                {
+                    TextBlock text = new TextBlock();
+                    text.Text = i.ToString();
+                    text.Margin = new Thickness(len * i - 5, 10, 0, 0);
+                    CoordinateVanvas.Children.Add(text);
+                }
+            }
+            CoordinateVanvas.Margin = new Thickness(length - (len * num), unit * 30 - 30, 0, 0);
+            return CoordinateVanvas;
+        }
+
         public List<CarrierBase> GetCarriers(double lengthUnit, double cooPoint)
         {
             List<CarrierBase> carrierBases = new List<CarrierBase>();
@@ -59,8 +99,9 @@ namespace WanTai.View.Services
                 Brush brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(c.Color));
                 if (c.Type == 0)
                 {
+                    // 修改 深孔板边距 js   @Carrier
                     uc = new View.Control.Carrier(
-                       brush, c.Width * lengthUnit, c.Heigh * lengthUnit);
+                       brush, c.Width * lengthUnit, c.Heigh * lengthUnit, (float)c.Width);
                 }
                 else if (c.Type == 1)
                 {
@@ -72,6 +113,7 @@ namespace WanTai.View.Services
                     uc = new Heater(
                     brush, c.Width * lengthUnit, c.Heigh * lengthUnit);
                 }
+                // 计算 位置 js 
                 uc.Margin = new Thickness((c.Grid - 9) * lengthUnit * cooPoint, c.Position * lengthUnit, 0, 0);
                 uc.CarrierName = c.CarrierName;
                 carrierBases.Add(uc);
@@ -162,6 +204,26 @@ namespace WanTai.View.Services
                         }
                         if (i == 4) break;
                     }
+                    //if (volume == 4)
+                    //{
+                    //    PlateBase plate = new WanTai.View.Control.Plate();
+                    //    plate.DisplayName = "PCR 板";
+                    //    plate.ChineseName = reagent.DisplayName;
+                    //    plate.EnglishName = reagent.EnglishName;
+                    //    plate.NeedVolume = 0;
+                    //    plate.CurrentVolume = reagent.CurrentVolume;
+                    //    plate.Grid = grid;
+                    //    plate.Position = position;
+                    //    plate.ContainerName = containerName;
+                    //    plate.CarrierGrid = (int)carriers.First(P => P.CarrierName == containerName).Grid;
+                    //    plate.Color = color;
+                    //    plate.ItemType = (short)reagent.ItemType;
+                    //    plate.BarcodePrefix = reagent.BarcodePrefix;
+                    //    plate.Barcode = reagent.BarcodePrefix;
+                    //    plate.ConfigurationItemID = reagent.ItemID;
+                    //    plate.Correct = reagent.Correct;
+                    //    plates.Add(plate);
+                    //}
                 }
                 else if (reagent.ItemType == 103)//PCR Plate
                 {

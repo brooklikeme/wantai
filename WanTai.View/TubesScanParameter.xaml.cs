@@ -26,15 +26,33 @@ namespace WanTai.View
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
+
+            string workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            int range = 6;
+
+            if (workDeskType == "100")
+            {
+                range = 6;
+            }
+            else if (workDeskType == "150")
+            {
+                range = 18;
+            }
+            else if (workDeskType == "200")
+            {
+                range = 36;
+            }
+            string message = String.Format("请输入1-{0}的数字！", range);
+
             int ColumnCount = 0;
             if (!int.TryParse(txtColumnCount.Text, out ColumnCount))
             {
-                MessageBox.Show("请输入1-36的数字！","系统提示！");
+                MessageBox.Show(message, "系统提示！");
                 return;
             }
-            if (ColumnCount < 1 || ColumnCount > 36)
+            if (ColumnCount < 1 || ColumnCount > range)
             {
-                MessageBox.Show("请输入1-36的数字！", "系统提示！");
+                MessageBox.Show(message, "系统提示！");
                 return;
             }
             new WanTai.Controller.TubesController().SaveScanParameter(ColumnCount);

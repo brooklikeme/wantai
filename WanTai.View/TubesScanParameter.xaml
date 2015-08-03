@@ -13,7 +13,7 @@
         </Grid.RowDefinitions> 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Grid.Row="0">
             <Label Content="列数：" Margin="20,0,0,0" HorizontalAlignment="Left"  VerticalAlignment="Center" />
-            <TextBox Height="23"  Name="txtColumnCount" VerticalAlignment="Center" Width="120" />
+            <TextBox Height="23"  Name="txtColumnCount" VerticalAlignment="Center" Width="120" Text="1"/>
         </StackPanel>
            <Button Grid.Row="1" Content="确认" Height="30" Name="btnEnter" Width="80" Click="btnEnter_Click" />
 

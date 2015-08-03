@@ -40,14 +40,15 @@
         </StackPanel>
         <Canvas Grid.Row="1" Grid.Column="0"  Name="DeskTopWithGrid" Background="#FFf2f2f2" >
             <!--#FFf2f2f2-->
-
+            <Image Name="Sample" Width="90" Height="165" Canvas.Bottom="20" Canvas.Left="0" Margin="0,5,0,5" Stretch="Fill"></Image>
         </Canvas>
         <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
-            <Image Name="imgKingFisher" Source="/WanTag;component/Resources/kingfisher.gif" Width="240" Height="240"  ></Image>
+            <Image Name="imgKingFisher" Source="/WanTag;component/Resources/kingfisher.gif" Width="240" Height="240"></Image>
         </Border>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" ></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
+                <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -56,7 +57,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="0" Grid.Row="0" Margin="5,5,30,5">
-            <DataGrid  Name="dgSupplies" AutoGenerateColumns="False" ItemsSource="{Binding}"
+                <DataGrid  Name="dgSupplies" AutoGenerateColumns="False" ItemsSource="{Binding}"
                       SelectionMode="Extended" CanUserAddRows="False" SelectionUnit="CellOrRowHeader" 
                       CanUserResizeColumns="False" CanUserResizeRows="False" CellStyle="{StaticResource Body_Content_DataGrid_Centering}">
                 <DataGrid.Columns>
@@ -85,7 +86,6 @@
                 </DataGrid.Columns>
             </DataGrid>
                 <Button Name="btnSupplies"  VerticalAlignment="Bottom" HorizontalAlignment="Center" Click="btnNeedVolume_Click" Height="25" Width="100" Margin="0,5,0,0" Content="添加需要量"></Button>
-
             </StackPanel>
             <!--Binding="{Binding CurrentVolume,StringFormat='{0:#.##}'}"-->
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="5,5,30,5">
@@ -121,19 +121,20 @@
             </StackPanel>
 
             <StackPanel Name="stackPanelTestItem" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="5">
-
-               
             </StackPanel>
+            <StackPanel Name="stackPanelTestItem2" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Margin="5">
+            </StackPanel>
+            
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="30,0,0,0">
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <TextBlock Text="请在图示位置添加相应耗材。请检查系统液是否充足。" VerticalAlignment="Center" Foreground="DarkBlue" Margin="5,0,0,0"></TextBlock>
                 <TextBlock Text="请检查防护门是否关闭。" VerticalAlignment="Center" Foreground="DarkBlue"></TextBlock>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Button Name="btnScan" Click="Scan_Click" Height="25" Width="100" Content="仪器复核" ></Button>
-                    <Button Name="btnManual" Click="btnManual_Click"  Height="25" Width="100" Content="人工复核" Margin="5,0,0,0"></Button>
+                    <Button Name="btnScan" Visibility="Hidden" Click="Scan_Click" Height="25" Width="0" Content="仪器复核" ></Button>
+                    <Button Name="btnManual" Click="btnManual_Click"  Height="25" Width="100" Content="复核"></Button>
                     <Button Name="btnSave" Click="btnSave_Click"  Height="25" Width="100" Content="保存" IsEnabled="False" Margin="5,0,0,0"></Button>
-                    <Button Name="btnNext" Click="btnNext_Click"  Height="25" Width="100" Content="下一步" IsEnabled="False" Margin="5,0,0,0"></Button>
+                    <Button Name="btnNext" Click="btnNext_Click"  Height="25" Width="100" Content="下一步" IsEnabled="True" Margin="5,0,0,0"></Button>
                 </StackPanel>
             </StackPanel>
            

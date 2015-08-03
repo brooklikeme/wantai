@@ -11,20 +11,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-        <WanTaiControls:Plate Grid.Column="0" Grid.Row="0" Position="1" DisplayName="1"></WanTaiControls:Plate>
-        <WanTaiControls:Plate Grid.Column="1" Grid.Row="0" Position="2" DisplayName="2"></WanTaiControls:Plate>
-        <WanTaiControls:Plate Grid.Column="2" Grid.Row="0" Position="3" DisplayName="3"></WanTaiControls:Plate>
-        <WanTaiControls:Plate Grid.Column="3" Grid.Row="0" Position="4" DisplayName="4"></WanTaiControls:Plate>
-        <WanTaiControls:Plate Grid.Column="4" Grid.Row="0" Position="5" DisplayName="5"></WanTaiControls:Plate>
-        <WanTaiControls:Plate Grid.Column="5" Grid.Row="0"  Position="6" DisplayName="6"></WanTaiControls:Plate>
-        </Grid>
+        <Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
+    </Grid>
     <!--</Border>-->
 </WanTaiControls:CarrierBase>

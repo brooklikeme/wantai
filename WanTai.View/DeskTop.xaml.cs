@@ -36,6 +36,7 @@ namespace WanTai.View
     {
         private double cooPoint = 1.4;
         private double lengthUnit = 0;
+        private string workDeskType;
 
         List<Control.PlateBase> ViewPlates = new List<PlateBase>();
         List<ReagentAndSuppliesConfiguration> reagentAndSupplies = new List<ReagentAndSuppliesConfiguration>();
@@ -57,7 +58,12 @@ namespace WanTai.View
                 if (typeid != 0 && typeid < 100 && typeid % 5 == 0)
                 {
                     DataGrid dg = NewTestItemGrid(reagentType.TypeName);
-                    stackPanelTestItem.Children.Add(dg);
+                    //Console.WriteLine(stackPanelTestItem.Children.Count);
+                    // PCR 匹配液 分俩列显示 js
+                    if (stackPanelTestItem.Children.Count < 3)
+                        stackPanelTestItem.Children.Add(dg);
+                    else
+                        stackPanelTestItem2.Children.Add(dg);
                     dataGridDictionary.Add(reagentType.TypeName, dg);
                 }
             }
@@ -70,6 +76,26 @@ namespace WanTai.View
             btnTestItem.Click += new RoutedEventHandler(btnNeedVolume_Click);
 
             stackPanelTestItem.Children.Add(btnTestItem);
+            // 添加 工作台 js &WanTag
+            workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            string image = String.Format(@"/WanTag;component/Resources/Sample{0}.gif", workDeskType);
+            Sample.Source = new BitmapImage(new Uri(image, UriKind.Relative));
+            // 隐藏 枪头 js
+            if (workDeskType == "100")
+            {
+                labDiTi1000.Visibility = Visibility.Hidden;
+                Sample.Margin = new Thickness(30, 5, 0, 5);
+            }
+            else if (workDeskType == "150")
+            {
+                Sample.Margin = new Thickness(0, 5, 0, 5);
+                Sample.Width = 270;
+            }
+            else if (workDeskType == "200")
+            {
+                Sample.Margin = new Thickness(0, 5, 0, 5);
+                Sample.Width = 420;
+            }
         }
         private Button btnTestItem = new Button();
         #region Private Method
@@ -157,13 +183,14 @@ namespace WanTai.View
             return dg;           
         }
 
-        public void InitDeskTop(double width)
+        public void InitDeskTop(double width, int limit, int offset)
         {
             labelRotationName.Content = SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName;
-            lengthUnit = width / 84;
+            lengthUnit = 900 / 84;
             imgKingFisher.Width = lengthUnit * 24;
             imgKingFisher.Height = lengthUnit * 24;
-            imgKingFisher.Margin = new Thickness(-lengthUnit * 2 * cooPoint, lengthUnit * 2, 0, lengthUnit * 2);
+            Console.WriteLine(-lengthUnit * 2 * cooPoint);
+            imgKingFisher.Margin = new Thickness(-lengthUnit * 2 * cooPoint - offset, lengthUnit * 2, 0, lengthUnit * 2);
             DeskTopWithGrid.Width = width;
             DeskTopWithGrid.Height = 30 * lengthUnit;
 
@@ -171,7 +198,16 @@ namespace WanTai.View
             reagentAndSupplies.Clear();
             btnSave.IsEnabled = false;
             DrawDeskTopInGrid();
-            DeskTopWithGrid.Children.Add(new View.Services.DeskTopService().DrawCoordinate(width,69, lengthUnit));
+
+            if (workDeskType == "200")
+            {
+                DeskTopWithGrid.Children.Add(new View.Services.DeskTopService().DrawCoordinateOld(width, limit, lengthUnit));
+            }
+            else
+            {
+                DeskTopWithGrid.Children.Add(new View.Services.DeskTopService().DrawCoordinate(width, limit, lengthUnit));
+            }
+
         }
 
         bool isFirstRotation;
@@ -201,7 +237,6 @@ namespace WanTai.View
                     dg.Columns[5].Visibility = Visibility.Hidden;
                 }
             }
-
             else
             {
                 foreach (DataGrid dg in dataGridDictionary.Values)
@@ -235,26 +270,42 @@ namespace WanTai.View
 
                 c.UpdatePlate(ViewPlates.FindAll(P => P.ContainerName == c.CarrierName));
                 if (c.CarrierName == "001" && !isFirstRotation)
-                {                    
+                {
                     List<PlateBase> greenPlate = ViewPlates.FindAll(P => P.ItemType == 101 && (P.DisplayName.Contains("1") || P.DisplayName.Contains("2")));
                     string[] plateNames = new string[greenPlate.Count];
                     int index = 0;
                     foreach (PlateBase plate in greenPlate)
                     {
                         plateNames[index] = plate.DisplayName;
-                  
+
                         index++;
                     }
                     c.ShiningWithGreen(plateNames);
                 }
+
+                // 修改 枪头及深孔板 js
                 if (c.CarrierName == "006")
-                {     //labelRotationName.ActualWidth 40       labDiTi1000.ActualWidth 50
+                {
+                    if (workDeskType == "100")
+                    {
+                        continue;
+                    }  
+                    //labelRotationName.ActualWidth 40       labDiTi1000.ActualWidth 50
                     labDiTi1000.Margin = new Thickness(c.Margin.Left + c.Width / 2 - 50 / 2 - 40 -10, 0, 0, 0);
                 }
+
                 if (c.CarrierName == "007")
                 {
-                    labDiTi200.Margin = new Thickness(c.Margin.Left + c.Width / 6 * 4 / 2 - 50 / 2 - 10 - labDiTi1000.Margin.Left - 50 - 50, 0, 0, 0);
+                    if (workDeskType == "100")
+                    {
+                        labDiTi200.Margin = new Thickness(120, 0, 0, 0);
+                    }
+                    else
+                    {
+                        labDiTi200.Margin = new Thickness(c.Margin.Left + c.Width / 6 * 4 / 2 - 50 / 2 - 10 - labDiTi1000.Margin.Left - 50 - 50, 0, 0, 0);
+                    }
                 }
+
                 DeskTopWithGrid.Children.Add(c);
             }            
         }

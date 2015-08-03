@@ -41,7 +41,24 @@ namespace WanTai.View.Configuration
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             LiquidConfigurationColorConvert _LiquidConfigurationColorConvert = new LiquidConfigurationColorConvert();
-            for (int i = 1; i < 37; i++)
+
+            string workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            int range = 6;
+
+            if (workDeskType == "100")
+            {
+                range = 7;
+            }
+            else if (workDeskType == "150")
+            {
+                range = 19;
+            }
+            else if (workDeskType == "200")
+            {
+                range = 37;
+            }
+
+            for (int i = 1; i < range; i++)
             {
                 dTable.Columns.Add(i.ToString());
                 

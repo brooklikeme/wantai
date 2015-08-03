@@ -3,12 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:Controller="clr-namespace:WanTai.Controller;assembly=WanTai.Controller"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="600"
 	Title="ConfigRotation" Loaded="Page_Loaded" Unloaded="Page_Unloaded">
     <Page.Resources>
-        <!--<ObjectDataProvider x:Key="PoolingRulesConfigurations" IsAsynchronous="True" MethodName="GetActivePoolingRulesConfigurations" ObjectType="{x:Type Controller:PoolingRulesConfigurationController}">
-        </ObjectDataProvider>-->
+        <ObjectDataProvider x:Key="OperationConfigurations" IsAsynchronous="True" MethodName="GetDisplayedOperationConfigurations" ObjectType="{x:Type Controller:ConfigRotationController}">
+        </ObjectDataProvider>
     </Page.Resources>
         <Grid>
         <Grid.ColumnDefinitions>
@@ -37,20 +38,19 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <!--<DataGridTemplateColumn Header="操作" Width="100" >
+                <DataGridTemplateColumn x:Name="operation_template_column" Header="操作" Width="320" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <ComboBox Name="operation_column"   SelectionChanged="CmbOperation_SelectionChanged" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedItem="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" />
+                            <ComboBox Name="operation_column" SelectionChanged="CmbOperation_SelectionChanged" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedItem="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" ItemsSource="{Binding Source={StaticResource OperationConfigurations }}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>-->
+                </DataGridTemplateColumn>
                 <!--<DataGridTextColumn Header="轮次" Binding="{Binding Sequence}" Width="80" CanUserSort="False"  IsReadOnly="True"></DataGridTextColumn>-->
               
-                <DataGridComboBoxColumn x:Name="operation_column" Header="操作" SelectedItemBinding="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" CanUserSort="False" >
+                <!--<DataGridComboBoxColumn x:Name="operation_column" Header="操作" SelectedItemBinding="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" CanUserSort="False" >
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="Control">
                             <Setter Property="Margin" Value="0,5,0,0"></Setter>
-
                         </Style>
                     </DataGridComboBoxColumn.ElementStyle>
                     <DataGridComboBoxColumn.EditingElementStyle>
@@ -62,7 +62,7 @@
                             <EventSetter Event="SelectionChanged" Handler="CmbOperation_SelectionChanged"></EventSetter>
                         </Style>
                     </DataGridComboBoxColumn.EditingElementStyle>
-                </DataGridComboBoxColumn>
+                </DataGridComboBoxColumn>-->
                 <!--<DataGridTextColumn x:Name="operation_viewcolumn"  Header="操作" Binding="{Binding OperationName}" Width="300" CanUserSort="False" IsReadOnly="True">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
@@ -127,7 +127,7 @@
         <StackPanel Grid.Column="1" Grid.Row="3"  HorizontalAlignment="Center" Name="stackPanel1" VerticalAlignment="Stretch" Orientation="Horizontal" >
             <!--<Button Content="上一步" Height="23" Name="previous_button"  Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" />-->
             <Button Content="保  存" Height="28" Name="save_button" IsEnabled="False" CommandParameter="ConfigRotationNext" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="0,0,0,0" Click="save_button_Click" />
-            <Button Content="下一步" Height="28" Name="next_button"   IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15,0,0,0" Click="next_button_Click"  />          
+            <Button Content="下一步" Height="28" Name="next_button" IsEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15,0,0,0" Click="next_button_Click"  />          
          </StackPanel>
     </Grid>
 </Page>

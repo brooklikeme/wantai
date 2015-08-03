@@ -198,7 +198,11 @@ namespace WanTai.View.Control
                     this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
                         new Action(delegate()
                     {
+                        this.Foreground = Brushes.Gray;
                         this.BorderBrush = Brushes.Red;
+                        // 修改警告颜色 js
+                        ((Plate)this).GridPlate.Background = Brushes.Red;
+                        ((Plate)this).txtPlateName.Background = Brushes.Red;
                         if (RelatedControls != null)
                         {
                             foreach (object tb in RelatedControls)
@@ -220,7 +224,11 @@ namespace WanTai.View.Control
                     this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
                         new Action(delegate()
                     {
-                        this.BorderBrush = Brushes.Gray;
+                        this.Foreground = Brushes.Gray;
+                        this.BorderBrush = Brushes.White;
+                        // 修改警告颜色 js
+                        ((Plate)this).GridPlate.Background = Brushes.White;
+                        ((Plate)this).txtPlateName.Background = Brushes.White;
                         if (RelatedControls != null)
                         {
                             foreach (object tb in RelatedControls)
@@ -247,7 +255,10 @@ namespace WanTai.View.Control
                     this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
                         new Action(delegate()
                         {
-                            this.BorderBrush = Brushes.LawnGreen;                            
+                            //this.BorderBrush = Brushes.LawnGreen;        
+                            // 修改警告颜色 js
+                            ((Plate)this).GridPlate.Background = Brushes.LawnGreen;
+                            ((Plate)this).txtPlateName.Background = Brushes.LawnGreen;
                         }));
                 }
             }
@@ -259,7 +270,9 @@ namespace WanTai.View.Control
                     this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
                         new Action(delegate()
                         {
-                            this.BorderBrush = Brushes.Gray;                            
+                            //this.BorderBrush = Brushes.Gray;  
+                            ((Plate)this).GridPlate.Background = Brushes.White;
+                            ((Plate)this).txtPlateName.Background = Brushes.White;
                         }));
                 }
             }

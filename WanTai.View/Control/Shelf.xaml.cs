@@ -31,6 +31,28 @@ namespace WanTai.View.Control
             GridPlate.Background = color;
             this.Width = width;
             this.Height = heigh;
+
+            // 修改枪头个数
+            string workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            int range = 4;
+
+            if (workDeskType == "200")
+                range = 6;
+
+            for (int i = 0; i < range; i++)
+            {
+                GridPlate.ColumnDefinitions.Add(new ColumnDefinition());
+                
+                Plate plate = new Plate();
+                plate.Position = i + 1;
+                plate.DisplayName = Convert.ToString(i + 1);
+
+                Grid.SetColumn(plate, i);
+                Grid.SetRow(plate, 0);
+
+                GridPlate.Children.Add(plate);
+            }
+               
         }
         
         public override void UpdatePlate(List<PlateBase> plates)

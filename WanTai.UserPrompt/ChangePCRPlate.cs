@@ -16,6 +16,9 @@ namespace WanTai.UserPrompt
             InitializeComponent();
             CommonFunction.WriteLog("ChangePCRPlate---InitializeComponent");
             this.textPrompt.Text = string.Format(this.textPrompt.Text, testingItem);
+
+           // ChangePCRPlate
+           // pictureBox1.Image = "";
         }
 
         private void btnOK_Click(object sender, EventArgs e)

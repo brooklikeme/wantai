@@ -26,6 +26,7 @@ namespace WanTai.View
             InitializeComponent();
             if(SessionInfo.LoginName!=null)
                 txtOrperatorName.Text = SessionInfo.LoginName;
+            txtExperimentName.Text = System.DateTime.Now.ToString();
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

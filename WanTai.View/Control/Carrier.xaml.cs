@@ -21,17 +21,20 @@ namespace WanTai.View.Control
     /// </summary>
     public partial class Carrier : CarrierBase
     {
+        private float PlateMargin;
+
         public Carrier()
         {
             InitializeComponent();
         }
 
-        public Carrier(Brush color, double width, double heigh)
+        public Carrier(Brush color, double width, double heigh, float margin)
         {
             InitializeComponent();
             GridPlate.Background = color;
             this.Width = width;
             this.Height = heigh;
+            this.PlateMargin = margin / 2;
         }
        
         public override void UpdatePlate(List<PlateBase> plates)
@@ -53,7 +56,8 @@ namespace WanTai.View.Control
                         plate.RelatedControls = tempPlate.RelatedControls;
                         plate.Correct = tempPlate.Correct;
                         plate.ConfigurationItemID = tempPlate.ConfigurationItemID;
-                       
+
+                        plate.Margin = new Thickness(this.PlateMargin);
                     }
                 }
             }

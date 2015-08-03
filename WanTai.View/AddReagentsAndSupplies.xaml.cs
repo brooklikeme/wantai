@@ -27,6 +27,9 @@ namespace WanTai.View
     {
         Dictionary<int, DataGrid> dataGridDictionary;
         DataTable dtReagent = new DataTable();
+
+        string workDeskType;
+
         public AddReagentsAndSupplies()
         {
             InitializeComponent();
@@ -40,6 +43,9 @@ namespace WanTai.View
         public AddReagentsAndSupplies(int flag)
         {
             InitializeComponent();
+
+            workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+
             AddDataGrids();
             if (flag == 1)
             {
@@ -116,14 +122,44 @@ namespace WanTai.View
             panelDeskTop.Width = (this.Width - 50);
             panelDeskTop.Height = lengthUnit * 30;
             View.Services.DeskTopService desktopService = new Services.DeskTopService();
-            carrierBases = desktopService.GetCarriers(lengthUnit, cooPoint);
+            carrierBases = desktopService.GetCarriers(900/84, cooPoint);
+
             foreach (CarrierBase carrier in carrierBases)
             {
                 carrier.UpdatePlate(viewPlates.FindAll(P => P.ContainerName == carrier.CarrierName));
+                // 修改 枪头及深孔板 js
+                if (workDeskType == "100" && carrier.CarrierName == "006")
+                    continue;
+
                 panelDeskTop.Children.Add(carrier);
             }
 
-            panelDeskTop.Children.Add(desktopService.DrawCoordinate((this.Width - 50), 69, lengthUnit));
+            int width = 0, limit = 0;
+            if (workDeskType == "100")
+            {
+                limit = 32;
+                width = 500;
+            }
+            else if (workDeskType == "150")
+            {
+                limit = 47;
+                width = 700;
+            }
+            else if (workDeskType == "200")
+            {
+                this.Width = 1000;
+                limit = 66;
+                width = 900;
+            }
+            if (workDeskType == "200")
+            {
+                panelDeskTop.Children.Add(desktopService.DrawCoordinateOld(width, limit, lengthUnit + 1.2));
+            }
+            else
+            {
+                panelDeskTop.Children.Add(desktopService.DrawCoordinate(width, limit, lengthUnit + 1));
+            }
+
 
             for (int i = 0; i < dtReagent.Rows.Count; i++)
             {
@@ -132,6 +168,8 @@ namespace WanTai.View
                     this.btnSave.Visibility = System.Windows.Visibility.Visible;
                 }
             }
+
+
         }
 
         private void WhenShow()
@@ -295,6 +333,25 @@ namespace WanTai.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // 添加 工作台 
+            string image = String.Format(@"/WanTag;component/Resources/Sample{0}.gif", workDeskType);
+            Sample.Source = new BitmapImage(new Uri(image, UriKind.Relative));
+            // 隐藏 枪头 js
+            if (workDeskType == "100")
+            {
+                Sample.Margin = new Thickness(10, 0, 0, -25);
+            }
+            else if (workDeskType == "150")
+            {
+                Sample.Margin = new Thickness(-15, 5, 0, -25);
+                Sample.Width = 270;
+            }
+            else if (workDeskType == "200")
+            {
+                Sample.Margin = new Thickness(-15, 5, 0, -27);
+                Sample.Width = 420;
+            }
+
             foreach (PlateBase plate in viewPlates)
             {
                 if (plate.ItemType == 0)

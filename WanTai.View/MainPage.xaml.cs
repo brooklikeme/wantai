@@ -33,10 +33,13 @@ namespace WanTai.View
         public delegate void EvoRestorationStatus(bool isEnable);
         public event EvoRestorationStatus SetEvoRestorationStatus;
         private ExperimentRunView experimentRunView = new ExperimentRunView();
+        private string workDeskType;
+
         public MainPage()
         {   
             InitializeComponent();
            // bindRunWithStartAction();
+            workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             View();
         }
         public void AddEvoRestorationStatusEvent()
@@ -58,12 +61,29 @@ namespace WanTai.View
             {
                ((TabItem)tabControl.Items[i]).IsEnabled = false;
             }
-            TubesView tubesView1 = new TubesView();
-         //   panelTubeView.Children.Add(tubesView1);
-            tubesView1.labelRotationName.Content = "";
-            tabItem1.Content = tubesView1;
-            tubesView1.NextStepEvent += new NextStepHandler(Button_Click_1);
-            //tubesView1.onNextStepScan += new NextStepScan(NextStepScanEvent);
+            // 判断工作台
+            if (workDeskType == "100")
+            {
+                TubesView100 tubesView = new TubesView100();
+                tubesView.labelRotationName.Content = "";
+                tabItem1.Content = tubesView ;
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+            else if (workDeskType == "150")
+            {
+                TubesView150 tubesView = new TubesView150();
+                tubesView.labelRotationName.Content = "";
+                tabItem1.Content = tubesView ;
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+            else if (workDeskType == "200")
+            {
+                TubesView200 tubesView = new TubesView200();
+                tubesView.labelRotationName.Content = "";
+                tabItem1.Content = tubesView;
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+
             experimentRunView = new ExperimentRunView();
             ExperimentRunView.Content = experimentRunView;
             experimentRunView.NewExperimentEvent += new NewExperimentHandler(NextRotationEvent);
@@ -115,7 +135,27 @@ namespace WanTai.View
                 if (SessionInfo.CurrentExperimentsInfo.State != (short)ExperimentStatus.Stop)
                 {
                     DeskTop deskTop = (DeskTop)frameDeskTop.Content;
-                    deskTop.InitDeskTop(900);
+                   
+                    int width = 0, limit = 0, offset = 0;
+                    if (workDeskType == "100")
+                    {
+                        limit = 32;
+                        width = 500;
+                        offset = 200;
+                    }
+                    else if (workDeskType == "150")
+                    {
+                        limit = 47;
+                        width = 700;
+                        offset = 100;
+                    }
+                    else if (workDeskType == "200")
+                    {
+                        limit = 69;
+                        width = 900;
+                        offset = 0;
+                    }
+                    deskTop.InitDeskTop(width, limit, offset);
                 }
             }
             if (tabControl.SelectedIndex == 3)
@@ -252,11 +292,29 @@ namespace WanTai.View
 
                 tabControl.SelectedIndex = 0;
                 ((TabItem)tabControl.Items[2]).IsEnabled = false;
-
-                TubesView tubesView1 = new TubesView();
-                tabItem1.Content = tubesView1;
-                tubesView1.onNextStepScan += new NextStepScan(NextStepScanEvent);
-                tubesView1.NextStepEvent += new NextStepHandler(Button_Click_1);
+                
+                // 判断显示工作台
+                if (workDeskType == "100")
+                {
+                    TubesView100 tubesView = new TubesView100();
+                    tabItem1.Content = tubesView ;
+                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                }
+                else if (workDeskType == "150")
+                {
+                    TubesView150 tubesView = new TubesView150();
+                    tabItem1.Content = tubesView ;
+                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                }
+                else if (workDeskType == "200")
+                {
+                    TubesView200 tubesView = new TubesView200();
+                    tabItem1.Content = tubesView ;
+                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                }
                
                 //open the lamp and set it green flashing
                 WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
@@ -304,9 +362,27 @@ namespace WanTai.View
             }
             tabControl.SelectedIndex = 0;
             ((TabItem)tabControl.Items[2]).IsEnabled = false;
-            TubesView tubesView1 = new TubesView();
-            tabItem1.Content = tubesView1;
-            tubesView1.NextStepEvent += new NextStepHandler(Button_Click_1);
+
+            // 判断显示工作台
+            if (workDeskType == "100")
+            {
+                TubesView100 tubesView = new TubesView100();
+                tabItem1.Content = tubesView ;
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+            else if (workDeskType == "150")
+            {
+                TubesView150 tubesView = new TubesView150();
+                tabItem1.Content = tubesView ;
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+            else if (workDeskType == "200")
+            {
+                TubesView200 tubesView = new TubesView200();
+                tabItem1.Content = tubesView ;
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+            
             SessionInfo.NextTurnStep = 99;
         }
         #endregion

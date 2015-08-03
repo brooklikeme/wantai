@@ -1,7 +1,7 @@
 ﻿<Window x:Class="WanTai.View.PCRRubbishAlert"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="请按图示位置放入板材" Height="400" Width="900" ResizeMode="CanMinimize">
+        Title="请按图示位置放入板材" Height="450" Width="900" ResizeMode="CanMinimize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition ></RowDefinition>
@@ -11,9 +11,9 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="auto"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        
-        <Canvas Name="deskTop" Grid.Row="0" Grid.Column="0" Height="240" Width="672"  Background="#FFf2f2f2">
-            
+
+        <Canvas Name="deskTop" Grid.Row="0" Grid.Column="0" Height="280" Width="672"  Background="#FFf2f2f2">
+            <Image Name="Sample" Width="90" Height="160" Canvas.Bottom="20" Canvas.Left="20" Margin="5" Stretch="Fill"></Image>
         </Canvas>
         <Border Grid.Row="0" Grid.Column="1">
             <Image Name="imgKingFisher" Source="/WanTag;component/Resources/kingfisher.gif" Height="150" Width="150"></Image>

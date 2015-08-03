@@ -27,9 +27,9 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>       
         <Canvas Grid.Row="0" Grid.Column="0" Name="panelDeskTop" Background="#FFf2f2f2" Margin="20">
-            
+            <Image Name="Sample" Width="90" Height="160" Canvas.Bottom="20" Canvas.Left="20" Margin="5" Stretch="Fill"></Image>
         </Canvas>
         <Grid Grid.Row="1" Grid.Column="0" >
             <Grid.ColumnDefinitions>                

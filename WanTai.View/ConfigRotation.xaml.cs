@@ -62,7 +62,7 @@ namespace WanTai.View
                         this.next_button.IsEnabled = false;
                     this.save_button.IsEnabled = false;
                     operation_viewcolumn.Visibility = System.Windows.Visibility.Visible;
-                    operation_column.Visibility = System.Windows.Visibility.Hidden;
+                    operation_template_column.Visibility = System.Windows.Visibility.Hidden;
 
                     foreach (RotationInfo rotation in rotationList)
                     {
@@ -84,21 +84,24 @@ namespace WanTai.View
                 }
                 else
                 {
+                
+
                     this.create_button.IsEnabled = true;
                     this.next_button.IsEnabled = false;
                     this.save_button.IsEnabled = true;
                     isBelongtoCurrentTubeBatch = true;
                     operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
-                    operation_column.Visibility = System.Windows.Visibility.Visible;
+
+                    operation_template_column.Visibility = System.Windows.Visibility.Visible;
 
                     operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
-                    operation_column.Visibility = System.Windows.Visibility.Visible;
+                    operation_template_column.Visibility = System.Windows.Visibility.Visible;
 
                     tubesBatch = controller.GetLastTubesBatch();
 
                     List<OperationConfiguration> operationList = controller.GetDisplayedOperationConfigurations();
-                    operation_column.ItemsSource = operationList;
-                   CreateOperation =operationList[0];
+                    //operation_column.ItemsSource = operationList;
+                    CreateOperation = operationList[0];
                 }
             }
             catch
@@ -202,6 +205,8 @@ namespace WanTai.View
                 return;
 
             int selectedRowIndex = rotation_dataGrid.SelectedIndex;
+            if (selectedRowIndex < 0)
+                return;
             if (selectedRowIndex == 0)
             {
                 //第一个必须是组合操作或者是混样
@@ -209,7 +214,7 @@ namespace WanTai.View
                     ((int)selectedOperation.OperationType == (int)OperationType.Single && selectedOperation.OperationSequence != 1))
                 {
                     MessageBox.Show("第一个轮次的操作必须是混样或者完整操作!", "系统提示！");
-                   // this.errorMessage.Text = "第一个轮次的操作必须是混样或者完整操作";
+                    // this.errorMessage.Text = "第一个轮次的操作必须是混样或者完整操作";
                     return;
                 }
             }
@@ -244,14 +249,14 @@ namespace WanTai.View
                     if (selectedOperation.OperationType != (int)OperationType.Grouping && (int)operation.OperationType == (int)OperationType.Grouping && selectedOperation.OperationSequence != 1)
                     {
                         MessageBox.Show("轮次的操作必须是混样或者完整操作!", "系统提示！");
-                       
-                     //   this.errorMessage.Text = "轮次的操作必须是混样或者完整操作";
+
+                        //   this.errorMessage.Text = "轮次的操作必须是混样或者完整操作";
                         return;
                     }
                     else if (selectedOperation.OperationType != (int)OperationType.Grouping && selectedOperation.OperationSequence != 1 && (operation.OperationSequence + 1 != selectedOperation.OperationSequence))
                     {
                         MessageBox.Show("轮次的操作必须按照顺序!", "系统提示！");
-                      //  this.errorMessage.Text = "轮次的操作必须按照顺序";
+                        //  this.errorMessage.Text = "轮次的操作必须按照顺序";
                         return;
                     }
                 }

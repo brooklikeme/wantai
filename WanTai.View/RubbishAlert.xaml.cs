@@ -15,6 +15,7 @@ using WanTai.DataModel;
 using WanTai.Controller;
 using WanTai.View.Services;
 using WanTai.Controller.Configuration;
+using System.Timers;
 
 namespace WanTai.View
 {
@@ -24,6 +25,8 @@ namespace WanTai.View
     public partial class RubbishAlert : Window
     {
         DeskTopService desktopService = new DeskTopService();
+        Timer timer = new Timer();
+        string workDeskType;
         public RubbishAlert()
         {
             InitializeComponent();
@@ -31,13 +34,52 @@ namespace WanTai.View
         public RubbishAlert(Guid RotationID)
         {
             InitializeComponent();
+
+            workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+
+            timer.Enabled = false;
+            timer.Interval = 1000;
+            timer.Elapsed += SwitchingAnimation;
+
+            int width = 0, limit = 0; double offset = 0;
+            if (workDeskType == "100")
+            {
+                limit = 32;
+                width = 500;
+                offset = 4.1;
+            }
+            else if (workDeskType == "150")
+            {
+                limit = 47;
+                width = 700;
+                offset = 1.7;
+            }
+            else if (workDeskType == "200")
+            {
+                this.Width = 1200;
+                this.Height = 500;
+                limit = 69;
+                width = 900;
+                offset = -0.6;
+            }
+
+            deskTop.Width = width;
             double lenghtUnit = deskTop.Width / 84;
             imgKingFisher.Width = lenghtUnit * 24;
             imgKingFisher.Height = lenghtUnit * 24;
-            imgKingFisher.Margin = new Thickness(-lenghtUnit * 2 * 1.4, lenghtUnit * 1, 0, lenghtUnit * 2);
-            deskTop.Children.Add(desktopService.DrawCoordinate(deskTop.Width, 69, lenghtUnit));
+            imgKingFisher.Margin = new Thickness(-lenghtUnit * 2 * 1.4, lenghtUnit * 12, 0, lenghtUnit * 2);
 
-            List<CarrierBase> carriers = desktopService.GetCarriers(lenghtUnit, 1.4);           
+            if (workDeskType == "200")
+            {
+                deskTop.Children.Add(desktopService.DrawCoordinateOld(width, limit, lenghtUnit + offset));
+            }
+            else
+            {
+                deskTop.Children.Add(desktopService.DrawCoordinate(width, limit, lenghtUnit + offset));
+            }
+            
+
+            List<CarrierBase> carriers = desktopService.GetCarriers(900/84, 1.4);           
             List<ReagentAndSuppliesConfiguration> supplies = new ReagentSuppliesConfigurationController().
                 GetRotationVolume(SessionInfo.ExperimentID, RotationID, new short[] { 0 }, ReagentAndSuppliesConfiguration.CurrentVolumeFieldName).FindAll(P => P.ItemType >= 100 && P.ItemType < 200);
             List<PlateBase> plates = new List<PlateBase>();
@@ -187,20 +229,72 @@ namespace WanTai.View
             PCRPlate.Correct = false;
             plates.Add(PCRPlate);
             */
+
             foreach (CarrierBase c in carriers)
             {
                 c.UpdatePlate(plates.FindAll(P => P.ContainerName == c.CarrierName));
+
+                // 修改 枪头及深孔板 js
+                if (workDeskType == "100" && c.CarrierName == "006")
+                    continue;
+
                 deskTop.Children.Add(c);
                 c.Scan();
             }
             this.RotationID = RotationID;
+            timer.Start();
+
+            string image = String.Format(@"/WanTag;component/Resources/Sample{0}.gif", workDeskType);
+            Sample.Source = new BitmapImage(new Uri(image, UriKind.Relative));
+            // 隐藏 枪头 js
+            if (workDeskType == "100")
+            {
+                Sample.Margin = new Thickness(10, 0, 0, -15);
+            }
+            else if (workDeskType == "150")
+            {
+                Sample.Margin = new Thickness(-15, 5, 0, -15);
+                Sample.Width = 270;
+            }
+            else if (workDeskType == "200")
+            {
+                Sample.Margin = new Thickness(-15, 5, 0, -15);
+                Sample.Width = 420;
+            }
         }
         private Guid RotationID;
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
-            
 
+            timer.Stop();
+        }
+        private bool flag = true;
+        private void SwitchingAnimation(object sender, ElapsedEventArgs e)
+        {
+            if (flag)
+            {
+                if (!this.Dispatcher.CheckAccess())
+                {
+                    this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
+                        new Action(delegate()
+                        {
+                            imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher_rubbish.gif", UriKind.Relative));
+                        }));
+                }
+            }
+            else
+            {
+                if (!this.Dispatcher.CheckAccess())
+                {
+                    this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
+                        new Action(delegate()
+                        {
+                            imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher.gif", UriKind.Relative));
+                        }));
+                }
+            }
+            flag = !flag;
         }
     }
 }

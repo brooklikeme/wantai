@@ -336,6 +336,7 @@ namespace WanTai.Controller.Configuration
                 }
                 foreach (ReagentAndSuppliesConfiguration r in list)
                 {
+                    // 修改 枪头 js @ReagentAndSuppliesConfiguration
                     double volumne = CalcVolume(r.CalculationFormula, operationsOrders, formulaParameters);
                     r.NeedVolume = r.ItemType >= 100 ? Math.Ceiling(volumne) : volumne;
                     if (r.ItemType == DiTiType.DiTi200 || r.ItemType == DiTiType.DiTi1000)

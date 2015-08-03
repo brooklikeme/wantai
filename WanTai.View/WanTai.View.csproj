@@ -259,8 +259,14 @@
     <Compile Include="TubesScanParameter.xaml.cs">
       <DependentUpon>TubesScanParameter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TubesView.xaml.cs">
-      <DependentUpon>TubesView.xaml</DependentUpon>
+    <Compile Include="TubesView200.xaml.cs">
+      <DependentUpon>TubesView200.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TubesView100.xaml.cs">
+      <DependentUpon>TubesView100.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TubesView150.xaml.cs">
+      <DependentUpon>TubesView150.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserManagement\AddUser.xaml.cs">
       <DependentUpon>AddUser.xaml</DependentUpon>
@@ -494,7 +500,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TubesView.xaml">
+    <Page Include="TubesView200.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubesView100.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubesView150.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -695,6 +709,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Arrow_Blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sample150.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Sample100.gif" />
+    <Resource Include="Resources\Sample200.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
