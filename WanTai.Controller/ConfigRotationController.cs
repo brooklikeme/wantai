@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Data;
 
 using WanTai.DataModel;
+using System.Data.Objects;
 
 namespace WanTai.Controller
 {
@@ -17,9 +18,18 @@ namespace WanTai.Controller
             try
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
-                {                    
-                    var records = entities.OperationConfigurations.Where(c => c.DisplayFlag == true && c.ActiveStatus==true).OrderBy(c => c.OperationSequence);
-                    return records.ToList<OperationConfiguration>();
+                {
+                    var records = entities.OperationConfigurations.Where(c => c.DisplayFlag == true && c.ActiveStatus == true).OrderBy(c => c.OperationSequence);
+                    List<OperationConfiguration> results = records.ToList<OperationConfiguration>();
+                    if (SessionInfo.BatchType == "A")
+                    {
+                        results = results.Where(c => c.OperationSequence == 1).ToList<OperationConfiguration>();
+                    }
+                    else 
+                    {
+                        results = results.Where(c => c.OperationSequence != 1).ToList<OperationConfiguration>();
+                    }
+                    return results;
                 }
             }
             catch (Exception e)

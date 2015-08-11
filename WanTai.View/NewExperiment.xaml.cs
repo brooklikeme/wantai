@@ -62,6 +62,7 @@ namespace WanTai.View
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
                 SessionInfo.RotationFormulaParameters=new Dictionary<Guid,FormulaParameters>();
                 SessionInfo.PraperRotation = null;
+                SessionInfo.BatchType = null;
                 LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "新建实验 成功", SessionInfo.LoginName, this.GetType().Name, SessionInfo.ExperimentID);
                 this.DialogResult = true;
                 this.Close();

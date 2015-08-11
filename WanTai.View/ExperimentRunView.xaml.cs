@@ -1407,10 +1407,20 @@ namespace WanTai.View
             }
         }
 
+        public event WanTai.View.MainPage.BackStepHandler BackStepEvent;
+
         private void btnTrash_Click(object sender, RoutedEventArgs e)
         {
             if (FinishedRotation != null)
             {
+                if (SessionInfo.BatchType == "A")
+                {
+                    BackStepEvent(sender, e);
+                    SessionInfo.BatchType = "B";
+                    return;
+                }
+
+
                 RubbishAlert rubbishAlert = new RubbishAlert(FinishedRotation.RotationID);
                 rubbishAlert.ShowDialog();
 

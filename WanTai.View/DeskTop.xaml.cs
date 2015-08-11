@@ -217,13 +217,23 @@ namespace WanTai.View
             reagentAndSupplies.Clear();
 
             RotationInfo firstRotation = new ConfigRotationController().GetCurrentRotationInfos(SessionInfo.ExperimentID).FirstOrDefault();
-            if (firstRotation == null) return;
-
+            if (firstRotation == null) 
+            {
+            //    RotationInfo rotationInfo = new RotationInfo();
+            //    rotationInfo.RotationID = Guid.Empty;
+            //    rotationInfo.OperationID = new Guid("a091518f-10f5-11e1-b8f5-005056c00008");
+            //    SessionInfo.PraperRotation = rotationInfo;
+            //    isFirstRotation = true;
+            //}
+            //else
+            //{
+            //    
+                return;
+            }
             isFirstRotation = firstRotation.RotationID == SessionInfo.PraperRotation.RotationID;
 
             //Binding DataGrid
             Dictionary<short, bool> operationOrders = new OperationController().GetOperationOrders(SessionInfo.PraperRotation.OperationID);
-
             ReagentSuppliesConfigurationController configController = new ReagentSuppliesConfigurationController();
             reagentAndSupplies = configController.GetReagentAndSuppliesNeeded(operationOrders, SessionInfo.RotationFormulaParameters[SessionInfo.PraperRotation.RotationID]);
             if (!isFirstRotation)
@@ -267,7 +277,6 @@ namespace WanTai.View
 
             foreach (CarrierBase c in carriers)
             {
-
                 c.UpdatePlate(ViewPlates.FindAll(P => P.ContainerName == c.CarrierName));
                 if (c.CarrierName == "001" && !isFirstRotation)
                 {
@@ -307,7 +316,22 @@ namespace WanTai.View
                 }
 
                 DeskTopWithGrid.Children.Add(c);
-            }            
+            }
+
+            if (SessionInfo.BatchType == "A")
+            {
+                btnReagent.Visibility = Visibility.Hidden;
+                dgReagent.Visibility = Visibility.Hidden;
+                stackPanelTestItem.Visibility = Visibility.Hidden;
+                stackPanelTestItem2.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                btnReagent.Visibility = Visibility.Visible;
+                dgReagent.Visibility = Visibility.Visible;
+                stackPanelTestItem.Visibility = Visibility.Visible;
+                stackPanelTestItem2.Visibility = Visibility.Visible;
+            }
         }
      
         private void BindRelatedControls()
@@ -744,6 +768,9 @@ namespace WanTai.View
         {
             foreach (DataGrid dg in dataGridDictionary.Values)
             {
+
+                if (dg.IsVisible == false) continue;
+
                 foreach (ReagentAndSuppliesConfiguration item in dg.Items)
                 {
                     string strAddVolume = ((dg.Columns[3] as DataGridTemplateColumn).CellTemplate.FindName("txtAddVolume", dg.Columns[3].GetCellContent(item)) as TextBox).Text.Trim();
@@ -882,7 +909,6 @@ namespace WanTai.View
                 }
                 catch (Exception ex)
                 {
-
                     MessageBox.Show("扫描错误！", "系统提示");
                     return;
                 }

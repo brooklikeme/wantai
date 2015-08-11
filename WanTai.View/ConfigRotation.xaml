@@ -41,7 +41,7 @@
                 <DataGridTemplateColumn x:Name="operation_template_column" Header="操作" Width="320" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <ComboBox Name="operation_column" SelectionChanged="CmbOperation_SelectionChanged" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedItem="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" ItemsSource="{Binding Source={StaticResource OperationConfigurations }}"/>
+                            <ComboBox Name="operation_column" SelectionChanged="CmbOperation_SelectionChanged" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedItem="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" ItemsSource="{Binding Source={StaticResource OperationConfigurations }}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -84,8 +84,6 @@ namespace WanTai.View
                 }
                 else
                 {
-                
-
                     this.create_button.IsEnabled = true;
                     this.next_button.IsEnabled = false;
                     this.save_button.IsEnabled = true;
@@ -102,6 +100,18 @@ namespace WanTai.View
                     List<OperationConfiguration> operationList = controller.GetDisplayedOperationConfigurations();
                     //operation_column.ItemsSource = operationList;
                     CreateOperation = operationList[0];
+                }
+
+                if (SessionInfo.BatchType == "A")
+                {        
+                    create_button_Click(sender, e);
+                    create_button.IsEnabled = false;
+                    rotation_dataGrid.IsEnabled = false;
+                }
+                else
+                {
+                    create_button.IsEnabled = true;
+                    rotation_dataGrid.IsEnabled = true;
                 }
             }
             catch
@@ -414,6 +424,12 @@ namespace WanTai.View
                 SessionInfo.NextButIndex = 2;
                 NextStepEvent(sender, e);
             }
+        }
+
+        private void operation_column_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            comboBox.Items.Refresh();
         }
     }
 }

@@ -24,6 +24,7 @@ namespace WanTai.View
     public partial class MainPage : UserControl
     {
         public delegate void NextStepHandler(object sender, RoutedEventArgs e);
+        public delegate void BackStepHandler(object sender, RoutedEventArgs e);
         public delegate void ExperimentRunViewHandler();
         public delegate void NewExperimentHandler();
         public delegate void NewNextRotationHandler();
@@ -89,7 +90,10 @@ namespace WanTai.View
             experimentRunView.NewExperimentEvent += new NewExperimentHandler(NextRotationEvent);
             experimentRunView.ExperimentRunViewEvent += new ExperimentRunViewHandler(ExperimentRunViewEvent);
             experimentRunView.ExperimentRunErrEvent += new ExperimentRunErrHandler(ExperimentRunErrEvent);
-            experimentRunView.ExperimentRunRutrnEvent += new ExperimentRunRutrnHandler(ExperimentRunRutrnEvent);            
+            experimentRunView.ExperimentRunRutrnEvent += new ExperimentRunRutrnHandler(ExperimentRunRutrnEvent);
+
+            experimentRunView.BackStepEvent += new BackStepHandler(BackStepClick);
+
             tabControl.SelectedIndex = 0;
         }
         private void ExperimentRunRutrnEvent()
@@ -126,10 +130,11 @@ namespace WanTai.View
                 return;
             }
             if (tabControl.SelectedIndex < tabControl.Items.Count)
-            {
+            {               
                 tabControl.SelectedIndex++;
                 ((TabItem)tabControl.SelectedItem).IsEnabled = true;
             }
+
             if (tabControl.SelectedIndex == 2)
             {
                 if (SessionInfo.CurrentExperimentsInfo.State != (short)ExperimentStatus.Stop)
@@ -533,6 +538,19 @@ namespace WanTai.View
         {
             server = new NameDpipesServer();
             server.MessageReceived += new NameDpipesServer.MessageReceivedHandler(MessageReceived);
+        }
+
+        private void BackStepClick(object sender, RoutedEventArgs e)
+        {
+            SessionInfo.ExperimentID = new Guid();
+            SessionInfo.PraperRotation = null;
+            //SessionInfo.CurrentExperimentsInfo = null;
+            tabControl.SelectedIndex = 0;
+            for (int i = 1; i < tabControl.Items.Count; i++)
+            {
+                TabItem item = (TabItem)tabControl.Items[i];
+                item.IsEnabled = false;
+            }
         }
     }
 

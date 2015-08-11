@@ -816,22 +816,22 @@
             </Border>
             <Border Name="repeat_border_scan" BorderBrush="Silver" BorderThickness="0,0,1,0" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Visibility="Hidden">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="扫描"  Height="30" IsEnabled="False" Name="btn_scan1" Width="80" Click="btn_scan_Click" />
-                    <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail1" Width="100" Margin="40,0,0,0" Click="btn_detail_Click" />
+                    <Button Content="扫描"  Height="30" IsEnabled="False" Name="btn_scan2" Width="80" Click="btn_scan_Click" />
+                    <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail2" Width="100" Margin="40,0,0,0" Click="btn_detail_Click" />
                 </StackPanel>
             </Border>
             <Border Name="repeat_border_group" BorderBrush="Silver" BorderThickness="0,0,1,0"  Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Visibility="Hidden">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="分组"   Height="30" IsEnabled="False" Name="btn_Group1" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
-                    <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save1" Width="100" Margin="40,0,0,0" Click="btn_Save_Click" />
+                    <Button Content="分组" Height="30" IsEnabled="False" Name="btn_Group2" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
+                    <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save2" Width="100" Margin="40,0,0,0" Click="btn_Save_Click" />
                 </StackPanel>
             </Border>
             <Border Name="repeat_border_next" BorderBrush="Silver" BorderThickness="1" Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Visibility="Hidden">
-                <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next1" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" />
+                <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next2" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" />
             </Border>
 
             <Border BorderBrush="Silver" BorderThickness="1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                <Button Content="启用"  CommandParameter="TubesViewNext" Height="30" Width="80" Margin="0,0,0,0" Click="btn_Enable_Click" />
+                <Button Name="btn_Use" Content="启用"  CommandParameter="TubesViewNext" Height="30" Width="80" Margin="0,0,0,0" Click="btn_Enable_Click" />
             </Border>
         </Grid>
        
@@ -861,7 +861,7 @@
                   IsEnabledChanged="dg_TubesGroup_IsEnabledChanged" IsHitTestVisibleChanged="dg_TubesGroup_IsHitTestVisibleChanged" IsKeyboardFocusedChanged="dg_TubesGroup_IsKeyboardFocusedChanged" IsKeyboardFocusWithinChanged="dg_TubesGroup_IsKeyboardFocusWithinChanged" 
                   IsMouseCapturedChanged="dg_TubesGroup_IsMouseCapturedChanged" IsMouseCaptureWithinChanged="dg_TubesGroup_IsMouseCaptureWithinChanged" IsMouseDirectlyOverChanged="dg_TubesGroup_IsMouseDirectlyOverChanged" IsStylusCapturedChanged="dg_TubesGroup_IsStylusCapturedChanged" 
                   IsStylusCaptureWithinChanged="dg_TubesGroup_IsStylusCaptureWithinChanged" IsStylusDirectlyOverChanged="dg_TubesGroup_IsStylusDirectlyOverChanged" IsVisibleChanged="dg_TubesGroup_IsVisibleChanged" KeyDown="dg_TubesGroup_KeyDown" KeyUp="dg_TubesGroup_KeyUp"-->
-        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="3" FontSize="12" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"  Name="dg_TubesGroup" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
+        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="3" FontSize="12" Grid.Column="0" HorizontalAlignment="Stretch"  Name="dg_TubesGroup" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="分组名称" Width="80*">
                     <DataGridTemplateColumn.CellTemplate>
@@ -919,6 +919,65 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-       
+
+        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="3" FontSize="12" Grid.Column="1" HorizontalAlignment="Stretch"  Name="dg_TubesGroup2" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="分组名称" Width="80*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <Label Content="{Binding Path=TubesGroupName}"  Name="lab_TubesGroupName"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="样品数量" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Label Content="{Binding Path=TubesNumber}"  Name="lab_TubesNumber"  />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="混样模式" Width="100" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <ComboBox Name="cb_PoolingRulesConfigurations" SelectionChanged="cb_PoolingRulesConfigurations_SelectionChanged2" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedValue="{Binding PoolingRulesID}" SelectedValuePath="PoolingRulesID" DisplayMemberPath="PoolingRulesName"  ItemsSource="{Binding Source={StaticResource PoolingRulesConfigurations }}"   />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="是否补液" Width="80*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <CheckBox Content="补液" IsEnabled="False" Height="16" HorizontalAlignment="Center"  Name="ch_Complement" VerticalAlignment="Center" Unchecked="ch_Complement_Unchecked" Checked="ch_Complement_Checked" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="编辑" Width="100*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
+                                <Button Content="删除" Height="26" Width="75" Margin="0,0,0,0" HorizontalAlignment="Center" Click="btn_del_Click2"  Name="btn_del2" VerticalAlignment="Center"  />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="样品" Width="*" Visibility="Hidden">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Center" >
+                                <Label  HorizontalAlignment="Left"  Name="lab_TubesPosition2" VerticalAlignment="Center" >
+                                    <Label.Content>
+                                        <Binding Path="TubesPosition" />
+                                    </Label.Content>
+                                </Label>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
 </UserControl>
