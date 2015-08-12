@@ -19,16 +19,9 @@ namespace WanTai.Controller
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.OperationConfigurations.Where(c => c.DisplayFlag == true && c.ActiveStatus == true).OrderBy(c => c.OperationSequence);
+                    var records = entities.OperationConfigurations.Where(c => c.DisplayFlag == true && c.ActiveStatus == true).OrderByDescending(c => c.OperationType).ThenBy(c => c.OperationSequence);
                     List<OperationConfiguration> results = records.ToList<OperationConfiguration>();
-                    if (SessionInfo.BatchType == "A")
-                    {
-                        results = results.Where(c => c.OperationSequence == 1).ToList<OperationConfiguration>();
-                    }
-                    else 
-                    {
-                        results = results.Where(c => c.OperationSequence != 1).ToList<OperationConfiguration>();
-                    }
+                    
                     return results;
                 }
             }

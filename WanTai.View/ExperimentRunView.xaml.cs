@@ -408,8 +408,11 @@ namespace WanTai.View
 
                 foreach (TestingItemConfiguration Testing in TestingItem)
                 {
-                    if (File.Exists(CSVPath + Testing.WorkListFileName))
+                    if (File.Exists(CSVPath + Testing.WorkListFileName) && SessionInfo.BatchType != "B")
+                    {
                         File.Delete(CSVPath + Testing.WorkListFileName);
+                    }
+                       
                     if (File.Exists(CSVPath + ExperimentRotation[CurrentRotation.RunIndex].RotationID.ToString() + Testing.WorkListFileName))
                         File.Move(CSVPath + ExperimentRotation[CurrentRotation.RunIndex].RotationID.ToString() + Testing.WorkListFileName,
                             CSVPath + Testing.WorkListFileName);

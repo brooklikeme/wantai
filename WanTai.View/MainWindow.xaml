@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d" MinHeight="768" MinWidth="1024"  
-        d:DesignHeight="768" d:DesignWidth="1024" xmlns:my1="clr-namespace:WanTai.View" Icon="/WanTag;component/logo.ico" WindowState="Maximized" xmlns:my2="clr-namespace:ImageExtender">
+        d:DesignHeight="768" d:DesignWidth="1024" xmlns:my1="clr-namespace:WanTai.View" Icon="/WanTag;component/logo.ico" WindowState="Maximized" xmlns:my2="clr-namespace:ImageExtender" Loaded="Window_Loaded">
     <Window.Resources>
         <Style x:Key="ButtonFocusVisual">
             <Setter Property="Control.Template">

@@ -315,8 +315,8 @@ namespace WanTai.View
             //    processor.Close();
             //    ProcessorFactory.HasClosed = true;
             //}            
-            this.Close();
-          //  Application.Current.Shutdown();
+            //this.Close();
+            Application.Current.Shutdown();
         }
 
         private void CloseLamp_button_Click(object sender, RoutedEventArgs e)
@@ -449,6 +449,11 @@ namespace WanTai.View
             {
                 MessageBox.Show("aa" + "不存在。", "系统提示");
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

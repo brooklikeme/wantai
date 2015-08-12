@@ -51,6 +51,8 @@ namespace WanTai.View
         {
             try
             {
+                //rotation_dataGrid.Items.Clear();
+
                 errorMessage.Text = "";
                 List<RotationInfo> rotationList = controller.GetCurrentRotationInfos(SessionInfo.ExperimentID);
                 if (rotationList.Count() > 0)
@@ -99,14 +101,22 @@ namespace WanTai.View
 
                     List<OperationConfiguration> operationList = controller.GetDisplayedOperationConfigurations();
                     //operation_column.ItemsSource = operationList;
-                    CreateOperation = operationList[0];
+                    if (SessionInfo.BatchType == "A")
+                    {
+                        //results = results.Where(c => c.OperationSequence == 1).ToList<OperationConfiguration>();
+                        CreateOperation = operationList[operationList.Count - 1];
+                    }
+                    else
+                    {
+                        CreateOperation = operationList[0];
+                    }
                 }
 
                 if (SessionInfo.BatchType == "A")
                 {        
                     create_button_Click(sender, e);
-                    create_button.IsEnabled = false;
-                    rotation_dataGrid.IsEnabled = false;
+                    //create_button.IsEnabled = false;
+                    //rotation_dataGrid.IsEnabled = false;
                 }
                 else
                 {
@@ -304,6 +314,7 @@ namespace WanTai.View
                 rotationInfo.OperationName = operation.OperationName;
 
                 rotationInfo.RotationSequence = (short)row["Sequence"];
+                //rotationInfo.BatchType = SessionInfo.BatchType;
 
                 rotationInfoList.Add(rotationInfo);                
             }

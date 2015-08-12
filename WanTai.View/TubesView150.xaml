@@ -460,7 +460,7 @@
         </DataGrid>
         <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" FontSize="12"  Grid.Column="1" AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules2" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick" IsEnabled="False">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="1" Width="*">
+                <DataGridTemplateColumn Header="19" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background1}"/>
@@ -477,7 +477,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="2" Width="*">
+                <DataGridTemplateColumn Header="20" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background2}"/>
@@ -494,7 +494,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="3" Width="*">
+                <DataGridTemplateColumn Header="21" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background3}"/>
@@ -511,7 +511,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="4" Width="*">
+                <DataGridTemplateColumn Header="22" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background4}"/>
@@ -528,7 +528,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="5" Width="*">
+                <DataGridTemplateColumn Header="23" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background5}"/>
@@ -545,7 +545,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="6" Width="*">
+                <DataGridTemplateColumn Header="24" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background6}"/>
@@ -562,7 +562,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="7" Width="*">
+                <DataGridTemplateColumn Header="25" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background7}"/>
@@ -579,7 +579,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="8" Width="*">
+                <DataGridTemplateColumn Header="26" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background8}"/>
@@ -596,7 +596,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="9" Width="*">
+                <DataGridTemplateColumn Header="27" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background9}"/>
@@ -613,7 +613,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="10" Width="*">
+                <DataGridTemplateColumn Header="28" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background10}"   />
@@ -630,7 +630,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="11" Width="*">
+                <DataGridTemplateColumn Header="29" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background11}"/>
@@ -647,7 +647,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="12" Width="*">
+                <DataGridTemplateColumn Header="30" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background12}"/>
@@ -664,7 +664,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="13" Width="*">
+                <DataGridTemplateColumn Header="31" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background13}"/>
@@ -681,7 +681,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="14" Width="*">
+                <DataGridTemplateColumn Header="32" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background14}"/>
@@ -698,7 +698,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="15" Width="*">
+                <DataGridTemplateColumn Header="33" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background15}"/>
@@ -715,7 +715,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="16" Width="*">
+                <DataGridTemplateColumn Header="34" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background16}"/>
@@ -732,7 +732,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="17" Width="*">
+                <DataGridTemplateColumn Header="35" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background17}"/>
@@ -749,7 +749,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="18" Width="*">
+                <DataGridTemplateColumn Header="36" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background18}"/>

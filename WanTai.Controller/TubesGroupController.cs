@@ -78,7 +78,8 @@ namespace WanTai.Controller
                    // _WanTaiEntities.SaveChanges();
                     RotationInfo ExperimentRotation = _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID && Rotation.TubesBatchID == null).FirstOrDefault();
                     string CSVPath = WanTai.Common.Configuration.GetWorkListFilePath();
-                    string DWFileName = CSVPath  + WanTai.Common.Configuration.GetAddSamplesWorkListFileName();
+                    string DWFileName = CSVPath + WanTai.Common.Configuration.GetAddSamplesWorkListFileName();
+                    
                     //string PCRFileName = CSVPath + "PCR" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".csv";
                     ///todo: each test item should has a seperate file name, the file is in TestingItemConfiguration.
                     int PoolCountInTotal = 0;

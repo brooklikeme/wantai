@@ -542,7 +542,7 @@ namespace WanTai.View
 
         private void BackStepClick(object sender, RoutedEventArgs e)
         {
-            SessionInfo.ExperimentID = new Guid();
+            //SessionInfo.ExperimentID = new Guid();
             SessionInfo.PraperRotation = null;
             //SessionInfo.CurrentExperimentsInfo = null;
             tabControl.SelectedIndex = 0;

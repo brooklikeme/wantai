@@ -3690,7 +3690,7 @@ namespace WanTai.DataModel
         /// <param name="createTime">Initial value of the CreateTime property.</param>
         /// <param name="operationID">Initial value of the OperationID property.</param>
         /// <param name="operationName">Initial value of the OperationName property.</param>
-        public static RotationInfo CreateRotationInfo(global::System.Guid rotationID, global::System.Guid experimentID, global::System.Int16 state, global::System.DateTime createTime, global::System.Guid operationID, global::System.String operationName)
+        public static RotationInfo CreateRotationInfo(global::System.Guid rotationID, global::System.Guid experimentID, global::System.Int16 state, global::System.DateTime createTime, global::System.Guid operationID, global::System.String operationName, global::System.String batchType)
         {
             RotationInfo rotationInfo = new RotationInfo();
             rotationInfo.RotationID = rotationID;
@@ -3699,6 +3699,7 @@ namespace WanTai.DataModel
             rotationInfo.CreateTime = createTime;
             rotationInfo.OperationID = operationID;
             rotationInfo.OperationName = operationName;
+            //rotationInfo.BatchType = batchType;
             return rotationInfo;
         }
 
@@ -3899,6 +3900,8 @@ namespace WanTai.DataModel
         private global::System.String _OperationName;
         partial void OnOperationNameChanging(global::System.String value);
         partial void OnOperationNameChanged();
+
+       
     
         /// <summary>
         /// No Metadata Documentation available.

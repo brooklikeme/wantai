@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WanTai.View"
         local:WindowCustomizer.CanMaximize="False" 
-        Title="新建实验" Height="300" Width="400" WindowStartupLocation="CenterScreen" Icon="/WanTag;component/Resources/logo.ico">
+        Title="新建实验" Height="329" Width="400" WindowStartupLocation="CenterScreen" Icon="/WanTag;component/Resources/logo.ico">
     <Grid Margin="10" Focusable="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>

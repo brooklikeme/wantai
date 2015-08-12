@@ -993,17 +993,14 @@ namespace WanTai.View
                 }
             }
             
-            if (SessionInfo.BatchType != "B")
+            string ErrMsg;
+            int ErrType;
+            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.BatchIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
+            if (ErrType == -1)
             {
-                string ErrMsg;
-                int ErrType;
-                CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.BatchIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
-                if (ErrType == -1)
-                {
-                    MessageBox.Show(ErrMsg, "系统提示!");
-                    return;
-                }
-            }     
+                MessageBox.Show(ErrMsg, "系统提示!");
+                return;
+            }   
             
             //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
            // MessageBox.Show("生成成功！", "系统提示!");
