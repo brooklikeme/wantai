@@ -81,15 +81,36 @@ namespace WanTai.View.PCR
             bool isRightPositionNumber = true;
             if (type_comboBox.SelectedIndex == 0)
             {
-                isRightFormat = processABIFile(fileName, rotationId, plate, out isRightPositionNumber);                
+                if (100 == 100)
+                {
+                    isRightFormat = processABIFile(fileName, rotationId, plate, out isRightPositionNumber);
+                } else 
+                {
+                    isRightFormat = processABIFile100(fileName, rotationId, plate, out isRightPositionNumber); 
+                }               
             }
             else if (type_comboBox.SelectedIndex == 1)
             {
-                isRightFormat = processBIORADFile(fileName, rotationId, plate, out isRightPositionNumber);
+                if (100 == 100)
+                {
+                    isRightFormat = processBIORADFile(fileName, rotationId, plate, out isRightPositionNumber);
+                }
+                else
+                {
+                    isRightFormat = processBIORADFile100(fileName, rotationId, plate, out isRightPositionNumber);
+                }
             }
             else if (type_comboBox.SelectedIndex == 2)
             {
-                isRightFormat = processStratageneFile(fileName, rotationId, plate, out isRightPositionNumber);
+                if (100 == 100)
+                {
+                    isRightFormat = processStratageneFile(fileName, rotationId, plate, out isRightPositionNumber);
+                }
+                else
+                {
+                    isRightFormat = processStratageneFile100(fileName, rotationId, plate, out isRightPositionNumber);
+                }
+                
             }
 
             if (!isRightFormat)
@@ -120,107 +141,268 @@ namespace WanTai.View.PCR
         private bool processABIFile(string fileName, Guid rotationId, Plate plate, out bool isRightPositionNumber)
         {
             isRightPositionNumber = true;
-            string formatTitle = "Well,Sample Name,Detector,Task,Ct,StdDev Ct,Qty,Mean Qty,StdDev Qty,Filtered,Tm";
+            OleDbConnectionStringBuilder connectionStringBuilder = new OleDbConnectionStringBuilder();
+            connectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";
+            connectionStringBuilder.DataSource = fileName;
+            connectionStringBuilder.Add("Mode", "Read");
+            connectionStringBuilder.Add("Extended Properties", "Excel 8.0;IMEX=1;TypeGuessRows=0;ImportMixedTypes=Text");
             bool isRightFormat = false;
-            ABIPCRColumnData previousMainAbiData = null;
-            List<ABIPCRColumnData> dataList = new List<ABIPCRColumnData>();
-            using (FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
+            bool hasWellColumn = false;
+            bool hasDetectorColumn = false;
+            bool hasCtColumn = false;
+            using (OleDbConnection con = new OleDbConnection(connectionStringBuilder.ToString()))
             {
-                using (StreamReader reader = new StreamReader(stream))
+                con.Open();
+                DataTable dtSchema = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+                string Sheet1 = dtSchema.Rows[0].Field<string>("TABLE_NAME");
+
+                DataTable sheetColumns = con.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new object[] { null, null, Sheet1, null });
+                foreach (DataRow row in sheetColumns.Rows)
                 {
-                    while (!reader.EndOfStream)
+                    string strColumnName = row["COLUMN_NAME"].ToString();
+                    if (strColumnName == "Well")
                     {
-                        string content = reader.ReadLine();
-                        if (isRightFormat)
-                        {
-                            string[] values = content.Split(',');
-                            if (values.Count() < 5)
-                                break;
-                            ABIPCRColumnData abiData = new ABIPCRColumnData();
-                            abiData.Well = values[0];
-                            abiData.Detector = values[2];
-                            abiData.Ct = values[4];
-                            abiData.XmlContent = "<Well>" + values[0] + "</Well><Detector>" + values[2] + "</Detector><Ct>" + values[4] + "</Ct>";
-
-                            if (string.IsNullOrEmpty(abiData.Well))
-                            {
-                                if (previousMainAbiData.DataList == null)
-                                {
-                                    previousMainAbiData.DataList = new List<PCRColumnData>();
-                                }
-                                
-                                previousMainAbiData.DataList.Add(abiData);
-                            }
-                            else
-                            {
-                                previousMainAbiData = abiData;
-                                dataList.Add(previousMainAbiData);
-                            }
-                        }
-
-                        if (!isRightFormat && content.StartsWith(formatTitle))
-                        {
-                            isRightFormat = true;
-                        }
+                        hasWellColumn = true;
+                    }
+                    else if (strColumnName == "Reporter")
+                    {
+                        hasDetectorColumn = true;
+                    }
+                    if (strColumnName == "Cт")
+                    {
+                        hasCtColumn = true;
                     }
                 }
-            }
 
-            if (!isRightFormat)
-                return isRightFormat;
-
-            Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
-            if (dc.Count != dataList.Count)
-            {
-                isRightPositionNumber = false;
-                if (!isRightPositionNumber)
+                if (hasWellColumn && hasDetectorColumn && hasCtColumn)
                 {
-                    MessageBoxResult selectResult = MessageBox.Show("PCR仪检测结果和混样数不一致，请检查操作是否正确？“是”将按现有规则导入", "系统提示", MessageBoxButton.YesNo);
-                    if (selectResult == MessageBoxResult.No)
+                    isRightFormat = true;
+                }
+
+                if (!isRightFormat)
+                    return isRightFormat;
+
+                OleDbDataAdapter da = new OleDbDataAdapter("select [Well],[Reporter],[Cт] from [" + Sheet1 + "]", con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+                System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    PCRColumnData sData = new PCRColumnData() { Well = row[0].ToString(), Detector = row[1].ToString(), Ct = row[2].ToString() };
+                    sData.XmlContent = "<Well>" + sData.Well + "</Well><Detector>" + sData.Detector + "</Detector><Ct>" + sData.Ct + "</Ct>";
+                    if (!dataList.ContainsKey(sData.Well))
                     {
-                        return isRightFormat;
+                        dataList.Add(sData.Well, sData);
                     }
                     else
                     {
-                        isRightPositionNumber = true;
+                        PCRColumnData _sData = (PCRColumnData)dataList[sData.Well];
+                        if (_sData.DataList == null)
+                        {
+                            _sData.DataList = new List<PCRColumnData>();
+                            _sData.DataList.Add(sData);
+                        }
+                        else
+                        {
+                            _sData.DataList.Add(sData);
+                        }
                     }
+                }
+
+                if (dc.Count != dataList.Count)
+                {
+                    isRightPositionNumber = false;
+                    if (!isRightPositionNumber)
+                    {
+                        MessageBoxResult selectResult = MessageBox.Show("PCR仪检测结果和混样数不一致，请检查操作是否正确？“是”将按现有规则导入", "系统提示", MessageBoxButton.YesNo);
+                        if (selectResult == MessageBoxResult.No)
+                        {
+                            return isRightFormat;
+                        }
+                        else
+                        {
+                            isRightPositionNumber = true;
+                        }
+                    }
+                }
+
+                foreach (PCRColumnData sData in dataList.Values)
+                {
+                    PCRTestResult info = new PCRTestResult();
+                    info.ItemID = WanTaiObjectService.NewSequentialGuid();
+                    info.RotationID = rotationId;
+                    info.Position = controller.ChangeCharacterToPositionNumber(sData.Well);
+                    info.CreateTime = DateTime.Now;
+
+                    //calculate 
+                    if (dc.ContainsKey(info.Position))
+                    {
+                        DataRow dcrow = dc[info.Position];
+                        bool isSingle = (int)dcrow["TubeNumber"] == 1 ? true : false;
+                        Tubetype tubeType = (Tubetype)((short)dcrow["TubeType"]);
+                        info.Result = checkPCRResult(sData, dcrow["TestName"].ToString(), isSingle, tubeType);
+                    }
+
+                    info.ExperimentID = currentExperimentId;
+                    if (plate.BarCode != null)
+                    {
+                        info.BarCode = plate.BarCode;
+                    }
+
+                    info.PlateID = plate.PlateID;
+                    string xmlContent = sData.XmlContent;
+                    if (sData.DataList != null && sData.DataList.Count > 0)
+                    {
+                        foreach (PCRColumnData data in sData.DataList)
+                        {
+                            xmlContent = xmlContent + data.XmlContent;
+                        }
+                    }
+                    info.PCRContent = "<PCRContent>" + xmlContent + "</PCRContent>";
+                    pcrResultList.Add(info);
                 }
             }
 
-            foreach (ABIPCRColumnData abiData in dataList)
+            return isRightFormat;
+        }
+
+        private bool processABIFile100(string fileName, Guid rotationId, Plate plate, out bool isRightPositionNumber)
+        {
+            isRightPositionNumber = true;
+            OleDbConnectionStringBuilder connectionStringBuilder = new OleDbConnectionStringBuilder();
+            connectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";
+            connectionStringBuilder.DataSource = fileName;
+            connectionStringBuilder.Add("Mode", "Read");
+            connectionStringBuilder.Add("Extended Properties", "Excel 8.0;IMEX=1;TypeGuessRows=0;ImportMixedTypes=Text");
+            bool isRightFormat = false;
+            bool hasWellColumn = false;
+            bool hasDetectorColumn = false;
+            bool hasCtColumn = false;
+            bool hasQuantityColumn = false;
+            bool hasDrColumn = false;
+            using (OleDbConnection con = new OleDbConnection(connectionStringBuilder.ToString()))
             {
-                PCRTestResult info = new PCRTestResult();
-                info.ItemID = WanTaiObjectService.NewSequentialGuid();
-                info.RotationID = rotationId;
-                info.Position = controller.ChangeCharacterToPositionNumber(abiData.Well);
-                info.CreateTime = DateTime.Now;
-                //calculate 
-                if(dc.ContainsKey(info.Position))
-                {
-                    DataRow row = dc[info.Position];
-                    bool isSingle = (int)row["TubeNumber"] ==1 ? true : false;
-                    Tubetype tubeType = (Tubetype)((short)row["TubeType"]);
-                    info.Result = checkPCRResult(abiData, row["TestName"].ToString(), isSingle, tubeType);
-                } 
+                con.Open();
+                DataTable dtSchema = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+                string Sheet1 = dtSchema.Rows[0].Field<string>("TABLE_NAME");
 
-                info.ExperimentID = currentExperimentId;
-                if(plate.BarCode!=null)
+                DataTable sheetColumns = con.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new object[] { null, null, Sheet1, null });
+                foreach (DataRow row in sheetColumns.Rows)
                 {
-                    info.BarCode = plate.BarCode;
-                }
-
-                info.PlateID = plate.PlateID;
-
-                string xmlContent = abiData.XmlContent;
-                if (abiData.DataList != null)
-                {
-                    foreach (ABIPCRColumnData data in abiData.DataList)
+                    string strColumnName = row["COLUMN_NAME"].ToString();
+                    if (strColumnName == "Well")
                     {
-                        xmlContent = xmlContent + data.XmlContent;
-                    }                    
+                        hasWellColumn = true;
+                    }
+                    else if (strColumnName == "Reporter")
+                    {
+                        hasDetectorColumn = true;
+                    }
+                    if (strColumnName == "Cт")
+                    {
+                        hasCtColumn = true;
+                    }
+                    if (strColumnName == "Quantity")
+                    {
+                        hasQuantityColumn = true;
+                    }
+                    if (strColumnName == "RSq (dR)")
+                    {
+                        hasDrColumn = true;
+                    }
                 }
-                info.PCRContent = "<PCRContent>" + xmlContent + "</PCRContent>";
-                pcrResultList.Add(info);
+
+                if (hasWellColumn && hasDetectorColumn && hasCtColumn && hasQuantityColumn && hasDrColumn)
+                {
+                    isRightFormat = true;
+                }
+
+                if (!isRightFormat)
+                    return isRightFormat;
+
+                OleDbDataAdapter da = new OleDbDataAdapter("select [Well],[Reporter],[Cт],[Quantity],[RSq (dR)] from [" + Sheet1 + "]", con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+                System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    PCRColumnData sData = new PCRColumnData() { Well = row[0].ToString(), Detector = row[1].ToString(), Ct = row[2].ToString(), Quantity = row[3].ToString(), Dr = row[4].ToString() };
+                    sData.XmlContent = "<Well>" + sData.Well + "</Well><Detector>" + sData.Detector + "</Detector><Ct>" + sData.Ct + "</Ct><Quantity>" + sData.Quantity + "</Quantity><Dr>" + sData.Dr + "</Dr>";
+                    if (!dataList.ContainsKey(sData.Well))
+                    {
+                        dataList.Add(sData.Well, sData);
+                    }
+                    else
+                    {
+                        PCRColumnData _sData = (PCRColumnData)dataList[sData.Well];
+                        if (_sData.DataList == null)
+                        {
+                            _sData.DataList = new List<PCRColumnData>();
+                            _sData.DataList.Add(sData);
+                        }
+                        else
+                        {
+                            _sData.DataList.Add(sData);
+                        }
+                    }
+                }
+
+                if (dc.Count != dataList.Count)
+                {
+                    isRightPositionNumber = false;
+                    if (!isRightPositionNumber)
+                    {
+                        MessageBoxResult selectResult = MessageBox.Show("PCR仪检测结果和混样数不一致，请检查操作是否正确？“是”将按现有规则导入", "系统提示", MessageBoxButton.YesNo);
+                        if (selectResult == MessageBoxResult.No)
+                        {
+                            return isRightFormat;
+                        }
+                        else
+                        {
+                            isRightPositionNumber = true;
+                        }
+                    }
+                }
+
+                foreach (PCRColumnData sData in dataList.Values)
+                {
+                    PCRTestResult info = new PCRTestResult();
+                    info.ItemID = WanTaiObjectService.NewSequentialGuid();
+                    info.RotationID = rotationId;
+                    info.Position = controller.ChangeCharacterToPositionNumber(sData.Well);
+                    info.CreateTime = DateTime.Now;
+
+                    //calculate 
+                    if (dc.ContainsKey(info.Position))
+                    {
+                        DataRow dcrow = dc[info.Position];
+                        bool isSingle = (int)dcrow["TubeNumber"] == 1 ? true : false;
+                        Tubetype tubeType = (Tubetype)((short)dcrow["TubeType"]);
+                        info.Result = checkPCRResult100(sData, dcrow["TestName"].ToString(), isSingle, tubeType);
+                    }
+
+                    info.ExperimentID = currentExperimentId;
+                    if (plate.BarCode != null)
+                    {
+                        info.BarCode = plate.BarCode;
+                    }
+
+                    info.PlateID = plate.PlateID;
+                    string xmlContent = sData.XmlContent;
+                    if (sData.DataList != null && sData.DataList.Count > 0)
+                    {
+                        foreach (PCRColumnData data in sData.DataList)
+                        {
+                            xmlContent = xmlContent + data.XmlContent;
+                        }
+                    }
+                    info.PCRContent = "<PCRContent>" + xmlContent + "</PCRContent>";
+                    pcrResultList.Add(info);
+                }
             }
 
             return isRightFormat;
@@ -231,7 +413,7 @@ namespace WanTai.View.PCR
             isRightPositionNumber = true;
             string formatTitle = "Well,Fluor,Target,Content,Sample,Cq,Starting Quantity (SQ)";
             bool isRightFormat = false;
-            System.Collections.Generic.Dictionary<string, BIORADPCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, BIORADPCRColumnData>();
+            System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
             
             using (FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
             {
@@ -245,10 +427,10 @@ namespace WanTai.View.PCR
                             string[] values = content.Split(',');
                             if (values.Count() < 6)
                                 break;
-                            BIORADPCRColumnData bioData = new BIORADPCRColumnData();
+                            PCRColumnData bioData = new PCRColumnData();
                             bioData.Well = values[0];
-                            bioData.Fluor = values[1];
-                            bioData.Cq = values[5];
+                            bioData.Detector = values[1];
+                            bioData.Ct = values[5];
                             bioData.XmlContent = "<Well>" + values[0] + "</Well><Fluor>" + values[1] + "</Fluor><Cq>" + values[5] + "</Cq>";
 
                             if (!dataList.ContainsKey(bioData.Well))
@@ -257,7 +439,7 @@ namespace WanTai.View.PCR
                             }
                             else
                             {
-                                BIORADPCRColumnData _bioData = (BIORADPCRColumnData)dataList[bioData.Well];
+                                PCRColumnData _bioData = (PCRColumnData)dataList[bioData.Well];
                                 if (_bioData.DataList == null)
                                 {
                                     _bioData.DataList = new List<PCRColumnData>();
@@ -299,7 +481,7 @@ namespace WanTai.View.PCR
                 }
             }
 
-            foreach (BIORADPCRColumnData bioData in dataList.Values)
+            foreach (PCRColumnData bioData in dataList.Values)
             {
                 PCRTestResult info = new PCRTestResult();
                 info.ItemID = WanTaiObjectService.NewSequentialGuid();
@@ -325,7 +507,119 @@ namespace WanTai.View.PCR
                 string xmlContent = bioData.XmlContent;
                 if (bioData.DataList != null && bioData.DataList.Count > 0)
                 {
-                    foreach (BIORADPCRColumnData data in bioData.DataList)
+                    foreach (PCRColumnData data in bioData.DataList)
+                    {
+                        xmlContent = xmlContent + data.XmlContent;
+                    }
+                }
+                info.PCRContent = "<PCRContent>" + xmlContent + "</PCRContent>";
+                pcrResultList.Add(info);
+            }
+
+            return isRightFormat;
+        }
+
+        private bool processBIORADFile100(string fileName, Guid rotationId, Plate plate, out bool isRightPositionNumber)
+        {
+            isRightPositionNumber = true;
+            string formatTitle = "Well,Fluor,Target,Content,Sample,Cq,Starting Quantity (SQ)";
+            bool isRightFormat = false;
+            System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
+
+            using (FileStream stream = File.Open(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    while (!reader.EndOfStream)
+                    {
+                        string content = reader.ReadLine();
+                        if (isRightFormat)
+                        {
+                            string[] values = content.Split(',');
+                            if (values.Count() < 7)
+                                break;
+                            PCRColumnData bioData = new PCRColumnData();
+                            bioData.Well = values[0];
+                            bioData.Detector = values[1];
+                            bioData.Ct = values[5];
+                            bioData.Quantity = values[6];
+                            bioData.XmlContent = "<Well>" + values[0] + "</Well><Fluor>" + values[1] + "</Fluor><Cq>" + values[5] + "</Cq><Quantity>" + values[6] + "</Quantity>";
+
+                            if (!dataList.ContainsKey(bioData.Well))
+                            {
+                                dataList.Add(bioData.Well, bioData);
+                            }
+                            else
+                            {
+                                PCRColumnData _bioData = (PCRColumnData)dataList[bioData.Well];
+                                if (_bioData.DataList == null)
+                                {
+                                    _bioData.DataList = new List<PCRColumnData>();
+                                    _bioData.DataList.Add(bioData);
+                                }
+                                else
+                                {
+                                    _bioData.DataList.Add(bioData);
+                                }
+                            }
+                        }
+
+                        if (!isRightFormat && content.StartsWith(formatTitle))
+                        {
+                            isRightFormat = true;
+                        }
+                    }
+                }
+            }
+
+            if (!isRightFormat)
+                return isRightFormat;
+
+            Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+            if (dc.Count != dataList.Count)
+            {
+                isRightPositionNumber = false;
+                if (!isRightPositionNumber)
+                {
+                    MessageBoxResult selectResult = MessageBox.Show("PCR仪检测结果和混样数不一致，请检查操作是否正确？“是”将按现有规则导入", "系统提示", MessageBoxButton.YesNo);
+                    if (selectResult == MessageBoxResult.No)
+                    {
+                        return isRightFormat;
+                    }
+                    else
+                    {
+                        isRightPositionNumber = true;
+                    }
+                }
+            }
+
+            foreach (PCRColumnData bioData in dataList.Values)
+            {
+                PCRTestResult info = new PCRTestResult();
+                info.ItemID = WanTaiObjectService.NewSequentialGuid();
+                info.RotationID = rotationId;
+                info.Position = controller.ChangeCharacterToPositionNumber(bioData.Well);
+                info.CreateTime = DateTime.Now;
+                //calculate 
+                if (dc.ContainsKey(info.Position))
+                {
+                    DataRow row = dc[info.Position];
+                    bool isSingle = (int)row["TubeNumber"] == 1 ? true : false;
+                    Tubetype tubeType = (Tubetype)((short)row["TubeType"]);
+                    info.Result = checkPCRResult100(bioData, row["TestName"].ToString(), isSingle, tubeType);
+                }
+
+                info.ExperimentID = currentExperimentId;
+                if (plate.BarCode != null)
+                {
+                    info.BarCode = plate.BarCode;
+                }
+
+                info.PlateID = plate.PlateID;
+                string xmlContent = bioData.XmlContent;
+                if (bioData.DataList != null && bioData.DataList.Count > 0)
+                {
+                    foreach (PCRColumnData data in bioData.DataList)
                     {
                         xmlContent = xmlContent + data.XmlContent;
                     }
@@ -385,19 +679,19 @@ namespace WanTai.View.PCR
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
-                System.Collections.Generic.Dictionary<string, StratagenePCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, StratagenePCRColumnData>();
+                System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
             
                 foreach (DataRow row in dt.Rows)
                 {
-                    StratagenePCRColumnData sData = new StratagenePCRColumnData() { Well=row[0].ToString(), Dye = row[1].ToString(), Ct = row[2].ToString() };
-                    sData.XmlContent = "<Well>" + sData.Well + "</Well><Dye>" + sData.Dye + "</Dye><Ct>" + sData.Ct + "</Ct>";
+                    PCRColumnData sData = new PCRColumnData() { Well=row[0].ToString(), Detector = row[1].ToString(), Ct = row[2].ToString() };
+                    sData.XmlContent = "<Well>" + sData.Well + "</Well><Dye>" + sData.Detector + "</Dye><Ct>" + sData.Ct + "</Ct>";
                     if (!dataList.ContainsKey(sData.Well))
                     {
                         dataList.Add(sData.Well, sData);
                     }
                     else
                     {
-                        StratagenePCRColumnData _sData = (StratagenePCRColumnData)dataList[sData.Well];
+                        PCRColumnData _sData = (PCRColumnData)dataList[sData.Well];
                         if (_sData.DataList == null)
                         {
                             _sData.DataList = new List<PCRColumnData>();
@@ -427,7 +721,7 @@ namespace WanTai.View.PCR
                     }
                 }
 
-                foreach (StratagenePCRColumnData sData in dataList.Values)
+                foreach (PCRColumnData sData in dataList.Values)
                 {
                     PCRTestResult info = new PCRTestResult();
                     info.ItemID = WanTaiObjectService.NewSequentialGuid();
@@ -454,7 +748,7 @@ namespace WanTai.View.PCR
                     string xmlContent = sData.XmlContent;
                     if (sData.DataList != null && sData.DataList.Count > 0)
                     {
-                        foreach (StratagenePCRColumnData data in sData.DataList)
+                        foreach (PCRColumnData data in sData.DataList)
                         {
                             xmlContent = xmlContent + data.XmlContent;
                         }
@@ -467,117 +761,184 @@ namespace WanTai.View.PCR
             return isRightFormat;
         }
 
+        private bool processStratageneFile100(string fileName, Guid rotationId, Plate plate, out bool isRightPositionNumber)
+        {
+            isRightPositionNumber = true;
+            OleDbConnectionStringBuilder connectionStringBuilder = new OleDbConnectionStringBuilder();
+            connectionStringBuilder.Provider = "Microsoft.Jet.OLEDB.4.0";
+            connectionStringBuilder.DataSource = fileName;
+            connectionStringBuilder.Add("Mode", "Read");
+            connectionStringBuilder.Add("Extended Properties", "Excel 8.0;IMEX=1;TypeGuessRows=0;ImportMixedTypes=Text");
+            bool isRightFormat = false;
+            bool hasWellColumn = false;
+            bool hasDyeColumn = false;
+            bool hasCtColumn = false;
+            bool hasQuantityColumn = false;
+            bool hasDrColumn = false;
+            using (OleDbConnection con = new OleDbConnection(connectionStringBuilder.ToString()))
+            {
+                con.Open();
+                DataTable dtSchema = con.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+                string Sheet1 = dtSchema.Rows[0].Field<string>("TABLE_NAME");
+
+                DataTable sheetColumns = con.GetOleDbSchemaTable(OleDbSchemaGuid.Columns, new object[] { null, null, Sheet1, null });
+                foreach (DataRow row in sheetColumns.Rows)
+                {
+                    string strColumnName = row["COLUMN_NAME"].ToString();
+                    if (strColumnName == "Well")
+                    {
+                        hasWellColumn = true;
+                    }
+                    else if (strColumnName == "Dye")
+                    {
+                        hasDyeColumn = true;
+                    }
+                    if (strColumnName == "Ct (dR)")
+                    {
+                        hasCtColumn = true;
+                    }
+                    if (strColumnName == "Quantity (copies)")
+                    {
+                        hasQuantityColumn = true;
+                    }
+                    if (strColumnName == "RSq (dR)")
+                    {
+                        hasDrColumn = true;
+                    }
+                }
+
+                if (hasWellColumn && hasDyeColumn && hasCtColumn && hasQuantityColumn && hasDrColumn)
+                {
+                    isRightFormat = true;
+                }
+
+                if (!isRightFormat)
+                    return isRightFormat;
+
+                OleDbDataAdapter da = new OleDbDataAdapter("select [Well],[Dye],[Ct (dR)],[Quantity (copies)],[RSq (dR)] from [" + Sheet1 + "]", con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+                System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    PCRColumnData sData = new PCRColumnData() { Well = row[0].ToString(), Detector = row[1].ToString(), Ct = row[2].ToString(), Quantity = row[3].ToString(), Dr = row[4].ToString() };
+                    sData.XmlContent = "<Well>" + sData.Well + "</Well><Dye>" + sData.Detector + "</Dye><Ct>" + sData.Ct + "</Ct><Quantity>" + sData.Quantity + "</Quantity><Dr>" + sData.Dr + "</Dr>";
+                    if (!dataList.ContainsKey(sData.Well))
+                    {
+                        dataList.Add(sData.Well, sData);
+                    }
+                    else
+                    {
+                        PCRColumnData _sData = (PCRColumnData)dataList[sData.Well];
+                        if (_sData.DataList == null)
+                        {
+                            _sData.DataList = new List<PCRColumnData>();
+                            _sData.DataList.Add(sData);
+                        }
+                        else
+                        {
+                            _sData.DataList.Add(sData);
+                        }
+                    }
+                }
+
+                if (dc.Count != dataList.Count)
+                {
+                    isRightPositionNumber = false;
+                    if (!isRightPositionNumber)
+                    {
+                        MessageBoxResult selectResult = MessageBox.Show("PCR仪检测结果和混样数不一致，请检查操作是否正确？“是”将按现有规则导入", "系统提示", MessageBoxButton.YesNo);
+                        if (selectResult == MessageBoxResult.No)
+                        {
+                            return isRightFormat;
+                        }
+                        else
+                        {
+                            isRightPositionNumber = true;
+                        }
+                    }
+                }
+
+                foreach (PCRColumnData sData in dataList.Values)
+                {
+                    PCRTestResult info = new PCRTestResult();
+                    info.ItemID = WanTaiObjectService.NewSequentialGuid();
+                    info.RotationID = rotationId;
+                    info.Position = controller.ChangeCharacterToPositionNumber(sData.Well);
+                    info.CreateTime = DateTime.Now;
+
+                    //calculate 
+                    if (dc.ContainsKey(info.Position))
+                    {
+                        DataRow dcrow = dc[info.Position];
+                        bool isSingle = (int)dcrow["TubeNumber"] == 1 ? true : false;
+                        Tubetype tubeType = (Tubetype)((short)dcrow["TubeType"]);
+                        info.Result = checkPCRResult100(sData, dcrow["TestName"].ToString(), isSingle, tubeType);
+                    }
+
+                    info.ExperimentID = currentExperimentId;
+                    if (plate.BarCode != null)
+                    {
+                        info.BarCode = plate.BarCode;
+                    }
+
+                    info.PlateID = plate.PlateID;
+                    string xmlContent = sData.XmlContent;
+                    if (sData.DataList != null && sData.DataList.Count > 0)
+                    {
+                        foreach (PCRColumnData data in sData.DataList)
+                        {
+                            xmlContent = xmlContent + data.XmlContent;
+                        }
+                    }
+                    info.PCRContent = "<PCRContent>" + xmlContent + "</PCRContent>";
+                    pcrResultList.Add(info);
+                }
+            }
+
+            return isRightFormat;
+        }
+
         private string checkPCRResult(PCRColumnData data, string testItemName, bool isSingle, Tubetype tubeType)
         {
             string rox = null;
             string hex = null;
             string fam = null;
-            if (data is ABIPCRColumnData)
-            {
-                ABIPCRColumnData aiData = (ABIPCRColumnData)data;
-                if ("ROX" == aiData.Detector)
-                {
-                    rox = aiData.Ct;
-                }
-                else if ("FAM" == aiData.Detector)
-                {
-                    fam = aiData.Ct;
-                }
-                else if ("HEX" == aiData.Detector)
-                {
-                    hex = aiData.Ct;
-                }
 
-                if (aiData.DataList != null)
+            if ("ROX" == data.Detector)
+            {
+                rox = data.Ct;
+            }
+            else if ("FAM" == data.Detector)
+            {
+                fam = data.Ct;
+            }
+            else if ("HEX" == data.Detector)
+            {
+                hex = data.Ct;
+            }
+
+            if (data.DataList != null)
+            {
+                foreach (PCRColumnData subData in data.DataList)
                 {
-                    foreach (ABIPCRColumnData subAiData in aiData.DataList)
+                    if ("ROX" == subData.Detector)
                     {
-                        if ("ROX" == subAiData.Detector)
-                        {
-                            rox = subAiData.Ct;
-                        }
-                        else if ("FAM" == subAiData.Detector)
-                        {
-                            fam = subAiData.Ct;
-                        }
-                        else if ("HEX" == subAiData.Detector)
-                        {
-                            hex = subAiData.Ct;
-                        }
+                        rox = subData.Ct;
+                    }
+                    else if ("FAM" == subData.Detector)
+                    {
+                        fam = subData.Ct;
+                    }
+                    else if ("HEX" == subData.Detector)
+                    {
+                        hex = subData.Ct;
                     }
                 }
             }
-            else if (data is BIORADPCRColumnData)
-            {
-                BIORADPCRColumnData bioData = (BIORADPCRColumnData)data;
-                if ("FAM" == bioData.Fluor)
-                {
-                    fam = bioData.Cq;
-                }
-                else if ("HEX" == bioData.Fluor)
-                {
-                    hex = bioData.Cq;
-                }
-                else if ("ROX" == bioData.Fluor)
-                {
-                    rox = bioData.Cq;
-                }
-
-                if (bioData.DataList != null)
-                {
-                    foreach (BIORADPCRColumnData subBioData in bioData.DataList)
-                    {
-                        if ("FAM" == subBioData.Fluor)
-                        {
-                            fam = subBioData.Cq;
-                        }
-                        else if ("HEX" == subBioData.Fluor)
-                        {
-                            hex = subBioData.Cq;
-                        }
-                        else if ("ROX" == subBioData.Fluor)
-                        {
-                            rox = subBioData.Cq;
-                        }
-                    }
-                }
-            }
-            else if (data is StratagenePCRColumnData)
-            {
-                StratagenePCRColumnData sData = (StratagenePCRColumnData)data;
-                if ("FAM" == sData.Dye)
-                {
-                    fam = sData.Ct;
-                }
-                else if ("HEX" == sData.Dye)
-                {
-                    hex = sData.Ct;
-                }
-                else if ("ROX" == sData.Dye)
-                {
-                    rox = sData.Ct;
-                }
-
-                if (sData.DataList != null)
-                {
-                    foreach (StratagenePCRColumnData subSata in sData.DataList)
-                    {
-                        if ("FAM" == subSata.Dye)
-                        {
-                            fam = subSata.Ct;
-                        }
-                        else if ("HEX" == subSata.Dye)
-                        {
-                            hex = subSata.Ct;
-                        }
-                        else if ("ROX" == subSata.Dye)
-                        {
-                            rox = subSata.Ct;
-                        }
-                    }
-                }
-            }
-
+ 
             if (!string.IsNullOrEmpty(fam) && (fam == "Undetermined" || fam == "No Ct" || fam == "N/A"))
             {
                 fam = "45";
@@ -790,6 +1151,353 @@ namespace WanTai.View.PCR
             }            
         }
 
+        private string checkPCRResult100(PCRColumnData data, string testItemName, bool isSingle, Tubetype tubeType)
+        {
+            string CT = null, IC = null, Quantity = null, DR = null;
+
+            // get ct and ic
+            if (testItemName == "HBV")
+            {
+                if ("VIC" == data.Detector || "HEX" == data.Detector)
+                {
+                    CT = data.Ct;
+                    Quantity = data.Quantity;
+                    DR = data.Dr;
+                }
+                else if ("ROX" == data.Detector)
+                {
+                    IC = data.Ct;
+                }
+                if (data.DataList != null)
+                {
+                    foreach (PCRColumnData subData in data.DataList)
+                    {
+                        if ("VIC" == subData.Detector || "HEX" == subData.Detector)
+                        {
+                            CT = subData.Ct;
+                            Quantity = subData.Quantity;
+                        }
+                        else if ("ROX" == subData.Detector)
+                        {
+                            IC = subData.Ct;
+                        }
+                    }
+                }
+            }
+            else if (testItemName == "HCV")
+            {
+                if ("ROX" == data.Detector)
+                {
+                    CT = data.Ct;
+                    Quantity = data.Quantity;
+                }
+                else if ("FAM" == data.Detector)
+                {
+                    IC = data.Ct;
+                }
+                if (data.DataList != null)
+                {
+                    foreach (PCRColumnData subData in data.DataList)
+                    {
+                        if ("ROX" == subData.Detector)
+                        {
+                            CT = subData.Ct;
+                            Quantity = subData.Quantity;
+                        }
+                        else if ("FAM" == subData.Detector)
+                        {
+                            IC = subData.Ct;
+                        }
+                    }
+                }
+            }
+            else if (testItemName == "HIV")
+            {
+                if ("FAM" == data.Detector)
+                {
+                    CT = data.Ct;
+                    Quantity = data.Quantity;
+                }
+                else if ("VIC" == data.Detector || "HEX" == data.Detector)
+                {
+                    IC = data.Ct;
+                }
+                if (data.DataList != null)
+                {
+                    foreach (PCRColumnData subData in data.DataList)
+                    {
+                        if ("FAM" == subData.Detector)
+                        {
+                            CT = subData.Ct;
+                            Quantity = subData.Quantity;
+                        }
+                        else if ("VIC" == subData.Detector || "HEX" == subData.Detector)
+                        {
+                            IC = subData.Ct;
+                        }
+                    }
+                }
+            }
+ 
+            float outNumber = 0;
+
+            //阴性对照
+            if (tubeType == Tubetype.NegativeControl)
+            {
+                if (!string.IsNullOrEmpty(IC) 
+                    && float.TryParse(IC, out outNumber) 
+                    && float.Parse(IC) <= 35
+                    && null != Quantity
+                    && ("No Ct") == Quantity || "Undetermined" == Quantity || Quantity.Trim() == "")
+                {
+                    return PCRTest.NegativeResult;
+                }
+                else
+                {
+                    return PCRTest.InvalidResult;
+                }
+            }
+            else if (tubeType == Tubetype.PositiveControl){
+                if (!string.IsNullOrEmpty(IC) 
+                    && float.TryParse(IC, out outNumber) 
+                    && float.Parse(IC) <= 35
+                    && !string.IsNullOrEmpty(Quantity)
+                    && float.TryParse(Quantity, out outNumber)
+                    && float.Parse(Quantity) >= 355
+                    && float.Parse(Quantity) <= 2820)
+                {
+                    return Quantity + " IU/ml";
+                }
+                else
+                {
+                    return PCRTest.InvalidResult;
+                }
+            } 
+            else
+            {
+                if (testItemName == "HBV")
+                {
+                    if (!string.IsNullOrEmpty(IC) 
+                        && float.TryParse(IC, out outNumber) 
+                        && float.Parse(IC) <= 35
+                        && null != CT
+                        && ("No Ct" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && null != Quantity
+                        && ("No Ct" == Quantity || Quantity.Trim() == "" || "Undetermined" == Quantity))
+                    {
+                        return PCRTest.NegativeResult;
+                    }
+                    else if (!string.IsNullOrEmpty(IC) 
+                        && float.TryParse(IC, out outNumber) 
+                        && float.Parse(IC) <= 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) < 10)
+                    {
+                        return "＜10";
+                    }
+                    else if (!string.IsNullOrEmpty(IC) 
+                        && float.TryParse(IC, out outNumber) 
+                        && float.Parse(IC) <= 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) >= 10
+                        && float.Parse(Quantity) < 10000)
+                    {
+                        return Quantity;
+                    }
+                    else if (!string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) >= 10000
+                        && float.Parse(Quantity) <= 1000000000)
+                    {
+                        return Quantity;
+                    }
+                    else if (!string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) > 1000000000)
+                    {
+                        return  "> 10E9";
+                    }
+                    else if (!string.IsNullOrEmpty(IC) 
+                        && float.TryParse(IC, out outNumber) 
+                        && float.Parse(IC) > 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) < 10000)
+                    {
+                        return PCRTest.InvalidResult;
+                    }
+                    else
+                    {
+                        return PCRTest.NoResult;
+                    }
+                }
+                else if (testItemName == "HCV")
+                {
+                    if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) <= 35
+                        && null != CT
+                        && ("No Ct" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && null != Quantity
+                        && ("No Ct" == Quantity || Quantity.Trim() == "" || "Undetermined" == Quantity))
+                    {
+                        return PCRTest.NegativeResult;
+                    }
+                    else if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) <= 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) < 50)
+                    {
+                        return "＜50";
+                    }
+                    else if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) <= 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) >= 50
+                        && float.Parse(Quantity) < 100000)
+                    {
+                        return Quantity;
+                    }
+                    else if (!string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) >= 100000
+                        && float.Parse(Quantity) <= 100000000)
+                    {
+                        return Quantity;
+                    }
+                    else if (!string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) > 100000000)
+                    {
+                        return "> 10E8";
+                    }
+                    else if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) > 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) < 10000)
+                    {
+                        return PCRTest.InvalidResult;
+                    }
+                    else
+                    {
+                        return PCRTest.NoResult;
+                    }
+                }
+                else if (testItemName == "HIV")
+                {
+                    if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) <= 35
+                        && null != CT
+                        && ("No Ct" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && null != Quantity
+                        && ("No Ct" == Quantity || Quantity.Trim() == "" || "Undetermined" == Quantity))
+                    {
+                        return PCRTest.NegativeResult;
+                    }
+                    else if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) <= 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) < 50)
+                    {
+                        return "＜50";
+                    }
+                    else if (!string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) >= 50
+                        && float.Parse(Quantity) < 10000000)
+                    {
+                        return Quantity;
+                    }
+                    else if (!string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) >= 10000000)
+                    {
+                        return "> 10E7";
+                    }
+                    else if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) > 35
+                        && !string.IsNullOrEmpty(CT)
+                        && float.TryParse(CT, out outNumber)
+                        && float.Parse(CT) <= 40
+                        && !string.IsNullOrEmpty(Quantity)
+                        && float.TryParse(Quantity, out outNumber)
+                        && float.Parse(Quantity) < 50)
+                    {
+                        return PCRTest.InvalidResult;
+                    }
+                    else if (!string.IsNullOrEmpty(IC)
+                        && float.TryParse(IC, out outNumber)
+                        && float.Parse(IC) > 35
+                        && null != CT
+                        && ("No Ct" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && null != Quantity
+                        && ("No Ct" == Quantity || Quantity.Trim() == "" || "Undetermined" == Quantity))
+                    {
+                        return PCRTest.InvalidResult;
+                    }
+                    else
+                    {
+                        return PCRTest.NoResult;
+                    }
+                }
+                else
+                {
+                    return PCRTest.NoResult;
+                }
+            }
+        }
+
         private bool validate()
         {
             if (rotation_comboBox.SelectedIndex < 0)
@@ -820,16 +1528,17 @@ namespace WanTai.View.PCR
                 return false;
             }
 
-            if ((type_comboBox.SelectedIndex ==0 || type_comboBox.SelectedIndex ==1) && 
-                !System.IO.Path.GetExtension(this.file_textBox.Text).Equals(".csv", StringComparison.CurrentCultureIgnoreCase))
+            if ((type_comboBox.SelectedIndex == 0 || type_comboBox.SelectedIndex == 2) && 
+                !(System.IO.Path.GetExtension(this.file_textBox.Text).Equals(".xls", StringComparison.CurrentCultureIgnoreCase)
+                || System.IO.Path.GetExtension(this.file_textBox.Text).Equals(".xlsx", StringComparison.CurrentCultureIgnoreCase)))
             {
                 MessageBox.Show("请选择正确的文件上传", "系统提示");
                 file_textBox.Focus();
                 return false;
             }
 
-            if ((type_comboBox.SelectedIndex == 2) &&
-                !System.IO.Path.GetExtension(this.file_textBox.Text).Equals(".xls", StringComparison.CurrentCultureIgnoreCase))
+            if ((type_comboBox.SelectedIndex == 1) &&
+                !System.IO.Path.GetExtension(this.file_textBox.Text).Equals(".csv", StringComparison.CurrentCultureIgnoreCase))
             {
                 MessageBox.Show("请选择正确的文件上传", "系统提示");
                 file_textBox.Focus();
@@ -881,10 +1590,15 @@ namespace WanTai.View.PCR
     class PCRColumnData
     {
         public string Well;
+        public string Detector;
         public string XmlContent;
+        public string Quantity;
+        public string Dr;
+        public string Ct;
         public List<PCRColumnData> DataList;
     }
 
+    /*
     class ABIPCRColumnData : PCRColumnData
     { 
         public string Detector;
@@ -901,5 +1615,5 @@ namespace WanTai.View.PCR
     {
         public string Dye;
         public string Ct;
-    }
+    }*/
 }

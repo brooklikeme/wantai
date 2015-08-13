@@ -14,7 +14,11 @@ namespace WanTai.DataModel
         Tube = 0,
         Complement = 1,
         PositiveControl = 2,
-        NegativeControl = 3
+        NegativeControl = 3,
+        Reference1 = 4,
+        Reference2 = 5,
+        Reference3 = 6,
+        Reference4 = 7
     }
 
     public enum LogInfoLevelEnum
