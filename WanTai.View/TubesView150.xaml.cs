@@ -37,7 +37,11 @@ namespace WanTai.View
         private bool IsPoack = false;
         private void AddColumns()
         {
-            SessionInfo.BatchIndex++;
+            if (SessionInfo.BatchType != "B")
+            {
+                SessionInfo.BatchIndex++;
+            }
+
             DataGridTemplateColumn _DataGridTemplateColumn = new DataGridTemplateColumn() { Header = "检测项目", Width = new DataGridLength(100, DataGridLengthUnitType.Star) };
             var TestItems = new TestItemController().GetActiveTestItemConfigurations();
             FrameworkElementFactory _StackPanel = new FrameworkElementFactory(typeof(StackPanel));

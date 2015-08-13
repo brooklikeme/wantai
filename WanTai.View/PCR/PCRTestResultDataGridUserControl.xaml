@@ -9,6 +9,7 @@
         <Style TargetType="{x:Type DataGridRow}">
             <Style.Setters>
                 <Setter Property="Background" Value="{Binding Path=Color}"></Setter>
+                <Setter Property="TextBlock.TextAlignment" Value="Center" ></Setter>
             </Style.Setters>
         </Style>
     </UserControl.Resources>
@@ -30,7 +31,7 @@
         <Label Name="errorMessage_label" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red"></Label>
         <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="12" CanUserAddRows="False" HorizontalAlignment="Stretch" Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="行号" Width="60" CanUserSort="False">
+                <DataGridTemplateColumn Header="序号" Width="60" CanUserSort="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
@@ -40,13 +41,13 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="采血管 BarCode" Width="110" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridTextColumn Header="采血管 位置" Width="110" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="采血管条码" Width="110" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="采血管位置" Width="110" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="混样方式" Width="80" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="检测项目" Width="80" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="PCR板 BarCode" Width="110" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="PCR板 Position" Width="110" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="检测结果" Width="150*" Binding="{Binding PCRTestResult}" CanUserSort="True" IsReadOnly="True" />
+                <DataGridTextColumn Header="PCR板条码" Width="110" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="PCR板位置" Width="110" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="结果判定" Width="150*" Binding="{Binding PCRTestResult}" CanUserSort="True" IsReadOnly="True" />
                 <DataGridTextColumn Header="实验记录" Width="200" Binding="{Binding SimpleTrackingResult}" CanUserSort="False" IsReadOnly="True" />
             </DataGrid.Columns>
         </DataGrid>

@@ -18,6 +18,8 @@ namespace WanTai.DataModel
         public static Dictionary<Guid, FormulaParameters> RotationFormulaParameters { get; set; }
         public static int NextButIndex { get; set; }
         public static string BatchType { get; set; }  //A轮、 B轮 
+        public static List<Guid> TestingItemIDs { get; set; }
+        public static string BatchATubeGroupID { get; set;}
 
         /**************在提取运行 TEST_3_TIQUANDMIX 脚本时，判断是否要跳转到扫描，-1时开始扫描文件 TECAN\EVOware\output\NextTurnStep.csv，
          *如果扫描到 0时跳转，

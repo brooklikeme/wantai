@@ -64,6 +64,9 @@ namespace WanTai.Controller.PCR
         {
             try
             {
+                DataTable baseTable = dataTable.Clone();
+                DataTable middTable = dataTable.Clone();
+
                 Dictionary<Guid, string> tubeSampleCheckResult = new Dictionary<Guid, string>();
                 List<ReagentSuppliesType> reagentSuppliesTypeList = WanTai.Common.Configuration.GetReagentSuppliesTypes();
                 Dictionary<string, string> reagentSuppliesTypeDic = new Dictionary<string, string>();
@@ -295,7 +298,7 @@ namespace WanTai.Controller.PCR
                             int previousPCRPosition = 0;
                             while (reader.Read())
                             {
-                                System.Data.DataRow dRow = dataTable.NewRow();
+                                System.Data.DataRow dRow = baseTable.NewRow();
                                 dRow["Number"] = index;
 
                                 dRow["TubeID"] = reader["TubeID"];
@@ -407,11 +410,96 @@ namespace WanTai.Controller.PCR
                                 }
 
                                 index++;
-                                dataTable.Rows.Add(dRow);
+                                baseTable.Rows.Add(dRow);
                             }
                         }
                     }
                 }
+
+                // get pcr position dict
+                Dictionary<int, List<DataRow>> pcrPosRows = new Dictionary<int, List<DataRow>>();
+                foreach (DataRow baseRow in baseTable.Rows)
+                {
+                    int pcrPos = (int)baseRow["PCRPosition"];
+                    if (!pcrPosRows.ContainsKey(pcrPos))
+                    {
+                        pcrPosRows.Add(pcrPos, new List<DataRow>());
+                    }
+                    pcrPosRows[pcrPos].Add(baseRow);
+                }
+                // get midd table
+                foreach (KeyValuePair<int, List<DataRow>> pcrPosRow in pcrPosRows)
+                {
+                    int listIndex = 0;
+                    System.Data.DataRow middRow = middTable.NewRow();
+                    foreach (DataRow baseRow in pcrPosRow.Value)
+                    {
+                        if (listIndex == 0)
+                        {
+                            middRow.ItemArray = baseRow.ItemArray;
+                            middTable.Rows.Add(middRow);
+                        }
+                        else
+                        {
+                            middRow["TubeBarCode"] += "\n" + baseRow["TubeBarCode"];
+                            middRow["TubePosition"] += "\n" + baseRow["TubePosition"];
+                        }
+                        listIndex++;
+                    }
+                }
+                // get midd dictionary
+                Dictionary<string, List<DataRow>> pcrTubeRows = new Dictionary<string, List<DataRow>>();
+                foreach (DataRow middRow in middTable.Rows)
+                {
+                    string tubePos = (string)middRow["TubePosition"] + "-" + (string)middRow["PoolingRuleName"];
+                    if (!pcrTubeRows.ContainsKey(tubePos))
+                    {
+                        pcrTubeRows.Add(tubePos, new List<DataRow>());
+                    }
+                    pcrTubeRows[tubePos].Add(middRow);
+                }
+                // get data table
+                int dataIndex = 1;
+                dataTable.Columns[11].DataType = typeof(string);
+                foreach (KeyValuePair<string, List<DataRow>> pcrTubeRow in pcrTubeRows)
+                {
+                    int listIndex = 0;
+                    System.Data.DataRow dataRow = dataTable.NewRow();
+                    foreach (DataRow middRow in pcrTubeRow.Value)
+                    {
+                        if (listIndex == 0)
+                        {
+                            dataRow.ItemArray = middRow.ItemArray;
+                            dataRow["Number"] = dataIndex;
+                            dataTable.Rows.Add(dataRow);
+                        }
+                        else
+                        {
+                            dataRow["TestingItemName"] += "\n" + middRow["TestingItemName"];
+                            dataRow["PCRPosition"] += "\n" + middRow["PCRPosition"];
+                        }
+                        listIndex++;
+                    }
+                    dataIndex++;
+                }
+                /*
+                _pcrTable.Columns.Add("Number", typeof(int));
+                _pcrTable.Columns.Add("Color", typeof(string));
+                _pcrTable.Columns.Add("TubeID", typeof(Guid));
+                _pcrTable.Columns.Add("TubeBarCode", typeof(string));
+                _pcrTable.Columns.Add("TubePosition", typeof(string));
+                _pcrTable.Columns.Add("TubeType", typeof(int));
+                _pcrTable.Columns.Add("TubeTypeColor", typeof(string));
+                _pcrTable.Columns.Add("TubeTypeColorVisible", typeof(string));
+                _pcrTable.Columns.Add("PoolingRuleName", typeof(string));
+                _pcrTable.Columns.Add("TestingItemName", typeof(string));
+                _pcrTable.Columns.Add("PCRPlateBarCode", typeof(string));
+                _pcrTable.Columns.Add("PCRPosition", typeof(int));
+                _pcrTable.Columns.Add("PCRTestItemID", typeof(Guid));
+                _pcrTable.Columns.Add("PCRTestResult", typeof(string));
+                _pcrTable.Columns.Add("PCRTestContent", typeof(string));
+                _pcrTable.Columns.Add("SimpleTrackingResult", typeof(string));
+                 */
             }
             catch (Exception e)
             {

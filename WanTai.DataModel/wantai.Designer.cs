@@ -2398,7 +2398,26 @@ namespace WanTai.DataModel
         private global::System.String _PlateName;
         partial void OnPlateNameChanging(global::System.String value);
         partial void OnPlateNameChanged();
-    
+
+        public global::System.String TubesBatchType
+        {
+            get
+            {
+                return _TubesBatchType;
+            }
+            set
+            {
+                OnTubesBatchTypeChanging(value);
+                ReportPropertyChanging("TubesBatchType");
+                _TubesBatchType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TubesBatchType");
+                OnTubesBatchTypeChanged();
+            }
+        }
+        private global::System.String _TubesBatchType;
+        partial void OnTubesBatchTypeChanging(global::System.String value);
+        partial void OnTubesBatchTypeChanged();
+
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
@@ -5523,6 +5542,25 @@ namespace WanTai.DataModel
         private global::System.Guid _TubeGroupID;
         partial void OnTubeGroupIDChanging(global::System.Guid value);
         partial void OnTubeGroupIDChanged();
+
+        public global::System.String TubesBatchType
+        {
+            get
+            {
+                return _TubesBatchType;
+            }
+            set
+            {
+                OnTubesBatchTypeChanging(value);
+                ReportPropertyChanging("TubesBatchType");
+                _TubesBatchType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TubesBatchType");
+                OnTubesBatchTypeChanged();
+            }
+        }
+        private global::System.String _TubesBatchType;
+        partial void OnTubesBatchTypeChanging(global::System.String value);
+        partial void OnTubesBatchTypeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
