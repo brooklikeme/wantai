@@ -9,7 +9,8 @@
             <RowDefinition Height="auto"></RowDefinition>
             <RowDefinition Height="25"></RowDefinition>
             <RowDefinition Height="160"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>            
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
             <TextBlock Name="errInfo" Foreground="Red" TextWrapping="WrapWithOverflow"></TextBlock>
@@ -27,6 +28,8 @@
         <StackPanel  Grid.Row="3"  HorizontalAlignment="Center" Orientation="Horizontal" >
             <Button Name="btnSave" Height="30" HorizontalAlignment="Center" Width="70" Click="btnSave_Click">保存</Button>
             <Button Name="btnCancel" Height="30" Margin="30,0,0,0" Width="70" Click="btnCancel_Click">取消</Button>
-        </StackPanel>        
+        </StackPanel>
+        <StackPanel Name="testPanel" Grid.Row="4"  HorizontalAlignment="Center" Orientation="Horizontal" >
+        </StackPanel>
     </Grid>
 </Window>

@@ -27,6 +27,22 @@ namespace WanTai.View
             if(SessionInfo.LoginName!=null)
                 txtOrperatorName.Text = SessionInfo.LoginName;
             txtExperimentName.Text = System.DateTime.Now.ToString();
+
+            var TestItems = new TestItemController().GetActiveTestItemConfigurations();
+            foreach (TestingItemConfiguration _TestingItem in TestItems)
+            {
+                //FrameworkElementFactory checkBox = new FrameworkElementFactory(typeof(CheckBox));
+                //checkBox.SetValue(CheckBox.DataContextProperty, _TestingItem);
+                //checkBox.SetValue(CheckBox.MarginProperty, new System.Windows.Thickness(5, 0, 5, 0));
+                //checkBox.SetValue(CheckBox.IsCheckedProperty, false);
+                //checkBox.SetValue(CheckBox.ContentProperty, _TestingItem.TestingItemName);
+
+                
+                //checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked));
+                //checkBox.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(checkBox_Unchecked));
+                CheckBox checkBox = new CheckBox();
+                testPanel.Children.Add(checkBox);
+            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)

@@ -11,7 +11,7 @@
         <ObjectDataProvider x:Key="OperationConfigurations" IsAsynchronous="True" MethodName="GetDisplayedOperationConfigurations" ObjectType="{x:Type Controller:ConfigRotationController}">
         </ObjectDataProvider>
     </Page.Resources>
-        <Grid>
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="15"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
