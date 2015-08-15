@@ -46,6 +46,11 @@ namespace WanTai.View
             _StackPanel.SetValue(StackPanel.OrientationProperty,Orientation.Horizontal );
             foreach (TestingItemConfiguration _TestingItem in TestItems)
             {
+                if (!SessionInfo.TestingItemIDs.Contains(_TestingItem.TestingItemID))
+                {
+                    continue;
+                }
+
                 FrameworkElementFactory checkBox = new FrameworkElementFactory(typeof(CheckBox));
                 checkBox.SetValue(CheckBox.DataContextProperty, _TestingItem);
                 checkBox.SetValue(CheckBox.MarginProperty, new System.Windows.Thickness(5, 0, 5, 0));

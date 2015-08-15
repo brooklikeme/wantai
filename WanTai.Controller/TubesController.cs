@@ -143,43 +143,45 @@ namespace WanTai.Controller
                         Tubes.Rows[Grid]["IsSelected" + Position.ToString()] = "#316AC5";
                     }
                 }
-                StringBuilder builder = new StringBuilder();
-               
-                StringBuilder SystemFluidName = new StringBuilder();
-                using (WanTai.DataModel.WanTaiEntities _WanTaiEntities = new WanTaiEntities())
+                if (SessionInfo.BatchType != "B")
                 {
-                    foreach (SystemFluidConfiguration _SystemFluidConfiguration in _WanTaiEntities.SystemFluidConfigurations)
+                    StringBuilder builder = new StringBuilder();
+                    StringBuilder SystemFluidName = new StringBuilder();
+                    using (WanTai.DataModel.WanTaiEntities _WanTaiEntities = new WanTaiEntities())
                     {
-                        if (Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()].ToString() == "-1")
-                            continue;
-
-                        if (Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()].ToString() == "Tube")
-                            builder.Append("[" + _SystemFluidConfiguration.Grid.ToString() + "," + _SystemFluidConfiguration.Position.ToString() + "]");
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()] = (Tubetype)_SystemFluidConfiguration.ItemType;
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["Visibility" + _SystemFluidConfiguration.Grid.ToString()] = "Visible";
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsEnabled" + _SystemFluidConfiguration.Grid.ToString()] = "True";
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsSelected" + _SystemFluidConfiguration.Grid.ToString()] = "#316AC5";
-                      //  Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["BarCode" + _SystemFluidConfiguration.Grid.ToString()] = Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["BarCode" + _SystemFluidConfiguration.Grid.ToString()].ToString()+ "[不能分组]";
-                        LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return (lt.TypeId == _SystemFluidConfiguration.ItemType); });
-                        if (_LiquidType != null)
+                        foreach (SystemFluidConfiguration _SystemFluidConfiguration in _WanTaiEntities.SystemFluidConfigurations)
                         {
-                            Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TextItemCount" + _SystemFluidConfiguration.Grid.ToString()] = "1,2," + _LiquidType.Color;
-                            SystemFluidName.Append(_LiquidType.TypeName+";");
+                            if (Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()].ToString() == "-1")
+                                continue;
+
+                            if (Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()].ToString() == "Tube")
+                                builder.Append("[" + _SystemFluidConfiguration.Grid.ToString() + "," + _SystemFluidConfiguration.Position.ToString() + "]");
+                            Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()] = (Tubetype)_SystemFluidConfiguration.ItemType;
+                            Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["Visibility" + _SystemFluidConfiguration.Grid.ToString()] = "Visible";
+                            Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsEnabled" + _SystemFluidConfiguration.Grid.ToString()] = "True";
+                            Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsSelected" + _SystemFluidConfiguration.Grid.ToString()] = "#316AC5";
+                            //  Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["BarCode" + _SystemFluidConfiguration.Grid.ToString()] = Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["BarCode" + _SystemFluidConfiguration.Grid.ToString()].ToString()+ "[不能分组]";
+                            LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return (lt.TypeId == _SystemFluidConfiguration.ItemType); });
+                            if (_LiquidType != null)
+                            {
+                                Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TextItemCount" + _SystemFluidConfiguration.Grid.ToString()] = "1,2," + _LiquidType.Color;
+                                SystemFluidName.Append(_LiquidType.TypeName + ";");
+                            }
+                        }
+                        Tubes.TableName = builder.ToString();
+                    }
+                    string message = "";
+                    foreach (LiquidType _liquidType in LiquidTypeList)
+                    {
+                        if (SystemFluidName.ToString().IndexOf(_liquidType.TypeName + ";") < 0)
+                        {
+                            message += _liquidType.TypeName + "、";
+                            SystemFluid += _liquidType.TypeId + ",";
                         }
                     }
-                    Tubes.TableName = builder.ToString();
+                    if (message.Length > 0)
+                        ErrMsg = "没有" + message.Substring(0, message.Length - 1) + "!";
                 }
-                string message="";
-                foreach (LiquidType _liquidType in LiquidTypeList)
-                {
-                    if (SystemFluidName.ToString().IndexOf(_liquidType.TypeName + ";") < 0)
-                    {
-                        message += _liquidType.TypeName + "、";
-                        SystemFluid += _liquidType.TypeId + ",";
-                    }
-                }
-                if (message.Length > 0)
-                    ErrMsg = "没有" + message.Substring(0, message.Length-1)+"!";
 
                 Tubes.Namespace = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 return Tubes;

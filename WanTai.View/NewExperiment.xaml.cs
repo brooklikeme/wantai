@@ -33,6 +33,10 @@ namespace WanTai.View
 
             if (SessionInfo.WorkDeskType == "100")
             {
+                Label label = new Label();
+                label.Content = "检测项目:";
+                testPanel.Children.Add(label);
+
                 var TestItems = new TestItemController().GetActiveTestItemConfigurations();
                 foreach (TestingItemConfiguration _TestingItem in TestItems)
                 {
@@ -62,7 +66,13 @@ namespace WanTai.View
                 errInfo.Text = "实验名称允许最大长度为127个汉字";
                 return;
             }
-            
+
+            if (SessionInfo.WorkDeskType == "100" && TestingItemList.Count <= 0)
+            {
+                errInfo.Text = "请至少选择一项检测项";
+                return;
+            }
+
             ExperimentController controller = new ExperimentController();
             if(controller.ExperimentNameExists(experimentName))
             {
