@@ -527,7 +527,7 @@ namespace WanTai.View
                 str = str.Substring(0,str.Length-1);
                 int ColumnIndex = int.Parse(str.Split(',')[0]);
                 int RowIndex = int.Parse(str.Split(',')[1]) - 1;
-                  CellBuilder.Append("[" + ColumnIndex.ToString() + "," + (RowIndex+1).ToString() + "]");
+                CellBuilder.Append("[" + ColumnIndex.ToString() + "," + (RowIndex+1).ToString() + "]");
                 Tubes.Rows[RowIndex]["Background" + ColumnIndex.ToString()] = null;
             }
 
@@ -936,16 +936,28 @@ namespace WanTai.View
         private IList<TubeGroup> TubeGroupList;
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
-            ItemCollection Items = null;
+            ItemCollection Items1 = null;
+            ItemCollection Items2 = null;
             if (SessionInfo.BatchType == "B")
             {
                 btn_Next2.IsEnabled = false;
-                Items = dg_TubesGroup2.Items;
+                Items1 = dg_TubesGroup.Items;
+                Items2 = dg_TubesGroup2.Items;
+                if (null != SessionInfo.BatchATubeGroups)
+                    SessionInfo.BatchATubeGroups.Clear();
+                else
+                    SessionInfo.BatchATubeGroups = new List<TubeGroup>();
             }
             else
             {
+                if (SessionInfo.BatchType == "A")
+                {
+                    SessionInfo.BatchATubes = Tubes.Copy();
+                }
                 btn_Next.IsEnabled = false;
-                Items = dg_TubesGroup.Items;
+                Items1 = dg_TubesGroup.Items;
+                if (null != SessionInfo.BatchATubeGroups)
+                    SessionInfo.BatchATubeGroups.Clear();
             }
             
             if (SessionInfo.ExperimentID == new Guid())
@@ -964,7 +976,7 @@ namespace WanTai.View
             TubeGroupList = new List<TubeGroup>();
             CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
             bool _SystemFluid = false;
-            foreach (TubeGroup Item in Items)
+            foreach (TubeGroup Item in Items1)
             {
                 if (Item.TestingItemConfigurations.Count == 0)
                 {
@@ -980,8 +992,36 @@ namespace WanTai.View
                         CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
                 }
                 TotalHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
-                TubeGroupList.Add(Item);
+                if (SessionInfo.BatchType == "B") {
+                    Item.BatchType = "A";
+                    SessionInfo.BatchATubeGroups.Add(Item);
+                }
+                else
+                    TubeGroupList.Add(Item);
                 if (Item.isComplement) _SystemFluid = true;
+            }
+            if (SessionInfo.BatchType == "B")
+            {
+                foreach (TubeGroup Item in Items2)
+                {
+                    if (Item.TestingItemConfigurations.Count == 0)
+                    {
+                        MessageBox.Show(Item.TubesGroupName + "没有选择检测项目，请选择！", "系统提示!");
+                        return;
+                    }
+                    foreach (TestingItemConfiguration TestingItem in Item.TestingItemConfigurations)
+                    {
+                        int TestintItemNumber = Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
+                        if (CurrentTubesBatch.TestingItem.ContainsKey(TestingItem.TestingItemID))
+                            CurrentTubesBatch.TestingItem[TestingItem.TestingItemID] += TestintItemNumber;
+                        else
+                            CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
+                    }
+                    TotalHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
+                    Item.BatchType = "B";
+                    TubeGroupList.Add(Item);
+                    if (Item.isComplement) _SystemFluid = true;
+                }
             }
             if (TotalHole > 96)
             {

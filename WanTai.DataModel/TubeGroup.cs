@@ -10,6 +10,7 @@ namespace WanTai.DataModel
         public string TubesGroupName { get; set; }
         public string PoolingRulesName { get; set; }
         public string TubesPosition { get; set; }
+        public string BatchType { get; set; }
         public string TestintItemName { get; set; }
         public int RowIndex { get; set; }
         public bool isComplement { get; set; }

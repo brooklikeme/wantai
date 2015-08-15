@@ -44,53 +44,61 @@ namespace WanTai.Controller
             SystemFluid="";
             try
             {
-                DataTable Tubes = new DataTable();
-                for (int i = 1; i < 37; i++)
+                DataTable Tubes = null;
+                if (SessionInfo.BatchType == "B")
                 {
-                    DataColumn Column = new DataColumn("Position" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("Grid" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("BarCode" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("TubeType" + i.ToString());
-                    Column.DefaultValue = Tubetype.IsNull;
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("TubePosBarCode" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("TextItemCount" + i.ToString());
-                    Column.DefaultValue = "0,0,#C0C0C0"; //是否扫描到，采血管、阴阳补、选择颜色 #FFC0CB
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("IconName" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("Visibility" + i.ToString());
-                    Column.DefaultValue = "Hidden";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("IsEnabled" + i.ToString());
-                    Column.DefaultValue = "True";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("IsSelected" + i.ToString());
-                    Column.DefaultValue = "#316AC5";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("DetailView" + i.ToString());
-                    Column.DefaultValue = "";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("DetailViewTime" + i.ToString());
-                    Column.DefaultValue = DateTime.Now;//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-
-                    Column = new DataColumn("TestingItem" + i.ToString());
-                    Column.DefaultValue = "";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-
-                    Column = new DataColumn("Background" + i.ToString());
-                    Column.DefaultValue = null;//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
+                    Tubes = SessionInfo.BatchATubes.Copy();
                 }
-                for (int i = 0; i < 16; i++)
+                else
                 {
-                    DataRow dataRow = Tubes.NewRow();
-                    Tubes.Rows.Add(dataRow);
+                    Tubes = new DataTable();
+                    for (int i = 1; i < 37; i++)
+                    {
+                        DataColumn Column = new DataColumn("Position" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("Grid" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("BarCode" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("TubeType" + i.ToString());
+                        Column.DefaultValue = Tubetype.IsNull;
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("TubePosBarCode" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("TextItemCount" + i.ToString());
+                        Column.DefaultValue = "0,0,#C0C0C0"; //是否扫描到，采血管、阴阳补、选择颜色 #FFC0CB
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("IconName" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("Visibility" + i.ToString());
+                        Column.DefaultValue = "Hidden";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("IsEnabled" + i.ToString());
+                        Column.DefaultValue = "True";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("IsSelected" + i.ToString());
+                        Column.DefaultValue = "#316AC5";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("DetailView" + i.ToString());
+                        Column.DefaultValue = "";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("DetailViewTime" + i.ToString());
+                        Column.DefaultValue = DateTime.Now;//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+
+                        Column = new DataColumn("TestingItem" + i.ToString());
+                        Column.DefaultValue = "";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+
+                        Column = new DataColumn("Background" + i.ToString());
+                        Column.DefaultValue = null;//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                    }
+                    for (int i = 0; i < 16; i++)
+                    {
+                        DataRow dataRow = Tubes.NewRow();
+                        Tubes.Rows.Add(dataRow);
+                    }
                 }
 
                 string scanFilePath = WanTai.Common.Configuration.GetEvoOutputPath() + WanTai.Common.Configuration.GetTubeScanResultFileName();
@@ -120,7 +128,7 @@ namespace WanTai.Controller
                     {
                         aryline = strline.Split(new char[] { ';' });
                         //if (aryline[6] == "$$$" || aryline[6] == "") continue;
-                        int Position = int.Parse(aryline[0]);
+                        int Position = SessionInfo.BatchType == "B" ? int.Parse(aryline[0]) + 18 : int.Parse(aryline[0]);
                         int Grid = int.Parse(aryline[2]) - 1;
                         Tubes.Rows[Grid]["Position" + Position.ToString()] = Position;
                         Tubes.Rows[Grid]["Grid" + Position.ToString()] = Grid + 1;
