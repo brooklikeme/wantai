@@ -15,7 +15,7 @@ namespace WanTai.Controller
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    list= entities.Carriers.ToList();                    
+                    list= entities.Carriers.Where(c => c.WorkDeskType == SessionInfo.WorkDeskType).ToList();                    
                 }                
             }
             catch (Exception ex)

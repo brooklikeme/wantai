@@ -47,6 +47,7 @@ namespace WanTai.View
             Stream imageStream = Application.GetResourceStream(new Uri("/WanTag;component/Resources/loading.gif", UriKind.Relative)).Stream;
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
             this.imageExpender1.Image = bitmap;
+            SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             IProcessor processor = null;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {   

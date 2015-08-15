@@ -22,6 +22,7 @@ namespace WanTai.DataModel
         public static List<Guid> TestingItemIDs { get; set; }
         public static List<TubeGroup> BatchATubeGroups { get; set; }
         public static DataTable BatchATubes { get; set; }
+        public static string WorkDeskType { get; set; }
 
         /**************在提取运行 TEST_3_TIQUANDMIX 脚本时，判断是否要跳转到扫描，-1时开始扫描文件 TECAN\EVOware\output\NextTurnStep.csv，
          *如果扫描到 0时跳转，

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using WanTai.DataModel;
 namespace WanTai.View
 {
     /// <summary>
@@ -26,19 +27,16 @@ namespace WanTai.View
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
-
-            string workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             int range = 6;
-
-            if (workDeskType == "100")
+            if (SessionInfo.WorkDeskType == "100")
             {
                 range = 6;
             }
-            else if (workDeskType == "150")
+            else if (SessionInfo.WorkDeskType == "150")
             {
                 range = 18;
             }
-            else if (workDeskType == "200")
+            else if (SessionInfo.WorkDeskType == "200")
             {
                 range = 36;
             }

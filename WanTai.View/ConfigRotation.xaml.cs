@@ -51,6 +51,8 @@ namespace WanTai.View
         {
             try
             {
+                //OperationConfigurations.MethodName = "OperationConfigurations";
+
                 //rotation_dataGrid.Items.Clear();
 
                 errorMessage.Text = "";
@@ -105,6 +107,24 @@ namespace WanTai.View
                     {
                         //results = results.Where(c => c.OperationSequence == 1).ToList<OperationConfiguration>();
                         CreateOperation = operationList[operationList.Count - 1];
+
+                        operation_viewcolumn.Visibility = System.Windows.Visibility.Visible;
+                        operation_template_column.Visibility = System.Windows.Visibility.Hidden;
+
+                        System.Data.DataRow dRow = dataTable.NewRow();
+                        dRow["Sequence"] = dataTable.Rows.Count + 1;
+                        if (isBelongtoCurrentTubeBatch && tubesBatch != null)
+                        {
+                            dRow["TubesBatchID"] = tubesBatch.TubesBatchID;
+                            dRow["TubesBatchName"] = tubesBatch.TubesBatchName;
+                        }
+
+                        dRow["OperationName"] = CreateOperation.OperationName;
+                        dRow["Operation"] = CreateOperation;
+                        dRow["RotationName"] = "轮次" + dRow["Sequence"].ToString();
+                        dRow["deleteIsVisible"] = Visibility.Hidden.ToString();
+
+                        dataTable.Rows.Add(dRow);
                     }
                     else
                     {
@@ -113,10 +133,9 @@ namespace WanTai.View
                 }
 
                 if (SessionInfo.BatchType == "A")
-                {        
-                    create_button_Click(sender, e);
-                    //create_button.IsEnabled = false;
-                    //rotation_dataGrid.IsEnabled = false;
+                {
+                    //create_button_Click(sender, e);
+                    create_button.IsEnabled = false;
                 }
                 else
                 {
@@ -170,7 +189,7 @@ namespace WanTai.View
             dRow["deleteIsVisible"] = Visibility.Visible.ToString();
             dRow["RotationName"] = "轮次" + dRow["Sequence"].ToString();
          //   operation_column.DisplayIndex = 1;
-            dRow["Operation"] = CreateOperation;
+            dRow["Operation"] = new OperationConfiguration() { OperationID = CreateOperation.OperationID, OperationName = CreateOperation.OperationName, OperationType= CreateOperation.OperationType, OperationSequence =CreateOperation.OperationSequence }; 
             if (isBelongtoCurrentTubeBatch && tubesBatch != null)
             {
                 dRow["TubesBatchName"] = tubesBatch.TubesBatchName;
@@ -180,6 +199,7 @@ namespace WanTai.View
             dataTable.Rows.Add(dRow);
             next_button.IsEnabled = false;
             save_button.IsEnabled = true;
+
         }
 
         private void Delete_Button_Click(object sender, RoutedEventArgs e)

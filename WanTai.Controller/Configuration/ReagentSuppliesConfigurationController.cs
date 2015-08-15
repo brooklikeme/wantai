@@ -21,7 +21,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.Carriers.OrderBy(c => c.CarrierName);
+                    var records = entities.Carriers.Where(c => c.WorkDeskType == SessionInfo.WorkDeskType).OrderBy(c => c.CarrierName);
                     foreach (Carrier carrier in records)
                     {
                         recordList.Add(carrier.CarrierName);
@@ -64,7 +64,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.ReagentAndSuppliesConfigurations;
+                    var records = entities.ReagentAndSuppliesConfigurations.Where(r => r.WorkDeskType == SessionInfo.WorkDeskType);
                     recordList = records.ToList<ReagentAndSuppliesConfiguration>();
                 }
             }
@@ -85,7 +85,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.ReagentAndSuppliesConfigurations.Where(c => c.ActiveStatus == true);
+                    var records = entities.ReagentAndSuppliesConfigurations.Where(c => c.WorkDeskType == SessionInfo.WorkDeskType && c.ActiveStatus == true);
                     recordList = records.ToList<ReagentAndSuppliesConfiguration>();
                 }
             }
@@ -105,7 +105,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var record = entities.ReagentAndSuppliesConfigurations.Where(p => p.ItemID == itemId).FirstOrDefault();
+                    var record = entities.ReagentAndSuppliesConfigurations.Where(p => p.WorkDeskType == SessionInfo.WorkDeskType && p.ItemID == itemId).FirstOrDefault();
                     entities.DeleteObject(record);
 
                     entities.SaveChanges();
@@ -126,7 +126,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    ReagentAndSuppliesConfiguration record = entities.ReagentAndSuppliesConfigurations.Where(p => p.ItemID == itemId).FirstOrDefault();
+                    ReagentAndSuppliesConfiguration record = entities.ReagentAndSuppliesConfigurations.Where(p => p.WorkDeskType == SessionInfo.WorkDeskType && p.ItemID == itemId).FirstOrDefault();
 
                     return record;
                 }
@@ -145,7 +145,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    ReagentAndSuppliesConfiguration record = entities.ReagentAndSuppliesConfigurations.Where(p => p.ItemID == itemId).FirstOrDefault();
+                    ReagentAndSuppliesConfiguration record = entities.ReagentAndSuppliesConfigurations.Where(p => p.WorkDeskType == SessionInfo.WorkDeskType && p.ItemID == itemId).FirstOrDefault();
                     record.EnglishName = item.EnglishName;
                     record.DisplayName = item.DisplayName;
                     record.Position = item.Position;
@@ -330,9 +330,9 @@ namespace WanTai.Controller.Configuration
             List<ReagentAndSuppliesConfiguration> list = new List<ReagentAndSuppliesConfiguration>();
             try
             {
-                using (WanTaiEntities wanTaiEntites = new WanTaiEntities())
+                using (WanTaiEntities wanTaiEntities = new WanTaiEntities())
                 {
-                    list = wanTaiEntites.ReagentAndSuppliesConfigurations.Where(c => c.ActiveStatus == true).ToList();
+                    list = wanTaiEntities.ReagentAndSuppliesConfigurations.Where(c =>c.WorkDeskType== SessionInfo.WorkDeskType && c.ActiveStatus == true).ToList();
                 }
                 foreach (ReagentAndSuppliesConfiguration r in list)
                 {
@@ -360,9 +360,9 @@ namespace WanTai.Controller.Configuration
             List<ReagentAndSuppliesConfiguration> list = new List<ReagentAndSuppliesConfiguration>();
             try
             {
-                using (WanTaiEntities wanTaiEntites = new WanTaiEntities())
+                using (WanTaiEntities wanTaiEntities = new WanTaiEntities())
                 {
-                    list = wanTaiEntites.ReagentAndSuppliesConfigurations.Where(c => c.ActiveStatus == true && itemTypes.Contains((short)c.ItemType)).ToList();
+                    list = wanTaiEntities.ReagentAndSuppliesConfigurations.Where(c => c.WorkDeskType == SessionInfo.WorkDeskType && c.ActiveStatus == true && itemTypes.Contains((short)c.ItemType)).ToList();
                 }
                 foreach (ReagentAndSuppliesConfiguration r in list)
                 {
@@ -458,7 +458,7 @@ namespace WanTai.Controller.Configuration
             string barcodePrefix = null;
             using (WanTaiEntities entities = new WanTaiEntities())
             {
-                ReagentAndSuppliesConfiguration reagentConfig = entities.ReagentAndSuppliesConfigurations.FirstOrDefault(P => P.ItemType == itemType);
+                ReagentAndSuppliesConfiguration reagentConfig = entities.ReagentAndSuppliesConfigurations.Where(r => r.WorkDeskType == SessionInfo.WorkDeskType).FirstOrDefault(P => P.ItemType == itemType);
                 if (reagentConfig != null)
                     barcodePrefix = reagentConfig.BarcodePrefix;
                 else
@@ -477,7 +477,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.ReagentAndSuppliesConfigurations;
+                    var records = entities.ReagentAndSuppliesConfigurations.Where(r => r.WorkDeskType == SessionInfo.WorkDeskType);
                     
 
                     for (int i = 0; i < ItemTypes.Length; i++)
@@ -592,7 +592,7 @@ namespace WanTai.Controller.Configuration
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    ReagentAndSuppliesConfiguration record = entities.ReagentAndSuppliesConfigurations.Where(p => p.ItemID == itemId).FirstOrDefault();
+                    ReagentAndSuppliesConfiguration record = entities.ReagentAndSuppliesConfigurations.Where(p => p.WorkDeskType == SessionInfo.WorkDeskType && p.ItemID == itemId).FirstOrDefault();
                     record.ActiveStatus = status;
 
                     entities.SaveChanges();

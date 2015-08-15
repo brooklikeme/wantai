@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data;
-
+using WanTai.DataModel;
 namespace WanTai.View.Control
 {
     /// <summary>
@@ -33,10 +33,9 @@ namespace WanTai.View.Control
             this.Height = heigh;
 
             // 修改枪头个数
-            string workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             int range = 4;
 
-            if (workDeskType == "200")
+            if (SessionInfo.WorkDeskType == "200")
                 range = 6;
 
             for (int i = 0; i < range; i++)

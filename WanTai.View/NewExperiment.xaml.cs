@@ -21,12 +21,32 @@ namespace WanTai.View
     /// </summary>
     public partial class NewExperiment : Window
     {
+
+        private List<Guid> TestingItemList = new List<Guid>();
+
         public NewExperiment()
         {
             InitializeComponent();
             if(SessionInfo.LoginName!=null)
                 txtOrperatorName.Text = SessionInfo.LoginName;
             txtExperimentName.Text = System.DateTime.Now.ToString();
+
+            if (SessionInfo.WorkDeskType == "100")
+            {
+                var TestItems = new TestItemController().GetActiveTestItemConfigurations();
+                foreach (TestingItemConfiguration _TestingItem in TestItems)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Tag = _TestingItem;
+                    checkBox.Content = _TestingItem.TestingItemName;
+                    checkBox.Height = 20;
+                    checkBox.Width = 50;
+                    checkBox.Margin = new Thickness(5);
+                    checkBox.Checked += new RoutedEventHandler(checkBox_Checked);
+                    checkBox.Unchecked += new RoutedEventHandler(checkBox_Unchecked);
+                    testPanel.Children.Add(checkBox);
+                }
+            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -57,6 +77,7 @@ namespace WanTai.View
             experimentsInfo.StartTime = DateTime.Now;
             experimentsInfo.State = (short)ExperimentStatus.Create; ;
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
+            SessionInfo.TestingItemIDs = TestingItemList;
             if (controller.CreateExperiment(experimentsInfo))
             {
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
@@ -78,7 +99,16 @@ namespace WanTai.View
             this.DialogResult = false;
             this.Close();
         }
-
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            TestingItemConfiguration testItem = (TestingItemConfiguration)((CheckBox)sender).Tag;
+            TestingItemList.Add(testItem.TestingItemID);
+        }
+        private void checkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TestingItemConfiguration testItem = (TestingItemConfiguration)((CheckBox)sender).Tag;
+            TestingItemList.Remove(testItem.TestingItemID);
+        }
         private void txtExperimentName_GotFocus(object sender, RoutedEventArgs e)
         {
             errInfo.Text = "";

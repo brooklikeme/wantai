@@ -133,7 +133,7 @@ namespace WanTai.Controller
 
                                 if (GroupOperation)
                                 {
-                                    ReagentAndSuppliesConfiguration ReagentAndSupplie = _WanTaiEntities.ReagentAndSuppliesConfigurations.Where(ReagentAndSupplies => ReagentAndSupplies.ItemType == 205).FirstOrDefault();
+                                    ReagentAndSuppliesConfiguration ReagentAndSupplie = _WanTaiEntities.ReagentAndSuppliesConfigurations.Where(ReagentAndSupplies => ReagentAndSupplies.WorkDeskType == SessionInfo.WorkDeskType && ReagentAndSupplies.ItemType == 205).FirstOrDefault();
                                     if (ReagentAndSupplie != null)
                                     {
                                         if (fileInfo.Name.IndexOf(ReagentAndSupplie.BarcodePrefix) >= 0)

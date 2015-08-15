@@ -26,7 +26,6 @@ namespace WanTai.View
     {
         DeskTopService desktopService = new DeskTopService();
         Timer timer = new Timer();
-        string workDeskType;
         public RubbishAlert()
         {
             InitializeComponent();
@@ -35,26 +34,24 @@ namespace WanTai.View
         {
             InitializeComponent();
 
-            workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
-
             timer.Enabled = false;
             timer.Interval = 1000;
             timer.Elapsed += SwitchingAnimation;
 
             int width = 0, limit = 0; double offset = 0;
-            if (workDeskType == "100")
+            if (SessionInfo.WorkDeskType == "100")
             {
                 limit = 32;
                 width = 500;
                 offset = 4.1;
             }
-            else if (workDeskType == "150")
+            else if (SessionInfo.WorkDeskType == "150")
             {
                 limit = 47;
                 width = 700;
                 offset = 1.7;
             }
-            else if (workDeskType == "200")
+            else if (SessionInfo.WorkDeskType == "200")
             {
                 this.Width = 1200;
                 this.Height = 500;
@@ -69,7 +66,7 @@ namespace WanTai.View
             imgKingFisher.Height = lenghtUnit * 24;
             imgKingFisher.Margin = new Thickness(-lenghtUnit * 2 * 1.4, lenghtUnit * 12, 0, lenghtUnit * 2);
 
-            if (workDeskType == "200")
+            if (SessionInfo.WorkDeskType == "200")
             {
                 deskTop.Children.Add(desktopService.DrawCoordinateOld(width, limit, lenghtUnit + offset));
             }
@@ -235,7 +232,7 @@ namespace WanTai.View
                 c.UpdatePlate(plates.FindAll(P => P.ContainerName == c.CarrierName));
 
                 // 修改 枪头及深孔板 js
-                if (workDeskType == "100" && c.CarrierName == "006")
+                if (SessionInfo.WorkDeskType == "100" && c.CarrierName == "006")
                     continue;
 
                 deskTop.Children.Add(c);
@@ -244,19 +241,19 @@ namespace WanTai.View
             this.RotationID = RotationID;
             timer.Start();
 
-            string image = String.Format(@"/WanTag;component/Resources/Sample{0}.gif", workDeskType);
+            string image = String.Format(@"/WanTag;component/Resources/Sample{0}.gif", SessionInfo.WorkDeskType);
             Sample.Source = new BitmapImage(new Uri(image, UriKind.Relative));
             // 隐藏 枪头 js
-            if (workDeskType == "100")
+            if (SessionInfo.WorkDeskType == "100")
             {
                 Sample.Margin = new Thickness(10, 0, 0, -15);
             }
-            else if (workDeskType == "150")
+            else if (SessionInfo.WorkDeskType == "150")
             {
                 Sample.Margin = new Thickness(-15, 5, 0, -15);
                 Sample.Width = 270;
             }
-            else if (workDeskType == "200")
+            else if (SessionInfo.WorkDeskType == "200")
             {
                 Sample.Margin = new Thickness(-15, 5, 0, -15);
                 Sample.Width = 420;
