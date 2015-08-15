@@ -226,6 +226,7 @@
           <Property Name="Grid" Type="int" />
           <Property Name="ItemType" Type="smallint" />
           <Property Name="Volume" Type="float" />
+          <Property Name="BatchType" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="TestingItemConfiguration">
           <Key>
@@ -863,6 +864,7 @@
           <Property Type="Int32" Name="Grid" />
           <Property Type="Int16" Name="ItemType" />
           <Property Type="Double" Name="Volume" />
+          <Property Name="BatchType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TestingItemConfiguration">
           <Key>
@@ -1290,6 +1292,7 @@
           <EntitySetMapping Name="SystemFluidConfigurations">
             <EntityTypeMapping TypeName="WanTaiModel.SystemFluidConfiguration">
               <MappingFragment StoreEntitySet="SystemFluidConfiguration">
+                <ScalarProperty Name="BatchType" ColumnName="BatchType" />
                 <ScalarProperty Name="Volume" ColumnName="Volume" />
                 <ScalarProperty Name="ItemType" ColumnName="ItemType" />
                 <ScalarProperty Name="Grid" ColumnName="Grid" />
