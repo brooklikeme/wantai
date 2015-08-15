@@ -4,111 +4,20 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="WanTaiModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-        <EntityContainer Name="WanTaiModelStoreContainer">
-          <EntitySet Name="Carrier" EntityType="WanTaiModel.Store.Carrier" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="DWPlatePosition" EntityType="WanTaiModel.Store.DWPlatePosition" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ExperimentsInfo" EntityType="WanTaiModel.Store.ExperimentsInfo" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="LogInfo" EntityType="WanTaiModel.Store.LogInfo" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="OperationConfiguration" EntityType="WanTaiModel.Store.OperationConfiguration" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PCRPlatePosition" EntityType="WanTaiModel.Store.PCRPlatePosition" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PCRPlatePosition_DWPlatePosition" EntityType="WanTaiModel.Store.PCRPlatePosition_DWPlatePosition" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PCRTestResult" EntityType="WanTaiModel.Store.PCRTestResult" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Plates" EntityType="WanTaiModel.Store.Plates" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PoolingRulesConfiguration" EntityType="WanTaiModel.Store.PoolingRulesConfiguration" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ReagentAndSupplies" EntityType="WanTaiModel.Store.ReagentAndSupplies" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ReagentAndSuppliesConfiguration" EntityType="WanTaiModel.Store.ReagentAndSuppliesConfiguration" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ReagentsAndSuppliesConsumption" EntityType="WanTaiModel.Store.ReagentsAndSuppliesConsumption" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RoleInfo" EntityType="WanTaiModel.Store.RoleInfo" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RotationInfo" EntityType="WanTaiModel.Store.RotationInfo" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RotationOperate" EntityType="WanTaiModel.Store.RotationOperate" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SampleTracking" EntityType="WanTaiModel.Store.SampleTracking" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="sysdiagrams" EntityType="WanTaiModel.Store.sysdiagrams" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SystemFluidConfiguration" EntityType="WanTaiModel.Store.SystemFluidConfiguration" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="TestingItemConfiguration" EntityType="WanTaiModel.Store.TestingItemConfiguration" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="TestItem_TubeGroup" EntityType="WanTaiModel.Store.TestItem_TubeGroup" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Tube_PlatePosition" EntityType="WanTaiModel.Store.Tube_PlatePosition" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="TubeGroup" EntityType="WanTaiModel.Store.TubeGroup" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Tubes" EntityType="WanTaiModel.Store.Tubes" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="TubesBatch" EntityType="WanTaiModel.Store.TubesBatch" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserInfo" EntityType="WanTaiModel.Store.UserInfo" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_DWPlatePosition_Plates" Association="WanTaiModel.Store.FK_DWPlatePosition_Plates">
-            <End Role="Plates" EntitySet="Plates" />
-            <End Role="DWPlatePosition" EntitySet="DWPlatePosition" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PCRPlatePosition_DWPlatePosition_DWPlatePosition" Association="WanTaiModel.Store.FK_PCRPlatePosition_DWPlatePosition_DWPlatePosition">
-            <End Role="DWPlatePosition" EntitySet="DWPlatePosition" />
-            <End Role="PCRPlatePosition_DWPlatePosition" EntitySet="PCRPlatePosition_DWPlatePosition" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PCRPlatePosition_DWPlatePosition_PCRPlatePosition" Association="WanTaiModel.Store.FK_PCRPlatePosition_DWPlatePosition_PCRPlatePosition">
-            <End Role="PCRPlatePosition" EntitySet="PCRPlatePosition" />
-            <End Role="PCRPlatePosition_DWPlatePosition" EntitySet="PCRPlatePosition_DWPlatePosition" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PCRPlatePosition_Plates" Association="WanTaiModel.Store.FK_PCRPlatePosition_Plates">
-            <End Role="Plates" EntitySet="Plates" />
-            <End Role="PCRPlatePosition" EntitySet="PCRPlatePosition" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration" Association="WanTaiModel.Store.FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration">
-            <End Role="ReagentAndSuppliesConfiguration" EntitySet="ReagentAndSuppliesConfiguration" />
-            <End Role="ReagentAndSupplies" EntitySet="ReagentAndSupplies" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies" Association="WanTaiModel.Store.FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies">
-            <End Role="ReagentAndSupplies" EntitySet="ReagentAndSupplies" />
-            <End Role="ReagentsAndSuppliesConsumption" EntitySet="ReagentsAndSuppliesConsumption" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RotationInfo_TubesBatch" Association="WanTaiModel.Store.FK_RotationInfo_TubesBatch">
-            <End Role="TubesBatch" EntitySet="TubesBatch" />
-            <End Role="RotationInfo" EntitySet="RotationInfo" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RotationOperate_OperationConfiguration" Association="WanTaiModel.Store.FK_RotationOperate_OperationConfiguration">
-            <End Role="OperationConfiguration" EntitySet="OperationConfiguration" />
-            <End Role="RotationOperate" EntitySet="RotationOperate" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TestItem_TubeGroup_TestingItemConfiguration" Association="WanTaiModel.Store.FK_TestItem_TubeGroup_TestingItemConfiguration">
-            <End Role="TestingItemConfiguration" EntitySet="TestingItemConfiguration" />
-            <End Role="TestItem_TubeGroup" EntitySet="TestItem_TubeGroup" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TestItemInTubeGroup_TubeGroup" Association="WanTaiModel.Store.FK_TestItemInTubeGroup_TubeGroup">
-            <End Role="TubeGroup" EntitySet="TubeGroup" />
-            <End Role="TestItem_TubeGroup" EntitySet="TestItem_TubeGroup" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tube_PlatePosition_DWPlatePosition" Association="WanTaiModel.Store.FK_Tube_PlatePosition_DWPlatePosition">
-            <End Role="DWPlatePosition" EntitySet="DWPlatePosition" />
-            <End Role="Tube_PlatePosition" EntitySet="Tube_PlatePosition" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tube_PlatePosition_Tubes" Association="WanTaiModel.Store.FK_Tube_PlatePosition_Tubes">
-            <End Role="Tubes" EntitySet="Tubes" />
-            <End Role="Tube_PlatePosition" EntitySet="Tube_PlatePosition" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TubeGroup_PoolingRulesConfiguration" Association="WanTaiModel.Store.FK_TubeGroup_PoolingRulesConfiguration">
-            <End Role="PoolingRulesConfiguration" EntitySet="PoolingRulesConfiguration" />
-            <End Role="TubeGroup" EntitySet="TubeGroup" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TubeGroup_TubesBatch" Association="WanTaiModel.Store.FK_TubeGroup_TubesBatch">
-            <End Role="TubesBatch" EntitySet="TubesBatch" />
-            <End Role="TubeGroup" EntitySet="TubeGroup" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Tubes_TubeGroup" Association="WanTaiModel.Store.FK_Tubes_TubeGroup">
-            <End Role="TubeGroup" EntitySet="TubeGroup" />
-            <End Role="Tubes" EntitySet="Tubes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TubesBatch_ExperimentsInfo" Association="WanTaiModel.Store.FK_TubesBatch_ExperimentsInfo">
-            <End Role="ExperimentsInfo" EntitySet="ExperimentsInfo" />
-            <End Role="TubesBatch" EntitySet="TubesBatch" />
-          </AssociationSet>
-        </EntityContainer>
+    <Schema Namespace="WanTaiModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2005" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityType Name="Carrier">
           <Key>
             <PropertyRef Name="CarrierID" />
           </Key>
           <Property Name="CarrierID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="CarrierName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="CarrierName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Position" Type="float" Nullable="false" />
           <Property Name="Grid" Type="float" Nullable="false" />
           <Property Name="Width" Type="float" Nullable="false" />
           <Property Name="Heigh" Type="float" Nullable="false" />
-          <Property Name="Color" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="Color" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Type" Type="smallint" Nullable="false" />
+          <Property Name="WorkDeskType" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="DWPlatePosition">
           <Key>
@@ -124,10 +33,10 @@
             <PropertyRef Name="ExperimentID" />
           </Key>
           <Property Name="ExperimentID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ExperimentName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="ExperimentName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" />
-          <Property Name="LoginName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="LoginName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Remark" Type="varchar" MaxLength="2000" />
           <Property Name="State" Type="smallint" Nullable="false" />
         </EntityType>
@@ -148,7 +57,7 @@
             <PropertyRef Name="OperationID" />
           </Key>
           <Property Name="OperationID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="OperationName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="OperationName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="OperationType" Type="smallint" Nullable="false" />
           <Property Name="OperationSequence" Type="smallint" Nullable="false" />
           <Property Name="SubOperationIDs" Type="varchar" MaxLength="225" />
@@ -207,7 +116,7 @@
             <PropertyRef Name="PoolingRulesID" />
           </Key>
           <Property Name="PoolingRulesID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="PoolingRulesName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="PoolingRulesName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="TubeNumber" Type="int" Nullable="false" />
           <Property Name="ActiveStatus" Type="bit" Nullable="false" />
         </EntityType>
@@ -226,8 +135,8 @@
             <PropertyRef Name="ItemID" />
           </Key>
           <Property Name="ItemID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="EnglishName" Type="varchar" Nullable="false" MaxLength="255" />
-          <Property Name="DisplayName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="EnglishName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="DisplayName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Position" Type="int" Nullable="false" />
           <Property Name="Grid" Type="int" Nullable="false" />
           <Property Name="Unit" Type="varchar" MaxLength="255" />
@@ -238,6 +147,7 @@
           <Property Name="Color" Type="varchar" MaxLength="255" />
           <Property Name="ActiveStatus" Type="bit" Nullable="false" />
           <Property Name="SimpleTrackingVolumn" Type="float" />
+          <Property Name="WorkDeskType" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="ReagentsAndSuppliesConsumption">
           <Key>
@@ -256,7 +166,7 @@
             <PropertyRef Name="RoleID" />
           </Key>
           <Property Name="RoleID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="RoleName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="RoleModules" Type="xml" Nullable="false" />
           <Property Name="RoleLevel" Type="smallint" Nullable="false" />
         </EntityType>
@@ -271,7 +181,7 @@
           <Property Name="State" Type="smallint" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="OperationID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="OperationName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="OperationName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="RotationSequence" Type="smallint" />
         </EntityType>
         <EntityType Name="RotationOperate">
@@ -307,16 +217,6 @@
           <Property Name="IsKeeping" Type="bit" />
           <Property Name="CreateTime" Type="datetime" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" Nullable="false" MaxLength="128" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="SystemFluidConfiguration">
           <Key>
             <PropertyRef Name="ItemID" />
@@ -332,7 +232,7 @@
             <PropertyRef Name="TestingItemID" />
           </Key>
           <Property Name="TestingItemID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="TestingItemName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="TestingItemName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="TestingItemColor" Type="varchar" MaxLength="255" />
           <Property Name="DisplaySequence" Type="smallint" />
           <Property Name="WorkListFileName" Type="varchar" MaxLength="255" />
@@ -370,7 +270,7 @@
           </Key>
           <Property Name="TubeID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TubeGroupID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="BarCode" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="BarCode" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="TubePosBarCode" Type="varchar" MaxLength="255" />
           <Property Name="Position" Type="int" Nullable="false" />
           <Property Name="Grid" Type="int" Nullable="false" />
@@ -383,25 +283,26 @@
             <PropertyRef Name="TubesBatchID" />
           </Key>
           <Property Name="TubesBatchID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="TubesBatchName" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="TubesBatchName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ExperimentID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="BatchType" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="LoginName" Type="varchar" Nullable="false" MaxLength="255" />
-          <Property Name="LoginPassWord" Type="varchar" Nullable="false" MaxLength="255" />
+          <Property Name="LoginName" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="LoginPassWord" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="RoleName" Type="varchar" MaxLength="50" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="CreateName" Type="varchar" MaxLength="255" />
           <Property Name="UpdateTime" Type="datetime" />
         </EntityType>
         <Association Name="FK_DWPlatePosition_Plates">
-          <End Role="Plates" Type="WanTaiModel.Store.Plates" Multiplicity="1" />
-          <End Role="DWPlatePosition" Type="WanTaiModel.Store.DWPlatePosition" Multiplicity="*" />
+          <End Role="Plates" Type="Self.Plates" Multiplicity="1" />
+          <End Role="DWPlatePosition" Type="Self.DWPlatePosition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Plates">
               <PropertyRef Name="PlateID" />
@@ -412,8 +313,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PCRPlatePosition_DWPlatePosition_DWPlatePosition">
-          <End Role="DWPlatePosition" Type="WanTaiModel.Store.DWPlatePosition" Multiplicity="1" />
-          <End Role="PCRPlatePosition_DWPlatePosition" Type="WanTaiModel.Store.PCRPlatePosition_DWPlatePosition" Multiplicity="*" />
+          <End Role="DWPlatePosition" Type="Self.DWPlatePosition" Multiplicity="1" />
+          <End Role="PCRPlatePosition_DWPlatePosition" Type="Self.PCRPlatePosition_DWPlatePosition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DWPlatePosition">
               <PropertyRef Name="DWPlatePositionID" />
@@ -424,8 +325,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PCRPlatePosition_DWPlatePosition_PCRPlatePosition">
-          <End Role="PCRPlatePosition" Type="WanTaiModel.Store.PCRPlatePosition" Multiplicity="1" />
-          <End Role="PCRPlatePosition_DWPlatePosition" Type="WanTaiModel.Store.PCRPlatePosition_DWPlatePosition" Multiplicity="*" />
+          <End Role="PCRPlatePosition" Type="Self.PCRPlatePosition" Multiplicity="1" />
+          <End Role="PCRPlatePosition_DWPlatePosition" Type="Self.PCRPlatePosition_DWPlatePosition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PCRPlatePosition">
               <PropertyRef Name="PCRPlatePositionID" />
@@ -436,8 +337,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PCRPlatePosition_Plates">
-          <End Role="Plates" Type="WanTaiModel.Store.Plates" Multiplicity="0..1" />
-          <End Role="PCRPlatePosition" Type="WanTaiModel.Store.PCRPlatePosition" Multiplicity="*" />
+          <End Role="Plates" Type="Self.Plates" Multiplicity="0..1" />
+          <End Role="PCRPlatePosition" Type="Self.PCRPlatePosition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Plates">
               <PropertyRef Name="PlateID" />
@@ -448,8 +349,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration">
-          <End Role="ReagentAndSuppliesConfiguration" Type="WanTaiModel.Store.ReagentAndSuppliesConfiguration" Multiplicity="0..1" />
-          <End Role="ReagentAndSupplies" Type="WanTaiModel.Store.ReagentAndSupplies" Multiplicity="*" />
+          <End Role="ReagentAndSuppliesConfiguration" Type="Self.ReagentAndSuppliesConfiguration" Multiplicity="0..1" />
+          <End Role="ReagentAndSupplies" Type="Self.ReagentAndSupplies" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReagentAndSuppliesConfiguration">
               <PropertyRef Name="ItemID" />
@@ -460,8 +361,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies">
-          <End Role="ReagentAndSupplies" Type="WanTaiModel.Store.ReagentAndSupplies" Multiplicity="0..1" />
-          <End Role="ReagentsAndSuppliesConsumption" Type="WanTaiModel.Store.ReagentsAndSuppliesConsumption" Multiplicity="*" />
+          <End Role="ReagentAndSupplies" Type="Self.ReagentAndSupplies" Multiplicity="0..1" />
+          <End Role="ReagentsAndSuppliesConsumption" Type="Self.ReagentsAndSuppliesConsumption" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReagentAndSupplies">
               <PropertyRef Name="ItemID" />
@@ -472,8 +373,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RotationInfo_TubesBatch">
-          <End Role="TubesBatch" Type="WanTaiModel.Store.TubesBatch" Multiplicity="0..1" />
-          <End Role="RotationInfo" Type="WanTaiModel.Store.RotationInfo" Multiplicity="*" />
+          <End Role="TubesBatch" Type="Self.TubesBatch" Multiplicity="0..1" />
+          <End Role="RotationInfo" Type="Self.RotationInfo" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TubesBatch">
               <PropertyRef Name="TubesBatchID" />
@@ -484,8 +385,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RotationOperate_OperationConfiguration">
-          <End Role="OperationConfiguration" Type="WanTaiModel.Store.OperationConfiguration" Multiplicity="1" />
-          <End Role="RotationOperate" Type="WanTaiModel.Store.RotationOperate" Multiplicity="*" />
+          <End Role="OperationConfiguration" Type="Self.OperationConfiguration" Multiplicity="1" />
+          <End Role="RotationOperate" Type="Self.RotationOperate" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="OperationConfiguration">
               <PropertyRef Name="OperationID" />
@@ -496,8 +397,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TestItem_TubeGroup_TestingItemConfiguration">
-          <End Role="TestingItemConfiguration" Type="WanTaiModel.Store.TestingItemConfiguration" Multiplicity="1" />
-          <End Role="TestItem_TubeGroup" Type="WanTaiModel.Store.TestItem_TubeGroup" Multiplicity="*" />
+          <End Role="TestingItemConfiguration" Type="Self.TestingItemConfiguration" Multiplicity="1" />
+          <End Role="TestItem_TubeGroup" Type="Self.TestItem_TubeGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TestingItemConfiguration">
               <PropertyRef Name="TestingItemID" />
@@ -508,8 +409,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TestItemInTubeGroup_TubeGroup">
-          <End Role="TubeGroup" Type="WanTaiModel.Store.TubeGroup" Multiplicity="1" />
-          <End Role="TestItem_TubeGroup" Type="WanTaiModel.Store.TestItem_TubeGroup" Multiplicity="*" />
+          <End Role="TubeGroup" Type="Self.TubeGroup" Multiplicity="1" />
+          <End Role="TestItem_TubeGroup" Type="Self.TestItem_TubeGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TubeGroup">
               <PropertyRef Name="TubeGroupID" />
@@ -520,8 +421,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tube_PlatePosition_DWPlatePosition">
-          <End Role="DWPlatePosition" Type="WanTaiModel.Store.DWPlatePosition" Multiplicity="1" />
-          <End Role="Tube_PlatePosition" Type="WanTaiModel.Store.Tube_PlatePosition" Multiplicity="*" />
+          <End Role="DWPlatePosition" Type="Self.DWPlatePosition" Multiplicity="1" />
+          <End Role="Tube_PlatePosition" Type="Self.Tube_PlatePosition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DWPlatePosition">
               <PropertyRef Name="DWPlatePositionID" />
@@ -532,8 +433,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tube_PlatePosition_Tubes">
-          <End Role="Tubes" Type="WanTaiModel.Store.Tubes" Multiplicity="1" />
-          <End Role="Tube_PlatePosition" Type="WanTaiModel.Store.Tube_PlatePosition" Multiplicity="*" />
+          <End Role="Tubes" Type="Self.Tubes" Multiplicity="1" />
+          <End Role="Tube_PlatePosition" Type="Self.Tube_PlatePosition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Tubes">
               <PropertyRef Name="TubeID" />
@@ -544,8 +445,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TubeGroup_PoolingRulesConfiguration">
-          <End Role="PoolingRulesConfiguration" Type="WanTaiModel.Store.PoolingRulesConfiguration" Multiplicity="1" />
-          <End Role="TubeGroup" Type="WanTaiModel.Store.TubeGroup" Multiplicity="*" />
+          <End Role="PoolingRulesConfiguration" Type="Self.PoolingRulesConfiguration" Multiplicity="1" />
+          <End Role="TubeGroup" Type="Self.TubeGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PoolingRulesConfiguration">
               <PropertyRef Name="PoolingRulesID" />
@@ -556,8 +457,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TubeGroup_TubesBatch">
-          <End Role="TubesBatch" Type="WanTaiModel.Store.TubesBatch" Multiplicity="0..1" />
-          <End Role="TubeGroup" Type="WanTaiModel.Store.TubeGroup" Multiplicity="*" />
+          <End Role="TubesBatch" Type="Self.TubesBatch" Multiplicity="0..1" />
+          <End Role="TubeGroup" Type="Self.TubeGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TubesBatch">
               <PropertyRef Name="TubesBatchID" />
@@ -568,8 +469,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Tubes_TubeGroup">
-          <End Role="TubeGroup" Type="WanTaiModel.Store.TubeGroup" Multiplicity="1" />
-          <End Role="Tubes" Type="WanTaiModel.Store.Tubes" Multiplicity="*" />
+          <End Role="TubeGroup" Type="Self.TubeGroup" Multiplicity="1" />
+          <End Role="Tubes" Type="Self.Tubes" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TubeGroup">
               <PropertyRef Name="TubeGroupID" />
@@ -580,8 +481,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TubesBatch_ExperimentsInfo">
-          <End Role="ExperimentsInfo" Type="WanTaiModel.Store.ExperimentsInfo" Multiplicity="1" />
-          <End Role="TubesBatch" Type="WanTaiModel.Store.TubesBatch" Multiplicity="*" />
+          <End Role="ExperimentsInfo" Type="Self.ExperimentsInfo" Multiplicity="1" />
+          <End Role="TubesBatch" Type="Self.TubesBatch" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ExperimentsInfo">
               <PropertyRef Name="ExperimentID" />
@@ -591,6 +492,97 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityContainer Name="WanTaiModelStoreContainer">
+          <EntitySet Name="Carrier" EntityType="Self.Carrier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DWPlatePosition" EntityType="Self.DWPlatePosition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExperimentsInfo" EntityType="Self.ExperimentsInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogInfo" EntityType="Self.LogInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OperationConfiguration" EntityType="Self.OperationConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PCRPlatePosition" EntityType="Self.PCRPlatePosition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PCRPlatePosition_DWPlatePosition" EntityType="Self.PCRPlatePosition_DWPlatePosition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PCRTestResult" EntityType="Self.PCRTestResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Plates" EntityType="Self.Plates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PoolingRulesConfiguration" EntityType="Self.PoolingRulesConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReagentAndSupplies" EntityType="Self.ReagentAndSupplies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReagentAndSuppliesConfiguration" EntityType="Self.ReagentAndSuppliesConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReagentsAndSuppliesConsumption" EntityType="Self.ReagentsAndSuppliesConsumption" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleInfo" EntityType="Self.RoleInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RotationInfo" EntityType="Self.RotationInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RotationOperate" EntityType="Self.RotationOperate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SampleTracking" EntityType="Self.SampleTracking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemFluidConfiguration" EntityType="Self.SystemFluidConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestingItemConfiguration" EntityType="Self.TestingItemConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TestItem_TubeGroup" EntityType="Self.TestItem_TubeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tube_PlatePosition" EntityType="Self.Tube_PlatePosition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TubeGroup" EntityType="Self.TubeGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tubes" EntityType="Self.Tubes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TubesBatch" EntityType="Self.TubesBatch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DWPlatePosition_Plates" Association="Self.FK_DWPlatePosition_Plates">
+            <End Role="Plates" EntitySet="Plates" />
+            <End Role="DWPlatePosition" EntitySet="DWPlatePosition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PCRPlatePosition_DWPlatePosition_DWPlatePosition" Association="Self.FK_PCRPlatePosition_DWPlatePosition_DWPlatePosition">
+            <End Role="DWPlatePosition" EntitySet="DWPlatePosition" />
+            <End Role="PCRPlatePosition_DWPlatePosition" EntitySet="PCRPlatePosition_DWPlatePosition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PCRPlatePosition_DWPlatePosition_PCRPlatePosition" Association="Self.FK_PCRPlatePosition_DWPlatePosition_PCRPlatePosition">
+            <End Role="PCRPlatePosition" EntitySet="PCRPlatePosition" />
+            <End Role="PCRPlatePosition_DWPlatePosition" EntitySet="PCRPlatePosition_DWPlatePosition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PCRPlatePosition_Plates" Association="Self.FK_PCRPlatePosition_Plates">
+            <End Role="Plates" EntitySet="Plates" />
+            <End Role="PCRPlatePosition" EntitySet="PCRPlatePosition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration" Association="Self.FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration">
+            <End Role="ReagentAndSuppliesConfiguration" EntitySet="ReagentAndSuppliesConfiguration" />
+            <End Role="ReagentAndSupplies" EntitySet="ReagentAndSupplies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies" Association="Self.FK_ReagentsAndSuppliesConsumption_ReagentAndSupplies">
+            <End Role="ReagentAndSupplies" EntitySet="ReagentAndSupplies" />
+            <End Role="ReagentsAndSuppliesConsumption" EntitySet="ReagentsAndSuppliesConsumption" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RotationInfo_TubesBatch" Association="Self.FK_RotationInfo_TubesBatch">
+            <End Role="TubesBatch" EntitySet="TubesBatch" />
+            <End Role="RotationInfo" EntitySet="RotationInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RotationOperate_OperationConfiguration" Association="Self.FK_RotationOperate_OperationConfiguration">
+            <End Role="OperationConfiguration" EntitySet="OperationConfiguration" />
+            <End Role="RotationOperate" EntitySet="RotationOperate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestItem_TubeGroup_TestingItemConfiguration" Association="Self.FK_TestItem_TubeGroup_TestingItemConfiguration">
+            <End Role="TestingItemConfiguration" EntitySet="TestingItemConfiguration" />
+            <End Role="TestItem_TubeGroup" EntitySet="TestItem_TubeGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TestItemInTubeGroup_TubeGroup" Association="Self.FK_TestItemInTubeGroup_TubeGroup">
+            <End Role="TubeGroup" EntitySet="TubeGroup" />
+            <End Role="TestItem_TubeGroup" EntitySet="TestItem_TubeGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tube_PlatePosition_DWPlatePosition" Association="Self.FK_Tube_PlatePosition_DWPlatePosition">
+            <End Role="DWPlatePosition" EntitySet="DWPlatePosition" />
+            <End Role="Tube_PlatePosition" EntitySet="Tube_PlatePosition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tube_PlatePosition_Tubes" Association="Self.FK_Tube_PlatePosition_Tubes">
+            <End Role="Tubes" EntitySet="Tubes" />
+            <End Role="Tube_PlatePosition" EntitySet="Tube_PlatePosition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TubeGroup_PoolingRulesConfiguration" Association="Self.FK_TubeGroup_PoolingRulesConfiguration">
+            <End Role="PoolingRulesConfiguration" EntitySet="PoolingRulesConfiguration" />
+            <End Role="TubeGroup" EntitySet="TubeGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TubeGroup_TubesBatch" Association="Self.FK_TubeGroup_TubesBatch">
+            <End Role="TubesBatch" EntitySet="TubesBatch" />
+            <End Role="TubeGroup" EntitySet="TubeGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Tubes_TubeGroup" Association="Self.FK_Tubes_TubeGroup">
+            <End Role="TubeGroup" EntitySet="TubeGroup" />
+            <End Role="Tubes" EntitySet="Tubes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TubesBatch_ExperimentsInfo" Association="Self.FK_TubesBatch_ExperimentsInfo">
+            <End Role="ExperimentsInfo" EntitySet="ExperimentsInfo" />
+            <End Role="TubesBatch" EntitySet="TubesBatch" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -610,7 +602,6 @@
           <EntitySet Name="ReagentsAndSuppliesConsumptions" EntityType="WanTaiModel.ReagentsAndSuppliesConsumption" />
           <EntitySet Name="RotationInfoes" EntityType="WanTaiModel.RotationInfo" />
           <EntitySet Name="RotationOperates" EntityType="WanTaiModel.RotationOperate" />
-          <EntitySet Name="sysdiagrams" EntityType="WanTaiModel.sysdiagram" />
           <EntitySet Name="SystemFluidConfigurations" EntityType="WanTaiModel.SystemFluidConfiguration" />
           <EntitySet Name="TestingItemConfigurations" EntityType="WanTaiModel.TestingItemConfiguration" />
           <EntitySet Name="TubeGroups" EntityType="WanTaiModel.TubeGroup" />
@@ -684,6 +675,7 @@
           <Property Type="Double" Name="Heigh" Nullable="false" />
           <Property Type="String" Name="Color" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Int16" Name="Type" Nullable="false" />
+          <Property Name="WorkDeskType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="DWPlatePosition">
           <Key>
@@ -703,10 +695,10 @@
           </Key>
           <Property Type="Guid" Name="ExperimentID" Nullable="false" />
           <Property Type="String" Name="ExperimentName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="StartTime" Nullable="false" />
-          <Property Type="DateTime" Name="EndTime" />
+          <Property Type="DateTime" Name="StartTime" Nullable="false" Precision="3" />
+          <Property Type="DateTime" Name="EndTime" Precision="3" />
           <Property Type="String" Name="LoginName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Remark" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Remark" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Type="Int16" Name="State" Nullable="false" />
           <NavigationProperty Name="TubesBatches" Relationship="WanTaiModel.FK_TubesBatch_ExperimentsInfo" FromRole="ExperimentsInfo" ToRole="TubesBatch" />
         </EntityType>
@@ -717,7 +709,7 @@
           <Property Type="Guid" Name="LogID" Nullable="false" />
           <Property Type="String" Name="LogContent" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Type="Int16" Name="LogLevel" />
-          <Property Type="DateTime" Name="CreaterTime" />
+          <Property Type="DateTime" Name="CreaterTime" Precision="3" />
           <Property Type="String" Name="LoginName" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Module" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Guid" Name="ExperimentID" />
@@ -757,7 +749,7 @@
           <Property Type="Guid" Name="ItemID" Nullable="false" />
           <Property Type="Guid" Name="RotationID" Nullable="false" />
           <Property Type="Int32" Name="Position" Nullable="false" />
-          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
           <Property Type="String" Name="Result" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Type="Guid" Name="ExperimentID" />
           <Property Type="String" Name="BarCode" MaxLength="255" FixedLength="false" Unicode="false" />
@@ -818,6 +810,7 @@
           <NavigationProperty Name="ReagentAndSupplies" Relationship="WanTaiModel.FK_ReagentAndSupplies_ReagentAndSuppliesConfiguration" FromRole="ReagentAndSuppliesConfiguration" ToRole="ReagentAndSupply" />
           <Property Type="Boolean" Name="ActiveStatus" Nullable="false" />
           <Property Type="Double" Name="SimpleTrackingVolumn" />
+          <Property Name="WorkDeskType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ReagentsAndSuppliesConsumption">
           <Key>
@@ -825,7 +818,7 @@
           </Key>
           <Property Type="Guid" Name="ItemID" Nullable="false" />
           <Property Type="Double" Name="Volume" />
-          <Property Type="DateTime" Name="UpdateTime" />
+          <Property Type="DateTime" Name="UpdateTime" Precision="3" />
           <Property Type="Guid" Name="ExperimentID" Nullable="false" />
           <Property Type="Int16" Name="VolumeType" />
           <Property Type="Guid" Name="ReagentAndSupplieID" />
@@ -841,7 +834,7 @@
           <Property Type="Guid" Name="TubesBatchID" />
           <Property Type="String" Name="RotationName" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Int16" Name="State" Nullable="false" />
-          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
           <Property Type="Guid" Name="OperationID" Nullable="false" />
           <Property Type="String" Name="OperationName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TubesBatch" Relationship="WanTaiModel.FK_RotationInfo_TubesBatch" FromRole="RotationInfo" ToRole="TubesBatch" />
@@ -857,19 +850,9 @@
           <Property Type="Int16" Name="State" Nullable="false" />
           <Property Type="Guid" Name="ExperimentID" Nullable="false" />
           <Property Type="String" Name="ErrorLog" MaxLength="2000" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="StartTime" />
-          <Property Type="DateTime" Name="EndTime" />
+          <Property Type="DateTime" Name="StartTime" Precision="3" />
+          <Property Type="DateTime" Name="EndTime" Precision="3" />
           <NavigationProperty Name="OperationConfiguration" Relationship="WanTaiModel.FK_RotationOperate_OperationConfiguration" FromRole="RotationOperate" ToRole="OperationConfiguration" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Type="String" Name="name" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Type="Int32" Name="principal_id" Nullable="false" />
-          <Property Type="Int32" Name="diagram_id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="version" />
-          <Property Type="Binary" Name="definition" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="SystemFluidConfiguration">
           <Key>
@@ -901,7 +884,7 @@
           <Property Type="Guid" Name="PoolingRulesID" Nullable="false" />
           <Property Type="Guid" Name="ExperimentID" Nullable="false" />
           <Property Type="Guid" Name="TubesBatchID" />
-          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="PoolingRulesConfiguration" Relationship="WanTaiModel.FK_TubeGroup_PoolingRulesConfiguration" FromRole="TubeGroup" ToRole="PoolingRulesConfiguration" />
           <NavigationProperty Name="TubesBatch" Relationship="WanTaiModel.FK_TubeGroup_TubesBatch" FromRole="TubeGroup" ToRole="TubesBatch" />
           <NavigationProperty Name="Tubes" Relationship="WanTaiModel.FK_Tubes_TubeGroup" FromRole="TubeGroup" ToRole="Tube" />
@@ -930,10 +913,11 @@
           <Property Type="Guid" Name="TubesBatchID" Nullable="false" />
           <Property Type="String" Name="TubesBatchName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Guid" Name="ExperimentID" Nullable="false" />
-          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="ExperimentsInfo" Relationship="WanTaiModel.FK_TubesBatch_ExperimentsInfo" FromRole="TubesBatch" ToRole="ExperimentsInfo" />
           <NavigationProperty Name="RotationInfoes" Relationship="WanTaiModel.FK_RotationInfo_TubesBatch" FromRole="TubesBatch" ToRole="RotationInfo" />
           <NavigationProperty Name="TubeGroups" Relationship="WanTaiModel.FK_TubeGroup_TubesBatch" FromRole="TubesBatch" ToRole="TubeGroup" />
+          <Property Name="BatchType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -943,9 +927,9 @@
           <Property Type="String" Name="LoginName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="LoginPassWord" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="RoleName" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="CreateTime" Nullable="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
           <Property Type="String" Name="CreateName" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Type="DateTime" Name="UpdateTime" />
+          <Property Type="DateTime" Name="UpdateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_DWPlatePosition_Plates">
           <End Type="WanTaiModel.Plate" Role="Plate" Multiplicity="1" />
@@ -1085,7 +1069,7 @@
           </Key>
           <Property Type="Guid" Name="RoleID" Nullable="false" />
           <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="RoleModules" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="RoleModules" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="Int16" Name="RoleLevel" Nullable="false" />
         </EntityType>
         <EntityType Name="SampleTracking">
@@ -1106,7 +1090,7 @@
           <Property Type="Double" Name="VOLUME" />
           <Property Type="String" Name="SampleErrors" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="Boolean" Name="IsKeeping" />
-          <Property Type="DateTime" Name="CreateTime" />
+          <Property Type="DateTime" Name="CreateTime" Precision="3" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1117,6 +1101,7 @@
           <EntitySetMapping Name="Carriers">
             <EntityTypeMapping TypeName="WanTaiModel.Carrier">
               <MappingFragment StoreEntitySet="Carrier">
+                <ScalarProperty Name="WorkDeskType" ColumnName="WorkDeskType" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
                 <ScalarProperty Name="Heigh" ColumnName="Heigh" />
@@ -1243,6 +1228,7 @@
           <EntitySetMapping Name="ReagentAndSuppliesConfigurations">
             <EntityTypeMapping TypeName="WanTaiModel.ReagentAndSuppliesConfiguration">
               <MappingFragment StoreEntitySet="ReagentAndSuppliesConfiguration">
+                <ScalarProperty Name="WorkDeskType" ColumnName="WorkDeskType" />
                 <ScalarProperty Name="SimpleTrackingVolumn" ColumnName="SimpleTrackingVolumn" />
                 <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
@@ -1301,17 +1287,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="WanTaiModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SystemFluidConfigurations">
             <EntityTypeMapping TypeName="WanTaiModel.SystemFluidConfiguration">
               <MappingFragment StoreEntitySet="SystemFluidConfiguration">
@@ -1364,6 +1339,7 @@
           <EntitySetMapping Name="TubesBatches">
             <EntityTypeMapping TypeName="WanTaiModel.TubesBatch">
               <MappingFragment StoreEntitySet="TubesBatch">
+                <ScalarProperty Name="BatchType" ColumnName="BatchType" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
                 <ScalarProperty Name="TubesBatchName" ColumnName="TubesBatchName" />
@@ -1455,6 +1431,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="True" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->
@@ -1474,7 +1451,6 @@
         <EntityTypeShape EntityType="WanTaiModel.ReagentsAndSuppliesConsumption" Width="1.5" PointX="16.125" PointY="7.75" Height="2.5263069661458335" />
         <EntityTypeShape EntityType="WanTaiModel.RotationInfo" Width="1.5" PointX="5.25" PointY="3.5" Height="2.414042968749996" />
         <EntityTypeShape EntityType="WanTaiModel.RotationOperate" Width="1.5" PointX="15" PointY="1.625" Height="2.414042968749996" />
-        <EntityTypeShape EntityType="WanTaiModel.sysdiagram" Width="1.5" PointX="2.75" PointY="10.375" Height="1.7566536458333246" />
         <EntityTypeShape EntityType="WanTaiModel.SystemFluidConfiguration" Width="1.5" PointX="0.75" PointY="13.375" Height="1.7566536458333246" />
         <EntityTypeShape EntityType="WanTaiModel.TestingItemConfiguration" Width="1.5" PointX="6" PointY="7.125" Height="1.5923063151041674" />
         <EntityTypeShape EntityType="WanTaiModel.TubeGroup" Width="1.5" PointX="8.25" PointY="3.5" Height="2.414042968749996" />

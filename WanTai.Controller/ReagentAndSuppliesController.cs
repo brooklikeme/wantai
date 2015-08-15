@@ -23,7 +23,7 @@ namespace WanTai.Controller
         {
             using (WanTaiEntities entities = new WanTaiEntities())
             {
-                return entities.ReagentAndSuppliesConfigurations.Where(ReagentAndSupplies => ReagentAndSupplies.ItemType==205).ToList();
+                return entities.ReagentAndSuppliesConfigurations.Where(ReagentAndSupplies => ReagentAndSupplies.ItemType==205 && ReagentAndSupplies.WorkDeskType == SessionInfo.WorkDeskType).ToList();
             }
         }
         public List<ReagentAndSupply> GetAll(Guid experimentID)
