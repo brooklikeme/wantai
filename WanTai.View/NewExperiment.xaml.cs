@@ -21,6 +21,9 @@ namespace WanTai.View
     /// </summary>
     public partial class NewExperiment : Window
     {
+
+        private List<Guid> TestingItemList = new List<Guid>();
+
         public NewExperiment()
         {
             InitializeComponent();
@@ -28,20 +31,21 @@ namespace WanTai.View
                 txtOrperatorName.Text = SessionInfo.LoginName;
             txtExperimentName.Text = System.DateTime.Now.ToString();
 
-            var TestItems = new TestItemController().GetActiveTestItemConfigurations();
-            foreach (TestingItemConfiguration _TestingItem in TestItems)
+            if (SessionInfo.WorkDeskType == "100")
             {
-                //FrameworkElementFactory checkBox = new FrameworkElementFactory(typeof(CheckBox));
-                //checkBox.SetValue(CheckBox.DataContextProperty, _TestingItem);
-                //checkBox.SetValue(CheckBox.MarginProperty, new System.Windows.Thickness(5, 0, 5, 0));
-                //checkBox.SetValue(CheckBox.IsCheckedProperty, false);
-                //checkBox.SetValue(CheckBox.ContentProperty, _TestingItem.TestingItemName);
-
-                
-                //checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked));
-                //checkBox.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(checkBox_Unchecked));
-                CheckBox checkBox = new CheckBox();
-                testPanel.Children.Add(checkBox);
+                var TestItems = new TestItemController().GetActiveTestItemConfigurations();
+                foreach (TestingItemConfiguration _TestingItem in TestItems)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Tag = _TestingItem;
+                    checkBox.Content = _TestingItem.TestingItemName;
+                    checkBox.Height = 20;
+                    checkBox.Width = 50;
+                    checkBox.Margin = new Thickness(5);
+                    checkBox.Checked += new RoutedEventHandler(checkBox_Checked);
+                    checkBox.Unchecked += new RoutedEventHandler(checkBox_Unchecked);
+                    testPanel.Children.Add(checkBox);
+                }
             }
         }
 
@@ -73,6 +77,7 @@ namespace WanTai.View
             experimentsInfo.StartTime = DateTime.Now;
             experimentsInfo.State = (short)ExperimentStatus.Create; ;
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
+            SessionInfo.TestingItemIDs = TestingItemList;
             if (controller.CreateExperiment(experimentsInfo))
             {
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
@@ -94,7 +99,16 @@ namespace WanTai.View
             this.DialogResult = false;
             this.Close();
         }
-
+        private void checkBox_Checked(object sender, RoutedEventArgs e)
+        {
+            TestingItemConfiguration testItem = (TestingItemConfiguration)((CheckBox)sender).Tag;
+            TestingItemList.Add(testItem.TestingItemID);
+        }
+        private void checkBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TestingItemConfiguration testItem = (TestingItemConfiguration)((CheckBox)sender).Tag;
+            TestingItemList.Remove(testItem.TestingItemID);
+        }
         private void txtExperimentName_GotFocus(object sender, RoutedEventArgs e)
         {
             errInfo.Text = "";

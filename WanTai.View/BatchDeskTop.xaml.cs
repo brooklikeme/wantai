@@ -36,7 +36,6 @@ namespace WanTai.View
     {
         private double cooPoint = 1.4;
         private double lengthUnit = 0;
-        private string workDeskType;
 
         List<Control.PlateBase> ViewPlates = new List<PlateBase>();
         List<ReagentAndSuppliesConfiguration> reagentAndSupplies = new List<ReagentAndSuppliesConfiguration>();
@@ -52,21 +51,20 @@ namespace WanTai.View
             dataGridDictionary.Add("supplies", dgSupplies);
 
             // 添加 工作台 js &WanTag
-            workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
-            string image = String.Format(@"/WanTag;component/Resources/Sample{0}.gif", workDeskType);
+            string image = String.Format(@"/WanTag;component/Resources/Sample{0}.gif", SessionInfo.WorkDeskType);
             Sample.Source = new BitmapImage(new Uri(image, UriKind.Relative));
             // 隐藏 枪头 js
-            if (workDeskType == "100")
+            if (SessionInfo.WorkDeskType == "100")
             {
                 labDiTi1000.Visibility = Visibility.Hidden;
                 Sample.Margin = new Thickness(30, 5, 0, 5);
             }
-            else if (workDeskType == "150")
+            else if (SessionInfo.WorkDeskType == "150")
             {
                 Sample.Margin = new Thickness(0, 5, 0, 5);
                 Sample.Width = 270;
             }
-            else if (workDeskType == "200")
+            else if (SessionInfo.WorkDeskType == "200")
             {
                 Sample.Margin = new Thickness(0, 5, 0, 5);
                 Sample.Width = 420;
@@ -92,7 +90,7 @@ namespace WanTai.View
             btnSave.IsEnabled = false;
             DrawDeskTopInGrid();
 
-            if (workDeskType == "200")
+            if (SessionInfo.WorkDeskType == "200")
             {
                 DeskTopWithGrid.Children.Add(new View.Services.DeskTopService().DrawCoordinateOld(width, limit, lengthUnit));
             }
@@ -164,7 +162,7 @@ namespace WanTai.View
                 // 修改 枪头及深孔板 js
                 if (c.CarrierName == "006")
                 {
-                    if (workDeskType == "100")
+                    if (SessionInfo.WorkDeskType == "100")
                     {
                         continue;
                     }  
@@ -174,7 +172,7 @@ namespace WanTai.View
 
                 if (c.CarrierName == "007")
                 {
-                    if (workDeskType == "100")
+                    if (SessionInfo.WorkDeskType == "100")
                     {
                         labDiTi200.Margin = new Thickness(120, 0, 0, 0);
                     }

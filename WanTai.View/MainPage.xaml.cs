@@ -34,13 +34,11 @@ namespace WanTai.View
         public delegate void EvoRestorationStatus(bool isEnable);
         public event EvoRestorationStatus SetEvoRestorationStatus;
         private ExperimentRunView experimentRunView = new ExperimentRunView();
-        private string workDeskType;
 
         public MainPage()
         {   
             InitializeComponent();
            // bindRunWithStartAction();
-            workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             View();
         }
         public void AddEvoRestorationStatusEvent()
@@ -63,21 +61,21 @@ namespace WanTai.View
                ((TabItem)tabControl.Items[i]).IsEnabled = false;
             }
             // 判断工作台
-            if (workDeskType == "100")
+            if (SessionInfo.WorkDeskType == "100")
             {
                 TubesView100 tubesView = new TubesView100();
                 tubesView.labelRotationName.Content = "";
                 tabItem1.Content = tubesView ;
                 tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
             }
-            else if (workDeskType == "150")
+            else if (SessionInfo.WorkDeskType == "150")
             {
                 TubesView150 tubesView = new TubesView150();
                 tubesView.labelRotationName.Content = "";
                 tabItem1.Content = tubesView ;
                 tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
             }
-            else if (workDeskType == "200")
+            else if (SessionInfo.WorkDeskType == "200")
             {
                 TubesView200 tubesView = new TubesView200();
                 tubesView.labelRotationName.Content = "";
@@ -142,19 +140,19 @@ namespace WanTai.View
                     DeskTop deskTop = (DeskTop)frameDeskTop.Content;
                    
                     int width = 0, limit = 0, offset = 0;
-                    if (workDeskType == "100")
+                    if (SessionInfo.WorkDeskType == "100")
                     {
                         limit = 32;
                         width = 500;
                         offset = 200;
                     }
-                    else if (workDeskType == "150")
+                    else if (SessionInfo.WorkDeskType == "150")
                     {
                         limit = 47;
                         width = 700;
                         offset = 100;
                     }
-                    else if (workDeskType == "200")
+                    else if (SessionInfo.WorkDeskType == "200")
                     {
                         limit = 69;
                         width = 900;
@@ -299,21 +297,21 @@ namespace WanTai.View
                 ((TabItem)tabControl.Items[2]).IsEnabled = false;
                 
                 // 判断显示工作台
-                if (workDeskType == "100")
+                if (SessionInfo.WorkDeskType == "100")
                 {
                     TubesView100 tubesView = new TubesView100();
                     tabItem1.Content = tubesView ;
                     tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
                     tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
                 }
-                else if (workDeskType == "150")
+                else if (SessionInfo.WorkDeskType == "150")
                 {
                     TubesView150 tubesView = new TubesView150();
                     tabItem1.Content = tubesView ;
                     tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
                     tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
                 }
-                else if (workDeskType == "200")
+                else if (SessionInfo.WorkDeskType == "200")
                 {
                     TubesView200 tubesView = new TubesView200();
                     tabItem1.Content = tubesView ;
@@ -369,19 +367,19 @@ namespace WanTai.View
             ((TabItem)tabControl.Items[2]).IsEnabled = false;
 
             // 判断显示工作台
-            if (workDeskType == "100")
+            if (SessionInfo.WorkDeskType == "100")
             {
                 TubesView100 tubesView = new TubesView100();
                 tabItem1.Content = tubesView ;
                 tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
             }
-            else if (workDeskType == "150")
+            else if (SessionInfo.WorkDeskType == "150")
             {
                 TubesView150 tubesView = new TubesView150();
                 tabItem1.Content = tubesView ;
                 tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
             }
-            else if (workDeskType == "200")
+            else if (SessionInfo.WorkDeskType == "200")
             {
                 TubesView200 tubesView = new TubesView200();
                 tabItem1.Content = tubesView ;

@@ -25,11 +25,12 @@
             <GroupBox.Header>描述</GroupBox.Header>
             <TextBox Name="txtRemark"  Margin="5"></TextBox>
         </GroupBox>
-        <StackPanel  Grid.Row="3"  HorizontalAlignment="Center" Orientation="Horizontal" >
+        <StackPanel Name="testPanel" Grid.Row="3"  HorizontalAlignment="Center" Orientation="Horizontal" >
+        </StackPanel>
+        <StackPanel  Grid.Row="4"  HorizontalAlignment="Center" Orientation="Horizontal" >
             <Button Name="btnSave" Height="30" HorizontalAlignment="Center" Width="70" Click="btnSave_Click">保存</Button>
             <Button Name="btnCancel" Height="30" Margin="30,0,0,0" Width="70" Click="btnCancel_Click">取消</Button>
         </StackPanel>
-        <StackPanel Name="testPanel" Grid.Row="4"  HorizontalAlignment="Center" Orientation="Horizontal" >
-        </StackPanel>
+        
     </Grid>
 </Window>

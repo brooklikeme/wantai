@@ -42,18 +42,17 @@ namespace WanTai.View.Configuration
         {
             LiquidConfigurationColorConvert _LiquidConfigurationColorConvert = new LiquidConfigurationColorConvert();
 
-            string workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             int range = 6;
 
-            if (workDeskType == "100")
+            if (SessionInfo.WorkDeskType == "100")
             {
                 range = 7;
             }
-            else if (workDeskType == "150")
+            else if (SessionInfo.WorkDeskType == "150")
             {
                 range = 19;
             }
-            else if (workDeskType == "200")
+            else if (SessionInfo.WorkDeskType == "200")
             {
                 range = 37;
             }
