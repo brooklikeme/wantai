@@ -151,15 +151,20 @@ namespace WanTai.Controller
                     if (SessionInfo.WorkDeskType == "100")
                     {
                         List<SystemFluidConfiguration> _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).ToList();
-                        SystemFluidConfiguration sfcg = _SystemFluidConfigurationList[_SystemFluidConfigurationList.Count - 1];
+                        SystemFluidConfiguration sfcg = _SystemFluidConfigurationList[_SystemFluidConfigurationList.Count - 1];                      
+
                         for (int i = 0; i < 3; i++)
                         {
                             _SystemFluidConfigurationList.Add(sfcg);
                         }
-                            
+                        var TestItems = new TestItemController().GetActiveTestItemConfigurations();
                         int row = 0, col = 1;
-                        foreach (Guid guid in SessionInfo.TestingItemIDs)
+                        foreach (TestingItemConfiguration _TestingItem in TestItems)
                         {
+                            //TestingItemConfiguration _TestingItem = _WanTaiEntities.TestingItemConfigurations.Where(t => t.TestingItemID == guid).FirstOrDefault();
+                            if (!SessionInfo.TestingItemIDs.Contains(_TestingItem.TestingItemID))
+                                continue;
+
                             for (int i = 0; i < _SystemFluidConfigurationList.Count; i++)
                             {
                                 if (row >= 16)
@@ -178,6 +183,7 @@ namespace WanTai.Controller
                                 Tubes.Rows[(int)(row)]["Visibility" + col] = "Visible";
                                 Tubes.Rows[(int)(row)]["IsEnabled" + col] = "True";
                                 Tubes.Rows[(int)(row)]["IsSelected" + col] = "#316AC5";
+                                //Tubes.Rows[(int)(row)]["Background" + col] = _TestingItem.TestingItemColor;
                                 LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return (lt.TypeId == sfc.ItemType); });
                                 if (_LiquidType != null)
                                 {
