@@ -183,6 +183,7 @@
           <Property Name="OperationID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="OperationName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="RotationSequence" Type="smallint" />
+          <Property Name="BatchType" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="RotationOperate">
           <Key>
@@ -839,6 +840,7 @@
           <Property Type="String" Name="OperationName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TubesBatch" Relationship="WanTaiModel.FK_RotationInfo_TubesBatch" FromRole="RotationInfo" ToRole="TubesBatch" />
           <Property Type="Int16" Name="RotationSequence" />
+          <Property Name="BatchType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RotationOperate">
           <Key>
@@ -1261,6 +1263,7 @@
           <EntitySetMapping Name="RotationInfoes">
             <EntityTypeMapping TypeName="WanTaiModel.RotationInfo">
               <MappingFragment StoreEntitySet="RotationInfo">
+                <ScalarProperty Name="BatchType" ColumnName="BatchType" />
                 <ScalarProperty Name="RotationSequence" ColumnName="RotationSequence" />
                 <ScalarProperty Name="OperationName" ColumnName="OperationName" />
                 <ScalarProperty Name="OperationID" ColumnName="OperationID" />

@@ -217,15 +217,6 @@ namespace WanTai.View
             RotationInfo firstRotation = new ConfigRotationController().GetCurrentRotationInfos(SessionInfo.ExperimentID).FirstOrDefault();
             if (firstRotation == null) 
             {
-            //    RotationInfo rotationInfo = new RotationInfo();
-            //    rotationInfo.RotationID = Guid.Empty;
-            //    rotationInfo.OperationID = new Guid("a091518f-10f5-11e1-b8f5-005056c00008");
-            //    SessionInfo.PraperRotation = rotationInfo;
-            //    isFirstRotation = true;
-            //}
-            //else
-            //{
-            //    
                 return;
             }
             isFirstRotation = firstRotation.RotationID == SessionInfo.PraperRotation.RotationID;

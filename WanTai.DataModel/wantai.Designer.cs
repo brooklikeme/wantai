@@ -3987,6 +3987,30 @@ namespace WanTai.DataModel
         private Nullable<global::System.Int16> _RotationSequence;
         partial void OnRotationSequenceChanging(Nullable<global::System.Int16> value);
         partial void OnRotationSequenceChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String BatchType
+        {
+            get
+            {
+                return _BatchType;
+            }
+            set
+            {
+                OnBatchTypeChanging(value);
+                ReportPropertyChanging("BatchType");
+                _BatchType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("BatchType");
+                OnBatchTypeChanged();
+            }
+        }
+        private global::System.String _BatchType;
+        partial void OnBatchTypeChanging(global::System.String value);
+        partial void OnBatchTypeChanged();
 
         #endregion
 

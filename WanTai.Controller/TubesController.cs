@@ -183,7 +183,7 @@ namespace WanTai.Controller
                                 Tubes.Rows[(int)(row)]["Visibility" + col] = "Visible";
                                 Tubes.Rows[(int)(row)]["IsEnabled" + col] = "True";
                                 Tubes.Rows[(int)(row)]["IsSelected" + col] = "#316AC5";
-                                //Tubes.Rows[(int)(row)]["Background" + col] = _TestingItem.TestingItemColor;
+                                Tubes.Rows[(int)(row)]["Background" + col] = _TestingItem.TestingItemColor;
                                 LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return (lt.TypeId == sfc.ItemType); });
                                 if (_LiquidType != null)
                                 {

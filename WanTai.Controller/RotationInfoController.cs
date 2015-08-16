@@ -11,7 +11,15 @@ namespace WanTai.Controller
         {
             using (WanTaiEntities _WanTaiEntities = new WanTaiEntities())
             {
-                return _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID).OrderBy(c=>c.RotationSequence).ToList();
+                if (SessionInfo.BatchType == null)
+                {
+                    return _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID).OrderBy(c => c.RotationSequence).ToList();
+                }
+                else
+                {
+                    return _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID && Rotation.BatchType == SessionInfo.BatchType).OrderBy(c => c.RotationSequence).ToList();
+                }
+                
             }
         }
         /// <summary>

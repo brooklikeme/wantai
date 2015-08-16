@@ -65,6 +65,7 @@ namespace WanTai.View
                     else
                         this.next_button.IsEnabled = false;
                     this.save_button.IsEnabled = false;
+
                     operation_viewcolumn.Visibility = System.Windows.Visibility.Visible;
                     operation_template_column.Visibility = System.Windows.Visibility.Hidden;
 
@@ -92,12 +93,6 @@ namespace WanTai.View
                     this.next_button.IsEnabled = false;
                     this.save_button.IsEnabled = true;
                     isBelongtoCurrentTubeBatch = true;
-                    operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
-
-                    operation_template_column.Visibility = System.Windows.Visibility.Visible;
-
-                    operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
-                    operation_template_column.Visibility = System.Windows.Visibility.Visible;
 
                     tubesBatch = controller.GetLastTubesBatch();
 
@@ -139,6 +134,9 @@ namespace WanTai.View
                 }
                 else
                 {
+                    operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
+                    operation_template_column.Visibility = System.Windows.Visibility.Visible;
+
                     create_button.IsEnabled = true;
                     rotation_dataGrid.IsEnabled = true;
                 }
@@ -189,7 +187,7 @@ namespace WanTai.View
             dRow["deleteIsVisible"] = Visibility.Visible.ToString();
             dRow["RotationName"] = "轮次" + dRow["Sequence"].ToString();
          //   operation_column.DisplayIndex = 1;
-            dRow["Operation"] = new OperationConfiguration() { OperationID = CreateOperation.OperationID, OperationName = CreateOperation.OperationName, OperationType= CreateOperation.OperationType, OperationSequence =CreateOperation.OperationSequence }; 
+            dRow["Operation"] = CreateOperation; 
             if (isBelongtoCurrentTubeBatch && tubesBatch != null)
             {
                 dRow["TubesBatchName"] = tubesBatch.TubesBatchName;
@@ -334,7 +332,7 @@ namespace WanTai.View
                 rotationInfo.OperationName = operation.OperationName;
 
                 rotationInfo.RotationSequence = (short)row["Sequence"];
-                //rotationInfo.BatchType = SessionInfo.BatchType;
+                rotationInfo.BatchType = SessionInfo.BatchType;
 
                 rotationInfoList.Add(rotationInfo);                
             }

@@ -87,11 +87,11 @@ namespace WanTai.View
             experimentsInfo.StartTime = DateTime.Now;
             experimentsInfo.State = (short)ExperimentStatus.Create; ;
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
-            SessionInfo.TestingItemIDs = TestingItemList;
             if (controller.CreateExperiment(experimentsInfo))
             {
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
                 SessionInfo.RotationFormulaParameters=new Dictionary<Guid,FormulaParameters>();
+                SessionInfo.TestingItemIDs = TestingItemList;
                 SessionInfo.PraperRotation = null;
                 SessionInfo.BatchType = null;
                 LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "新建实验 成功", SessionInfo.LoginName, this.GetType().Name, SessionInfo.ExperimentID);
