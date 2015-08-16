@@ -625,7 +625,8 @@ namespace WanTai.Controller
                                             _PCRPlatePosition.TestName = TestionItem.TestingItemName;
                                             _PCRPlatePosition.Position = TestionItem.TestingItemPosition;
                                             _PCRPlatePosition.DWPlatePositions.Add(DWPlate_1_Position);
-                                            _PCRPlatePosition.DWPlatePositions.Add(DWPlate_2_Position);
+                                            if (workDeskType != "100")
+                                                _PCRPlatePosition.DWPlatePositions.Add(DWPlate_2_Position);
                                             _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
 
                                             PCRCSV[TestionItem.TestingItemPCR - 1] = PlateName.DWPlate5 + "," + (HolePosition + 1).ToString() + ",20," + PlateName.PCRPlate + "," + TestionItem.TestingItemPosition.ToString();
