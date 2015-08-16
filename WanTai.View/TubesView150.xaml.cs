@@ -37,6 +37,8 @@ namespace WanTai.View
         private bool IsPoack = false;
         private void AddColumns()
         {
+
+
             if (SessionInfo.BatchType != "B")
             {
                 SessionInfo.BatchIndex++;
@@ -65,24 +67,25 @@ namespace WanTai.View
                 {
                     checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked));
                     checkBox.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(checkBox_Unchecked));
+
+                    TextBlock textBlock = new TextBlock();
+                    textBlock.Height = 16;
+                    textBlock.Margin = new Thickness(5, 0, 0, 0);
+                    textBlock.Width = 16;
+                    textBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                    textBlock.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                    textBlock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_TestingItem.TestingItemColor));
+                    sp_pointout.Children.Add(textBlock);
+
+                    Label label = new Label();
+                    label.Content = _TestingItem.TestingItemName;
+                    label.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                    label.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                    label.Width = 65;
+                    sp_pointout.Children.Add(label);
                 }
                 _StackPanel.AppendChild(checkBox);
 
-                TextBlock textBlock = new TextBlock();
-                textBlock.Height = 16;
-                textBlock.Margin = new Thickness(5,0,0,0);
-                textBlock.Width = 16;
-                textBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                textBlock.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                textBlock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_TestingItem.TestingItemColor));
-                sp_pointout.Children.Add(textBlock);
-
-                Label label = new Label();
-                label.Content = _TestingItem.TestingItemName;
-                label.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                label.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                label.Width = 65;
-                sp_pointout.Children.Add(label);
             }
             DataTemplate dataTemplate = new DataTemplate();
             dataTemplate.VisualTree = _StackPanel;
@@ -96,7 +99,6 @@ namespace WanTai.View
             {
                 dg_TubesGroup.Columns.Insert(2, _DataGridTemplateColumn);
             }
-            
 
             PoolingRules = new WanTai.Controller.PoolingRulesConfigurationController().GetPoolingRulesConfiguration();
             List<LiquidType> LiquidTypeList = SessionInfo.LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
@@ -491,10 +493,14 @@ namespace WanTai.View
                 Cells = dg_Bules.SelectedCells;
             }
 
+            int position = 0;
+            if (SessionInfo.BatchType == "B")
+                position = 18;
+
             foreach (DataGridCellInfo Cell in Cells)
             {
-                int  ColumnIndex=CommFuntion.GetDataGridCellColumnIndex(Cell);
-                int  RowIndex=CommFuntion.GetDataGridCellRowIndex(Cell);
+                int ColumnIndex = CommFuntion.GetDataGridCellColumnIndex(Cell) + position;
+                int RowIndex = CommFuntion.GetDataGridCellRowIndex(Cell);
                 if (Tubes.Rows[RowIndex - 1]["TubeType" + ColumnIndex.ToString()].ToString() != "Tube")
                 {
                     if (Tubes.Rows[RowIndex - 1]["TubeType" + ColumnIndex.ToString()].ToString() == "-1") continue;

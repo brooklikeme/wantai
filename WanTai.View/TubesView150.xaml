@@ -458,311 +458,329 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        
         <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" FontSize="12"  Grid.Column="1" AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules2" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick" IsEnabled="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="19" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background1}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background19}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected1}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected19}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate >
-                        <DataTemplate>
-                            <my1:PieLoayout  ToolTip="{Binding Path=BarCode1}" IsEnabled="{Binding Path=IsEnabled1}"  PlottedProperty="{Binding Path=TextItemCount1}" Visibility="{Binding Path=Visibility1}"  HorizontalAlignment="Center"  x:Name="pie_1" VerticalAlignment="Center"  />
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode19}" PlottedProperty="{Binding Path=TextItemCount19}" HorizontalAlignment="Center"  x:Name="pie_19" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="20" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background2}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background20}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected2}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected20}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode2}"  PlottedProperty="{Binding Path=TextItemCount2}" HorizontalAlignment="Center"  x:Name="pie_2" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode20}" PlottedProperty="{Binding Path=TextItemCount20}" HorizontalAlignment="Center"  x:Name="pie_20" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="21" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background3}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background21}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected3}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected21}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode3}" PlottedProperty="{Binding Path=TextItemCount3}" HorizontalAlignment="Center"  x:Name="pie_3" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode21}" PlottedProperty="{Binding Path=TextItemCount21}" HorizontalAlignment="Center"  x:Name="pie_21" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="22" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background4}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background22}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected4}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected22}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode4}" PlottedProperty="{Binding Path=TextItemCount4}" HorizontalAlignment="Center"  x:Name="pie_4" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode22}" PlottedProperty="{Binding Path=TextItemCount22}" HorizontalAlignment="Center"  x:Name="pie_22" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="23" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background5}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background23}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected5}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected23}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode5}" PlottedProperty="{Binding Path=TextItemCount5}" HorizontalAlignment="Center"  x:Name="pie_5" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode23}" PlottedProperty="{Binding Path=TextItemCount23}" HorizontalAlignment="Center"  x:Name="pie_23" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="24" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background6}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background24}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected6}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected24}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode6}" PlottedProperty="{Binding Path=TextItemCount6}" HorizontalAlignment="Center"  x:Name="pie_6" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode24}" PlottedProperty="{Binding Path=TextItemCount24}" HorizontalAlignment="Center"  x:Name="pie_24" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="25" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background7}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background25}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected7}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected25}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode7}" PlottedProperty="{Binding Path=TextItemCount7}" HorizontalAlignment="Center"  x:Name="pie_7" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode25}" PlottedProperty="{Binding Path=TextItemCount25}" HorizontalAlignment="Center"  x:Name="pie_25" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="26" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background8}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background26}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected8}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected26}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode8}" PlottedProperty="{Binding Path=TextItemCount8}" HorizontalAlignment="Center"  x:Name="pie_8" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode26}" PlottedProperty="{Binding Path=TextItemCount26}" HorizontalAlignment="Center"  x:Name="pie_26" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="27" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background9}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background27}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected9}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected27}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode9}" PlottedProperty="{Binding Path=TextItemCount9}" HorizontalAlignment="Center"  x:Name="pie_9" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode27}" PlottedProperty="{Binding Path=TextItemCount27}" HorizontalAlignment="Center"  x:Name="pie_27" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="28" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background10}"   />
+                            <Setter Property="Background" Value="{Binding Path=Background28}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected10}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected28}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode10}" PlottedProperty="{Binding Path=TextItemCount10}" HorizontalAlignment="Center"  x:Name="pie_10" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode28}" PlottedProperty="{Binding Path=TextItemCount28}" HorizontalAlignment="Center"  x:Name="pie_28" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="29" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background11}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background29}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected11}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected29}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode11}" PlottedProperty="{Binding Path=TextItemCount11}" HorizontalAlignment="Center"  x:Name="pie_11" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode29}" PlottedProperty="{Binding Path=TextItemCount29}" HorizontalAlignment="Center"  x:Name="pie_29" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="30" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background12}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background30}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected12}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected30}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode12}" PlottedProperty="{Binding Path=TextItemCount12}" HorizontalAlignment="Center"  x:Name="pie_12" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode30}" PlottedProperty="{Binding Path=TextItemCount30}" HorizontalAlignment="Center"  x:Name="pie_30" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="31" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background13}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background31}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected13}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected31}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode13}" PlottedProperty="{Binding Path=TextItemCount13}" HorizontalAlignment="Center"  x:Name="pie_13" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode31}" PlottedProperty="{Binding Path=TextItemCount31}" HorizontalAlignment="Center"  x:Name="pie_31" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+
                 <DataGridTemplateColumn Header="32" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background14}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background32}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected14}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected32}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode14}" PlottedProperty="{Binding Path=TextItemCount14}" HorizontalAlignment="Center"  x:Name="pie_14" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode32}" PlottedProperty="{Binding Path=TextItemCount32}" HorizontalAlignment="Center"  x:Name="pie_32" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="33" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background15}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background33}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected15}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected33}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode15}" PlottedProperty="{Binding Path=TextItemCount15}" HorizontalAlignment="Center"  x:Name="pie_15" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode33}" PlottedProperty="{Binding Path=TextItemCount33}" HorizontalAlignment="Center"  x:Name="pie_33" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="34" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background16}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background34}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected16}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected34}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode16}" PlottedProperty="{Binding Path=TextItemCount16}" HorizontalAlignment="Center"  x:Name="pie_16" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode34}" PlottedProperty="{Binding Path=TextItemCount34}" HorizontalAlignment="Center"  x:Name="pie_34" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="35" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background17}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background35}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected17}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected35}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode17}" PlottedProperty="{Binding Path=TextItemCount17}" HorizontalAlignment="Center"  x:Name="pie_17" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode35}" PlottedProperty="{Binding Path=TextItemCount35}" HorizontalAlignment="Center"  x:Name="pie_35" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
                 <DataGridTemplateColumn Header="36" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background18}"/>
+                            <Setter Property="Background" Value="{Binding Path=Background36}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected18}"/>
+                                    <Setter Property="Background" Value="{Binding Path=IsSelected36}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode18}" PlottedProperty="{Binding Path=TextItemCount18}" HorizontalAlignment="Center"  x:Name="pie_18" VerticalAlignment="Center" Width="24" />
+                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode36}" PlottedProperty="{Binding Path=TextItemCount36}" HorizontalAlignment="Center"  x:Name="pie_36" VerticalAlignment="Center" Width="24" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -863,14 +881,14 @@
                   IsStylusCaptureWithinChanged="dg_TubesGroup_IsStylusCaptureWithinChanged" IsStylusDirectlyOverChanged="dg_TubesGroup_IsStylusDirectlyOverChanged" IsVisibleChanged="dg_TubesGroup_IsVisibleChanged" KeyDown="dg_TubesGroup_KeyDown" KeyUp="dg_TubesGroup_KeyUp"-->
         <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="3" FontSize="12" Grid.Column="0" HorizontalAlignment="Stretch"  Name="dg_TubesGroup" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="分组名称" Width="80*">
+                <DataGridTemplateColumn Header="分组名称" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <Label Content="{Binding Path=TubesGroupName}"  Name="lab_TubesGroupName"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="样品数量" Width="100">
+                <DataGridTemplateColumn Header="样品数量" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
@@ -886,7 +904,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="是否补液" Width="80*">
+                <DataGridTemplateColumn Header="是否补液" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
@@ -895,7 +913,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="编辑" Width="100*">
+                <DataGridTemplateColumn Header="编辑" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
@@ -922,14 +940,14 @@
 
         <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="3" FontSize="12" Grid.Column="1" HorizontalAlignment="Stretch"  Name="dg_TubesGroup2" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="分组名称" Width="80*">
+                <DataGridTemplateColumn Header="分组名称" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <Label Content="{Binding Path=TubesGroupName}"  Name="lab_TubesGroupName"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="样品数量" Width="100">
+                <DataGridTemplateColumn Header="样品数量" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
@@ -945,7 +963,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="是否补液" Width="80*">
+                <DataGridTemplateColumn Header="是否补液" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
@@ -954,7 +972,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="编辑" Width="100*">
+                <DataGridTemplateColumn Header="编辑" Width="100">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >
                             <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
