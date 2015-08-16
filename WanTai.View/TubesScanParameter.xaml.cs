@@ -27,10 +27,12 @@ namespace WanTai.View
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
-            int range = 6;
+            int range = 6, column = 1;
             if (SessionInfo.WorkDeskType == "100")
             {
                 range = 6;
+                if (SessionInfo.TestingItemIDs.Count > 2)
+                    column = 2;
             }
             else if (SessionInfo.WorkDeskType == "150")
             {
@@ -40,7 +42,7 @@ namespace WanTai.View
             {
                 range = 36;
             }
-            string message = String.Format("请输入1-{0}的数字！", range);
+            string message = String.Format("请输入{0}-{1}的数字！", column, range);
 
             int ColumnCount = 0;
             if (!int.TryParse(txtColumnCount.Text, out ColumnCount))
@@ -48,7 +50,7 @@ namespace WanTai.View
                 MessageBox.Show(message, "系统提示！");
                 return;
             }
-            if (ColumnCount < 1 || ColumnCount > range)
+            if (ColumnCount < column || ColumnCount > range)
             {
                 MessageBox.Show(message, "系统提示！");
                 return;
