@@ -221,7 +221,7 @@ namespace WanTai.Controller
                             }
                         }
                     }
-                    Tubes.TableName = builder.ToString();
+                    Tubes.TableName += builder.ToString();
                 }
                 if (SessionInfo.BatchType != "B")
                 {
