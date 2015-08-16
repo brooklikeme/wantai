@@ -5824,30 +5824,6 @@ namespace WanTai.DataModel
         private global::System.DateTime _CreateTime;
         partial void OnCreateTimeChanging(global::System.DateTime value);
         partial void OnCreateTimeChanged();
-    
-        /// <summary>
-        /// 没有元数据文档可用。
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String BatchType
-        {
-            get
-            {
-                return _BatchType;
-            }
-            set
-            {
-                OnBatchTypeChanging(value);
-                ReportPropertyChanging("BatchType");
-                _BatchType = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("BatchType");
-                OnBatchTypeChanged();
-            }
-        }
-        private global::System.String _BatchType;
-        partial void OnBatchTypeChanging(global::System.String value);
-        partial void OnBatchTypeChanged();
 
         #endregion
 

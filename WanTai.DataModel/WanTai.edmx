@@ -287,7 +287,6 @@
           <Property Name="TubesBatchName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="ExperimentID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
-          <Property Name="BatchType" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -919,7 +918,6 @@
           <NavigationProperty Name="ExperimentsInfo" Relationship="WanTaiModel.FK_TubesBatch_ExperimentsInfo" FromRole="TubesBatch" ToRole="ExperimentsInfo" />
           <NavigationProperty Name="RotationInfoes" Relationship="WanTaiModel.FK_RotationInfo_TubesBatch" FromRole="TubesBatch" ToRole="RotationInfo" />
           <NavigationProperty Name="TubeGroups" Relationship="WanTaiModel.FK_TubeGroup_TubesBatch" FromRole="TubesBatch" ToRole="TubeGroup" />
-          <Property Name="BatchType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="UserInfo">
           <Key>
@@ -1342,7 +1340,6 @@
           <EntitySetMapping Name="TubesBatches">
             <EntityTypeMapping TypeName="WanTaiModel.TubesBatch">
               <MappingFragment StoreEntitySet="TubesBatch">
-                <ScalarProperty Name="BatchType" ColumnName="BatchType" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />
                 <ScalarProperty Name="TubesBatchName" ColumnName="TubesBatchName" />
