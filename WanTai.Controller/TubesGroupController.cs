@@ -388,6 +388,7 @@ namespace WanTai.Controller
                                     if (DWPlatePosition100.ContainsKey(TestingItem.TestingItemID))
                                     {
                                         int posIndex = PCRPosition;
+                                        int pcrIndex = PCRPosition_tmp - 1;
                                         foreach (DWPlatePosition pos in DWPlatePosition100[TestingItem.TestingItemID])
                                         {
                                             PCRPlatePosition _PCRPlatePosition = new PCRPlatePosition();
@@ -397,7 +398,9 @@ namespace WanTai.Controller
                                             _PCRPlatePosition.Position = posIndex;
                                             _PCRPlatePosition.DWPlatePositions.Add(pos);
                                             _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-                                            posIndex++;
+                                            PCRCSV[pcrIndex] = PlateName.DWPlate5 + "," + pos.Position.ToString() + ",20," + PlateName.PCRPlate + "," + posIndex.ToString();
+                                            pcrIndex++;
+                                            posIndex ++;
                                         }
                                     }
                                 }
