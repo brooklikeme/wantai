@@ -15,8 +15,16 @@ namespace WanTai.Controller
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.PoolingRulesConfigurations.Where(c=>c.ActiveStatus==true).OrderBy(c => c.TubeNumber);
-                    return records.ToList<PoolingRulesConfiguration>();
+                    if (SessionInfo.WorkDeskType == "100")
+                    {
+                        var records = entities.PoolingRulesConfigurations.Where(c => c.TubeNumber == 1 && c.ActiveStatus == true).OrderBy(c => c.TubeNumber);
+                        return records.ToList<PoolingRulesConfiguration>();
+                    }
+                    else
+                    {
+                        var records = entities.PoolingRulesConfigurations.Where(c => c.ActiveStatus == true).OrderBy(c => c.TubeNumber);
+                        return records.ToList<PoolingRulesConfiguration>();
+                    }
                 }
             }
             catch (Exception e)

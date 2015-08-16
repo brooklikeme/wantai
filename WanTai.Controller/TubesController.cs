@@ -178,7 +178,7 @@ namespace WanTai.Controller
                                     continue;
 
                                 if (Tubes.Rows[(int)(row)]["TubeType" + col].ToString() == "Tube")
-                                    builder.Append("[" + col + "," + row.ToString() + "]");
+                                    builder.Append("[" + col + "," + (row + 1) + "]");
                                 Tubes.Rows[(int)(row)]["TubeType" + col] = (Tubetype)sfc.ItemType;
                                 Tubes.Rows[(int)(row)]["Visibility" + col] = "Visible";
                                 Tubes.Rows[(int)(row)]["IsEnabled" + col] = "True";
