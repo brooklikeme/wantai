@@ -50,6 +50,7 @@ namespace WanTai.View.PCR
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             dataTable.Columns.Add("Number", typeof(int));
+            dataTable.Columns.Add("PCRName", typeof(string));
             dataTable.Columns.Add("Color", typeof(string));
             dataTable.Columns.Add("TubeID", typeof(Guid));
             dataTable.Columns.Add("TubeBarCode", typeof(string));
@@ -60,7 +61,7 @@ namespace WanTai.View.PCR
             dataTable.Columns.Add("PoolingRuleName", typeof(string));
             dataTable.Columns.Add("TestingItemName", typeof(string));
             dataTable.Columns.Add("PCRPlateBarCode", typeof(string));
-            dataTable.Columns.Add("PCRPosition", typeof(int));
+            dataTable.Columns.Add("PCRPosition", typeof(string));
             dataTable.Columns.Add("PCRTestItemID", typeof(Guid));
             dataTable.Columns.Add("PCRTestResult", typeof(string));
             dataTable.Columns.Add("PCRTestContent", typeof(string));

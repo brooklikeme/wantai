@@ -12,7 +12,7 @@ namespace WanTai.Controller
     {
         public TubesBatch SaveTubesGroup(Guid ExperimentID, TubesBatch DelTubesBatch, int BatchIndex, IList<TubeGroup> TubeGroupList, DataTable Tubes, out int ErrType, out string ErrMsg)
         {
-            //try
+            try
             {
                 ErrMsg = "操作成功！";
                 ErrType = 0;
@@ -78,7 +78,7 @@ namespace WanTai.Controller
                     _WanTaiEntities.AddToTubesBatches(_TubesBatch);
                     #endregion
                     // _WanTaiEntities.SaveChanges();
-                    RotationInfo ExperimentRotation = _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID && Rotation.TubesBatchID == null).FirstOrDefault();
+                    RotationInfo ExperimentRotation = _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID && (Rotation.BatchType == null || Rotation.BatchType == "B") && Rotation.TubesBatchID == null).FirstOrDefault();
                     string CSVPath = WanTai.Common.Configuration.GetWorkListFilePath();
                     string DWFileName = CSVPath + WanTai.Common.Configuration.GetAddSamplesWorkListFileName();
                     
@@ -1257,13 +1257,12 @@ namespace WanTai.Controller
                     return _TubesBatch;
                 }
             }
-                /*
             catch (Exception e)
             {
                 string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
                 LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->" + "SaveTubesGroup()", SessionInfo.ExperimentID);
                 throw;
-            }*/
+            }
         }
     }
 }
