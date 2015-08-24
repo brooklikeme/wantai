@@ -71,7 +71,7 @@ namespace WanTai.View
             else if (SessionInfo.WorkDeskType == "150")
             {
                 TubesView150 tubesView = new TubesView150();
-                tubesView.labelRotationName.Content = "";
+                //tubesView.labelRotationName.Content = "";
                 tabItem1.Content = tubesView ;
                 tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
             }

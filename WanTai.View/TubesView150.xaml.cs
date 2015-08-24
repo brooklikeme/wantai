@@ -30,8 +30,8 @@ namespace WanTai.View
         public TubesView150()
         {
             InitializeComponent();
-            if (SessionInfo.PraperRotation != null)
-                labelRotationName.Content = SessionInfo.PraperRotation.RotationName;
+            //if (SessionInfo.PraperRotation != null)
+                //labelRotationName.Content = SessionInfo.PraperRotation.RotationName;
         }
 
         private bool IsPoack = false;
