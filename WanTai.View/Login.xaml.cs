@@ -29,13 +29,6 @@ namespace WanTai.View
         public Login()
         {
             InitializeComponent();
-
-            //Guid id = Guid.NewGuid();
-            //PCRRubbishAlert ar = new PCRRubbishAlert(id);
-            //ar.ShowDialog();
-            //AddReagentsAndSupplies aas = new AddReagentsAndSupplies(1);
-            //aas.ShowDialog();
-
         }
 
         private void btn_Cancel_Click(object sender, RoutedEventArgs e)
@@ -174,8 +167,6 @@ namespace WanTai.View
                 txt_LoginPassWord.Visibility = System.Windows.Visibility.Visible;
                 btn_Enter.Visibility = System.Windows.Visibility.Visible;
             }
-
-            btn_Enter_Click(sender, e);
         }
 
         private void Window_Closed(object sender, EventArgs e)

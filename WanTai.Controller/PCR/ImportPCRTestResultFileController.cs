@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Reflection;
 using System.Data.SqlClient;
 using System.Data;
+using System.Xml;
 
 using WanTai.DataModel;
 using WanTai.Common;
@@ -203,6 +204,29 @@ namespace WanTai.Controller.PCR
             }
 
             return result;
-        } 
+        }
+
+        public bool SetPCRPlateExtContent(Guid PCRPlateID, Guid experimentId, string PCRStartTime, string PCREndTime, string PCRDevice){
+            try
+            {
+                using (WanTaiEntities entities = new WanTaiEntities())
+                {
+                    var plate = entities.Plates.Where(c => c.PlateID == PCRPlateID).FirstOrDefault();
+                    if (null != plate)
+                    {
+                        plate.PCRContent = "<PCRContent><PCRStartTime>" + PCRStartTime + "</PCRStartTime><PCREndTime>" 
+                            + PCREndTime + "</PCREndTime><PCRDevice>" + PCRDevice + "</PCRDevice></PCRContent>";
+                        entities.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
+                LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->SetPCRPlateExtContent", experimentId);
+                throw;
+            }
+            return true;
+        }
     }
 }

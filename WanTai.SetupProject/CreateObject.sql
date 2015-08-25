@@ -31,6 +31,7 @@ CREATE TABLE [dbo].[SystemFluidConfiguration](
 	[Grid] [int] NULL,
 	[ItemType] [smallint] NULL,
 	[Volume] [float] NULL,
+	[BatchType] [varchar] (10) NULL,
  CONSTRAINT [PK_SystemFluidConfiguration] PRIMARY KEY CLUSTERED 
 (
 	[ItemID] ASC
@@ -84,6 +85,7 @@ CREATE TABLE [dbo].[ReagentAndSuppliesConfiguration](
 	[Unit] [varchar](255) NULL,
 	[ItemType] [smallint] NULL,
 	[CalculationFormula] [varchar](255) NULL,
+	[WorkDeskType] [varchar] (10) NULL,
 	[ContainerName] [varchar](255) NULL
 ) ON [PRIMARY]
 SET ANSI_PADDING OFF
@@ -133,6 +135,7 @@ CREATE TABLE [dbo].[Plates](
 	[PlateType] [smallint] NULL,
 	[ExperimentID] [uniqueidentifier] NULL,
 	[TubesBatchID] [uniqueidentifier] NULL,
+	[PCRContent] [xml] NULL,
  CONSTRAINT [PK_Plates] PRIMARY KEY CLUSTERED 
 (
 	[PlateID] ASC
@@ -358,6 +361,7 @@ CREATE TABLE [dbo].[Carrier](
 	[Heigh] [float] NOT NULL,
 	[Color] [varchar](255) NOT NULL,
 	[Type] [smallint] NOT NULL,
+	[WorkDeskType] [varchar] (10) NULL,
 PRIMARY KEY CLUSTERED 
 (
 	[CarrierID] ASC
@@ -572,6 +576,7 @@ CREATE TABLE [dbo].[RotationInfo](
 	[OperationID] [uniqueidentifier] NOT NULL,
 	[OperationName] [varchar](255) NOT NULL,
 	[RotationSequence] [smallint] NULL,
+	[BatchType] [varchar] (10) NULL,
  CONSTRAINT [PK_RotationInfo] PRIMARY KEY CLUSTERED 
 (
 	[RotationID] ASC

@@ -62,6 +62,12 @@ namespace WanTai.View.PCR
             dataTable.Columns.Add("TestingItemName", typeof(string));
             dataTable.Columns.Add("PCRPlateBarCode", typeof(string));
             dataTable.Columns.Add("PCRPosition", typeof(string));
+            dataTable.Columns.Add("HBV", typeof(string));
+            dataTable.Columns.Add("HBVIC", typeof(string));
+            dataTable.Columns.Add("HCV", typeof(string));
+            dataTable.Columns.Add("HCVIC", typeof(string));
+            dataTable.Columns.Add("HIV", typeof(string));
+            dataTable.Columns.Add("HIVIC", typeof(string));
             dataTable.Columns.Add("PCRTestItemID", typeof(Guid));
             dataTable.Columns.Add("PCRTestResult", typeof(string));
             dataTable.Columns.Add("PCRTestContent", typeof(string));

@@ -110,6 +110,7 @@
           <Property Name="PlateType" Type="smallint" />
           <Property Name="ExperimentID" Type="uniqueidentifier" />
           <Property Name="TubesBatchID" Type="uniqueidentifier" />
+          <Property Name="PCRContent" Type="xml" />
         </EntityType>
         <EntityType Name="PoolingRulesConfiguration">
           <Key>
@@ -767,6 +768,7 @@
           <Property Type="Guid" Name="RotationID" />
           <Property Type="Int16" Name="PlateType" />
           <Property Type="Guid" Name="ExperimentID" />
+          <Property Name="PCRContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="DWPlatePositions" Relationship="WanTaiModel.FK_DWPlatePosition_Plates" FromRole="Plate" ToRole="DWPlatePosition" />
           <NavigationProperty Name="PCRPlatePositions" Relationship="WanTaiModel.FK_PCRPlatePosition_Plates" FromRole="Plate" ToRole="PCRPlatePosition" />
           <Property Type="Guid" Name="TubesBatchID" />
@@ -1203,6 +1205,7 @@
                 <ScalarProperty Name="PlateName" ColumnName="PlateName" />
                 <ScalarProperty Name="BarCode" ColumnName="BarCode" />
                 <ScalarProperty Name="PlateID" ColumnName="PlateID" />
+                <ScalarProperty Name="PCRContent" ColumnName="PCRContent" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

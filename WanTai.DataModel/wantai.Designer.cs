@@ -2499,6 +2499,30 @@ namespace WanTai.DataModel
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
+        public global::System.String PCRContent
+        {
+            get
+            {
+                return _PCRContent;
+            }
+            set
+            {
+                OnPCRContentChanging(value);
+                ReportPropertyChanging("PCRContent");
+                _PCRContent = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("PCRContent");
+                OnPCRContentChanged();
+            }
+        }
+        private global::System.String _PCRContent;
+        partial void OnPCRContentChanging(global::System.String value);
+        partial void OnPCRContentChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
         public Nullable<global::System.Guid> TubesBatchID
         {
             get

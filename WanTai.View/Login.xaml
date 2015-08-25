@@ -296,9 +296,9 @@
         <Grid>
         <my:ImageExpender   HorizontalAlignment="Stretch"  Stretch="Fill" x:Name="imagBackground" Source="/WanTag;component/Resources/Login_Bg.gif" VerticalAlignment="Stretch"  />
         <Label Content="用户名" Height="24" x:Name="labLoginName" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="180,247,0,38" Foreground="White" FontSize="12" />
-        <TextBox Height="23" HorizontalAlignment="Left"  Name="txt_LoginName" VerticalAlignment="Center" Width="120" Margin="239,249,0,39" Text="admin"/>
+        <TextBox Height="23" HorizontalAlignment="Left"  Name="txt_LoginName" VerticalAlignment="Center" Width="120" Margin="239,249,0,39" />
         <Label Content="密   码" Height="24" x:Name="labLoginPassWord" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="180,278,0,9" Foreground="White" FontSize="12" />
-        <PasswordBox Height="23" HorizontalAlignment="Left" Name="txt_LoginPassWord" VerticalAlignment="Center" Width="120" Margin="239,278,0,10" Password="123"></PasswordBox>
+        <PasswordBox Height="23" HorizontalAlignment="Left" Name="txt_LoginPassWord" VerticalAlignment="Center" Width="120" Margin="239,278,0,10"></PasswordBox>
         <Button Content="确定"  Height="44"   HorizontalAlignment="Center" Name="btn_Enter" VerticalAlignment="Center" Width="75" Click="btn_Enter_Click" IsDefault="True" Foreground="White" Margin="377,250,49,13" FontSize="14">
             <Button.Background>
                 <ImageBrush ImageSource="/WanTag;component/Resources/Login_Btn.gif" />

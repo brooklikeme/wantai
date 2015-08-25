@@ -159,6 +159,9 @@
       <Component Id='Tecan.MCS' Guid='*' Directory='INSTALLDIR'>
         <File Id='Tecan.MCS.dll' Name='Tecan.MCS.dll' DiskId='1' Source='../WanTai.View/bin/Debug/Tecan.MCS.dll' KeyPath='yes'/>
       </Component>
+      <Component Id='NPOI' Guid='*' Directory='INSTALLDIR'>
+        <File Id='NPOI.dll' Name='NPOI.dll' DiskId='1' Source='../WanTai.View/bin/Debug/NPOI.dll' KeyPath='yes'/>
+      </Component>      
       <Component Id='WanTai.UserPrompt' Guid='*' Directory='INSTALLDIR'>
         <File Id='WanTai.UserPrompt.exe' Name='WanTai.UserPrompt.exe' DiskId='1' Source='../WanTai.UserPrompt/bin/Debug/WanTai.UserPrompt.exe' KeyPath='yes'/>
       </Component>

@@ -131,4 +131,12 @@ namespace WanTai.DataModel
         public static string InvalidResult = "重新测定";
         public static string NoResult = "计算无结果";
     }
+
+    public class WantagColor
+    {
+        public static string WantagYellow = "#F1F75A";
+        public static string WantagRed = "#CF0012";
+        public static string WantagGreen = "#24C388";
+        public static string WantagWhite = "#FFFFFF";
+    }
 }
