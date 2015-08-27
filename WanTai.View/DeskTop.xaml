@@ -45,7 +45,7 @@
         <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
             <Image Name="imgKingFisher" Source="/WanTag;component/Resources/kingfisher.gif" Width="240" Height="240"></Image>
         </Border>
-        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >
+        <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="50,5,0,5" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
                 <ColumnDefinition Width="auto"></ColumnDefinition>
