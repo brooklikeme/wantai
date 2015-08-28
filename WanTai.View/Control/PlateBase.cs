@@ -229,6 +229,7 @@ namespace WanTai.View.Control
                         // 修改警告颜色 js
                         ((Plate)this).GridPlate.Background = Brushes.White;
                         ((Plate)this).txtPlateName.Background = Brushes.White;
+                        ((Plate)this).txtPlateName.FontWeight = FontWeights.Bold;
                         if (RelatedControls != null)
                         {
                             foreach (object tb in RelatedControls)
