@@ -196,16 +196,17 @@ namespace WanTai.View
             if (SessionInfo.WorkDeskType == "100")
             {
                 Sample.Margin = new Thickness(10, 0, 0, -15);
+                Sample.Width = 130;
             }
             else if (SessionInfo.WorkDeskType == "150")
             {
                 Sample.Margin = new Thickness(-15, 5, 0, -15);
-                Sample.Width = 270;
+                Sample.Width = 320;
             }
             else if (SessionInfo.WorkDeskType == "200")
             {
                 Sample.Margin = new Thickness(-15, 5, 0, -15);
-                Sample.Width = 420;
+                Sample.Width = 440;
             }
         }
 

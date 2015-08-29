@@ -58,16 +58,17 @@ namespace WanTai.View
             {
                 labDiTi1000.Visibility = Visibility.Hidden;
                 Sample.Margin = new Thickness(30, 5, 0, 5);
+                Sample.Width = 130;
             }
             else if (SessionInfo.WorkDeskType == "150")
             {
                 Sample.Margin = new Thickness(0, 5, 0, 5);
-                Sample.Width = 270;
+                Sample.Width = 320;
             }
             else if (SessionInfo.WorkDeskType == "200")
             {
                 Sample.Margin = new Thickness(0, 5, 0, 5);
-                Sample.Width = 420;
+                Sample.Width = 440;
             }
         }
         private Button btnTestItem = new Button();
