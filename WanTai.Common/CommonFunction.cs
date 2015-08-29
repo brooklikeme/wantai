@@ -53,7 +53,8 @@ namespace WanTai.Common
             }
             try
             {
-                string sPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\\SysErr\\";
+                string sPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonApplicationData) + "\\WanTai\\SysErr\\";; 
+                // string sPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "\\SysErr\\";
                 if (!System.IO.Directory.Exists(sPath))
                     System.IO.Directory.CreateDirectory(sPath);
 
