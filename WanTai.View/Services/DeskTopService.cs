@@ -230,10 +230,16 @@ namespace WanTai.View.Services
                     int position = reagent.Position;
                     int grid = reagent.Grid;
                     string containerName = reagent.ContainerName;
+                    int offset = 0;
+
+                    if (SessionInfo.WorkDeskType == "100"){
+                        offset = 1;
+                    }
+
                     for (int i = 0; i < volume; i++)
                     {
                         PlateBase plate = new WanTai.View.Control.Plate();
-                        plate.DisplayName = reagent.DisplayName + " " + (i + 1).ToString();
+                        plate.DisplayName = reagent.DisplayName + " " + (i + 1 + offset).ToString();
                         plate.ChineseName = reagent.DisplayName;
                         plate.EnglishName = reagent.EnglishName;
                         plate.NeedVolume = i == 0 ? volume : 0;
