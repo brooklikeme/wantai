@@ -17,6 +17,24 @@ namespace WanTai.UserPrompt
         {            
             InitializeComponent();
             CommonFunction.WriteLog("ChangeDITI1000---InitializeComponent");
+
+            string workDeskType = ConfigurationManager.AppSettings["WorkDeskType"];
+
+            if (workDeskType == "100")
+            {
+                this.pictureBox1.Image = Properties.Resources.diti1000_100;
+                this.pictureBox1.Left = 80;
+            }
+            else if (workDeskType == "150")
+            {
+                this.pictureBox1.Image = Properties.Resources.diti1000_150;
+                this.pictureBox1.Left = 80;
+            }
+            else if (workDeskType == "200")
+            {
+                this.pictureBox1.Image = Properties.Resources.diti1000_200;
+                this.pictureBox1.Left = 5;
+            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)

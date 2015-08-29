@@ -104,6 +104,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="App.config" />
     <None Include="Properties\Settings.settings">
@@ -118,7 +119,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\diti1000.jpg" />
+    <Content Include="Resources\diti1000_100.jpg" />
+    <Content Include="Resources\diti1000_150.jpg" />
+    <Content Include="Resources\diti1000_200.jpg" />
     <Content Include="Resources\diti200.jpg" />
+    <Content Include="Resources\diti200_100.jpg" />
+    <Content Include="Resources\diti200_150.jpg" />
+    <Content Include="Resources\diti200_200.jpg" />
+    <Content Include="Resources\PCRPlate_100.jpg" />
+    <Content Include="Resources\PCRPlate_150.jpg" />
+    <Content Include="Resources\PCRPlate_200.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
