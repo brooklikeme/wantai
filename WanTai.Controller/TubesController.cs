@@ -258,98 +258,161 @@ namespace WanTai.Controller
         {
             try
             {
-                DataTable Tubes = new DataTable();
-                for (int i = 1; i < 37; i++)
+                DataTable Tubes = null;
+                if (SessionInfo.BatchType == "B")
                 {
-                    DataColumn Column = new DataColumn("Position" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("Grid" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("BarCode" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("TubeType" + i.ToString());
-                    Column.DefaultValue = Tubetype.IsNull;
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("TubePosBarCode" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("TextItemCount" + i.ToString());
-                    Column.DefaultValue = "0,0,#C0C0C0"; //是否扫描到，采血管、阴阳补、选择颜色
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("IconName" + i.ToString());
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("Visibility" + i.ToString());
-                    Column.DefaultValue = "Hidden";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("IsEnabled" + i.ToString());
-                    Column.DefaultValue = "True";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("IsSelected" + i.ToString());
-                    Column.DefaultValue = "#316AC5";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("DetailView" + i.ToString());
-                    Column.DefaultValue = "";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-                    Column = new DataColumn("DetailViewTime" + i.ToString());
-                    Column.DefaultValue = DateTime.Now;//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-
-                    Column = new DataColumn("TestingItem" + i.ToString());
-                    Column.DefaultValue = "";//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
-
-                    Column = new DataColumn("Background" + i.ToString());
-                    Column.DefaultValue = null;//Collapsed Hidden Visible
-                    Tubes.Columns.Add(Column);
+                    Tubes = SessionInfo.BatchATubes.Copy();
                 }
-                for (int i = 0; i < 16; i++)
+                else
                 {
-                    DataRow dataRow = Tubes.NewRow();
-                    Tubes.Rows.Add(dataRow);
-                }
-                //1(Position);1;1(Grid);Tube 13*100mm 16 Pos;Tube1;013/035678;11
-                using (WanTai.DataModel.WanTaiEntities wanTaiEntities = new WanTaiEntities())
-                {
-                    var TubesGroup = wanTaiEntities.TubeGroups.Where(Batch => Batch.TubesBatchID == BatchID);
-                    foreach (TubeGroup tubeGroup in TubesGroup)
+                    Tubes = new DataTable();
+                    for (int i = 1; i < 37; i++)
                     {
-                        var tubes = wanTaiEntities.Tubes.Where(tube => tube.TubeGroupID == tubeGroup.TubeGroupID);
-                        foreach (Tube tube in tubes)
-                        {
-                            int Position = tube.Grid;
-                            int Grid = tube.Position - 1;
-                            Tubes.Rows[Grid]["Position" + Position.ToString()] = Position;
-                            Tubes.Rows[Grid]["Grid" + Position.ToString()] = Grid + 1;
-                            Tubes.Rows[Grid]["BarCode" + Position.ToString()] = tube.BarCode;
-                            Tubes.Rows[Grid]["TubeType" + Position.ToString()] = Tubetype.Tube;
+                        DataColumn Column = new DataColumn("Position" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("Grid" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("BarCode" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("TubeType" + i.ToString());
+                        Column.DefaultValue = Tubetype.IsNull;
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("TubePosBarCode" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("TextItemCount" + i.ToString());
+                        Column.DefaultValue = "0,0,#C0C0C0"; //是否扫描到，采血管、阴阳补、选择颜色
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("IconName" + i.ToString());
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("Visibility" + i.ToString());
+                        Column.DefaultValue = "Hidden";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("IsEnabled" + i.ToString());
+                        Column.DefaultValue = "True";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("IsSelected" + i.ToString());
+                        Column.DefaultValue = "#316AC5";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("DetailView" + i.ToString());
+                        Column.DefaultValue = "";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+                        Column = new DataColumn("DetailViewTime" + i.ToString());
+                        Column.DefaultValue = DateTime.Now;//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
 
-                            Tubes.Rows[Grid]["TubePosBarCode" + Position.ToString()] = tube.TubePosBarCode;
-                            tubeGroup.TestingItemConfigurations.Load();
-                            Tubes.Rows[Grid]["TextItemCount" + Position.ToString()] = "1,1,#C0C0C0";
+                        Column = new DataColumn("TestingItem" + i.ToString());
+                        Column.DefaultValue = "";//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
 
-                            Tubes.Rows[Grid]["DetailView" + Position.ToString()] += tubeGroup.TubesGroupName+" " + tubeGroup.PoolingRulesConfiguration.PoolingRulesName;
-                            foreach (TestingItemConfiguration TestingItem in tubeGroup.TestingItemConfigurations)
-                            {
-                                Tubes.Rows[Grid]["TextItemCount" + Position.ToString()] += ",;" + TestingItem.TestingItemColor;
-                                Tubes.Rows[Grid]["DetailView" + Position.ToString()] += " " + TestingItem.TestingItemName;
-                            }
-
-                            Tubes.Rows[Grid]["DetailView" + Position.ToString()] += ",";
-                            Tubes.Rows[Grid]["IconName" + Position.ToString()] = "1";
-                            Tubes.Rows[Grid]["Visibility" + Position.ToString()] = "Visible";
-                            Tubes.Rows[Grid]["IsEnabled" + Position.ToString()] = "True";
-                            Tubes.Rows[Grid]["IsSelected" + Position.ToString()] = "#316AC5";
-                        }
+                        Column = new DataColumn("Background" + i.ToString());
+                        Column.DefaultValue = null;//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
                     }
-                    foreach (SystemFluidConfiguration _SystemFluidConfiguration in wanTaiEntities.SystemFluidConfigurations)
+                    for (int i = 0; i < 16; i++)
                     {
-                        if (Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()].ToString() == "-1") continue;
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()] = (Tubetype)_SystemFluidConfiguration.ItemType;
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["Visibility" + _SystemFluidConfiguration.Grid.ToString()] = "Visible";
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsEnabled" + _SystemFluidConfiguration.Grid.ToString()] = "True";
-                        Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsSelected" + _SystemFluidConfiguration.Grid.ToString()] = "#316AC5";
-                        LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return lt.TypeId == _SystemFluidConfiguration.ItemType; });
-                        if (_LiquidType != null)
-                            Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TextItemCount" + _SystemFluidConfiguration.Grid.ToString()] = "1,2," + _LiquidType.Color;
+                        DataRow dataRow = Tubes.NewRow();
+                        Tubes.Rows.Add(dataRow);
+                    }
+                    //1(Position);1;1(Grid);Tube 13*100mm 16 Pos;Tube1;013/035678;11
+                    using (WanTai.DataModel.WanTaiEntities wanTaiEntities = new WanTaiEntities())
+                    {
+                        var TubesGroup = wanTaiEntities.TubeGroups.Where(Batch => Batch.TubesBatchID == BatchID);
+                        foreach (TubeGroup tubeGroup in TubesGroup)
+                        {
+                            var tubes = wanTaiEntities.Tubes.Where(tube => tube.TubeGroupID == tubeGroup.TubeGroupID);
+                            foreach (Tube tube in tubes)
+                            {
+                                int Position = tube.Grid;
+                                int Grid = tube.Position - 1;
+                                Tubes.Rows[Grid]["Position" + Position.ToString()] = Position;
+                                Tubes.Rows[Grid]["Grid" + Position.ToString()] = Grid + 1;
+                                Tubes.Rows[Grid]["BarCode" + Position.ToString()] = tube.BarCode;
+                                Tubes.Rows[Grid]["TubeType" + Position.ToString()] = Tubetype.Tube;
+
+                                Tubes.Rows[Grid]["TubePosBarCode" + Position.ToString()] = tube.TubePosBarCode;
+                                tubeGroup.TestingItemConfigurations.Load();
+                                Tubes.Rows[Grid]["TextItemCount" + Position.ToString()] = "1,1,#C0C0C0";
+
+                                Tubes.Rows[Grid]["DetailView" + Position.ToString()] += tubeGroup.TubesGroupName + " " + tubeGroup.PoolingRulesConfiguration.PoolingRulesName;
+                                foreach (TestingItemConfiguration TestingItem in tubeGroup.TestingItemConfigurations)
+                                {
+                                    Tubes.Rows[Grid]["TextItemCount" + Position.ToString()] += ",;" + TestingItem.TestingItemColor;
+                                    Tubes.Rows[Grid]["DetailView" + Position.ToString()] += " " + TestingItem.TestingItemName;
+                                }
+
+                                Tubes.Rows[Grid]["DetailView" + Position.ToString()] += ",";
+                                Tubes.Rows[Grid]["IconName" + Position.ToString()] = "1";
+                                Tubes.Rows[Grid]["Visibility" + Position.ToString()] = "Visible";
+                                Tubes.Rows[Grid]["IsEnabled" + Position.ToString()] = "True";
+                                Tubes.Rows[Grid]["IsSelected" + Position.ToString()] = "#316AC5";
+
+                            }
+                        }
+                        if (SessionInfo.WorkDeskType == "100")
+                        {
+                            List<SystemFluidConfiguration> _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).ToList();
+                            SystemFluidConfiguration sfcg = _SystemFluidConfigurationList[_SystemFluidConfigurationList.Count - 1];
+
+                            for (int i = 0; i < 3; i++)
+                            {
+                                _SystemFluidConfigurationList.Add(sfcg);
+                            }
+                            var TestItems = new TestItemController().GetActiveTestItemConfigurations();
+                            int row = 0, col = 1;
+                            foreach (TestingItemConfiguration _TestingItem in TestItems)
+                            {
+                                //TestingItemConfiguration _TestingItem = _WanTaiEntities.TestingItemConfigurations.Where(t => t.TestingItemID == guid).FirstOrDefault();
+                                if (!SessionInfo.TestingItemIDs.Contains(_TestingItem.TestingItemID))
+                                    continue;
+
+                                for (int i = 0; i < _SystemFluidConfigurationList.Count; i++)
+                                {
+                                    if (row >= 16)
+                                    {
+                                        row = 0;
+                                        col++;
+                                    }
+
+                                    SystemFluidConfiguration sfc = _SystemFluidConfigurationList[i];
+                                    if (Tubes.Rows[(int)(row)]["TubeType" + col].ToString() == "-1")
+                                        continue;
+                                    Tubes.Rows[(int)(row)]["TubeType" + col] = (Tubetype)sfc.ItemType;
+                                    Tubes.Rows[(int)(row)]["Visibility" + col] = "Visible";
+                                    Tubes.Rows[(int)(row)]["IsEnabled" + col] = "True";
+                                    Tubes.Rows[(int)(row)]["IsSelected" + col] = "#316AC5";
+                                    Tubes.Rows[(int)(row)]["Background" + col] = _TestingItem.TestingItemColor;
+                                    LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return (lt.TypeId == sfc.ItemType); });
+                                    if (_LiquidType != null)
+                                    {
+                                        Tubes.Rows[(int)(row)]["TextItemCount" + col] = "1,2," + _LiquidType.Color;
+                                    }
+                                    row++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<SystemFluidConfiguration> _SystemFluidConfigurationList = null;
+                            if (SessionInfo.BatchType == "B")
+                            {
+                                _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == SessionInfo.BatchType).ToList();
+                            }
+                            else
+                            {
+                                _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).ToList();
+                            }
+                            foreach (SystemFluidConfiguration _SystemFluidConfiguration in _SystemFluidConfigurationList)
+                            {
+                                if (Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()].ToString() == "-1") continue;
+                                Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TubeType" + _SystemFluidConfiguration.Grid.ToString()] = (Tubetype)_SystemFluidConfiguration.ItemType;
+                                Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["Visibility" + _SystemFluidConfiguration.Grid.ToString()] = "Visible";
+                                Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsEnabled" + _SystemFluidConfiguration.Grid.ToString()] = "True";
+                                Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["IsSelected" + _SystemFluidConfiguration.Grid.ToString()] = "#316AC5";
+                                LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return lt.TypeId == _SystemFluidConfiguration.ItemType; });
+                                if (_LiquidType != null)
+                                    Tubes.Rows[(int)(_SystemFluidConfiguration.Position - 1)]["TextItemCount" + _SystemFluidConfiguration.Grid.ToString()] = "1,2," + _LiquidType.Color;
+                            }
+                        }
                     }
                 }
 

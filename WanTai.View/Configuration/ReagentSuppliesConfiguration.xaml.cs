@@ -134,6 +134,7 @@ namespace WanTai.View.Configuration
             }
 
             ReagentAndSuppliesConfiguration configuration = new ReagentAndSuppliesConfiguration();
+            configuration.WorkDeskType = SessionInfo.WorkDeskType;
             configuration.EnglishName = name_textBox.Text;
             configuration.DisplayName = displayName_textBox.Text;
             configuration.Position = int.Parse(position_textBox.Text);

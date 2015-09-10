@@ -41,27 +41,22 @@
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
             <Label Name="labelRotationName"></Label>
         </StackPanel>
-        <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" FontSize="12"  Grid.Column="0" Grid.RowSpan="2"  AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick">
+        <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" FontSize="12"  Grid.Column="0" Grid.RowSpan="2"  AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick" RowHeight="38">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="1" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background1}"   />
-                            <!--<Setter Property="IsEnabled" Value="{Binding Path=IsEnabled1}"   />-->
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="Background" Value="{Binding Path=IsSelected1}"/>
                                 </Trigger>
-                                <!--<Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="LightGray"/>
-                                    <Setter Property="Foreground" Value="White"/>
-                                </Trigger>-->
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
                         <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
-                            <my1:PieLoayout  ToolTip="{Binding Path=BarCode1}" IsEnabled="{Binding Path=IsEnabled1}"  PlottedProperty="{Binding Path=TextItemCount1}" Visibility="{Binding Path=Visibility1}"  HorizontalAlignment="Center"  x:Name="pie_1" VerticalAlignment="Center"  />
+                            <my1:PieLoayout  ToolTip="{Binding Path=BarCode1}" IsEnabled="{Binding Path=IsEnabled1}"  PlottedProperty="{Binding Path=TextItemCount1}" Visibility="{Binding Path=Visibility1}"  HorizontalAlignment="Center"  x:Name="pie_1" VerticalAlignment="Center" Width="24"  />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -69,7 +64,7 @@
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Background" Value="{Binding Path=Background2}"   />
-                            <!--<Setter Property="IsEnabled" Value="{Binding Path=IsEnabled1}"   />-->
+                            <Setter Property="IsEnabled" Value="{Binding Path=IsEnabled1}" />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="Background" Value="{Binding Path=IsSelected2}"/>
@@ -185,6 +180,7 @@
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions >
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -193,7 +189,7 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Border BorderBrush="Silver" BorderThickness="1,2,0,1" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel  HorizontalAlignment="Left" Orientation="Horizontal" Margin="20,0,0,0">
                     <Label Content="图    示:" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" Width="70" HorizontalContentAlignment="Center"/>
                     <TextBlock Height="16" Margin="5,0,0,0"  Width="16" Grid.Row="1" Name="txt_NegativeControl" HorizontalAlignment="Left"  Background="LightGray" VerticalAlignment="Center" />
@@ -206,35 +202,35 @@
                 </StackPanel>
             </Border>
 
-            <Border BorderBrush="Silver" BorderThickness="0,2,1,1" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <Border BorderBrush="Silver" BorderThickness="0,0,0,0" Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel  Name="sp_pointout" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20,0,0,0">
                     <Label Content="检测项目:" Grid.Row="1"  HorizontalAlignment="Left"   VerticalAlignment="Center" Width="70" HorizontalContentAlignment="Center"/>
                 </StackPanel>
             </Border>
 
-            <Border BorderBrush="Silver" BorderThickness="1,1,0,1" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.ColumnSpan="2"  >
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Button Content="扫描"  Height="30" Name="btn_scan" Width="80" Click="btn_scan_Click" />
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail" Width="100" Margin="40,0,0,0" Click="btn_detail_Click" />
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch" Grid.ColumnSpan="2"  >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0">
+                    <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail" Width="120" Margin="0,0,0,0" Click="btn_detail_Click" />
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button Content="分组"   Height="30" IsEnabled="False" Name="btn_Group" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Silver" BorderThickness="0,1,1,1" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <Border BorderBrush="Silver" BorderThickness="0,1" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.Column="1"  >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save" Width="100" Margin="40,0,0,0" Click="btn_Save_Click" />
+                    <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save" Width="100" Margin="0" Click="btn_Save_Click" />
                 </StackPanel>
             </Border>
 
-            <Border BorderBrush="Silver" BorderThickness="1" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" />
+            <Border BorderBrush="Silver" BorderThickness="0,1" Grid.Column="3" Grid.Row="3" VerticalAlignment="Stretch" Margin="0"  >
+                <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" HorizontalAlignment="Left" />
             </Border>
             
 

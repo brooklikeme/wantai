@@ -62,7 +62,7 @@ namespace WanTai.Controller
             {
                 var RotationOperates=   wanTaiEntities.RotationOperates.Where(Rotation => Rotation.RotationID == RotationID);
                 DateTime dtStart = DateTime.MaxValue;
-                DateTime dtEnd = DateTime.MinValue;
+                DateTime dtEnd = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
                 Guid experimentID = new Guid();
                 foreach(RotationOperate _RotationOperate in RotationOperates)
                 {

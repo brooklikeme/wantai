@@ -22,17 +22,17 @@ namespace WanTai.UserPrompt
 
             if (workDeskType == "100")
             {
-                this.pictureBox1.Image = Properties.Resources.diti1000_100;
+                this.pictureBox1.Image = Properties.Resources.diti200_100;
                 this.pictureBox1.Left = 80;
             }
             else if (workDeskType == "150")
             {
-                this.pictureBox1.Image = Properties.Resources.diti1000_150;
+                this.pictureBox1.Image = Properties.Resources.diti200_150;
                 this.pictureBox1.Left = 80;
             }
             else if (workDeskType == "200")
             {
-                this.pictureBox1.Image = Properties.Resources.diti1000_200;
+                this.pictureBox1.Image = Properties.Resources.diti200_200;
                 this.pictureBox1.Left = 5;
             }
         }

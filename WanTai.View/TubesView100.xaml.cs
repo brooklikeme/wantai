@@ -178,6 +178,7 @@ namespace WanTai.View
         private void dg_Bules_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = e.Row.GetIndex() + 1;
+            dg_Bules.RowHeight = dg_Bules.RenderSize.Height / 17;
         }
         private string SystemFluid ;
     

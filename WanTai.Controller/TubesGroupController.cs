@@ -135,7 +135,7 @@ namespace WanTai.Controller
                                 npTubeGroup.ExperimentID = _TubesBatch.ExperimentID;
                                 npTubeGroup.TubeGroupID = WanTaiObjectService.NewSequentialGuid();
 
-                                npTubeGroup.PoolingRulesID = _WanTaiEntities.PoolingRulesConfigurations.Where(PoolingRules => (PoolingRules.PoolingRulesName == "单检" && PoolingRules.TubeNumber == 1)).FirstOrDefault().PoolingRulesID;
+                                npTubeGroup.PoolingRulesID = _WanTaiEntities.PoolingRulesConfigurations.Where(PoolingRules => (PoolingRules.TubeNumber == 1)).FirstOrDefault().PoolingRulesID;
 
                                 npTubeGroup.isComplement = false;
 
@@ -167,7 +167,7 @@ namespace WanTai.Controller
                                         npTubeGroup = new TubeGroup();
                                         npTubeGroup.CreateTime = DateTime.Now;
                                         npTubeGroup.ExperimentID = _TubesBatch.ExperimentID;
-                                        npTubeGroup.PoolingRulesID = _WanTaiEntities.PoolingRulesConfigurations.Where(PoolingRules => (PoolingRules.PoolingRulesName == "单检" && PoolingRules.TubeNumber == 1)).FirstOrDefault().PoolingRulesID;
+                                        npTubeGroup.PoolingRulesID = _WanTaiEntities.PoolingRulesConfigurations.Where(PoolingRules => (PoolingRules.TubeNumber == 1)).FirstOrDefault().PoolingRulesID;
                                         npTubeGroup.isComplement = false;
                                         npTubeGroup.TestingItemConfigurations.Add(_WanTaiEntities.TestingItemConfigurations.Where(TestingItem => TestingItem.TestingItemID == testingItemID).FirstOrDefault());
                                         npTubeGroup.TubeGroupID = WanTaiObjectService.NewSequentialGuid();

@@ -38,11 +38,11 @@
             <Label Content="1000µl枪头" Name="labDiTi1000"  Margin="120,0,0,0" Panel.ZIndex="999" />
             <Label Content="200µl枪头" Name="labDiTi200" VerticalAlignment="Center" Margin="260,0,0,0" Panel.ZIndex="999" />
         </StackPanel>
-        <Canvas Grid.Row="1" Grid.Column="0"  Name="DeskTopWithGrid" Background="#FFf2f2f2" >
+        <Canvas Grid.Row="1" Grid.Column="0"  Name="DeskTopWithGrid" Background="#FFf2f2f2">
             <!--#FFf2f2f2-->
             <Image Name="Sample" Width="90" Height="165" Canvas.Bottom="20" Canvas.Left="0" Margin="0,5,0,5" Stretch="Fill"></Image>
         </Canvas>
-        <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch">
+        <Border Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Background="#FFf2f2f2">
             <Image Name="imgKingFisher" Source="/WanTag;component/Resources/kingfisher.gif" Width="240" Height="240"></Image>
         </Border>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" >

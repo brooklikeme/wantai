@@ -29,7 +29,7 @@ namespace WanTai.View
             InitializeComponent();
             if(SessionInfo.LoginName!=null)
                 txtOrperatorName.Text = SessionInfo.LoginName;
-            txtExperimentName.Text = System.DateTime.Now.ToString();
+            txtExperimentName.Text = System.DateTime.Now.ToString("yyyyMMddHHmmss");
 
             if (SessionInfo.WorkDeskType == "100")
             {

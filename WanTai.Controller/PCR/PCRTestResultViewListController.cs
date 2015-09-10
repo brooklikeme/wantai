@@ -135,7 +135,7 @@ namespace WanTai.Controller.PCR
                     + " SampleTracking.OperationSequence=@OperationSequence"
                     + " WHERE View_Tubes_PCRPlatePosition.RotationID=@RotationID"
                     + " and View_Tubes_PCRPlatePosition.ExperimentID = @ExperimentID"
-                    + " and (SampleTracking.ItemID is null or View_Tubes_PCRPlatePosition.volume>ceiling(SampleTracking.CONCENTRATION*SampleTracking.VOLUME))";
+                    + " and (SampleTracking.ItemID is not null and View_Tubes_PCRPlatePosition.volume>ceiling(SampleTracking.CONCENTRATION*SampleTracking.VOLUME))";
 
                 string commandText_AddLiquidToMix = "select TubeID, EnglishName, SampleID from View_Tubes_PCRPlatePosition"
                     + " inner join ( Select * from ( select SampleTracking.SampleID, SUM(ceiling(SampleTracking.CONCENTRATION*SampleTracking.VOLUME)) as volume,"
@@ -166,7 +166,7 @@ namespace WanTai.Controller.PCR
                     + " and SampleTracking.OperationSequence = @OperationSequence"
                     + " where View_Tubes_PCRPlatePosition.RotationID =@RotationID"
                     + " and View_Tubes_PCRPlatePosition.ExperimentID = @ExperimentID"
-                    + " and (SampleTracking.ItemID is null or (SampleTracking.CONCENTRATION = 0 and ABS(SampleTracking.VOLUME) < 50 ))";
+                    + " and (SampleTracking.ItemID is not null and (SampleTracking.CONCENTRATION = 0 and ABS(SampleTracking.VOLUME) < 50 ))";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -1178,11 +1178,13 @@ namespace WanTai.Controller.PCR
                     {
                         PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : ", " + plate.BarCode;
                         XmlDocument xdoc = new XmlDocument();
-                        xdoc.LoadXml(plate.PCRContent);
-                        XmlNode node = xdoc.SelectSingleNode("PCRContent");
-                        PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
-                        string timeString = node.SelectSingleNode("PCRStartTime").InnerText + "--" + node.SelectSingleNode("PCREndTime").InnerText;
-                        PCRTimeString += PCRTimeString == "" ? timeString : ", " + timeString;
+                        if (null != plate.PCRContent) {
+                            xdoc.LoadXml(plate.PCRContent);
+                            XmlNode node = xdoc.SelectSingleNode("PCRContent");
+                            PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
+                            string timeString = node.SelectSingleNode("PCRStartTime").InnerText + "--" + node.SelectSingleNode("PCREndTime").InnerText;
+                            PCRTimeString += PCRTimeString == "" ? timeString : ", " + timeString;
+                        }
                     }
                 }
 
