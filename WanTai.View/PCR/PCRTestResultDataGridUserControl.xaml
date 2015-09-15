@@ -28,7 +28,7 @@
             <Button x:Name="barcodequery_button" Content="查询" Margin="10,0,0,0"  Click="barcodequery_button_Click"/>
         </StackPanel>
         <Label x:Name="errorMessage_label" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red"/>
-        <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="12" CanUserAddRows="False" HorizontalAlignment="Stretch" x:Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged">
+        <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="10" CanUserAddRows="False" HorizontalAlignment="Stretch" x:Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged" FontFamily="Microsoft YaHei">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="序号" Width="60" CanUserSort="False">
                     <DataGridTemplateColumn.CellTemplate>
@@ -40,10 +40,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="类型" HeaderStringFormat="" SortMemberPath="TubeType" Width="70"/>
+                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="类型" HeaderStringFormat="" SortMemberPath="TubeType" Width="70" FontSize="10"/>
                 <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="样品名称" SortMemberPath="PCRName" Width="60"/>
                 <DataGridTextColumn Header="样品条码" Width="110" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
-                <DataGridTextColumn Header="样品位置" Width="110" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
+                <DataGridTextColumn Header="样品位置" Width="110" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" FontSize="10"/>
                 <DataGridTextColumn Header="检测方式" Width="80" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
                 <DataGridTextColumn Header="检测项目" Width="80" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
                 <DataGridTextColumn Header="PCR板条码" Width="110" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
