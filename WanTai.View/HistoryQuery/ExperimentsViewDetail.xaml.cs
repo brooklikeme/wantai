@@ -144,6 +144,7 @@ namespace WanTai.View.HistoryQuery
             Guid rotationID = (Guid)dataTable.Rows[selectedIndex]["RotationID"];
             PCR.PCRTestResultHistoryView pcrView = new PCR.PCRTestResultHistoryView();
             pcrView.pCRTestResultDataGridUserControl.RotationId = rotationID;
+            pcrView.pCRTestResultDataGridUserControl.RotationName = dataTable.Rows[selectedIndex]["RotationName"].ToString();
             pcrView.pCRTestResultDataGridUserControl.ExperimentId = experimentId;
             pcrView.ShowDialog();            
         }

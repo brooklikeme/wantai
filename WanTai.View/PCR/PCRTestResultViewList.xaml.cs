@@ -82,7 +82,7 @@ namespace WanTai.View.PCR
                 {
                     selectedItem = (ComboBoxItem)rotation_comboBox.SelectedItem;
                     rotationId = (Guid)selectedItem.Tag;
-                    pCRTestResultDataGridUserControl.errorMessage_label.Content = string.Empty;
+                    pCRTestResultDataGridUserControl.qc_result.Content = string.Empty;
                     pCRTestResultDataGridUserControl.RotationId = rotationId;
                     pCRTestResultDataGridUserControl.ExperimentId = SessionInfo.ExperimentID;
                     pCRTestResultDataGridUserControl.dataGrid_view.DataContext = DateTime.Now;

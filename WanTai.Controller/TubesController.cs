@@ -127,7 +127,7 @@ namespace WanTai.Controller
                     while ((strline = mysr.ReadLine()) != null)
                     {
                         aryline = strline.Split(new char[] { ';' });
-                        //if (aryline[6] == "$$$" || aryline[6] == "") continue;
+                        if (aryline[6] == "$$$" || aryline[6] == "") continue;
                         int Position = SessionInfo.BatchType == "B" ? int.Parse(aryline[0]) + 18 : int.Parse(aryline[0]);
                         int Grid = int.Parse(aryline[2]) - 1;
                         Tubes.Rows[Grid]["Position" + Position.ToString()] = Position;

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data;
+using System.Xml;
 
 using WanTai.DataModel.Configuration;
 using WanTai.Controller.PCR;
@@ -27,6 +28,7 @@ namespace WanTai.View.PCR
     {
         DataTable dataTable = new DataTable();
         private Guid rotationId;
+        private string rotationName;
         private Guid experimentId;
         System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary = new System.Collections.Generic.Dictionary<int, string>();        
 
@@ -39,6 +41,12 @@ namespace WanTai.View.PCR
         {
             set { rotationId = value; }
             get { return rotationId; }
+        }
+
+        public string RotationName
+        {
+            set { rotationName = value; }
+            get { return rotationName; }
         }
 
         public Guid ExperimentId
@@ -56,6 +64,7 @@ namespace WanTai.View.PCR
             dataTable.Columns.Add("TubeBarCode", typeof(string));
             dataTable.Columns.Add("TubePosition", typeof(string));
             dataTable.Columns.Add("TubeType", typeof(int));
+            dataTable.Columns.Add("TubeTypeName", typeof(string));
             dataTable.Columns.Add("TubeTypeColor", typeof(string));
             dataTable.Columns.Add("TubeTypeColorVisible", typeof(string));
             dataTable.Columns.Add("PoolingRuleName", typeof(string));
@@ -96,10 +105,40 @@ namespace WanTai.View.PCR
             {                
                 PCRTestResultViewListController controller = new PCRTestResultViewListController();
                 controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage);
+                ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
+                this.experiment_name.Content = expInfo.ExperimentName;
+                this.login_name.Content = expInfo.LoginName;
+                this.sample_number.Content = controller.GetSampleNumber(expInfo.ExperimentID);
+                this.experiment_time.Content = expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss");
+                string PCRTimeString = "";
+                string PCRDeviceString = "";
+                string PCRBarCodeString = "";
 
+                List<Plate> plateList = controller.GetPCRPlateList(rotationId, experimentId);
+                if (plateList != null && plateList.Count > 0)
+                {
+                    foreach (Plate plate in plateList)
+                    {
+                        PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : ", " + plate.BarCode;
+                        XmlDocument xdoc = new XmlDocument();
+                        if (null != plate.PCRContent)
+                        {
+                            xdoc.LoadXml(plate.PCRContent);
+                            XmlNode node = xdoc.SelectSingleNode("PCRContent");
+                            PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
+                            string timeString = node.SelectSingleNode("PCRStartTime").InnerText + "--" + node.SelectSingleNode("PCREndTime").InnerText;
+                            PCRTimeString += PCRTimeString == "" ? timeString : ", " + timeString;
+                        }
+                    }
+                }
+                this.rotation.Content = rotationName;
+                this.pcr_time.Content = PCRTimeString;
+                this.pcr_device.Content = PCRDeviceString;
+                this.pcr_barcode.Content = PCRBarCodeString;
+              
                 if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    this.errorMessage_label.Content = errorMessage;
+                    this.qc_result.Content = errorMessage;
                 }
             }
         }

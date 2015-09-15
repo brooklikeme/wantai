@@ -61,7 +61,7 @@ namespace WanTai.View.PCR
                 if (result)
                 {                    
                     pCRTestResultDataGridUserControl.RotationId = rotationId;
-                    pCRTestResultDataGridUserControl.errorMessage_label.Content = string.Empty;
+                    pCRTestResultDataGridUserControl.qc_result.Content = string.Empty;
                     pCRTestResultDataGridUserControl.dataGrid_view.DataContext = DateTime.Now;
                 }
                 else

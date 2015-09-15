@@ -14,44 +14,181 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="400"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,5,0,5">
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,5,0,5" Grid.Column="4" HorizontalAlignment="Right" Grid.RowSpan="2">
             <Label Content="样品条码：" />
             <TextBox x:Name="tube_barcode" Width="200" />
-            <Button x:Name="barcodequery_button" Content="查询" Margin="10,0,0,0"  Click="barcodequery_button_Click"/>
+            <Button x:Name="barcodequery_button" Content="查询" Margin="10,0,0,0"  Click="barcodequery_button_Click" HorizontalAlignment="Center"/>
         </StackPanel>
-        <Label x:Name="errorMessage_label" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red"/>
-        <DataGrid Grid.Row="2" AutoGenerateColumns="False" FontSize="10" CanUserAddRows="False" HorizontalAlignment="Stretch" x:Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged" FontFamily="Microsoft YaHei">
+        <Label Content="实验名称：" VerticalContentAlignment="Stretch" Foreground="Black"/>
+        <Label x:Name="experiment_name" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1"/>
+        <Label Content="操作员：" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2"/>
+        <Label x:Name="login_name" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3"/>
+        <Label Content="样本数量：" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black"/>
+        <Label x:Name="sample_number" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1"/>
+        <Label Content="实验时间：" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2"/>
+        <Label x:Name="experiment_time" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3"/>
+        <Label x:Name="rotation" Grid.Row="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.ColumnSpan="2"/>
+        <Label Content="扩增时间：" Grid.Row="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2"/>
+        <Label x:Name="pcr_time" Grid.Row="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3"/>
+        <Label Content="PCR仪：" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black"/>
+        <Label x:Name="pcr_device" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1"/>
+        <Label Content="PCR条码：" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2"/>
+        <Label x:Name="pcr_barcode" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3"/>
+        <Label x:Name="qc_result" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red"/>
+        <DataGrid Grid.Row="5" AutoGenerateColumns="False" FontSize="10" CanUserAddRows="False" HorizontalAlignment="Stretch" x:Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged" FontFamily="Microsoft YaHei" Grid.ColumnSpan="5">
             <DataGrid.Columns>
-                <DataGridTemplateColumn Header="序号" Width="60" CanUserSort="False">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="{Binding Number}"/>
-                                <Ellipse Width="15" Height="15"  Fill="{Binding TubeTypeColor}" Margin="0,0,0,0" Visibility="{Binding TubeTypeColorVisible}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="类型" HeaderStringFormat="" SortMemberPath="TubeType" Width="70" FontSize="10"/>
-                <DataGridTextColumn Binding="{x:Null}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="样品名称" SortMemberPath="PCRName" Width="60"/>
-                <DataGridTextColumn Header="样品条码" Width="110" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
-                <DataGridTextColumn Header="样品位置" Width="110" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" FontSize="10"/>
-                <DataGridTextColumn Header="检测方式" Width="80" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
-                <DataGridTextColumn Header="检测项目" Width="80" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
-                <DataGridTextColumn Header="PCR板条码" Width="110" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
-                <DataGridTextColumn Header="PCR孔位" Width="110" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
-                <DataGridTextColumn Header="检测结果" Width="150" Binding="{Binding PCRTestResult}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" />
-                <DataGridTextColumn Header="实验记录" Width="200" Binding="{Binding SimpleTrackingResult}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" />
+                <DataGridTextColumn Header="序号" Width="30" Binding="{Binding Number}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
+                <DataGridTextColumn Binding="{Binding TubeTypeName}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="类型" HeaderStringFormat="" SortMemberPath="TubeType" Width="70" FontSize="10">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TubeTypeColorVisible}" Value="Visible">
+                                    <Setter Property="Background" Value="{Binding Path=TubeTypeColor }"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding PCRName}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="样品名称" SortMemberPath="PCRName" Width="60">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="样品条码" Width="110" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="样品位置" Width="110" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="检测方式" Width="45" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="检测项目" Width="50" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="PCR板条码" Width="60" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="PCR孔位" Width="45" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="HBV" Width="40" Binding="{Binding HBV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="HBVIC" Width="40" Binding="{Binding HBVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="HCV" Width="40" Binding="{Binding HCV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="HCVIC" Width="40" Binding="{Binding HCVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="HIV" Width="40" Binding="{Binding HIV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="HIVIC" Width="40" Binding="{Binding HIVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="检测结果" Width="130" Binding="{Binding PCRTestResult}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="实验记录" Width="200" Binding="{Binding SimpleTrackingResult}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3" x:Name="StackPanel_contrast"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="6" x:Name="StackPanel_contrast" Grid.ColumnSpan="5"/>
     </Grid>
 </UserControl>
