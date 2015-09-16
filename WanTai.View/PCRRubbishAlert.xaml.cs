@@ -57,8 +57,8 @@ namespace WanTai.View
 
             deskTop.Width = width;
             double lenghtUnit = deskTop.Width / 84;
-            imgKingFisher.Width = lenghtUnit * 24;
-            imgKingFisher.Height = lenghtUnit * 24;
+            imgKingFisher.Width = lenghtUnit * 36;
+            imgKingFisher.Height = lenghtUnit * 36;
             imgKingFisher.Margin = new Thickness(-lenghtUnit * 2 * 1.4, lenghtUnit * 12, 0, lenghtUnit * 2);
 
             if (SessionInfo.WorkDeskType == "200")
@@ -176,7 +176,7 @@ namespace WanTai.View
                 List<PlateBase> greenPlate = plates.FindAll(P => P.ContainerName == c.CarrierName);
                 c.UpdatePlate(greenPlate);
                 // 修改 枪头及深孔板 js
-                if (SessionInfo.WorkDeskType == "100" && c.CarrierName == "007")
+                if (SessionInfo.WorkDeskType == "100" && c.CarrierName == "006")
                     continue;
                 deskTop.Children.Add(c);
                 string[] plateNames = new string[greenPlate.Count];

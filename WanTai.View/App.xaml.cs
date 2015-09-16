@@ -6,7 +6,10 @@ using System.Linq;
 using System.Windows;
 using System.Data.Entity;
 using WanTai.DataModel;
+using System.IO;
 using System.Windows.Media;
+using System.ComponentModel;
+using System.Windows.Media.Imaging;
 using WanTai.Controller.EVO;
 namespace WanTai.View
 {
@@ -55,33 +58,9 @@ namespace WanTai.View
         }
         private void Main_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (SessionInfo.CurrentExperimentsInfo != null)
-            {
-                if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing)
-                {
-                    MessageBox.Show("当前实验正在运行,请先停止!", "系统提示!");
-                    e.Cancel = true;
-                    return;
-                }
-                if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Fail || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Create
-                 || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend)
-                {
-                    if (MessageBox.Show("当前实验未完成,是否退出?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-                    WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
-                    rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);
-                }                         
-            }
 
-            if (!ProcessorFactory.HasClosed)
-            {
-                IProcessor processor = ProcessorFactory.GetProcessor();
-                processor.Close();
-            }  
         }
+
         private void Main_Closed(object sender, System.EventArgs e)
         {
             //if (!ProcessorFactory.HasClosed)

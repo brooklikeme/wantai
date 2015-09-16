@@ -31,7 +31,7 @@ namespace WanTai.Controller.EVO
         }
       
         private static int State = 0;
-        private static int SleepTime = 10;
+        private static int SleepTime = 2;
         private static bool ReturnFalg = false;
         public static MockProcessor Instance()
         {
@@ -47,7 +47,7 @@ namespace WanTai.Controller.EVO
                 onOnNextTurnStepHandler(sScriptName);
             ReturnFalg = false;
             System.Windows.Forms.Application.DoEvents();
-            SleepTime = 10;
+            SleepTime = 2;
             State = 0;
             string pcrStartFilePath = WanTai.Common.Configuration.GetEvoOutputPath() + "PCRStart.csv";
             string pcrFinishedFilePath = WanTai.Common.Configuration.GetEvoOutputPath() + "PCRFinished.csv";
@@ -73,7 +73,7 @@ namespace WanTai.Controller.EVO
                 }
                 if (sScriptName == "TEST_3_TIQUANDMIX.esc" || sScriptName == "TEST_3_TIQUANDMIX_NoPCRLiquid.esc")
                 {
-                    Thread.Sleep(1000*60);
+                    Thread.Sleep(1000*10);
                     string EvoVariableOutputPath = WanTai.Common.Configuration.GetEvoVariableOutputPath();
                     bool hasNext = false;
                     using (FileStream DWFile = new FileStream(EvoVariableOutputPath + "Times.CSV", FileMode.Open, FileAccess.Read))
@@ -96,12 +96,12 @@ namespace WanTai.Controller.EVO
                     {
                         WanTai.UserPrompt.Program.Main(new string[] { "GoToScanPage" });
                         //System.Diagnostics.Process.Start("WanTai.UserPrompt.exe", "GoToScanPage");
-                        Thread.Sleep(1000 * 60 * 1);
+                        Thread.Sleep(1000 * 10 * 1);
                         WanTai.UserPrompt.Program.Main(new string[] { "ScanFinished" });
                         //System.Diagnostics.Process.Start("WanTai.UserPrompt.exe", "ScanFinished");
                     }
                     //Thread.Sleep(1000 * 30 * 1);
-                    SleepTime = 10;
+                    SleepTime = 2;
                     State = 2;
                     while (SleepTime > 0)
                     {
@@ -119,7 +119,7 @@ namespace WanTai.Controller.EVO
                         }
                     }
 
-                    SleepTime = 30;
+                    SleepTime = 5;
                     State = 2;
                     while (SleepTime > 0)
                     {
@@ -145,7 +145,7 @@ namespace WanTai.Controller.EVO
                         }
                     }
 
-                    SleepTime = 20;
+                    SleepTime = 3;
                     State = 1;
                     while (SleepTime > 0)
                     {
@@ -163,14 +163,14 @@ namespace WanTai.Controller.EVO
                         }
                     }
                     
-                    Thread.Sleep(1000*30*1);
+                    Thread.Sleep(1000*5*1);
                 }
                 return true;
             }
 
             
             
-            SleepTime = 10;
+            SleepTime = 2;
             State = 3;
             while (SleepTime > 0)
             {
@@ -240,7 +240,7 @@ namespace WanTai.Controller.EVO
             }
 
             
-            SleepTime = 10;
+            SleepTime = 2;
             State = 2;
             while (SleepTime > 0)
             {
@@ -260,7 +260,7 @@ namespace WanTai.Controller.EVO
             }
 
 
-            SleepTime = 10;
+            SleepTime = 2;
             State = 3;
             while (SleepTime > 0)
             {

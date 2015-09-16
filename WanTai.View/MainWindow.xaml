@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d" MinHeight="768" MinWidth="1024"  
-        d:DesignHeight="768" d:DesignWidth="1024" xmlns:my1="clr-namespace:WanTai.View" Icon="/WanTag;component/logo.ico" WindowState="Maximized" xmlns:my2="clr-namespace:ImageExtender" Loaded="Window_Loaded">
+        d:DesignHeight="768" d:DesignWidth="1024" xmlns:my1="clr-namespace:WanTai.View" Icon="/WanTag;component/logo.ico" WindowState="Maximized" xmlns:my2="clr-namespace:ImageExtender" Loaded="Window_Loaded" Closing="Window_Closing">
     <Window.Resources>
         <Style x:Key="ButtonFocusVisual">
             <Setter Property="Control.Template">
@@ -183,9 +183,9 @@
             </my:Ribbon>
         </Border>
         <ScrollViewer  Grid.Row="1" Grid.ColumnSpan="2"  Name="mainFrame"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-            <StackPanel Orientation="Vertical" Margin="0,200,0,0">
+            <StackPanel x:Name="loading_content" Orientation="Vertical" Margin="0,200,0,0">
                 <my2:ImageExpender Height="150" x:Name="imageExpender1" Stretch="Fill" Width="200" />
-                <Label  Content="初始化检测中……" HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                <Label x:Name="loading_title"  Content="初始化检测中……" HorizontalAlignment="Center"  VerticalAlignment="Center" />
             </StackPanel>
         </ScrollViewer>
         <!--<Frame Grid.Row="1" Grid.ColumnSpan="2" Name="mainFrame" Height="auto" Width="auto"></Frame>-->

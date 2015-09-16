@@ -46,17 +46,20 @@
                 <DataGridTemplateColumn Header="1" Width="*">
                     <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background1}"   />
+                           <Setter Property="Background" Value="{Binding Path=Background1}"   />
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="Background" Value="{Binding Path=IsSelected1}"/>
                                 </Trigger>
+                                <DataTrigger Binding="{Binding CellContentVisibility1}" Value="Visible">
+                                    <Setter Property="TextBlock.Text" Value="12345"/>
+                                </DataTrigger>                                                      
                             </Style.Triggers>
                         </Style>
                     </DataGridTemplateColumn.CellStyle>
-                        <DataGridTemplateColumn.CellTemplate >
+                     <DataGridTemplateColumn.CellTemplate >
                         <DataTemplate>
-                            <my1:PieLoayout  ToolTip="{Binding Path=BarCode1}" IsEnabled="{Binding Path=IsEnabled1}"  PlottedProperty="{Binding Path=TextItemCount1}" Visibility="{Binding Path=Visibility1}"  HorizontalAlignment="Center"  x:Name="pie_1" VerticalAlignment="Center" Width="24"  />
+                            <my1:PieLoayout  ToolTip="{Binding Path=BarCode1}" IsEnabled="{Binding Path=IsEnabled1}"  PlottedProperty="{Binding Path=TextItemCount1}" Visibility="{Binding Path=Visibility1}"  HorizontalAlignment="Center"  x:Name="pie_1" VerticalAlignment="Center" Width="24"  />                          
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -29,7 +29,7 @@
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
-            </Setter> 
+            </Setter>
         </Style>
         <!--定义按钮样式-->
         <Style x:Key="aa" TargetType="Button">
@@ -236,13 +236,13 @@
             <Setter Property="Content" Value=""></Setter>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="True">
-                        <Trigger.EnterActions>
-                            <BeginStoryboard>
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
                             <Storyboard >
                                 <ColorAnimation  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"  From="Red" To="Green"   AutoReverse="True"  RepeatBehavior="Forever" Duration="0:0:1" Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </Trigger.EnterActions>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
                     <Trigger.ExitActions>
                     </Trigger.ExitActions>
                 </Trigger>
@@ -278,7 +278,7 @@
                     <Trigger.EnterActions>
                         <BeginStoryboard Name="BeginStoryboardIsEnable">
                             <Storyboard FillBehavior="Stop">
-                               <DoubleAnimation From="1.0"   To="0.3"  AutoReverse="True"  RepeatBehavior="Forever" Duration="0:0:0.5" Storyboard.TargetProperty="Opacity"/>
+                                <DoubleAnimation From="1.0"   To="0.3"  AutoReverse="True"  RepeatBehavior="Forever" Duration="0:0:0.5" Storyboard.TargetProperty="Opacity"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -286,25 +286,36 @@
                 <Trigger Property="Button.Uid" Value="NoError">
                     <Setter Property="Button.Opacity" Value="1.0"></Setter>
                     <Setter Property="Button.Background" Value="#F7F7F9"></Setter>
-                     <Trigger.EnterActions>
+                    <Trigger.EnterActions>
                         <StopStoryboard BeginStoryboardName="BeginStoryboardIsEnable"></StopStoryboard>
                     </Trigger.EnterActions>
                 </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
-        <Grid>
-        <my:ImageExpender   HorizontalAlignment="Stretch"  Stretch="Fill" x:Name="imagBackground" Source="/WanTag;component/Resources/Login_Bg.gif" VerticalAlignment="Stretch"  />
-        <Label Content="用户名" Height="24" x:Name="labLoginName" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="180,247,0,38" Foreground="White" FontSize="12" />
-        <TextBox Height="23" HorizontalAlignment="Left"  Name="txt_LoginName" VerticalAlignment="Center" Width="120" Margin="239,249,0,39" />
-        <Label Content="密   码" Height="24" x:Name="labLoginPassWord" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="180,278,0,9" Foreground="White" FontSize="12" />
-        <PasswordBox Height="23" HorizontalAlignment="Left" Name="txt_LoginPassWord" VerticalAlignment="Center" Width="120" Margin="239,278,0,10"></PasswordBox>
-        <Button Content="确定"  Height="44"   HorizontalAlignment="Center" Name="btn_Enter" VerticalAlignment="Center" Width="75" Click="btn_Enter_Click" IsDefault="True" Foreground="White" Margin="377,250,49,13" FontSize="14">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="70"></ColumnDefinition>
+            <ColumnDefinition Width="110"></ColumnDefinition>
+            <ColumnDefinition Width="90"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+        </Grid.RowDefinitions>
+        <my:ImageExpender   HorizontalAlignment="Stretch"  Stretch="Fill" x:Name="imagBackground" Source="/WanTag;component/Resources/Login_Bg.gif" VerticalAlignment="Stretch" Grid.RowSpan="3" Grid.ColumnSpan="4"  />
+        <Label Content="用户名" Height="24" x:Name="labLoginName" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" Foreground="Black" FontSize="13" Grid.Row="1" Grid.Column="1" FontWeight="Bold" />
+        <TextBox Height="23" HorizontalAlignment="Left"  x:Name="txt_LoginName" VerticalAlignment="Center" Width="110" Margin="0" Grid.Row="1" Grid.Column="2" />
+        <Label Content="密  码" Height="24" x:Name="labLoginPassWord" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" Foreground="Black" FontSize="13" Grid.Row="2" Grid.Column="1" FontWeight="Bold" />
+        <PasswordBox Height="23" HorizontalAlignment="Left" x:Name="txt_LoginPassWord" VerticalAlignment="Center" Width="110" Margin="0" Grid.Row="2" Grid.Column="2"/>
+        <Button Content="确定"  Height="44"   HorizontalAlignment="Center" x:Name="btn_Enter" VerticalAlignment="Center" Width="75" Click="btn_Enter_Click" IsDefault="True" Foreground="White" Margin="0" FontSize="14" Grid.Row="1" Grid.Column="3" Grid.RowSpan="2">
             <Button.Background>
                 <ImageBrush ImageSource="/WanTag;component/Resources/Login_Btn.gif" />
             </Button.Background>
         </Button>
-        <ProgressBar Height="40"  HorizontalAlignment="Left" Margin="169,254,0,0" Name="barRun" VerticalAlignment="Top" Width="285" />
+        <ProgressBar Height="40"  HorizontalAlignment="Left" Margin="169,254,0,0" x:Name="barRun" VerticalAlignment="Top" Width="285" />
     </Grid>
     <Window.Background>
         <ImageBrush>

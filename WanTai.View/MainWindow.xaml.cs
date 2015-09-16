@@ -28,6 +28,8 @@ namespace WanTai.View
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Boolean EVOClosed = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -75,7 +77,7 @@ namespace WanTai.View
                 exit_button.IsEnabled = true;
                 imageExpender1.Image = null;
                 imageExpender1.Dispose();
-                mainFrame.Content = null;
+                this.mainFrame.Content = null;
                 if (isOffline)
                 {
                     EVOOfflineStatus.Content = "脱机";
@@ -293,31 +295,7 @@ namespace WanTai.View
 
         private void exit_button_Click(object sender, RoutedEventArgs e)
         {
-            //if (SessionInfo.CurrentExperimentsInfo != null)
-            //{
-            //    if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing)
-            //    {
-            //        MessageBox.Show("当前实验正在运行,请先停止!", "系统提示!");
-            //        return;
-            //    }
-            //    if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Fail || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Create
-            //     || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend)
-            //    {
-            //        if (MessageBox.Show("当前实验未完成,是否退出?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-            //            return;
-            //        WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
-            //        rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);
-            //    }
-            //}
-
-            //if (ProcessorFactory.HasInitedProcessor)
-            //{
-            //    IProcessor processor = ProcessorFactory.GetProcessor();
-            //    processor.Close();
-            //    ProcessorFactory.HasClosed = true;
-            //}            
-            //this.Close();
-            Application.Current.Shutdown();
+            this.Close();
         }
 
         private void CloseLamp_button_Click(object sender, RoutedEventArgs e)
@@ -455,6 +433,82 @@ namespace WanTai.View
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (EVOClosed) return;
+            if (SessionInfo.CurrentExperimentsInfo != null)
+            {
+                if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing)
+                {
+                    MessageBox.Show("当前实验正在运行, 请先停止!", "系统提示!");
+                    e.Cancel = true;
+                    return;
+                }
+                if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Fail || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Create
+                 || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend)
+                {
+                    if (MessageBox.Show("当前实验未完成, 是否退出?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                    WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
+                    rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);
+                }
+            }
+            else
+            {
+                if (MessageBox.Show("确定要关闭系统?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            e.Cancel = true;
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            Stream imageStream = Application.GetResourceStream(new Uri("/WanTag;component/Resources/loading.gif", UriKind.Relative)).Stream;
+            System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
+            mainFrame.Content = loading_content;
+            this.imageExpender1.Image = bitmap;
+            this.loading_title.Content = "系统关闭中……";
+
+            btnNewExperiment.IsEnabled = false;
+            CloseExperiment_button.IsEnabled = false;
+            CloseLamp_button.IsEnabled = false;
+            TecanMaintain_Button.IsEnabled = false;
+            TecanRestoration_Button.IsEnabled = false;
+            exit_button.IsEnabled = false;
+            worker.DoWork += delegate(object s, DoWorkEventArgs args)
+            {
+                if (!ProcessorFactory.HasClosed)
+                {
+                    IProcessor processor = ProcessorFactory.GetProcessor();
+                    processor.Close();
+                }
+            };
+            worker.ProgressChanged += delegate(object s, ProgressChangedEventArgs args)
+            {
+
+            };
+            worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
+            {
+                btnNewExperiment.IsEnabled = true;
+                CloseExperiment_button.IsEnabled = true;
+                CloseLamp_button.IsEnabled = true;
+                TecanMaintain_Button.IsEnabled = true;
+                TecanRestoration_Button.IsEnabled = true;
+                exit_button.IsEnabled = true;
+                imageExpender1.Image = null;
+                imageExpender1.Dispose();
+                EVOClosed = true;
+                Application.Current.Shutdown();
+            };
+            worker.RunWorkerAsync();
         }
     }
 }

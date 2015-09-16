@@ -683,12 +683,13 @@ namespace WanTai.Controller.PCR
                             dataRow.ItemArray = middRow.ItemArray;
                             dataRow["Number"] = dataIndex;
                             dataRow["PCRTestResult"] = middRow["TestingItemName"] + " " + dataRow["PCRTestResult"];
+                            dataRow["PCRPosition"] = ChangePositionNumberToCharacter(Int32.Parse(dataRow["PCRPosition"].ToString()));
                             dataTable.Rows.Add(dataRow);
                         }
                         else
                         {
                             dataRow["TestingItemName"] += "\n" + middRow["TestingItemName"];
-                            dataRow["PCRPosition"] += "\n" + middRow["PCRPosition"];
+                            dataRow["PCRPosition"] += "\n" + ChangePositionNumberToCharacter(Int32.Parse(middRow["PCRPosition"].ToString()));
                             dataRow["PCRTestResult"] += "\n" + middRow["TestingItemName"] + " " + middRow["PCRTestResult"];
                             dataRow["HBV"] += "\n" + middRow["HBV"];
                             dataRow["HBVIC"] += "\n" + middRow["HBVIC"];
@@ -727,6 +728,46 @@ namespace WanTai.Controller.PCR
             //    LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->QueryTubesPCRTestResult", SessionInfo.ExperimentID);
             //    throw;
            // }
+        }
+
+
+        public string ChangePositionNumberToCharacter(int positionNumber)
+        {
+            int oneLineCellCount = 8;
+            int number = positionNumber / oneLineCellCount + 1;
+            int lineNumber = positionNumber % oneLineCellCount;
+            string character = "";
+            switch (number)
+            {
+                case 1:
+                    character = "A" + lineNumber;
+                    break;
+                case 2:
+                    character = "B" + lineNumber;
+                    break;
+                case 3:
+                    character = "C" + lineNumber;
+                    break;
+                case 4:
+                    character = "D" + lineNumber;
+                    break;
+                case 5:
+                    character = "E" + lineNumber;
+                    break;
+                case 6:
+                    character = "F" + lineNumber;
+                    break;
+                case 7:
+                    character = "G" + lineNumber;
+                    break;
+                case 8:
+                    character = "H" + lineNumber;
+                    break;
+                default:
+                    break;
+            }
+
+            return character;
         }
 
         public bool DeleteRotationPCRTestResult(Guid rotationId)

@@ -93,6 +93,14 @@ namespace WanTai.Controller
                         Column = new DataColumn("Background" + i.ToString());
                         Column.DefaultValue = null;//Collapsed Hidden Visible
                         Tubes.Columns.Add(Column);
+
+                        Column = new DataColumn("CellContent" + i.ToString());
+                        Column.DefaultValue = null;//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
+
+                        Column = new DataColumn("CellContentVisibility" + i.ToString());
+                        Column.DefaultValue = null;//Collapsed Hidden Visible
+                        Tubes.Columns.Add(Column);
                     }
                     for (int i = 0; i < 16; i++)
                     {
@@ -127,7 +135,7 @@ namespace WanTai.Controller
                     while ((strline = mysr.ReadLine()) != null)
                     {
                         aryline = strline.Split(new char[] { ';' });
-                        if (aryline[6] == "$$$" || aryline[6] == "") continue;
+                        if ((aryline[6] == "$$$" || aryline[6] == "") && !WanTai.Common.Configuration.GetIsMock()) continue;
                         int Position = SessionInfo.BatchType == "B" ? int.Parse(aryline[0]) + 18 : int.Parse(aryline[0]);
                         int Grid = int.Parse(aryline[2]) - 1;
                         Tubes.Rows[Grid]["Position" + Position.ToString()] = Position;
@@ -184,6 +192,23 @@ namespace WanTai.Controller
                                 Tubes.Rows[(int)(row)]["IsEnabled" + col] = "True";
                                 Tubes.Rows[(int)(row)]["IsSelected" + col] = "#316AC5";
                                 Tubes.Rows[(int)(row)]["Background" + col] = _TestingItem.TestingItemColor;
+                                /*
+                                if ((int)Tubes.Rows[(int)(row)]["TubeType" + col] == (int)Tubetype.PositiveControl)
+                                {
+                                    Tubes.Rows[(int)(row)]["CellContent" + col] = _TestingItem.TestingItemName + " " + "PC";
+                                    Tubes.Rows[(int)(row)]["CellContentVisibility" + col] = "Visible";
+                                }
+                                else if ((int)Tubes.Rows[(int)(row)]["TubeType" + col] == (int)Tubetype.NegativeControl)
+                                {
+                                    Tubes.Rows[(int)(row)]["CellContent" + col] = _TestingItem.TestingItemName + " " + "NC";
+                                    Tubes.Rows[(int)(row)]["CellContentVisibility" + col] = "Visible";
+                                }
+                                else if ((int)Tubes.Rows[(int)(row)]["TubeType" + col] == (int)Tubetype.Complement)
+                                {
+                                    Tubes.Rows[(int)(row)]["CellContent" + col] = _TestingItem.TestingItemName + " " + "IC";
+                                    Tubes.Rows[(int)(row)]["CellContentVisibility" + col] = "Visible";
+                                }*/
+
                                 LiquidType _LiquidType = LiquidTypeList.Find(delegate(LiquidType lt) { return (lt.TypeId == sfc.ItemType); });
                                 if (_LiquidType != null)
                                 {

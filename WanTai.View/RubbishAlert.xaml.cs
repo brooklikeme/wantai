@@ -62,8 +62,8 @@ namespace WanTai.View
 
             deskTop.Width = width;
             double lenghtUnit = deskTop.Width / 84;
-            imgKingFisher.Width = lenghtUnit * 24;
-            imgKingFisher.Height = lenghtUnit * 24;
+            imgKingFisher.Width = lenghtUnit * 36;
+            imgKingFisher.Height = lenghtUnit * 36;
             imgKingFisher.Margin = new Thickness(-lenghtUnit * 2 * 1.4, lenghtUnit * 12, 0, lenghtUnit * 2);
 
             if (SessionInfo.WorkDeskType == "200")
