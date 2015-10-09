@@ -151,7 +151,6 @@
     <Compile Include="Control\Shelf.xaml.cs">
       <DependentUpon>Shelf.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BatchDeskTop.xaml.cs" />
     <Compile Include="TecanRestoration.xaml.cs">
       <DependentUpon>TecanRestoration.xaml</DependentUpon>
     </Compile>
@@ -357,10 +356,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Shelf.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="BatchDeskTop.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -727,6 +722,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="baogao.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\kingfisher_rubbish_100_r.gif" />
+    <Resource Include="Resources\kingfisher_rubbish_100_w.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

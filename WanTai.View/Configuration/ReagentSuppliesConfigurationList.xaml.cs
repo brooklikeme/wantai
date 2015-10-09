@@ -73,19 +73,19 @@ namespace WanTai.View.Configuration
                 dRow["Color"] = record.Color;
                 dRow["Unit"] = record.Unit;
 
-                if (controller.CanDelete(record.ItemID))
+                if (!record.ActiveStatus)
                 {
-                    dRow["Action"] = "delete";
+                    dRow["Action"] = "active";
                 }
                 else
                 {
-                    if (record.ActiveStatus)
+                    if (controller.CanDelete(record.ItemID))
                     {
-                        dRow["Action"] = "deactive";
+                        dRow["Action"] = "delete";
                     }
                     else
                     {
-                        dRow["Action"] = "active";
+                        dRow["Action"] = "deactive";
                     }
                 }
 

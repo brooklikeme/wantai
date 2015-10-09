@@ -233,7 +233,7 @@ namespace WanTai.View.Services
                     int offset = 0;
 
                     if (SessionInfo.WorkDeskType == "100"){
-                        offset = 1;
+                        // offset = 1;
                     }
 
                     for (int i = 0; i < volume; i++)

@@ -144,7 +144,7 @@ namespace WanTai.View
                     {
                         limit = 32;
                         width = 500;
-                        offset = 200;
+                        offset = 100;
                     }
                     else if (SessionInfo.WorkDeskType == "150")
                     {

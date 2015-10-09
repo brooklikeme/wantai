@@ -62,9 +62,9 @@ namespace WanTai.View
 
             deskTop.Width = width;
             double lenghtUnit = deskTop.Width / 84;
-            imgKingFisher.Width = lenghtUnit * 36;
-            imgKingFisher.Height = lenghtUnit * 36;
-            imgKingFisher.Margin = new Thickness(-lenghtUnit * 2 * 1.4, lenghtUnit * 12, 0, lenghtUnit * 2);
+            imgKingFisher.Width = (900 / 84) * 24;
+            imgKingFisher.Height = (900 / 84) * 24;
+            imgKingFisher.Margin = new Thickness(-(deskTop.Width / 84) * 2 * 1.4, (500 / 84) * 12, 0, (500 / 84) * 2);
 
             if (SessionInfo.WorkDeskType == "200")
             {
@@ -98,7 +98,7 @@ namespace WanTai.View
                 plate.Correct = false;
                 plates.Add(plate);
             }
-            Brush PCRPlateColor = new SolidColorBrush(Colors.Red);
+            Brush PCRPlateColor = new SolidColorBrush(Colors.Blue);
             foreach (ReagentAndSuppliesConfiguration supply in supplies)
             {
                 Brush color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
@@ -277,7 +277,10 @@ namespace WanTai.View
                     this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
                         new Action(delegate()
                         {
-                            imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher_rubbish.gif", UriKind.Relative));
+                            if (SessionInfo.WorkDeskType == "100")
+                                imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher_rubbish_100_r.gif", UriKind.Relative));
+                            else
+                                imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher_rubbish.gif", UriKind.Relative));
                         }));
                 }
             }
@@ -288,7 +291,10 @@ namespace WanTai.View
                     this.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
                         new Action(delegate()
                         {
-                            imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher.gif", UriKind.Relative));
+                            if (SessionInfo.WorkDeskType == "100")
+                                imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher_rubbish_100_w.gif", UriKind.Relative));
+                            else
+                                imgKingFisher.Source = new BitmapImage(new Uri(@"/WanTag;component/Resources/kingfisher.gif", UriKind.Relative));
                         }));
                 }
             }

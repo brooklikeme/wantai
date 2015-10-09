@@ -166,7 +166,7 @@ namespace WanTai.Controller.PCR
                     + " and SampleTracking.OperationSequence = @OperationSequence"
                     + " where View_Tubes_PCRPlatePosition.RotationID =@RotationID"
                     + " and View_Tubes_PCRPlatePosition.ExperimentID = @ExperimentID"
-                    + " and (SampleTracking.ItemID is not null and (SampleTracking.CONCENTRATION = 0 and ABS(SampleTracking.VOLUME) < 50 ))";
+                    + " and (SampleTracking.ItemID is null or (SampleTracking.CONCENTRATION = 0 and ABS(SampleTracking.VOLUME) < 50 ))";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -734,8 +734,8 @@ namespace WanTai.Controller.PCR
         public string ChangePositionNumberToCharacter(int positionNumber)
         {
             int oneLineCellCount = 8;
-            int number = positionNumber / oneLineCellCount + 1;
-            int lineNumber = positionNumber % oneLineCellCount;
+            int number = (positionNumber - 1) % oneLineCellCount + 1;
+            int lineNumber = (positionNumber - 1) / oneLineCellCount + 1;
             string character = "";
             switch (number)
             {

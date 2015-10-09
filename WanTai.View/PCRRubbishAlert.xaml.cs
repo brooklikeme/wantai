@@ -57,9 +57,9 @@ namespace WanTai.View
 
             deskTop.Width = width;
             double lenghtUnit = deskTop.Width / 84;
-            imgKingFisher.Width = lenghtUnit * 36;
-            imgKingFisher.Height = lenghtUnit * 36;
-            imgKingFisher.Margin = new Thickness(-lenghtUnit * 2 * 1.4, lenghtUnit * 12, 0, lenghtUnit * 2);
+            imgKingFisher.Width = (900 / 84) * 24;
+            imgKingFisher.Height = (900 / 84) * 24;
+            imgKingFisher.Margin = new Thickness(-(500 / 84) * 2 * 1.4, (500 / 84) * 12, 0, (500 / 84) * 2);
 
             if (SessionInfo.WorkDeskType == "200")
             {
@@ -116,22 +116,45 @@ namespace WanTai.View
             {
                 if (supply.ItemType == 101)//dw 96 plate
                 {
-                    for (int i = 1; i < 4; i++)
+                    if (SessionInfo.WorkDeskType == "100")
                     {
-                        PlateBase plate = new Control.Plate();
-                        plate.DisplayName = supply.DisplayName+ " " + (6 -i).ToString();;
-                        plate.ChineseName = supply.DisplayName;
-                        plate.NeedVolume = 1;
-                        plate.CurrentVolume = 1;
-                        plate.Grid = 1;
-                        plate.Position = i;
-                        plate.ContainerName = "002";
-                        plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
-                        plate.ItemType = (short)supply.ItemType;
-                        plate.BarcodePrefix = supply.BarcodePrefix;
-                        plate.ConfigurationItemID = supply.ItemID;
-                        plate.Correct = true;
-                        plates.Add(plate);
+                        for (int i = 1; i < 4; i++)
+                        {
+                            PlateBase plate = new Control.Plate();
+                            plate.DisplayName = supply.DisplayName + " " + (5 - i).ToString(); ;
+                            plate.ChineseName = supply.DisplayName;
+                            plate.NeedVolume = 1;
+                            plate.CurrentVolume = 1;
+                            plate.Grid = 1;
+                            plate.Position = (SessionInfo.WorkDeskType == "100" && i == 3) ? 2 : i + 1;
+                            plate.ContainerName = (SessionInfo.WorkDeskType == "100" && i == 3) ? "001" : "002";
+                            plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
+                            plate.ItemType = (short)supply.ItemType;
+                            plate.BarcodePrefix = supply.BarcodePrefix;
+                            plate.ConfigurationItemID = supply.ItemID;
+                            plate.Correct = true;
+                            plates.Add(plate);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 1; i < 4; i++)
+                        {
+                            PlateBase plate = new Control.Plate();
+                            plate.DisplayName = supply.DisplayName + " " + (6 - i).ToString(); ;
+                            plate.ChineseName = supply.DisplayName;
+                            plate.NeedVolume = 1;
+                            plate.CurrentVolume = 1;
+                            plate.Grid = 1;
+                            plate.Position = i;
+                            plate.ContainerName = "002";
+                            plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
+                            plate.ItemType = (short)supply.ItemType;
+                            plate.BarcodePrefix = supply.BarcodePrefix;
+                            plate.ConfigurationItemID = supply.ItemID;
+                            plate.Correct = true;
+                            plates.Add(plate);
+                        }
                     }
                 }
                 else if (supply.ItemType == 102 && supply.CurrentVolume > 0)//96 Tip Comb
@@ -152,8 +175,8 @@ namespace WanTai.View
                     plates.Add(plate);
                 }                
                 else if (supply.ItemType == 103 && supply.CurrentVolume>0)//PCR Plate
-                {
-                    int position = 5;
+                {                   
+                    int position = SessionInfo.WorkDeskType == "100" ? 1 : 5;
                     int grid = 1;                    
                     PlateBase plate = new WanTai.View.Control.Plate();
                     plate.DisplayName = supply.DisplayName;
@@ -162,7 +185,7 @@ namespace WanTai.View
                     plate.CurrentVolume = 1;
                     plate.Grid = grid;
                     plate.Position = position;
-                    plate.ContainerName = "007";
+                    plate.ContainerName = SessionInfo.WorkDeskType == "100" ? "002" : "007";
                     plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
                     plate.ItemType = (short)supply.ItemType;
                     plate.ConfigurationItemID = supply.ItemID;

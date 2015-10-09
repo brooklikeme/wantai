@@ -49,6 +49,15 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Action}" Value="active">
+                            <Setter Property="Background" Value="Gray"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
         </DataGrid>
         <StackPanel Grid.ColumnSpan="4" Grid.Row="11"  HorizontalAlignment="Center" Name="stackPanel1" VerticalAlignment="Stretch" Orientation="Horizontal" >
             <Button Content="新建"  Name="new_button" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Click="new_button_Click" />

@@ -82,8 +82,8 @@ namespace WanTai.View
             if (SessionInfo.WorkDeskType == "100")
             {
                 labDiTi1000.Visibility = Visibility.Hidden;
-                Sample.Margin = new Thickness(30, 5, 0, 5);
-                Sample.Width = 130;
+                Sample.Margin = new Thickness(25, 5, 0, 5);
+                Sample.Width = 124;
             }
             else if (SessionInfo.WorkDeskType == "150")
             {
@@ -270,7 +270,7 @@ namespace WanTai.View
                 c.UpdatePlate(ViewPlates.FindAll(P => P.ContainerName == c.CarrierName));
                 if (c.CarrierName == "001" && !isFirstRotation)
                 {
-                    List<PlateBase> greenPlate = ViewPlates.FindAll(P => P.ItemType == 101 && (P.DisplayName.Contains("1") || P.DisplayName.Contains("2")));
+                    List<PlateBase> greenPlate = ViewPlates.FindAll(P => P.ItemType == 101 && (SessionInfo.WorkDeskType == "100" ? P.DisplayName.Contains("1") : (P.DisplayName.Contains("1") || P.DisplayName.Contains("2"))));
                     string[] plateNames = new string[greenPlate.Count];
                     int index = 0;
                     foreach (PlateBase plate in greenPlate)
