@@ -23,6 +23,7 @@ namespace WanTai.View
     {
 
         private List<Guid> TestingItemList = new List<Guid>();
+        private string BatchType;
 
         public NewExperiment()
         {
@@ -50,6 +51,20 @@ namespace WanTai.View
                     checkBox.Unchecked += new RoutedEventHandler(checkBox_Unchecked);
                     testPanel.Children.Add(checkBox);
                 }
+            }
+            else if (SessionInfo.WorkDeskType == "150")
+            {
+                Label label = new Label();
+                label.Content = "两次上样:";
+                testPanel.Children.Add(label);
+
+                CheckBox checkBox = new CheckBox();
+                checkBox.Height = 20;
+                checkBox.Width = 50;
+                checkBox.Margin = new Thickness(5);
+                checkBox.Checked += new RoutedEventHandler(btn_Enable_Click_Checked);
+                checkBox.Unchecked += new RoutedEventHandler(btn_Enable_Click_Unchecked);
+                testPanel.Children.Add(checkBox);
             }
         }
 
@@ -93,7 +108,7 @@ namespace WanTai.View
                 SessionInfo.RotationFormulaParameters=new Dictionary<Guid,FormulaParameters>();
                 SessionInfo.TestingItemIDs = TestingItemList;
                 SessionInfo.PraperRotation = null;
-                SessionInfo.BatchType = null;
+                SessionInfo.BatchType = BatchType;
                 LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "新建实验 成功", SessionInfo.LoginName, this.GetType().Name, SessionInfo.ExperimentID);
                 this.DialogResult = true;
                 this.Close();
@@ -123,5 +138,16 @@ namespace WanTai.View
         {
             errInfo.Text = "";
         }
+
+        private void btn_Enable_Click_Checked(object sender, RoutedEventArgs e)
+        {
+            BatchType = "A";
+        }
+
+        private void btn_Enable_Click_Unchecked(object sender, RoutedEventArgs e)
+        {
+            BatchType = null;
+        }
+         
     }
 }

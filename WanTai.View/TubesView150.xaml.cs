@@ -212,7 +212,7 @@ namespace WanTai.View
                 return;
             }
 
-            btn_Use.IsEnabled = false;
+            //btn_Use.IsEnabled = false;
 
             btn_detail.IsEnabled = false;
             btn_Group.IsEnabled = false;
