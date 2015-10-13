@@ -158,13 +158,16 @@ namespace WanTai.Controller
                 {
                     if (SessionInfo.WorkDeskType == "100")
                     {
-                        List<SystemFluidConfiguration> _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).ToList();
+                        List<SystemFluidConfiguration> _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).OrderBy(s => s.Grid).ThenBy(s => s.Position).ToList();
+                        SessionInfo.LiquidCfgCount = _SystemFluidConfigurationList.Count;
+                        /*
                         SystemFluidConfiguration sfcg = _SystemFluidConfigurationList[_SystemFluidConfigurationList.Count - 1];                      
 
                         for (int i = 0; i < 3; i++)
                         {
                             _SystemFluidConfigurationList.Add(sfcg);
-                        }
+                        }*/
+
                         var TestItems = new TestItemController().GetActiveTestItemConfigurations();
                         int row = 0, col = 1;
                         foreach (TestingItemConfiguration _TestingItem in TestItems)
@@ -375,13 +378,17 @@ namespace WanTai.Controller
                         }
                         if (SessionInfo.WorkDeskType == "100")
                         {
-                            List<SystemFluidConfiguration> _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).ToList();
+                            List<SystemFluidConfiguration> _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).OrderBy(s => s.Grid).ThenBy(s => s.Position).ToList();
+                            SessionInfo.LiquidCfgCount = _SystemFluidConfigurationList.Count;
+
+                            /*
                             SystemFluidConfiguration sfcg = _SystemFluidConfigurationList[_SystemFluidConfigurationList.Count - 1];
 
                             for (int i = 0; i < 3; i++)
                             {
                                 _SystemFluidConfigurationList.Add(sfcg);
-                            }
+                            }*/
+
                             var TestItems = new TestItemController().GetActiveTestItemConfigurations();
                             int row = 0, col = 1;
                             foreach (TestingItemConfiguration _TestingItem in TestItems)

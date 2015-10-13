@@ -321,7 +321,17 @@ namespace WanTai.Controller.PCR
                     }
                 }
 
-                string commandText = "SELECT distinct TubeID, View_Tubes_PCRPlatePosition.BarCode, View_Tubes_PCRPlatePosition.Position,"
+                Dictionary<string, string> pcrContentDict = new Dictionary<string, string>();
+                using (WanTai.DataModel.WanTaiEntities _WanTaiEntities = new WanTaiEntities())
+                {
+                    List<PCRTestResult> testResultList = _WanTaiEntities.PCRTestResults.Where(s => s.RotationID == rotationId).ToList();
+                    foreach (PCRTestResult testResult in testResultList) {
+                        if (!pcrContentDict.ContainsKey(testResult.ItemID.ToString())) {
+                            pcrContentDict.Add(testResult.ItemID.ToString(), testResult.PCRContent.ToString());
+                        }
+                    }
+                }
+                    string commandText = "SELECT distinct TubeID, View_Tubes_PCRPlatePosition.BarCode, View_Tubes_PCRPlatePosition.Position,"
                     + " Grid, TubeType, PoolingRulesName, TestName, PCRPlateBarcode, PCRPlateID, PCRPosition, PCRTestResult.Result,"
                     + " PCRTestResult.ItemID FROM View_Tubes_PCRPlatePosition left join PCRTestResult"
                     + " on View_Tubes_PCRPlatePosition.RotationID = PCRTestResult.RotationID"
@@ -456,7 +466,7 @@ namespace WanTai.Controller.PCR
 
                                 if (reader["PCRPosition"] != DBNull.Value)
                                 {
-                                    dRow["PCRPosition"] = reader["PCRPosition"];
+                                    dRow["PCRPosition"] = dRow["PCRPlateBarCode"] + ":" + ChangePositionNumberToCharacter(Int32.Parse(reader["PCRPosition"].ToString()));
 
                                     // previousPCRPosition = (int)dRow["PCRPosition"];
                                 }
@@ -469,12 +479,12 @@ namespace WanTai.Controller.PCR
                                 dRow["Color"] = System.Windows.Media.Colors.White;
 
                                 string itemID = reader["ItemID"] != DBNull.Value ? reader["ItemID"].ToString() : "";
-                                PCRTestResult testResult = itemID != "" ? _WanTaiEntities.PCRTestResults.Where(Result => Result.ItemID == new Guid(itemID)).FirstOrDefault() : null;
+                                string pcrContent = pcrContentDict.ContainsKey(itemID.ToString()) ? pcrContentDict[itemID.ToString()] : null;
                                 
-                                if (null != testResult)
+                                if (null != pcrContent)
                                 {
                                     XmlDocument xdoc = new XmlDocument();
-                                    xdoc.LoadXml(testResult.PCRContent);
+                                    xdoc.LoadXml(pcrContent);
                                     XmlNodeList nodelist = xdoc.SelectSingleNode("PCRContent").SelectNodes("Row");
                                     foreach (XmlNode node in nodelist)
                                     {
@@ -627,11 +637,21 @@ namespace WanTai.Controller.PCR
                     }
                 }
 
-                // get pcr position dict
-                Dictionary<int, List<DataRow>> pcrPosRows = new Dictionary<int, List<DataRow>>();
+                /*
+                int dataIndex = 1;
+                dataTable.Columns[11].DataType = typeof(string);
                 foreach (DataRow baseRow in baseTable.Rows)
                 {
-                    int pcrPos = Int32.Parse(baseRow["PCRPosition"].ToString()); 
+                    System.Data.DataRow dataRow = dataTable.NewRow();
+                    dataRow.ItemArray = baseRow.ItemArray;
+                    dataTable.Rows.Add(dataRow);
+                }*/
+
+                // get pcr position dict
+                Dictionary<string, List<DataRow>> pcrPosRows = new Dictionary<string, List<DataRow>>();
+                foreach (DataRow baseRow in baseTable.Rows)
+                {
+                    string pcrPos = baseRow["PCRPosition"].ToString();
                     if (!pcrPosRows.ContainsKey(pcrPos))
                     {
                         pcrPosRows.Add(pcrPos, new List<DataRow>());
@@ -639,7 +659,7 @@ namespace WanTai.Controller.PCR
                     pcrPosRows[pcrPos].Add(baseRow);
                 }
                 // get midd table
-                foreach (KeyValuePair<int, List<DataRow>> pcrPosRow in pcrPosRows)
+                foreach (KeyValuePair<string, List<DataRow>> pcrPosRow in pcrPosRows)
                 {
                     int listIndex = 0;
                     System.Data.DataRow middRow = middTable.NewRow();
@@ -682,15 +702,20 @@ namespace WanTai.Controller.PCR
                         {
                             dataRow.ItemArray = middRow.ItemArray;
                             dataRow["Number"] = dataIndex;
-                            dataRow["PCRTestResult"] = middRow["TestingItemName"] + " " + dataRow["PCRTestResult"];
-                            dataRow["PCRPosition"] = ChangePositionNumberToCharacter(Int32.Parse(dataRow["PCRPosition"].ToString()));
+                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"] != "")
+                                dataRow["PCRTestResult"] = middRow["TestingItemName"] + " " + dataRow["PCRTestResult"];
+                            else
+                                dataRow["PCRTestResult"] = " ";
                             dataTable.Rows.Add(dataRow);
                         }
                         else
                         {
                             dataRow["TestingItemName"] += "\n" + middRow["TestingItemName"];
-                            dataRow["PCRPosition"] += "\n" + ChangePositionNumberToCharacter(Int32.Parse(middRow["PCRPosition"].ToString()));
-                            dataRow["PCRTestResult"] += "\n" + middRow["TestingItemName"] + " " + middRow["PCRTestResult"];
+                            dataRow["PCRPosition"] += "\n" + middRow["PCRPosition"].ToString();
+                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"] != "")
+                                dataRow["PCRTestResult"] += "\n" + middRow["TestingItemName"] + " " + middRow["PCRTestResult"];
+                            else
+                                dataRow["PCRTestResult"] += "\n ";
                             dataRow["HBV"] += "\n" + middRow["HBV"];
                             dataRow["HBVIC"] += "\n" + middRow["HBVIC"];
                             dataRow["HCV"] += "\n" + middRow["HCV"];
@@ -699,6 +724,8 @@ namespace WanTai.Controller.PCR
                             dataRow["HIVIC"] += "\n" + middRow["HIVIC"];
 
                         }
+                        dataRow["TubeBarCode"] = formatTwoColumns(dataRow["tubeBarCode"].ToString());
+                        dataRow["TubePosition"] = formatTwoColumns(dataRow["TubePosition"].ToString());
                         listIndex++;
                     }
                     dataIndex++;
@@ -730,6 +757,27 @@ namespace WanTai.Controller.PCR
            // }
         }
 
+        public string formatTwoColumns(string originString) {
+            string newString = "";
+            int occurTimes = 0;
+            for (int i = 0; i < originString.Length; i++)
+            {
+                if (originString[i] == '\n')
+                {
+                    occurTimes += 1;
+                    if (occurTimes % 2 == 1) {
+                        newString += "  ";
+                    } else {
+                        newString += '\n';
+                    }
+                }
+                else
+                {
+                    newString += originString[i];
+                }
+            }
+            return newString;
+        }
 
         public string ChangePositionNumberToCharacter(int positionNumber)
         {
@@ -989,7 +1037,7 @@ namespace WanTai.Controller.PCR
                         dt.Columns.Add("样本位置");
                         dt.Columns.Add("检测方式");
                         dt.Columns.Add("检测项目");
-                        dt.Columns.Add("PCR板条码");
+                        // dt.Columns.Add("PCR板条码");
                         dt.Columns.Add("PCR孔位");
                         dt.Columns.Add("HBV");
                         dt.Columns.Add("HBVIC");
@@ -1013,7 +1061,7 @@ namespace WanTai.Controller.PCR
                             dr["样本位置"] = row["TubePosition"].ToString();
                             dr["检测方式"] = row["PoolingRuleName"].ToString();
                             dr["检测项目"] = row["TestingItemName"].ToString();
-                            dr["PCR板条码"] = row["PCRPlateBarCode"].ToString();
+                            // dr["PCR板条码"] = row["PCRPlateBarCode"].ToString();
                             dr["PCR孔位"] = row["PCRPosition"].ToString();
                             dr["HBV"] = row["HBV"].ToString().Replace("Undetermined", "No Ct");
                             dr["HBVIC"] = row["HBVIC"].ToString().Replace("Undetermined", "No Ct");
@@ -1046,15 +1094,15 @@ namespace WanTai.Controller.PCR
                             pcrController.QueryTubesPCRTestResult(experimentId, rotation.RotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage);
 
                             string createTableSql = "create table [" + rotation.RotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] nvarchar,[样本位置] nvarchar,"
-                                + "[检测方式] nvarchar,[检测项目] nvarchar,[PCR板条码] nvarchar,[PCR孔位] nvarchar,[HBV] nvarchar,[HBVIC] nvarchar,[HCV] nvarchar,[HCVIC] nvarchar,[HIV] nvarchar,[HIVIC] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
+                                + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV] nvarchar,[HBVIC] nvarchar,[HCV] nvarchar,[HCVIC] nvarchar,[HIV] nvarchar,[HIVIC] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
                             command.CommandText = createTableSql;
                             command.ExecuteNonQuery();
 
                             string insertSql = string.Empty;
                             foreach (DataRow row in _pcrTable.Rows)
                             {
-                                insertSql = string.Format("Insert into [" + rotation.RotationName + "] (序号,类型,样本名称,样本条码,样本位置,检测方式,检测项目,PCR板条码,PCR孔位,HBV,HBVIC,HCV,HCVIC,HIV,HIVIC,检测结果,实验记录) "
-                                    + "values({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}', '{11}','{12}','{13}','{14}','{15}','{16}')",
+                                insertSql = string.Format("Insert into [" + rotation.RotationName + "] (序号,类型,样本名称,样本条码,样本位置,检测方式,检测项目,PCR孔位,HBV,HBVIC,HCV,HCVIC,HIV,HIVIC,检测结果,实验记录) "
+                                    + "values({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}', '{11}','{12}','{13}','{14}','{15}')",
                                         (int)row["Number"],
                                         row["TubeTypeName"].ToString(),
                                         row["PCRName"].ToString(),
@@ -1062,7 +1110,6 @@ namespace WanTai.Controller.PCR
                                         row["TubePosition"].ToString(),
                                         row["PoolingRuleName"].ToString(),
                                         row["TestingItemName"].ToString(),
-                                        row["PCRPlateBarCode"].ToString(),
                                         row["PCRPosition"].ToString(),
                                         row["HBV"].ToString(),
                                         row["HBVIC"].ToString(),
@@ -1209,7 +1256,7 @@ namespace WanTai.Controller.PCR
                 //根据数据表内容创建一个PDF格式的表
                 PdfPTable table = new PdfPTable(ds.Tables[k].Columns.Count - 1);
                 table.WidthPercentage = 100f;
-                table.SetTotalWidth(new float[] { 3, 10, 8, 15, 12, 8, 6, 12, 6, 6, 6, 6, 6, 6, 6, 20, 30 });
+                table.SetTotalWidth(new float[] { 3, 10, 8, 15, 12, 8, 6, 16, 6, 6, 6, 6, 6, 6, 20, 30 });
                 // 添加表头，每一页都有表头
                 for (int j = 0; j < ds.Tables[k].Columns.Count - 1; j++)
                 {

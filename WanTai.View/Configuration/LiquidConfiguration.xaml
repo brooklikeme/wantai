@@ -48,5 +48,6 @@
             <Button Content="删除" Height="23" Name="delete_Button" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Width="75" Margin="15,0,0,0" Click="delete_Button_Click" />
             <Button Content="取消" Height="23" Name="cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Margin="15,0,0,0" Click="cancel_Click" />
         </StackPanel>
+        <CheckBox x:Name="chb_batchB" Content="二次上样" Grid.Column="2" HorizontalAlignment="Left" Margin="21.073,8.686,0,0" Grid.Row="2" VerticalAlignment="Top" Checked="CheckBox_Checked" Visibility="Hidden" Unchecked="chb_batchB_Unchecked"/>
     </Grid>
 </Window>

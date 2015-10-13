@@ -107,7 +107,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="PCR板条码" Width="60" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                <DataGridTextColumn Header="PCR板条码" Width="60" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" Visibility="Hidden">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -115,7 +115,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="PCR孔位" Width="45" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                <DataGridTextColumn Header="PCR孔位" Width="100" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />

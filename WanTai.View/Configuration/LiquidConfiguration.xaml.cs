@@ -24,6 +24,7 @@ namespace WanTai.View.Configuration
     /// </summary>
     public partial class LiquidConfiguration : Window
     {
+        bool batchB = false;
         LiquidConfigurationController controller = new LiquidConfigurationController();
         System.Data.DataTable dTable = new System.Data.DataTable();
         public LiquidConfiguration()
@@ -51,6 +52,7 @@ namespace WanTai.View.Configuration
             else if (SessionInfo.WorkDeskType == "150")
             {
                 range = 19;
+                chb_batchB.Visibility = Visibility.Visible;
             }
             else if (SessionInfo.WorkDeskType == "200")
             {
@@ -131,7 +133,7 @@ namespace WanTai.View.Configuration
                     volumeUnitlabel.Visibility = Visibility.Hidden;
                 }
 
-                List<SystemFluidConfiguration> configRecords = controller.GetLiquidConfigurationByTypeId(type.TypeId);
+                List<SystemFluidConfiguration> configRecords = controller.GetLiquidConfigurationByTypeId(type.TypeId, batchB);
                 if (configRecords != null && configRecords.Count > 0)
                 {
                     foreach (SystemFluidConfiguration config in configRecords)
@@ -155,7 +157,30 @@ namespace WanTai.View.Configuration
 
         private void SetRecordsBackGround()
         {
-            List<SystemFluidConfiguration> configRecords = controller.GetAllLiquidConfiguration();
+            // clear records background
+            int range = 6;
+
+            if (SessionInfo.WorkDeskType == "100")
+            {
+                range = 7;
+            }
+            else if (SessionInfo.WorkDeskType == "150")
+            {
+                range = 19;
+                chb_batchB.Visibility = Visibility.Visible;
+            }
+            else if (SessionInfo.WorkDeskType == "200")
+            {
+                range = 37;
+            }
+            for (int i = 1; i < range; i++)
+            {
+                for (int j = 0; j < 16; j++)
+                {
+                    dTable.Rows[j]["type" + i] = "";
+                }
+            }
+            List<SystemFluidConfiguration> configRecords = controller.GetAllLiquidConfiguration(batchB);
             if (configRecords != null && configRecords.Count > 0)
             {
                 foreach (SystemFluidConfiguration config in configRecords)
@@ -200,6 +225,8 @@ namespace WanTai.View.Configuration
                 liquidConfiguration.ItemID = WanTaiObjectService.NewSequentialGuid();
                 liquidConfiguration.Position = rowIndex;
                 liquidConfiguration.Grid = columnIndex;
+                if (batchB)
+                    liquidConfiguration.BatchType = "B";
                 liquidConfiguration.ItemType = ((LiquidType)selectedItem.DataContext).TypeId;
                 if(volume_TextBox.IsVisible)
                 {
@@ -231,7 +258,7 @@ namespace WanTai.View.Configuration
             LiquidType type = (LiquidType)selectedItem.DataContext;
             if (type != null)
             {
-                bool result = controller.Delete(type.TypeId);
+                bool result = controller.Delete(type.TypeId, batchB);
                 WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "删除：" + ((LiquidType)selectedItem.DataContext).TypeName + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), null);            
              
                 if (result)
@@ -264,6 +291,8 @@ namespace WanTai.View.Configuration
                 liquidConfiguration.Position = rowIndex;
                 liquidConfiguration.Grid = columnIndex;
                 liquidConfiguration.ItemType = typeId;
+                if (batchB)
+                    liquidConfiguration.BatchType = "B";
                 if (volume_TextBox.IsVisible)
                 {
                     liquidConfiguration.Volume = double.Parse(volume_TextBox.Text);
@@ -272,7 +301,7 @@ namespace WanTai.View.Configuration
                 recordList.Add(liquidConfiguration);                
             }
 
-            bool result = controller.EditByTypeId(recordList, typeId);
+            bool result = controller.EditByTypeId(recordList, typeId, batchB);
             WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "修改：" + ((LiquidType)selectedItem.DataContext).TypeName + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), null);            
                     
             if (result)
@@ -337,7 +366,55 @@ namespace WanTai.View.Configuration
                 }
             } 
 
+            // 100 的不能中间有空闲
+            /*
+            if (SessionInfo.WorkDeskType == "100")
+            {
+                int maxCol = 0;
+                int maxRow = 0;
+                int minEmptyCol = -1;
+                int minEmptyRow = -1;
+                for (int i = 1; i < 7; i++)
+                {
+                    for (int j = 0; j < 16; j++)
+                    {
+                        if (dTable.Rows[j]["type" + i] != null && dTable.Rows[j]["type" + i].ToString() != "")
+                        {
+                            maxCol = i - 1;
+                            maxRow = j;
+                        }
+                        else
+                        {
+                            if (minEmptyCol == -1 && minEmptyRow == -1) {
+                                minEmptyCol = i - 1;
+                                minEmptyRow = j;
+                            }
+                        }
+                    }
+                }
+                if (minEmptyCol <= maxCol && minEmptyRow <= maxRow)
+                {
+                    MessageBox.Show("必须配置连续的采血管区域", "系统提示");
+                    return false;
+                }
+            }
+              */
+
             return true;
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            batchB = true;
+            if (liquidType_comboBox.SelectedItem != null)
+                liquidType_comboBox_SelectionChanged(null, null);
+        }
+
+        private void chb_batchB_Unchecked(object sender, RoutedEventArgs e)
+        {
+            batchB = false;
+            if (liquidType_comboBox.SelectedItem != null)
+                liquidType_comboBox_SelectionChanged(null, null);
         }
     }
 }

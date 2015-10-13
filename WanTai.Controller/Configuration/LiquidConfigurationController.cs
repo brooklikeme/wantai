@@ -30,15 +30,23 @@ namespace WanTai.Controller.Configuration
             }
         }
 
-        public List<SystemFluidConfiguration> GetLiquidConfigurationByTypeId(short typeId)
+        public List<SystemFluidConfiguration> GetLiquidConfigurationByTypeId(short typeId, bool batchB)
         {
             List<SystemFluidConfiguration> recordList = null;
             try
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId);
-                    recordList = records.ToList<SystemFluidConfiguration>();                    
+                    if (batchB)
+                    {
+                        var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId && p.BatchType == "B");
+                        recordList = records.ToList<SystemFluidConfiguration>();
+                    }
+                    else
+                    {
+                        var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId && p.BatchType == null);
+                        recordList = records.ToList<SystemFluidConfiguration>();
+                    }               
                 }
             }
             catch(Exception e)
@@ -50,15 +58,23 @@ namespace WanTai.Controller.Configuration
             return recordList;
         }
 
-        public List<SystemFluidConfiguration> GetAllLiquidConfiguration()
+        public List<SystemFluidConfiguration> GetAllLiquidConfiguration(bool batchB)
         {
             List<SystemFluidConfiguration> recordList = null;
             try
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.SystemFluidConfigurations;
-                    recordList = records.ToList<SystemFluidConfiguration>();
+                    if (batchB)
+                    {
+                        var records = entities.SystemFluidConfigurations.Where(p => p.BatchType == "B");
+                        recordList = records.ToList<SystemFluidConfiguration>();
+                    }
+                    else
+                    {
+                        var records = entities.SystemFluidConfigurations.Where(p => p.BatchType == null);
+                        recordList = records.ToList<SystemFluidConfiguration>();
+                    }
                 }
             }
             catch(Exception e)
@@ -70,16 +86,27 @@ namespace WanTai.Controller.Configuration
             return recordList;
         }
 
-        public bool Delete(short typeId)
+        public bool Delete(short typeId, bool batchB)
         {
             try
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId);
-                    foreach(SystemFluidConfiguration record in records)
+                    if (batchB)
                     {
-                        entities.DeleteObject(record);
+                        var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId && p.BatchType == "B");
+                        foreach (SystemFluidConfiguration record in records)
+                        {
+                            entities.DeleteObject(record);
+                        }
+                    }
+                    else
+                    {
+                        var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId && p.BatchType == null);
+                        foreach (SystemFluidConfiguration record in records)
+                        {
+                            entities.DeleteObject(record);
+                        }
                     }                    
 
                     entities.SaveChanges();
@@ -94,16 +121,27 @@ namespace WanTai.Controller.Configuration
             }
         }
 
-        public bool EditByTypeId(List<SystemFluidConfiguration> recordList, short typeId)
+        public bool EditByTypeId(List<SystemFluidConfiguration> recordList, short typeId, bool batchB)
         {
             try
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId);
-                    foreach (SystemFluidConfiguration record in records)
+                    if (batchB)
                     {
-                        entities.DeleteObject(record);
+                        var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId && p.BatchType == "B");
+                        foreach (SystemFluidConfiguration record in records)
+                        {
+                            entities.DeleteObject(record);
+                        }
+                    }
+                    else
+                    {
+                        var records = entities.SystemFluidConfigurations.Where(p => p.ItemType == typeId && p.BatchType == null);
+                        foreach (SystemFluidConfiguration record in records)
+                        {
+                            entities.DeleteObject(record);
+                        }
                     }
 
                     foreach (SystemFluidConfiguration record in recordList)

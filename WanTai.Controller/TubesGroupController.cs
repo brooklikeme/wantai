@@ -157,9 +157,9 @@ namespace WanTai.Controller
                             }
                             else
                             {
-                                // 100的台面每个检测项都需要建立阴阳对照物分组，且分组为6项（阴阳参照物+4个定量参考品）
+                                // 100的台面每个检测项都需要建立阴阳对照物分组（阴阳参照物+?个定量参考品）
                                 int npGroupStartIndex = 1;
-                                int npGroupEndIndex = 6;
+                                int npGroupEndIndex = SessionInfo.LiquidCfgCount;
                                 foreach (Guid testingItemID in SessionInfo.TestingItemIDs)
                                 {
                                     if (DelTubesBatch.TestingItem.ContainsKey(testingItemID) && (DelTubesBatch.TestingItem[testingItemID] > 0))
@@ -174,13 +174,13 @@ namespace WanTai.Controller
                                         npTubeGroup.TubesBatchID = _TubesBatch.TubesBatchID;
                                         npTubeGroup.TubesGroupName = npGroupStartIndex + "," + npGroupEndIndex;
                                         npTubeGroupList.Add(npTubeGroup);
-                                        TotalTestingItem += 6;
-                                        Total100NPItem += 6;
+                                        TotalTestingItem += SessionInfo.LiquidCfgCount;
+                                        Total100NPItem += SessionInfo.LiquidCfgCount;
                                         TotalTestingItem += DelTubesBatch.TestingItem[testingItemID];
                                         _WanTaiEntities.AddToTubeGroups(npTubeGroup);
                                     }
-                                    npGroupStartIndex += 6;
-                                    npGroupEndIndex += 6;
+                                    npGroupStartIndex += SessionInfo.LiquidCfgCount;
+                                    npGroupEndIndex += SessionInfo.LiquidCfgCount;
                                 }
                             }
 
@@ -241,7 +241,7 @@ namespace WanTai.Controller
                                             tube.TubeGroupID = _tubeGroup.TubeGroupID;
                                             tubeTestingItemID = _tubeGroup.TestingItemConfigurations.FirstOrDefault().TestingItemID;
                                             ignore100NpTube = false;
-                                            DW100PlatePostion = _tubeGroupIndex * 6 + (posIndex - npGroupStartIndex) + 1;
+                                            DW100PlatePostion = _tubeGroupIndex * SessionInfo.LiquidCfgCount + (posIndex - npGroupStartIndex) + 1;
                                             break;
                                         }
                                         _tubeGroupIndex++;
@@ -356,8 +356,8 @@ namespace WanTai.Controller
                             //_WanTaiEntities.SaveChanges();
                             #region 保存阴阳对照物PCR Worklist(2011-11-22)
                             // 150 A轮不保存PCR worklist，B轮统一保存 ????
-                            // 100的每个检测项目包括6项
-                            int npNumber = workDeskType != "100" ? 2 : 6;
+                            // 100的每个检测项目包括?项
+                            int npNumber = workDeskType != "100" ? 2 : SessionInfo.LiquidCfgCount;
                             Dictionary<string, int> PoolCountOfTestItem = new Dictionary<string, int>();
                             List<TestingItemConfiguration> TestingItemList = _WanTaiEntities.TestingItemConfigurations.OrderBy(TestintItem => TestintItem.DisplaySequence).ToList();
                             int PCRPosition = 1;
