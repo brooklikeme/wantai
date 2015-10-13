@@ -262,6 +262,9 @@
     <Compile Include="TubesScanParameter.xaml.cs">
       <DependentUpon>TubesScanParameter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TubesView150S.xaml.cs">
+      <DependentUpon>TubesView150S.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TubesView200.xaml.cs">
       <DependentUpon>TubesView200.xaml</DependentUpon>
     </Compile>
@@ -500,6 +503,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TubesScanParameter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubesView150S.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
