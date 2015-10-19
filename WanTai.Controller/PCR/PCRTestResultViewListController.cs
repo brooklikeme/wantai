@@ -17,6 +17,10 @@ using iTextSharp.text;
 using System.IO;
 using iTextSharp.text.pdf;
 
+using NPOI.HSSF.Model; // InternalWorkbook
+using NPOI.HSSF.UserModel; // HSSFWorkbook, HSSFSheet
+
+
 namespace WanTai.Controller.PCR
 {
     public class PCRTestResultViewListController
@@ -702,7 +706,7 @@ namespace WanTai.Controller.PCR
                         {
                             dataRow.ItemArray = middRow.ItemArray;
                             dataRow["Number"] = dataIndex;
-                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"] != "")
+                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"].ToString() != "")
                                 dataRow["PCRTestResult"] = middRow["TestingItemName"] + " " + dataRow["PCRTestResult"];
                             else
                                 dataRow["PCRTestResult"] = " ";
@@ -712,7 +716,7 @@ namespace WanTai.Controller.PCR
                         {
                             dataRow["TestingItemName"] += "\n" + middRow["TestingItemName"];
                             dataRow["PCRPosition"] += "\n" + middRow["PCRPosition"].ToString();
-                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"] != "")
+                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"].ToString() != "")
                                 dataRow["PCRTestResult"] += "\n" + middRow["TestingItemName"] + " " + middRow["PCRTestResult"];
                             else
                                 dataRow["PCRTestResult"] += "\n ";
@@ -722,12 +726,24 @@ namespace WanTai.Controller.PCR
                             dataRow["HCVIC"] += "\n" + middRow["HCVIC"];
                             dataRow["HIV"] += "\n" + middRow["HIV"];
                             dataRow["HIVIC"] += "\n" + middRow["HIVIC"];
-
+                            // check color
+                            if (!string.IsNullOrEmpty(middRow["SimpleTrackingResult"].ToString()))
+                            {
+                                dataRow["Color"] = WantagColor.WantagYellow; 
+                            }
+                            else if (middRow["Result"].ToString().Contains(PCRTest.PositiveResult))
+                            {
+                                dataRow["Color"] = WantagColor.WantagRed;
+                            }
+                            else if (middRow["Result"].ToString() == PCRTest.InvalidResult || middRow["Result"].ToString() == PCRTest.NoResult)
+                            {
+                                dataRow["Color"] = WantagColor.WantagYellow;
+                            }
                         }
-                        dataRow["TubeBarCode"] = formatTwoColumns(dataRow["tubeBarCode"].ToString());
-                        dataRow["TubePosition"] = formatTwoColumns(dataRow["TubePosition"].ToString());
                         listIndex++;
                     }
+                    dataRow["TubeBarCode"] = formatTwoColumns(dataRow["tubeBarCode"].ToString());
+                    dataRow["TubePosition"] = formatTwoColumns(dataRow["TubePosition"].ToString());
                     dataIndex++;
                 }
                 /*
@@ -967,6 +983,120 @@ namespace WanTai.Controller.PCR
             }
         }
 
+        private bool postProcessExcelFile(ExperimentsInfo expInfo, string fileName, Dictionary<Guid, bool> PCRTestResultDict)
+        {
+            HSSFWorkbook old_workbook, new_workbook;
+            HSSFSheet old_sheet = null, new_sheet;
+            string PCRTimeString = "";
+            string PCRDeviceString = "";
+            string PCRBarCodeString = "";
+
+            // 复制新文件
+            ConfigRotationController rotationController = new ConfigRotationController();
+
+            // remove readonly attribute
+            // File.SetAttributes(fileName, FileAttributes.Normal);
+
+            // get sheets list from xls
+            using (var old_fs = new FileStream(fileName + ".pre.xls", FileMode.Open, FileAccess.Read))
+            {
+                var new_fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite);
+
+                old_workbook = new HSSFWorkbook(old_fs);
+                new_workbook = new HSSFWorkbook();
+
+                List<RotationInfo> rotationList = rotationController.GetCurrentRotationInfos(expInfo.ExperimentID);
+                foreach (RotationInfo rotationInfo in rotationList)
+                {
+                    for (int i = 0; i < old_workbook.Count; i++)
+                    {
+                        if (old_workbook.GetSheetAt(i).SheetName.Contains(rotationInfo.RotationName))
+                        {
+                            old_sheet = (HSSFSheet)old_workbook.GetSheetAt(i);
+                            break;
+                        }
+                    }
+
+                    if (null == old_sheet)
+                        return false;
+
+                    new_sheet = (HSSFSheet)new_workbook.CreateSheet(rotationInfo.RotationName);
+                    HSSFRow row = (HSSFRow)new_sheet.CreateRow(0);
+                    row.CreateCell(0).SetCellValue("实验名称");
+                    row.CreateCell(1).SetCellValue(expInfo.ExperimentName);
+                    row.CreateCell(2).SetCellValue("操作员");
+                    row.CreateCell(3).SetCellValue(expInfo.LoginName);
+                    row = (HSSFRow)new_sheet.CreateRow(1);
+                    row.CreateCell(0).SetCellValue("样本数量");
+                    row.CreateCell(1).SetCellValue(GetSampleNumber(expInfo.ExperimentID));
+                    row.CreateCell(2).SetCellValue("实验时间");
+                    row.CreateCell(3).SetCellValue(expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss"));
+                    List<Plate> plateList = GetPCRPlateList(rotationInfo.RotationID, expInfo.ExperimentID);
+                    if (plateList != null && plateList.Count > 0)
+                    {
+                        foreach (Plate plate in plateList)
+                        {
+                            PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : ", " + plate.BarCode;
+                            XmlDocument xdoc = new XmlDocument();
+                            if (null != plate.PCRContent)
+                            {
+                                xdoc.LoadXml(plate.PCRContent);
+                                XmlNode node = xdoc.SelectSingleNode("PCRContent");
+                                PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
+                                string timeString = node.SelectSingleNode("PCRStartTime").InnerText + "--" + node.SelectSingleNode("PCREndTime").InnerText;
+                                PCRTimeString += PCRTimeString == "" ? timeString : ", " + timeString;
+                            }
+                        }
+                    }
+                    row = (HSSFRow)new_sheet.CreateRow(2);
+                    row.CreateCell(0).SetCellValue(rotationInfo.RotationName);
+                    row.CreateCell(1).SetCellValue("");
+                    row.CreateCell(2).SetCellValue("扩增时间");
+                    row.CreateCell(3).SetCellValue(PCRTimeString);
+                    row = (HSSFRow)new_sheet.CreateRow(3);
+                    row.CreateCell(0).SetCellValue("PCR仪");
+                    row.CreateCell(1).SetCellValue(PCRDeviceString);
+                    row.CreateCell(2).SetCellValue("PCR条码");
+                    row.CreateCell(3).SetCellValue(PCRBarCodeString);
+                    row = (HSSFRow)new_sheet.CreateRow(4);
+                    if (PCRTestResultDict.ContainsKey(rotationInfo.RotationID) && PCRTestResultDict[rotationInfo.RotationID] == false)
+                    {
+                        row.CreateCell(0).SetCellValue("QC: 质控品结果不符合标准，实验无效");
+                    }
+                    else
+                    {
+                        row.CreateCell(0).SetCellValue("");
+                    }
+                    // create data
+                    for (int i = 0; i <= old_sheet.LastRowNum; i++)
+                    {
+                        row = (HSSFRow)new_sheet.CreateRow(i + 5);
+                        for (int j = old_sheet.GetRow(i).FirstCellNum; j < old_sheet.GetRow(i).LastCellNum; j++)
+                        {
+                             
+                            string cellValue = old_sheet.GetRow(i).GetCell(j) != null ? old_sheet.GetRow(i).GetCell(j).ToString() : "";
+                            cellValue = cellValue.Replace("HBV_Ct", "HBV(Ct)");
+                            cellValue = cellValue.Replace("HBVIC_Ct", "HBVIC(Ct)");
+                            cellValue = cellValue.Replace("HCV_Ct", "HCV(Ct)");
+                            cellValue = cellValue.Replace("HCVIC_Ct", "HCVIC(Ct)");
+                            cellValue = cellValue.Replace("HIV_Ct", "HIV(Ct)");
+                            cellValue = cellValue.Replace("HIVIC_Ct", "HIVIC(Ct)");
+                            row.CreateCell(j).SetCellValue(cellValue);
+                        }
+                    }
+                }
+
+                old_fs.Close();
+                File.Delete(fileName + ".pre.xls");
+
+                
+                new_workbook.Write(new_fs);
+                new_fs.Close();
+
+            }
+            return true;
+        }
+
         public bool SaveExcelFile(string fileName, Guid experimentId)
         {
             try
@@ -1014,6 +1144,8 @@ namespace WanTai.Controller.PCR
                 //string fileName = folderPath + "\\" + experimentName + "_" + DateTime.Now.ToString("yyyyMMdd") + ".xls";
                 if (System.IO.File.Exists(fileName))
                     System.IO.File.Delete(fileName);
+                if (System.IO.File.Exists(fileName + ".pre.xls"))
+                    System.IO.File.Delete(fileName + ".pre.xls");
 
                 WanTai.Controller.PCR.PCRTestResultViewListController pcrController = new WanTai.Controller.PCR.PCRTestResultViewListController();
 
@@ -1039,12 +1171,12 @@ namespace WanTai.Controller.PCR
                         dt.Columns.Add("检测项目");
                         // dt.Columns.Add("PCR板条码");
                         dt.Columns.Add("PCR孔位");
-                        dt.Columns.Add("HBV");
-                        dt.Columns.Add("HBVIC");
-                        dt.Columns.Add("HCV");
-                        dt.Columns.Add("HCVIC");
-                        dt.Columns.Add("HIV");
-                        dt.Columns.Add("HIVIC");
+                        dt.Columns.Add("HBV(Ct)");
+                        dt.Columns.Add("HBVIC(Ct)");
+                        dt.Columns.Add("HCV(Ct)");
+                        dt.Columns.Add("HCVIC(Ct)");
+                        dt.Columns.Add("HIV(Ct)");
+                        dt.Columns.Add("HIVIC(Ct)");
                         dt.Columns.Add("检测结果");
                         dt.Columns.Add("实验记录");
                         dt.Columns.Add("Color");
@@ -1063,12 +1195,12 @@ namespace WanTai.Controller.PCR
                             dr["检测项目"] = row["TestingItemName"].ToString();
                             // dr["PCR板条码"] = row["PCRPlateBarCode"].ToString();
                             dr["PCR孔位"] = row["PCRPosition"].ToString();
-                            dr["HBV"] = row["HBV"].ToString().Replace("Undetermined", "No Ct");
-                            dr["HBVIC"] = row["HBVIC"].ToString().Replace("Undetermined", "No Ct");
-                            dr["HCV"] = row["HCV"].ToString().Replace("Undetermined", "No Ct");
-                            dr["HCVIC"] = row["HCVIC"].ToString().Replace("Undetermined", "No Ct");
-                            dr["HIV"] = row["HIV"].ToString().Replace("Undetermined", "No Ct");
-                            dr["HIVIC"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
+                            dr["HBV(Ct)"] = row["HBV"].ToString().Replace("Undetermined", "No Ct");
+                            dr["HBVIC(Ct)"] = row["HBVIC"].ToString().Replace("Undetermined", "No Ct");
+                            dr["HCV(Ct)"] = row["HCV"].ToString().Replace("Undetermined", "No Ct");
+                            dr["HCVIC(Ct)"] = row["HCVIC"].ToString().Replace("Undetermined", "No Ct");
+                            dr["HIV(Ct)"] = row["HIV"].ToString().Replace("Undetermined", "No Ct");
+                            dr["HIVIC(Ct)"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
                             dr["检测结果"] = row["PCRTestResult"].ToString();
                             dr["实验记录"] = row["SimpleTrackingResult"].ToString();
                             dr["Color"] = row["Color"];
@@ -1081,8 +1213,8 @@ namespace WanTai.Controller.PCR
                 }
                 else if (extension.Equals(".xls"))
                 {
-
-                    using (OleDbConnection connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName + ";Extended Properties=\"Excel 8.0;HDR=YES;\""))
+                    Dictionary<Guid, bool> PCRTestResultDict = new Dictionary<Guid, bool>();
+                    using (OleDbConnection connection = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + fileName + ".pre.xls;Extended Properties=\"Excel 8.0;HDR=YES;\""))
                     {
                         connection.Open();
                         OleDbCommand command = new OleDbCommand();
@@ -1094,16 +1226,22 @@ namespace WanTai.Controller.PCR
                             pcrController.QueryTubesPCRTestResult(experimentId, rotation.RotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage);
 
                             string createTableSql = "create table [" + rotation.RotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] nvarchar,[样本位置] nvarchar,"
-                                + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV] nvarchar,[HBVIC] nvarchar,[HCV] nvarchar,[HCVIC] nvarchar,[HIV] nvarchar,[HIVIC] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
+                                + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV_Ct] nvarchar,[HBVIC_Ct] nvarchar,[HCV_Ct] nvarchar,[HCVIC_Ct] nvarchar,[HIV_Ct] nvarchar,[HIVIC_Ct] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
                             command.CommandText = createTableSql;
                             command.ExecuteNonQuery();
 
                             string insertSql = string.Empty;
+                            bool PCRTestOK = true;
                             foreach (DataRow row in _pcrTable.Rows)
                             {
-                                insertSql = string.Format("Insert into [" + rotation.RotationName + "] (序号,类型,样本名称,样本条码,样本位置,检测方式,检测项目,PCR孔位,HBV,HBVIC,HCV,HCVIC,HIV,HIVIC,检测结果,实验记录) "
+                                if ((row["Number"].ToString() == "1" && row["PCRTestResult"].ToString().Contains("重新测定"))
+                                    || (row["Number"].ToString() == "2" && row["PCRTestResult"].ToString().Contains("重新测定")))
+                                {
+                                    PCRTestOK = false;
+                                }
+                                insertSql = string.Format("Insert into [" + rotation.RotationName + "] (序号,类型,样本名称,样本条码,样本位置,检测方式,检测项目,PCR孔位,HBV_Ct,HBVIC_Ct,HCV_Ct,HCVIC_Ct,HIV_Ct,HIVIC_Ct,检测结果,实验记录) "
                                     + "values({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}', '{11}','{12}','{13}','{14}','{15}')",
-                                        (int)row["Number"],
+                                        row["Number"].ToString(),
                                         row["TubeTypeName"].ToString(),
                                         row["PCRName"].ToString(),
                                         row["TubeBarCode"].ToString(),
@@ -1122,10 +1260,12 @@ namespace WanTai.Controller.PCR
                                 command.CommandText = insertSql;
                                 command.ExecuteNonQuery();
                             }
+                            PCRTestResultDict.Add(rotation.RotationID, PCRTestOK);
                         }
 
                         connection.Close();
                     }
+                    return postProcessExcelFile(expInfo, fileName, PCRTestResultDict);
                 }
 
                 return true;
@@ -1179,7 +1319,7 @@ namespace WanTai.Controller.PCR
 
             DateTime dTime = DateTime.Now;
 
-            HeaderFooter footer = new HeaderFooter(new Phrase("导出时间：" + dTime.ToString("yyyy/MM/dd HH:mm:ss") + "    页数: "), true);
+            iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("导出时间：" + dTime.ToString("yyyy/MM/dd HH:mm:ss") + "    页数: "), true);
             footer.Border = Rectangle.NO_BORDER;
             footer.Alignment = Element.ALIGN_RIGHT;
             document.Footer = footer;
@@ -1256,59 +1396,26 @@ namespace WanTai.Controller.PCR
                 //根据数据表内容创建一个PDF格式的表
                 PdfPTable table = new PdfPTable(ds.Tables[k].Columns.Count - 1);
                 table.WidthPercentage = 100f;
-                table.SetTotalWidth(new float[] { 3, 10, 8, 15, 12, 8, 6, 16, 6, 6, 6, 6, 6, 6, 20, 30 });
+                table.SetTotalWidth(new float[] { 3, 7, 8, 15, 17, 6, 6, 16, 6, 6, 6, 6, 6, 6, 20, 30 });
                 // 添加表头，每一页都有表头
                 for (int j = 0; j < ds.Tables[k].Columns.Count - 1; j++)
                 {
                     string cellName = ds.Tables[k].Columns[j].ColumnName;
                     cellName = cellName.Replace("BarCode", "条码").Replace("Position", "孔位");
-                    if (cellName == "HBV" || cellName == "HBVIC" || cellName == "HCV"
-                        || cellName == "HCVIC" || cellName == "HIV" || cellName == "HIVIC")
-                    {
-                        continue;
-                    }
                     PdfPCell cell = new PdfPCell(new Phrase(cellName, font));
 
                     // cell.UseAscender = true;
-                    cell.FixedHeight = 30;
+                    cell.FixedHeight = 20;
                     cell.VerticalAlignment = Element.ALIGN_MIDDLE;
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell.BackgroundColor = new Color(220, 220, 220);
-                    cell.Rowspan = 2;
 
                     table.AddCell(cell);
-
-                    if (cellName == "PCR孔位")
-                    {
-                        cell = new PdfPCell(new Phrase("结果数据（Ct）", font));
-
-                        // cell.UseAscender = true;
-                        cell.FixedHeight = 15;
-                        cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                        cell.BackgroundColor = new Color(220, 220, 220);
-
-                        cell.Colspan = 6;
-                        table.AddCell(cell);
-                    }
                 }
                 for (int j = 0; j < ds.Tables[k].Columns.Count - 1; j++)
                 {
                     string cellName = ds.Tables[k].Columns[j].ColumnName;
                     cellName = cellName.Replace("BarCode", "条码").Replace("Position", "孔位");
-                    if (cellName == "HBV" || cellName == "HBVIC" || cellName == "HCV"
-                        || cellName == "HCVIC" || cellName == "HIV" || cellName == "HIVIC")
-                    {
-                        PdfPCell cell = new PdfPCell(new Phrase(cellName, font));
-
-                        // cell.UseAscender = true;
-                        cell.FixedHeight = 15;
-                        cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                        cell.BackgroundColor = new Color(220, 220, 220);
-
-                        table.AddCell(cell);
-                    }
                 }
 
 

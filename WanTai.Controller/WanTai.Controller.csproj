@@ -65,6 +65,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\WanTai.Common\lib\LumenWorks.Framework.IO.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\WanTai.Common\lib\NPOI.dll</HintPath>
+    </Reference>
     <Reference Include="PluginInterface">
       <HintPath>..\WanTai.Common\lib\PluginInterface.dll</HintPath>
     </Reference>
