@@ -29,6 +29,7 @@ namespace WanTai.Common
         protected static string KingFisherScriptName = "KingFisherScriptName";
         protected static string PlatesBarCodes = "PlatesBarCodes";
         protected static string ScanTubesColumnNumberFileName = "ScanTubesColumnNumberFileName";
+        protected static string AddSampleTimesFileName = "AddSampleTimesFileName";
         protected static string TecanRestorationScriptName = "TecanRestorationScriptName";
         protected static string NextTurnStepScriptName = "NextTurnStepScriptName";
 
@@ -45,6 +46,10 @@ namespace WanTai.Common
         public static string GetScanTubesColumnNumberFileName()
         {
             return ConfigurationManager.AppSettings[ScanTubesColumnNumberFileName];
+        }
+        public static string GetAddSampleTimesFileName()
+        {
+            return ConfigurationManager.AppSettings[AddSampleTimesFileName];
         }
         public static string GetPlatesBarCodesFile()
         {

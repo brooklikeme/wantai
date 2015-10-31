@@ -216,17 +216,17 @@
                     <Button Content="扫描"  Height="30" Name="btn_scan" Width="80" Click="btn_scan_Click" />
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch" Grid.ColumnSpan="2"  >
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Stretch" Grid.ColumnSpan="2" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0">
                     <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail" Width="120" Margin="0,0,0,0" Click="btn_detail_Click" />
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <Button Content="分组"   Height="30" IsEnabled="False" Name="btn_Group" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Silver" BorderThickness="0,1" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.Column="1"  >
+            <Border BorderBrush="Silver" BorderThickness="0,1" Grid.Row="3" VerticalAlignment="Stretch" Grid.ColumnSpan="2" Grid.Column="1" >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save" Width="100" Margin="0" Click="btn_Save_Click" />
                 </StackPanel>
@@ -235,7 +235,6 @@
             <Border BorderBrush="Silver" BorderThickness="0,1" Grid.Column="3" Grid.Row="3" VerticalAlignment="Stretch" Margin="0"  >
                 <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" HorizontalAlignment="Left" />
             </Border>
-            
 
         </Grid>
        

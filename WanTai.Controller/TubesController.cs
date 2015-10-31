@@ -486,5 +486,19 @@ namespace WanTai.Controller
             }
             return false;
         }
+
+
+        public bool AddSampleTimes(string content)
+        {
+            string addSampleFilePath = WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetAddSampleTimesFileName();
+
+            using (StreamWriter writer = new StreamWriter(new FileStream(addSampleFilePath, FileMode.Create, FileAccess.Write)))
+            {
+                writer.WriteLine("Add Sample Times");
+                writer.WriteLine(content);
+
+                return true;
+            }
+        }
     }
 }

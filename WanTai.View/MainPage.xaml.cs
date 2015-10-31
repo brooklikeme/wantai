@@ -70,10 +70,18 @@ namespace WanTai.View
             }
             else if (SessionInfo.WorkDeskType == "150")
             {
-                TubesView150 tubesView = new TubesView150();
-                //tubesView.labelRotationName.Content = "";
-                tabItem1.Content = tubesView ;
-                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                if (SessionInfo.BatchType != null)
+                {
+                    TubesView150 tubesView = new TubesView150();
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                    tabItem1.Content = tubesView;
+                }
+                else
+                {
+                    TubesView150S tubesView = new TubesView150S();
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                    tabItem1.Content = tubesView;
+                }                               
             }
             else if (SessionInfo.WorkDeskType == "200")
             {
@@ -306,10 +314,22 @@ namespace WanTai.View
                 }
                 else if (SessionInfo.WorkDeskType == "150")
                 {
-                    TubesView150 tubesView = new TubesView150();
-                    tabItem1.Content = tubesView ;
-                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
-                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                    if (SessionInfo.BatchType != null)
+                    {
+                        TubesView150 tubesView = new TubesView150();
+                        tabItem1.Content = tubesView;
+                        tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                        tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                    }
+                    else
+                    {
+                        TubesView150S tubesView = new TubesView150S();
+                        tabItem1.Content = tubesView;
+                        tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                        tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                    }
+
+                    
                 }
                 else if (SessionInfo.WorkDeskType == "200")
                 {

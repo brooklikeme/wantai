@@ -98,48 +98,48 @@ namespace WanTai.View
 
                     List<OperationConfiguration> operationList = controller.GetDisplayedOperationConfigurations();
                     //operation_column.ItemsSource = operationList;
-                    if (SessionInfo.BatchType == "A")
-                    {
-                        //results = results.Where(c => c.OperationSequence == 1).ToList<OperationConfiguration>();
-                        CreateOperation = operationList[operationList.Count - 1];
+                    //if (SessionInfo.BatchType == "A")
+                    //{
+                    //    //results = results.Where(c => c.OperationSequence == 1).ToList<OperationConfiguration>();
+                    //    CreateOperation = operationList[operationList.Count - 1];
 
-                        operation_viewcolumn.Visibility = System.Windows.Visibility.Visible;
-                        operation_template_column.Visibility = System.Windows.Visibility.Hidden;
+                    //    operation_viewcolumn.Visibility = System.Windows.Visibility.Visible;
+                    //    operation_template_column.Visibility = System.Windows.Visibility.Hidden;
 
-                        System.Data.DataRow dRow = dataTable.NewRow();
-                        dRow["Sequence"] = dataTable.Rows.Count + 1;
-                        if (isBelongtoCurrentTubeBatch && tubesBatch != null)
-                        {
-                            dRow["TubesBatchID"] = tubesBatch.TubesBatchID;
-                            dRow["TubesBatchName"] = tubesBatch.TubesBatchName;
-                        }
+                    //    System.Data.DataRow dRow = dataTable.NewRow();
+                    //    dRow["Sequence"] = dataTable.Rows.Count + 1;
+                    //    if (isBelongtoCurrentTubeBatch && tubesBatch != null)
+                    //    {
+                    //        dRow["TubesBatchID"] = tubesBatch.TubesBatchID;
+                    //        dRow["TubesBatchName"] = tubesBatch.TubesBatchName;
+                    //    }
 
-                        dRow["OperationName"] = CreateOperation.OperationName;
-                        dRow["Operation"] = CreateOperation;
-                        dRow["RotationName"] = "轮次" + dRow["Sequence"].ToString();
-                        dRow["deleteIsVisible"] = Visibility.Hidden.ToString();
+                    //    dRow["OperationName"] = CreateOperation.OperationName;
+                    //    dRow["Operation"] = CreateOperation;
+                    //    dRow["RotationName"] = "轮次" + dRow["Sequence"].ToString();
+                    //    dRow["deleteIsVisible"] = Visibility.Hidden.ToString();
 
-                        dataTable.Rows.Add(dRow);
-                    }
-                    else
-                    {
+                    //    dataTable.Rows.Add(dRow);
+                    //}
+                    //else
+                    //{
                         CreateOperation = operationList[0];
-                    }
+                    //}
                 }
 
-                if (SessionInfo.BatchType == "A")
-                {
-                    //create_button_Click(sender, e);
-                    create_button.IsEnabled = false;
-                }
-                else
-                {
+                //if (SessionInfo.BatchType == "A")
+                //{
+                //    //create_button_Click(sender, e);
+                //    create_button.IsEnabled = false;
+                //}
+                //else
+                //{
                     operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
                     operation_template_column.Visibility = System.Windows.Visibility.Visible;
 
                     create_button.IsEnabled = true;
                     rotation_dataGrid.IsEnabled = true;
-                }
+                //}
             }
             catch
             {

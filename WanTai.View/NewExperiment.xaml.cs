@@ -104,6 +104,8 @@ namespace WanTai.View
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
             if (controller.CreateExperiment(experimentsInfo))
             {
+                new WanTai.Controller.TubesController().AddSampleTimes(BatchType == null?"0":"1");
+
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
                 SessionInfo.RotationFormulaParameters=new Dictionary<Guid,FormulaParameters>();
                 SessionInfo.TestingItemIDs = TestingItemList;
