@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanTai.DataModel", "WanTai.DataModel\WanTai.DataModel.csproj", "{AB47AF45-8AD9-446F-AFD7-126DB3919507}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanTai.View", "WanTai.View\WanTai.View.csproj", "{ACDA56D8-5836-4D8B-95A5-AA507F92EAD8}"
@@ -10,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanTai.Common", "WanTai.Common\WanTai.Common.csproj", "{17DD5C13-CC4A-4D5A-9266-AFA182801699}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "WanTai.SetupProject", "WanTai.SetupProject\WanTai.SetupProject.wixproj", "{7127FB8A-22B7-47F1-896D-F71FFA951B41}"
+	ProjectSection(ProjectDependencies) = postProject
+		{037902ED-B31E-416E-A671-EA96614D51CF} = {037902ED-B31E-416E-A671-EA96614D51CF}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WanTai.CustomAction", "WanTai.CustomAction\WanTai.CustomAction.csproj", "{037902ED-B31E-416E-A671-EA96614D51CF}"
 EndProject

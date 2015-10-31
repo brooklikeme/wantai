@@ -3,35 +3,48 @@
   <Fragment>
     <UI>
       <Dialog Id="DBConfigDlg" Width="370" Height="270" Title="[ProductName] [Setup]" NoMinimize="yes">
-        <Control Id="ServerLabel" Type="Text" X="64" Y="68" Width="39" Height="15" TabSkip="no" Text="服务器：" />
-        <Control Id="DBServer" Type="ComboBox" X="110" Y="64" Sorted="yes" ComboList="yes" Width="150" Height="16" Property="DBSERVER">
+        <Control Id="DBPositinLabel" Type="Text" X="56" Y="62" Width="49" Height="10" TabSkip="no" Text="数据库位置：" />
+        <Control Id="DBPosition" Type="ComboBox" Sorted="yes" Default="yes" ComboList="yes" Property="DBPOSITION" X="110" Y="58" Width="150" Height="16">
+          <ComboBox Property="DBPOSITION">
+            <ListItem Text="本机数据库" Value="0"/>
+            <ListItem Text="远程数据库" Value="1" />
+          </ComboBox>
+          <!--<Publish Event="DoAction" Value="Authentication"></Publish>-->
+        </Control>        
+        <Control Id="ServerLabel" Type="Text" X="64" Y="87" Width="39" Height="15" TabSkip="no" Text="服务器：" />
+        <Control Id="DBServer" Type="ComboBox" X="110" Y="83" Sorted="yes" ComboList="yes" Width="150" Height="16" Property="DBSERVER">
+          <Condition Action="show"><![CDATA[DBPOSITION<> "1"]]></Condition>
+          <Condition Action="hide">DBPOSITION = "1"</Condition>
         </Control>
-        <Control Id="AuthenticationLabel" Type="Text" X="56" Y="98" Width="49" Height="10" TabSkip="no" Text="认证方式：" />
-        <Control Id="Authentication" Type="ComboBox" Sorted="yes" Default="yes" ComboList="yes" Property="AUTHENTICATION" X="110" Y="94" Width="150" Height="16">
+        <Control Id="RemoteDBServer" Type="Edit" X="110" Y="83" Width="150" Height="15" Property="REMOTEDBSERVER" Text="{32}" >
+          <Condition Action="hide"><![CDATA[DBPOSITION<> "1"]]></Condition>
+          <Condition Action="show">DBPOSITION = "1"</Condition>
+        </Control>
+        <Control Id="AuthenticationLabel" Type="Text" X="56" Y="112" Width="49" Height="10" TabSkip="no" Text="认证方式：" />
+        <Control Id="Authentication" Type="ComboBox" Sorted="yes" Default="yes" ComboList="yes" Property="AUTHENTICATION" X="110" Y="108" Width="150" Height="16">
           <ComboBox Property="AUTHENTICATION">
             <ListItem Text="Windows认证" Value="0"/>
-            <ListItem Text="Sql Server认证" Value="1" />
+            <ListItem Text="Sql Server认证" Value="1"/>
           </ComboBox>
           <!--<Publish Event="DoAction" Value="Authentication"></Publish>-->
         </Control>
-        <Control Id="DBNameLabel" Type="Text" X="49" Y="124" Width="58" Height="15" TabSkip="no" Text="数据库名称：" />
-        <Control Id="DBNameEdit" Type="Edit" X="110" Y="120" Width="150" Height="15" Property="DBNAME" Text="{32}" />
+        <Control Id="DBNameLabel" Type="Text" X="49" Y="137" Width="58" Height="15" TabSkip="no" Text="数据库名称：" />
+        <Control Id="DBNameEdit" Type="Edit" X="110" Y="133" Width="150" Height="15" Property="DBNAME" Text="{32}" />
         
-        <Control Id="UserNameLable" Type="Text" X="64" Y="150" Width="40" Height="9" TabSkip="no">
+        <Control Id="UserNameLable" Type="Text" X="64" Y="162" Width="40" Height="9" TabSkip="no">
           <Text>用户名：</Text>
         </Control>
-        <Control Id="ServerEdit" Type="Edit" X="110" Y="146" Width="150" Height="15" Property="DBUSERNAME" Text="{32}" >
+        <Control Id="ServerEdit" Type="Edit" X="110" Y="158" Width="150" Height="15" Property="DBUSERNAME" Text="{32}" >
           <Condition Action="disable"><![CDATA[AUTHENTICATION<> "1"]]></Condition>
           <Condition Action="enable">AUTHENTICATION = "1"</Condition>
         </Control>
 
-        <Control Id="PasswordLabel" Type="Text" X="71" Y="180" Width="35" Height="15" TabSkip="no" Text="密码：" />
-        <Control Id="PasswordEdit" Type="Edit" Password="yes" X="110" Y="176" Width="150" Height="15" Property="DBPASSWORD" Text="{32}" >
+        <Control Id="PasswordLabel" Type="Text" X="71" Y="187" Width="35" Height="15" TabSkip="no" Text="密码：" />
+        <Control Id="PasswordEdit" Type="Edit" Password="yes" X="110" Y="183" Width="150" Height="15" Property="DBPASSWORD" Text="{32}" >
           <Condition Action="disable"><![CDATA[AUTHENTICATION<> "1"]]></Condition>
           <Condition Action="enable">AUTHENTICATION = "1"</Condition>
         </Control>
         <Control Id="TestConnect" Type="PushButton" X="195" Y="210" Width="66" Height="17" Text="测试连接(&amp;T)" Property="CONNECTSUCCESS">
-          
           <Publish Event="DoAction"  Value="ConnectDB" Order="2">1</Publish>
           <Publish Event="SpawnDialog" Value="InvalidDBDlg" Order="3">1</Publish>
         </Control>
@@ -59,11 +72,14 @@
         <Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
       </Dialog>
       <Property Id="CONNECTSUCCESS" Value="0" />
+      <Property Id="DBPOSITION" Value="0" />
       <Property Id="AUTHENTICATION" Value="0" />
+      <Property Id="CREATEDB" Value="1" />
       <Property Id="DBNAME" Value="WanTag" />
       <Property Id="DBUSERNAME" Value="sa" />
-      <Property Id="DBPASSWORD" Value="123456" />
+      <Property Id="DBPASSWORD" Value="wantag" />
       <Property Id="DBSERVER"/>
+      <Property Id="REMOTEDBSERVER"/>      
       <InstallUISequence>
         <Custom Action="FillDBServerName" After="CostFinalize"/>
       </InstallUISequence>
@@ -72,9 +88,16 @@
   <Fragment>
     <UI>
       <Dialog Id="InvalidDBDlg" Width="250" Height="85" Title="[ProductName] [Setup]" NoMinimize="yes">
-        <Control Id="Return" Type="PushButton" X="100" Y="57" Width="56" Height="17" Default="yes" Cancel="yes" Text="返回(&amp;R)">
+        <Control Id="Return" Type="PushButton" X="70" Y="57" Width="56" Height="17" Default="yes" Cancel="yes" Text="返回(&amp;R)">
           <Publish Event="EndDialog" Value="Return">1</Publish>
         </Control>
+        <Control Id="Continue" Type="PushButton" X="130" Y="57" Width="56" Height="17" Default="yes" Cancel="yes" Text="继续(&amp;C)">
+          <Publish Property="CONNECTSUCCESS"  Value="1">1</Publish>
+          <Publish Property="CREATEDB"  Value="0">1</Publish>
+          <Publish Event="EndDialog" Value="Return">1</Publish>
+          <Condition Action="enable">CONNECTSUCCESS = "-1"</Condition>
+          <Condition Action="disable"><![CDATA[CONNECTSUCCESS <> "-1"]]></Condition>          
+        </Control>        
         <Control Id="ConnError" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
           <Text>数据库连接失败,用户名或密码错误。</Text>
           <Condition Action="show">CONNECTSUCCESS = "0"</Condition>
@@ -86,20 +109,30 @@
           <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "1"]]></Condition>
         </Control>
         <Control Id="DBNAMEError" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
-          <Text>数据库[DBNAME]已存在!。</Text>
+          <Text>数据库[DBNAME]已存在，是否继续使用该数据库及其中的数据？</Text>
           <Condition Action="show">CONNECTSUCCESS = "-1"</Condition>
           <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-1"]]></Condition>
         </Control>
         <Control Id="DBNAMEIsEmpty" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
-          <Text>数据库名称为空!。</Text>
+          <Text>数据库名称为空!</Text>
           <Condition Action="show">CONNECTSUCCESS = "-2"</Condition>
           <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-2"]]></Condition>
         </Control>
         <Control Id="DBServerIsEmpty" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
-          <Text>没有安装数据库服务!。</Text>
+          <Text>没有安装数据库服务!</Text>
           <Condition Action="show">CONNECTSUCCESS = "-3"</Condition>
           <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-3"]]></Condition>
         </Control>
+        <Control Id="RemoteDBServerIsEmpty" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
+          <Text>远程服务器地址为空!</Text>
+          <Condition Action="show">CONNECTSUCCESS = "-4"</Condition>
+          <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-4"]]></Condition>
+        </Control>
+        <Control Id="RemoteDBNAMEError" Type="Text" NoWrap="no" X="48" Y="15" Width="194" Height="30" TabSkip="no">
+          <Text>远程数据库[DBNAME]不存在！</Text>
+          <Condition Action="show">CONNECTSUCCESS = "-5"</Condition>
+          <Condition Action="hide"><![CDATA[CONNECTSUCCESS <> "-5"]]></Condition>
+        </Control>        
       </Dialog>
     </UI>
   </Fragment>

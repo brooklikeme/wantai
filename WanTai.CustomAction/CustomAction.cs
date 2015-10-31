@@ -65,16 +65,23 @@ namespace WanTai.CustomAction
             ///AUTHENTICATION
             //  <ListItem Text="Windows认证" Value="0" />
             //<ListItem Text="Sql Server认证" Value="1" />
-            if (string.IsNullOrEmpty(session["DBSERVER"]))
+            if (session["DBPOSITION"] == "0" && string.IsNullOrEmpty(session["DBSERVER"]))
                 session["CONNECTSUCCESS"] = "-3";
+            else if (session["DBPOSITION"] == "1" && string.IsNullOrEmpty(session["REMOTEDBSERVER"]))
+                session["CONNECTSUCCESS"] = "-4";
             else if (string.IsNullOrEmpty(session["DBNAME"]))
                 session["CONNECTSUCCESS"] = "-2";
             else
             {
-                string connectionStr = session["CONNECTIONSTRINGA"];
-                if (session["AUTHENTICATION"] == "0")
-                    connectionStr = session["CONNECTIONSTRINGB"];
-                // 数据库连接串 
+                string connectionStr;
+                if (session["DBPOSITION"] == "0")
+                {
+                    connectionStr = session["AUTHENTICATION"] == "0" ? session["CONNECTIONSTRINGB"] : session["CONNECTIONSTRINGA"];
+                }
+                else
+                {
+                    connectionStr = session["AUTHENTICATION"] == "0" ? session["REMOTECONNECTIONSTRINGB"] : session["REMOTECONNECTIONSTRINGA"];
+                }
                 // 连接数据库方法 //
                 using (SqlConnection con = new SqlConnection())
                 {
@@ -86,27 +93,64 @@ namespace WanTai.CustomAction
                         cmd.Connection = con;
                         if (cmd.ExecuteScalar() != null)
                         {
-                            session["CONNECTSUCCESS"] = "-1";
-                            // MessageBox.Show("数据库[" + session["DBNAME"] + "]已存在!");
-                            //return false;
+                            if (session["DBPOSITION"] == "0")
+                            {
+                                session["CONNECTSUCCESS"] = "-1";
+                                if (session["AUTHENTICATION"] == "0")
+                                {
+                                    session["CONNECTIONSTRING"] = "Data Source=" + session["DBSERVER"] + ";Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                }
+                                else
+                                {
+                                    session["CONNECTIONSTRING"] = "data source=" + session["DBSERVER"] + ";user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                }
+                            }
+                            else
+                            {
+                                session["CONNECTSUCCESS"] = "1";
+                                if (session["AUTHENTICATION"] == "0")
+                                {
+                                    session["CONNECTIONSTRING"] = "Data Source=" + session["REMOTEDBSERVER"] + ";Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["REMOTEDBSERVER"].Substring(0, session["REMOTEDBSERVER"].IndexOf(",")) + ",1434;Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                }
+                                else
+                                {
+                                    session["CONNECTIONSTRING"] = "data source=" + session["REMOTEDBSERVER"] + ";user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["REMOTEDBSERVER"].Substring(0, session["REMOTEDBSERVER"].IndexOf(",")) + ",1434;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                }
+                            }
                         }
                         else
                         {
-                            if (session["AUTHENTICATION"] == "0")
-                                session["CONNECTIONSTRING"] = "Data Source=" + session["DBSERVER"] + ";Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                            if (session["DBPOSITION"] == "0")
+                            {
+                                if (session["AUTHENTICATION"] == "0") {
+                                    session["CONNECTIONSTRING"] = "Data Source=" + session["DBSERVER"] + ";Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                }
+                                else
+                                {
+                                    session["CONNECTIONSTRING"] = "data source=" + session["DBSERVER"] + ";user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                }                      
+                                session["CONNECTSUCCESS"] = "1";
+                            }
                             else
-                                session["CONNECTIONSTRING"] = "data source=" + session["DBSERVER"] + ";user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
-                            //MessageBox.Show(session["CONNECTIONSTRING"]);
-                            session["CONNECTSUCCESS"] = "1";
-                            //MessageBox.Show("测试成功!");
-                            //return true;
+                            {
+                                session["CONNECTSUCCESS"] = "-5";
+                            }
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                        session["CONNECTSUCCESS"] = "0";
                     }
                     catch
                     {
                         session["CONNECTSUCCESS"] = "0";
-                        // MessageBox.Show("测试失败,用户名或密码错误!");
-                        // return false;
                     }
                 }
             }
@@ -115,7 +159,6 @@ namespace WanTai.CustomAction
         [CustomAction]
         public static ActionResult InstallDBAction(Session session)
         {
-            MessageBox.Show(session["CONNECTIONSTRINGA"]);
             RegistryKey softWareKey = Registry.LocalMachine.OpenSubKey("Software\\Acme Ltd.\\Foobar 1.0");
             if (softWareKey != null)
             {
