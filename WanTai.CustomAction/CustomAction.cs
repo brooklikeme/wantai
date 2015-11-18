@@ -99,12 +99,12 @@ namespace WanTai.CustomAction
                                 if (session["AUTHENTICATION"] == "0")
                                 {
                                     session["CONNECTIONSTRING"] = "Data Source=" + session["DBSERVER"] + ";Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
-                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;Initial Catalog=BindIt_KF_RE;Integrated Security=True;";
                                 }
                                 else
                                 {
                                     session["CONNECTIONSTRING"] = "data source=" + session["DBSERVER"] + ";user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
-                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=BindIt_KF_RE;Persist Security Info=;";
                                 }
                             }
                             else
@@ -128,12 +128,12 @@ namespace WanTai.CustomAction
                             {
                                 if (session["AUTHENTICATION"] == "0") {
                                     session["CONNECTIONSTRING"] = "Data Source=" + session["DBSERVER"] + ";Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
-                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;Initial Catalog=BindIt_KF_RE;Integrated Security=True;";
                                 }
                                 else
                                 {
                                     session["CONNECTIONSTRING"] = "data source=" + session["DBSERVER"] + ";user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
-                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["DBSERVER"].Substring(0, session["DBSERVER"].IndexOf("\\")) + "\\THERMO;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=BindIt_KF_RE;Persist Security Info=;";
                                 }                      
                                 session["CONNECTSUCCESS"] = "1";
                             }
