@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
@@ -198,11 +199,16 @@ namespace WanTai.View.HistoryQuery
                 {
                     bool result = new WanTai.Controller.PCR.PCRTestResultViewListController().SaveExcelFile(fileName, experimentId);
                     if (result)
-                        MessageBox.Show("导出文件成功!");
+                    {
+                        if (System.Windows.Forms.MessageBox.Show("导出文件成功! 是否打开文件?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == (System.Windows.Forms.DialogResult.Yes))
+                        {
+                            System.Diagnostics.Process.Start(fileName);
+                        }                        
+                    }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("导出文件失败：" + ex.Message);
+                    System.Windows.Forms.MessageBox.Show("导出文件失败：" + ex.Message);
                 }
             }
         }        

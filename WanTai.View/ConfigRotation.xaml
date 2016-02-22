@@ -38,39 +38,25 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn x:Name="operation_template_column" Header="操作" Width="320" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <ComboBox Name="operation_column" SelectionChanged="CmbOperation_SelectionChanged" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedItem="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" ItemsSource="{Binding Source={StaticResource OperationConfigurations }}" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <!--<DataGridTextColumn Header="轮次" Binding="{Binding Sequence}" Width="80" CanUserSort="False"  IsReadOnly="True"></DataGridTextColumn>-->
-              
-                <!--<DataGridComboBoxColumn x:Name="operation_column" Header="操作" SelectedItemBinding="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" CanUserSort="False" >
+                <DataGridComboBoxColumn x:Name="operation_column" Header="操作" SelectedItemBinding="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="320" CanUserSort="False" >
                     <DataGridComboBoxColumn.ElementStyle>
-                        <Style TargetType="Control">
-                            <Setter Property="Margin" Value="0,5,0,0"></Setter>
-                        </Style>
-                    </DataGridComboBoxColumn.ElementStyle>
-                    <DataGridComboBoxColumn.EditingElementStyle>
                         <Style TargetType="ComboBox">
+                            <Setter Property="Margin" Value="0,5,0,0"></Setter>
                             <Setter Property="VerticalAlignment" Value="Center"></Setter>
                             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
                             <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
                             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
                             <EventSetter Event="SelectionChanged" Handler="CmbOperation_SelectionChanged"></EventSetter>
-                        </Style>
-                    </DataGridComboBoxColumn.EditingElementStyle>
-                </DataGridComboBoxColumn>-->
-                <!--<DataGridTextColumn x:Name="operation_viewcolumn"  Header="操作" Binding="{Binding OperationName}" Width="300" CanUserSort="False" IsReadOnly="True">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Background" Value="Red"></Setter>
-                            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>-->
+                        </Style>                        
+                    </DataGridComboBoxColumn.ElementStyle>
+                </DataGridComboBoxColumn>
+                <!--<DataGridTemplateColumn SelectedItemBinding="{Binding Operation}" x:Name="operation_template_column" Header="操作" Width="320" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <ComboBox Name="operation_column"  SelectionChanged="CmbOperation_SelectionChanged" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedItem="{Binding Operation}" DisplayMemberPath="OperationName" SelectedValuePath="OperationID" Width="300" ItemsSource="{Binding Source={StaticResource OperationConfigurations }}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>-->
                 <DataGridTemplateColumn x:Name="operation_viewcolumn"  Header="操作"  Width="300" CanUserSort="False" IsReadOnly="True">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate >
@@ -80,17 +66,6 @@
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <!--<DataGridHyperlinkColumn Header="采血管批次" ContentBinding="{Binding Path=TubesBatchName}" Width="150" CanUserSort="False" IsReadOnly="True">
-                    <DataGridHyperlinkColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <EventSetter Event="Hyperlink.Click" Handler="OnHyperlinkClick">                                
-                            </EventSetter>
-                            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
-                            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
-                            <Setter Property="Background" Value="Red"></Setter>
-                        </Style>
-                    </DataGridHyperlinkColumn.ElementStyle>
-                </DataGridHyperlinkColumn>-->
                 <DataGridTemplateColumn Header="采血管批次"  Width="150" CanUserSort="False" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate >

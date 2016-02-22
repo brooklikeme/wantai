@@ -57,6 +57,32 @@ namespace WanTai.View.PCR
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            // init column width
+            string PCRTestResultWidths = WanTai.Common.Configuration.GetPCRTestResultWidthList();
+            if (!string.IsNullOrEmpty(PCRTestResultWidths)) {
+                float[] widths = Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse));
+                if (widths.Length > 15) {
+                    double rate = 1145.0 / widths.Sum();
+                    this.Number.Width = widths[0] * rate;
+                    this.TubeTypeName.Width = widths[1] * rate;
+                    this.PCRName.Width = widths[2] * rate;
+                    this.TubeBarCode.Width = widths[3] * rate;
+                    this.TubePosition.Width = widths[4] * rate;
+                    this.PoolingRuleName.Width = widths[5] * rate;
+                    this.TestingItemName.Width = widths[6] * rate;
+                    this.PCRPosition.Width = widths[7] * rate;
+                    this.HBV.Width = widths[8] * rate;
+                    this.HBVIC.Width = widths[9] * rate;
+                    this.HCV.Width = widths[10] * rate;
+                    this.HCVIC.Width = widths[11] * rate;
+                    this.HIV.Width = widths[12] * rate;
+                    this.HIVIC.Width = widths[13] * rate;
+                    this.PCRTestResult.Width = widths[14] * rate;
+                    this.SimpleTrackingResult.Width = widths[15] * rate;
+                }
+            }
+
+
             dataTable.Columns.Add("Number", typeof(int));
             dataTable.Columns.Add("PCRName", typeof(string));
             dataTable.Columns.Add("Color", typeof(string));
@@ -144,7 +170,7 @@ namespace WanTai.View.PCR
         }
 
         private void dataGrid_view_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
+        {/*
             DataGridCellInfo Cell = ((System.Windows.Controls.DataGrid)(e.Source)).CurrentCell;
             if (Cell.Column.Header.ToString() == "检测结果")
             {
@@ -176,6 +202,7 @@ namespace WanTai.View.PCR
             {
                 return;
             }
+          */
         }
 
         private void dataGrid_view_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

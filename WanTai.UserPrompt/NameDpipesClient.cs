@@ -34,7 +34,9 @@ namespace WanTai.UserPrompt
             DateTime dtime = DateTime.Now;
         connect:
             if (DateTime.Now.Subtract(dtime).TotalMinutes > 2) return;
-        CommonFunction.WriteLog("CreateFile=>" + this.pipeName);
+            Thread.Sleep(100);
+
+            CommonFunction.WriteLog("CreateFile=>" + this.pipeName);
             this.handle = CreateFile(this.pipeName, GENERIC_READ | GENERIC_WRITE, 0, IntPtr.Zero, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, IntPtr.Zero);
             if (this.handle.IsInvalid)
                 goto connect;

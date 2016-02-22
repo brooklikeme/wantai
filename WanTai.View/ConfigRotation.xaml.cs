@@ -67,7 +67,7 @@ namespace WanTai.View
                     this.save_button.IsEnabled = false;
 
                     operation_viewcolumn.Visibility = System.Windows.Visibility.Visible;
-                    operation_template_column.Visibility = System.Windows.Visibility.Hidden;
+                    operation_column.Visibility = System.Windows.Visibility.Hidden;
 
                     foreach (RotationInfo rotation in rotationList)
                     {
@@ -93,11 +93,13 @@ namespace WanTai.View
                     this.next_button.IsEnabled = false;
                     this.save_button.IsEnabled = true;
                     isBelongtoCurrentTubeBatch = true;
+                    operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
+                    operation_column.Visibility = System.Windows.Visibility.Visible;
 
                     tubesBatch = controller.GetLastTubesBatch();
 
                     List<OperationConfiguration> operationList = controller.GetDisplayedOperationConfigurations();
-                    //operation_column.ItemsSource = operationList;
+                    operation_column.ItemsSource = operationList;
                     //if (SessionInfo.BatchType == "A")
                     //{
                     //    //results = results.Where(c => c.OperationSequence == 1).ToList<OperationConfiguration>();
@@ -134,11 +136,10 @@ namespace WanTai.View
                 //}
                 //else
                 //{
-                    operation_viewcolumn.Visibility = System.Windows.Visibility.Hidden;
-                    operation_template_column.Visibility = System.Windows.Visibility.Visible;
 
-                    create_button.IsEnabled = true;
-                    rotation_dataGrid.IsEnabled = true;
+
+                    // create_button.IsEnabled = true;
+                    // rotation_dataGrid.IsEnabled = true;
                 //}
             }
             catch

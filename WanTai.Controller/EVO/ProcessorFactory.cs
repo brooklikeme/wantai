@@ -8,7 +8,7 @@ namespace WanTai.Controller.EVO
     public class ProcessorFactory
     {
         public static bool HasInitedProcessor = false;
-        static bool isMock = WanTai.Common.Configuration.GetIsMock();
+        static bool isMock = WanTai.Common.Configuration.GetIsRemote() ? true : WanTai.Common.Configuration.GetIsMock();
         public static bool HasClosed = false;
 
         public static IProcessor GetProcessor()

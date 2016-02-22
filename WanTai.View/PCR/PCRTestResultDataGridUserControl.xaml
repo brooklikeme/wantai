@@ -52,8 +52,8 @@
         <Label x:Name="qc_result" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red" Grid.ColumnSpan="3"/>
         <DataGrid Grid.Row="5" AutoGenerateColumns="False" FontSize="11" CanUserAddRows="False" HorizontalAlignment="Stretch" x:Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged" FontFamily="Microsoft YaHei" Grid.ColumnSpan="5">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="序号" Width="20" Binding="{Binding Number}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
-                <DataGridTextColumn Binding="{Binding TubeTypeName}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="类型" HeaderStringFormat="" SortMemberPath="TubeType" Width="70" FontSize="10">
+                <DataGridTextColumn x:Name="Number" Header="序号" Width="20" Binding="{Binding Number}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
+                <DataGridTextColumn x:Name="TubeTypeName" Binding="{Binding TubeTypeName}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="类型" HeaderStringFormat="" SortMemberPath="TubeType" Width="70" FontSize="10">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
@@ -67,7 +67,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding PCRName}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="样品名称" SortMemberPath="PCRName" Width="50">
+                <DataGridTextColumn x:Name="PCRName" Binding="{Binding PCRName}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="样品名称" SortMemberPath="PCRName" Width="50">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -75,7 +75,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="样品条码" Width="120" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                <DataGridTextColumn x:Name="TubeBarCode" Header="样品条码" Width="120" Binding="{Binding TubeBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -83,7 +83,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="样品位置" Width="120" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                <DataGridTextColumn x:Name="TubePosition" Header="样品位置" Width="120" Binding="{Binding TubePosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -91,7 +91,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="检测方式" Width="45" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                <DataGridTextColumn x:Name="PoolingRuleName" Header="检测方式" Width="45" Binding="{Binding PoolingRuleName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -99,7 +99,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="检测项目" Width="50" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                <DataGridTextColumn x:Name="TestingItemName" Header="检测项目" Width="50" Binding="{Binding TestingItemName}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -107,7 +107,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="PCR板条码" Width="60" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" Visibility="Hidden">
+                <DataGridTextColumn x:Name="PCRPlateBarCode" Header="PCR板条码" Width="60" Binding="{Binding PCRPlateBarCode}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" Visibility="Hidden">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -115,7 +115,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="PCR孔位" Width="100" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
+                <DataGridTextColumn x:Name="PCRPosition" Header="PCR孔位" Width="100" Binding="{Binding PCRPosition}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -123,7 +123,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="HBV(Ct)" Width="40" Binding="{Binding HBV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="HBV" Header="HBV(Ct)" Width="40" Binding="{Binding HBV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -131,7 +131,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="HBVIC(Ct)" Width="40" Binding="{Binding HBVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="HBVIC" Header="HBVIC(Ct)" Width="40" Binding="{Binding HBVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -139,7 +139,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="HCV(Ct)" Width="40" Binding="{Binding HCV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="HCV" Header="HCV(Ct)" Width="40" Binding="{Binding HCV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -147,7 +147,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="HCVIC(Ct)" Width="40" Binding="{Binding HCVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="HCVIC" Header="HCVIC(Ct)" Width="40" Binding="{Binding HCVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -155,7 +155,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="HIV(Ct)" Width="40" Binding="{Binding HIV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="HIV" Header="HIV(Ct)" Width="40" Binding="{Binding HIV}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -163,7 +163,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="HIVIC(Ct)" Width="40" Binding="{Binding HIVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="HIVIC" Header="HIVIC(Ct)" Width="40" Binding="{Binding HIVIC}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -171,7 +171,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="检测结果" Width="130" Binding="{Binding PCRTestResult}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="PCRTestResult" Header="检测结果" Width="130" Binding="{Binding PCRTestResult}" CanUserSort="True" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />
@@ -179,7 +179,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="实验记录" Width="200" Binding="{Binding SimpleTrackingResult}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" >
+                <DataGridTextColumn x:Name="SimpleTrackingResult" Header="实验记录" Width="200" Binding="{Binding SimpleTrackingResult}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei" >
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="TextWrapping" Value="Wrap" />

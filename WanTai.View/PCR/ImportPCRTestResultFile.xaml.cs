@@ -58,6 +58,11 @@ namespace WanTai.View.PCR
             {
                 rotation_comboBox.Items.Add(new ComboBoxItem() { Content = info.RotationName, Tag = info.RotationID });                
             }
+            // init selection
+            if (!set_next_empty_item())
+            {
+                MessageBox.Show("所有数据均已导入", "系统提示");
+            }
         }        
 
         private void save_Click(object sender, RoutedEventArgs e)
@@ -136,14 +141,20 @@ namespace WanTai.View.PCR
             WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "导入PCR检测结果" + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), SessionInfo.ExperimentID);
             if (result)
             {
-                MessageBox.Show("导入成功", "系统提示");
+                // clear file name
+                file_textBox.Text = "";
+
+                if (set_next_empty_item()) {
+                    pcrResultList = new List<PCRTestResult>();
+                    MessageBox.Show("导入成功, 请导入下一批数据", "系统提示");
+                } else {
+                    MessageBox.Show("导入成功, 所有数据均已导入", "系统提示");
+                }                
             }
             else
             {
                 MessageBox.Show("导入失败", "系统提示");
             }
-
-            this.Close();
         }
 
         private bool preProcessABIFile(string fileName, out string PCRStartTime, out string PCREndTime)
@@ -1729,6 +1740,7 @@ namespace WanTai.View.PCR
 
         private void rotation_comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (rotation_comboBox.SelectedItem == null) return;
             ComboBoxItem selectedItem = (ComboBoxItem)rotation_comboBox.SelectedItem;
             Guid rotationId = (Guid)selectedItem.Tag;
             barcode_comboBox.Items.Clear();
@@ -1737,10 +1749,45 @@ namespace WanTai.View.PCR
             {
                 foreach (Plate plate in plateList)
                 {
-                    barcode_comboBox.Items.Add(new ComboBoxItem() { Content = (string.IsNullOrEmpty(plate.BarCode) ? "("+PlateName.PCRPlate+")":plate.BarCode), DataContext=plate});
+                    Guid plateId = plate.PlateID;
+                    bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId);
+                    barcode_comboBox.Items.Add(new ComboBoxItem() { Content = (string.IsNullOrEmpty(plate.BarCode) ? ("("+PlateName.PCRPlate+")" + (hasRecord ? "(已导入)" : "")) : (plate.BarCode + (hasRecord ? "(已导入)" : ""))), DataContext=plate});
+                }
+                foreach (ComboBoxItem barcode_item in barcode_comboBox.Items)
+                {
+                    if (!barcode_item.Content.ToString().Contains("(已导入)"))
+                    {
+                        barcode_item.IsSelected = true;
+                        return;
+                    }
                 }
             }
-        }        
+        }
+
+        private bool set_next_empty_item()
+        {
+            foreach (ComboBoxItem rotation_item in rotation_comboBox.Items)
+            {
+                Guid rotationId = (Guid)rotation_item.Tag;
+                barcode_comboBox.Items.Clear();
+                List<Plate> plateList = controller.GetPCRPlateBarcode(rotationId, currentExperimentId);
+                if (plateList != null && plateList.Count > 0)
+                {
+                    foreach (Plate plate in plateList)
+                    {
+                        Guid plateId = plate.PlateID;
+                        bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId);
+                        if (!hasRecord)
+                        {
+                            rotation_item.IsSelected = false;
+                            rotation_item.IsSelected = true;
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
     }
 
     class PCRColumnData

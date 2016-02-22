@@ -52,7 +52,7 @@ namespace WanTai.UserPrompt
         private void FrmNextTurnStep_Shown(object sender, EventArgs e)
         {
             CommonFunction.WriteLog("FrmNextTurnStep_Shown");
-            this.Visible = false;
+            // this.Visible = false;
             client = new NameDpipesClient();
             client.MessageReceived += new NameDpipesClient.MessageReceivedHandler(DisplayMessage);
             client.Connect();

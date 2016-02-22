@@ -16,6 +16,8 @@ namespace WanTai.Controller.Configuration
         private static string AddSuccess = "添加成功！";
         private static string UpdateSuccess = "修改成功！";
         private static string failed = "操作失败！";
+        private static bool isRemote = Common.Configuration.GetIsRemote();
+
 
         /// <summary>
         /// Get user and role
@@ -30,7 +32,16 @@ namespace WanTai.Controller.Configuration
                 UserInfo userInfo = _WanTaiEntities.UserInfoes.FirstOrDefault(P => P.LoginName == userName);
                 if (userInfo != null)
                 {
-                    roleInfo = _WanTaiEntities.RoleInfoes.FirstOrDefault(P => P.RoleName == userInfo.RoleName);
+                    if (isRemote)
+                    {
+                        roleInfo = _WanTaiEntities.RoleInfoes.FirstOrDefault(P => P.RoleName == "远程操作员");
+                        if (object.Equals(roleInfo, default (RoleInfo)))
+                            roleInfo = _WanTaiEntities.RoleInfoes.FirstOrDefault(P => P.RoleName == userInfo.RoleName);
+                    }
+                    else
+                    {
+                        roleInfo = _WanTaiEntities.RoleInfoes.FirstOrDefault(P => P.RoleName == userInfo.RoleName);
+                    }
                 }
                 return roleInfo;
             }

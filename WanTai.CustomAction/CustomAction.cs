@@ -88,6 +88,7 @@ namespace WanTai.CustomAction
                     con.ConnectionString = connectionStr;
                     try
                     {
+                        MessageBox.Show(con.ConnectionString);
                         con.Open();
                         SqlCommand cmd = new SqlCommand("select * from sysdatabases where name='" + session["DBNAME"] + "'");
                         cmd.Connection = con;
@@ -112,13 +113,13 @@ namespace WanTai.CustomAction
                                 session["CONNECTSUCCESS"] = "1";
                                 if (session["AUTHENTICATION"] == "0")
                                 {
-                                    session["CONNECTIONSTRING"] = "Data Source=" + session["REMOTEDBSERVER"] + ";Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
-                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["REMOTEDBSERVER"].Substring(0, session["REMOTEDBSERVER"].IndexOf(",")) + ",1434;Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                    session["CONNECTIONSTRING"] = "Data Source=" + session["REMOTEDBSERVER"] + "\\SQLEXPRESS;Initial Catalog=" + session["DBNAME"] + ";Integrated Security=True;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "Data Source=" + session["REMOTEDBSERVER"] + "\\THERMO;Initial Catalog=BindIt_KF_RE;Integrated Security=True;";
                                 }
                                 else
                                 {
-                                    session["CONNECTIONSTRING"] = "data source=" + session["REMOTEDBSERVER"] + ";user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
-                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["REMOTEDBSERVER"].Substring(0, session["REMOTEDBSERVER"].IndexOf(",")) + ",1434;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                    session["CONNECTIONSTRING"] = "data source=" + session["REMOTEDBSERVER"] + "\\SQLEXPRESS;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=" + session["DBNAME"] + ";Persist Security Info=;";
+                                    session["CONNECTIONSTRINGKINGFISHER"] = "data source=" + session["REMOTEDBSERVER"] + "\\THERMO;user=" + session["DBUSERNAME"] + ";password=" + session["DBPASSWORD"] + ";initial catalog=BindIt_KF_RE;Persist Security Info=;";
                                 }
                             }
                         }

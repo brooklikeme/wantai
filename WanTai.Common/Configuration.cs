@@ -34,6 +34,7 @@ namespace WanTai.Common
         protected static string NextTurnStepScriptName = "NextTurnStepScriptName";
 
         protected static string WorkDeskType = "WorkDeskType";
+        protected static string PCRTestResultWidthList = "PCRTestResultWidthList";
 
         public static string GetNextTurnStepScriptName()
         {
@@ -136,6 +137,16 @@ namespace WanTai.Common
         public static string GetWorkDeskType()
         {
             return ConfigurationManager.AppSettings[WorkDeskType];
+        }
+
+        public static bool GetIgnoreSampleTracking()
+        {
+            return Boolean.Parse(ConfigurationManager.AppSettings["IgnoreSampleTracking"]);
+        }
+
+        public static string GetPCRTestResultWidthList()
+        {
+            return ConfigurationManager.AppSettings[PCRTestResultWidthList];
         }
 
         public static List<LiquidType> GetLiquidTypes()
@@ -255,6 +266,11 @@ namespace WanTai.Common
         public static bool GetIsMock()
         {
             return Boolean.Parse(ConfigurationManager.AppSettings["IsMock"]);
+        }
+
+        public static bool GetIsRemote()
+        {
+            return ConfigurationManager.ConnectionStrings[WanTaiConnectionString].ConnectionString.Contains("1433");
         }
 
         public static string GoToNextTurnScripts()

@@ -21,9 +21,9 @@
                       Name="Version" Type="raw" />
     </Property>
 
-    <Condition Message="请选安装THCAN EVOware!">
+    <!--<Condition Message="请先安装THCAN EVOware!">
       <![CDATA[Installed OR THCAN]]>
-    </Condition> 
+    </Condition>--> 
     
     <Media Id='1' Cabinet='Sample.cab' EmbedCab='yes' DiskPrompt="CD-ROM #1" />
     <Property Id='DiskPrompt' Value="万泰安装程序 [1]" />
@@ -95,8 +95,8 @@
       <Publish Dialog="DBConfigDlg" Control="Authentication" Property="CONNECTSUCCESS"  Value="0" Order="1" ></Publish>
       <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="CONNECTIONSTRINGA"  Value="data source=[DBSERVER];user=[DBUSERNAME];password=[DBPASSWORD];initial catalog=master;Persist Security Info=;" Order="1" >NOT Installed</Publish>
       <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="CONNECTIONSTRINGB"  Value="Data Source=[DBSERVER];Initial Catalog=master;Integrated Security=True;" Order="2" >NOT Installed</Publish>
-      <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="REMOTECONNECTIONSTRINGA"  Value="data source=[REMOTEDBSERVER];user=[DBUSERNAME];password=[DBPASSWORD];initial catalog=master;Persist Security Info=;" Order="1" >NOT Installed</Publish>
-      <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="REMOTECONNECTIONSTRINGB"  Value="Data Source=[REMOTEDBSERVER];Initial Catalog=master;Integrated Security=True;" Order="2" >NOT Installed</Publish>
+      <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="REMOTECONNECTIONSTRINGA"  Value="data source=[REMOTEDBSERVER]\SQLEXPRESS;user=[DBUSERNAME];password=[DBPASSWORD];initial catalog=master;Persist Security Info=;" Order="1" >NOT Installed</Publish>
+      <Publish Dialog="DBConfigDlg" Control="TestConnect" Property="REMOTECONNECTIONSTRINGB"  Value="Data Source=[REMOTEDBSERVER]\SQLEXPRESS;Initial Catalog=master;Integrated Security=True;" Order="2" >NOT Installed</Publish>
 
       <!--<Publish Dialog="DBConfigDlg" Control="TestConnect" Property="CONNECTIONSTRING"  Value="Data Source=[DBSERVER];Initial Catalog=master;Integrated Security=True" Order="3" >NOT Installed</Publish>-->
       

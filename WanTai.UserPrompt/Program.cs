@@ -18,6 +18,7 @@ namespace WanTai.UserPrompt
        //     System.Diagnostics.Process.Start(Application.StartupPath + @"\aab.vbs","aa");
   
             //Application.SetCompatibleTextRenderingDefault(false);
+
             CommonFunction.WriteLog(arg[0]);
             if (arg.Length > 0 && (arg[0] == "GoToScanPage" || arg[0] == "ScanFinished"))
             {

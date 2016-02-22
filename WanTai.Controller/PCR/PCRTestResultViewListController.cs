@@ -95,7 +95,7 @@ namespace WanTai.Controller.PCR
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    return entities.Tubes.Where(t => t.ExperimentID == experimentID && t.TubeType == 0 ).Count();
+                    return entities.Tubes.Where(t => t.ExperimentID == experimentID && t.TubeType == 0).Count();
                 }
             }
             catch (Exception e)
@@ -110,6 +110,7 @@ namespace WanTai.Controller.PCR
         {
             //try
             {
+                bool ignoreSampleTracking = WanTai.Common.Configuration.GetIgnoreSampleTracking();
                 DataTable baseTable = dataTable.Clone();
                 DataTable middTable = dataTable.Clone();
 
@@ -184,7 +185,7 @@ namespace WanTai.Controller.PCR
 
                         using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
                         {
-                            while (reader.Read())
+                            while (reader.Read() && !ignoreSampleTracking)
                             {
                                 if (reader["TubeID"] != DBNull.Value && !tubeSampleCheckResult.ContainsKey((Guid)reader["TubeID"]))
                                 {
@@ -209,7 +210,7 @@ namespace WanTai.Controller.PCR
 
                         using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
                         {
-                            while (reader.Read())
+                            while (reader.Read() && !ignoreSampleTracking)
                             {
                                 if (!tubeSampleCheckResult.ContainsKey((Guid)reader["TubeID"]))
                                 {
@@ -258,7 +259,7 @@ namespace WanTai.Controller.PCR
 
                         using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
                         {
-                            while (reader.Read())
+                            while (reader.Read() && !ignoreSampleTracking)
                             {
                                 string typeName = reagentSuppliesTypeDic[reader["ItemType"].ToString()];
                                 if (!testingItemCheckResultDic.ContainsKey(typeName))
@@ -281,7 +282,7 @@ namespace WanTai.Controller.PCR
 
                         using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
                         {
-                            while (reader.Read())
+                            while (reader.Read() && !ignoreSampleTracking)
                             {
                                 if (!tubeSampleCheckResult.ContainsKey((Guid)reader["TubeID"]))
                                 {
@@ -329,19 +330,21 @@ namespace WanTai.Controller.PCR
                 using (WanTai.DataModel.WanTaiEntities _WanTaiEntities = new WanTaiEntities())
                 {
                     List<PCRTestResult> testResultList = _WanTaiEntities.PCRTestResults.Where(s => s.RotationID == rotationId).ToList();
-                    foreach (PCRTestResult testResult in testResultList) {
-                        if (!pcrContentDict.ContainsKey(testResult.ItemID.ToString())) {
+                    foreach (PCRTestResult testResult in testResultList)
+                    {
+                        if (!pcrContentDict.ContainsKey(testResult.ItemID.ToString()))
+                        {
                             pcrContentDict.Add(testResult.ItemID.ToString(), testResult.PCRContent.ToString());
                         }
                     }
                 }
-                    string commandText = "SELECT distinct TubeID, View_Tubes_PCRPlatePosition.BarCode, View_Tubes_PCRPlatePosition.Position,"
-                    + " Grid, TubeType, PoolingRulesName, TestName, PCRPlateBarcode, PCRPlateID, PCRPosition, PCRTestResult.Result,"
-                    + " PCRTestResult.ItemID FROM View_Tubes_PCRPlatePosition left join PCRTestResult"
-                    + " on View_Tubes_PCRPlatePosition.RotationID = PCRTestResult.RotationID"
-                    + " and View_Tubes_PCRPlatePosition.PCRPosition = PCRTestResult.Position"
-                    + " and View_Tubes_PCRPlatePosition.PCRPlateID = PCRTestResult.PlateID"
-                    + " WHERE View_Tubes_PCRPlatePosition.RotationID=@RotationID order by PCRPlateID, PCRPosition";
+                string commandText = "SELECT distinct TubeID, View_Tubes_PCRPlatePosition.BarCode, View_Tubes_PCRPlatePosition.Position,"
+                + " Grid, TubeType, PoolingRulesName, TestName, PCRPlateBarcode, PCRPlateID, PCRPosition, PCRTestResult.Result,"
+                + " PCRTestResult.ItemID FROM View_Tubes_PCRPlatePosition left join PCRTestResult"
+                + " on View_Tubes_PCRPlatePosition.RotationID = PCRTestResult.RotationID"
+                + " and View_Tubes_PCRPlatePosition.PCRPosition = PCRTestResult.Position"
+                + " and View_Tubes_PCRPlatePosition.PCRPlateID = PCRTestResult.PlateID"
+                + " WHERE View_Tubes_PCRPlatePosition.RotationID=@RotationID order by PCRPlateID, PCRPosition";
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
@@ -352,7 +355,7 @@ namespace WanTai.Controller.PCR
 
                         using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
                         {
-                            WanTaiEntities _WanTaiEntities = new WanTaiEntities(); 
+                            WanTaiEntities _WanTaiEntities = new WanTaiEntities();
                             int index = 1;
                             int refIndex = 1;
                             while (reader.Read())
@@ -484,7 +487,7 @@ namespace WanTai.Controller.PCR
 
                                 string itemID = reader["ItemID"] != DBNull.Value ? reader["ItemID"].ToString() : "";
                                 string pcrContent = pcrContentDict.ContainsKey(itemID.ToString()) ? pcrContentDict[itemID.ToString()] : null;
-                                
+
                                 if (null != pcrContent)
                                 {
                                     XmlDocument xdoc = new XmlDocument();
@@ -607,8 +610,8 @@ namespace WanTai.Controller.PCR
                                         && dRow["PCRTestResult"].ToString() != PCRTest.NegativeResult
                                         && dRow["PCRTestResult"].ToString() != PCRTest.PositiveResult
                                         && dRow["PCRTestResult"].ToString() != PCRTest.NoResult
-                                        && "No Ct" != dRow["PCRTestResult"].ToString() 
-                                        && "N/A" != dRow["PCRTestResult"].ToString() 
+                                        && "No Ct" != dRow["PCRTestResult"].ToString()
+                                        && "N/A" != dRow["PCRTestResult"].ToString()
                                         && "" != dRow["PCRTestResult"].ToString().Trim()
                                         && "Undetermined" != dRow["PCRTestResult"].ToString()))
                                         ? ((dRow["TestingItemName"].ToString() == "HBV" || dRow["TestingItemName"].ToString() == "HCV") ? " IU/ml" : " cps/ml") : "");
@@ -729,13 +732,13 @@ namespace WanTai.Controller.PCR
                             // check color
                             if (!string.IsNullOrEmpty(middRow["SimpleTrackingResult"].ToString()))
                             {
-                                dataRow["Color"] = WantagColor.WantagYellow; 
+                                dataRow["Color"] = WantagColor.WantagYellow;
                             }
-                            else if (middRow["Result"].ToString().Contains(PCRTest.PositiveResult))
+                            else if (middRow["PCRTestResult"].ToString().Contains(PCRTest.PositiveResult))
                             {
                                 dataRow["Color"] = WantagColor.WantagRed;
                             }
-                            else if (middRow["Result"].ToString() == PCRTest.InvalidResult || middRow["Result"].ToString() == PCRTest.NoResult)
+                            else if (middRow["PCRTestResult"].ToString() == PCRTest.InvalidResult || middRow["PCRTestResult"].ToString() == PCRTest.NoResult)
                             {
                                 dataRow["Color"] = WantagColor.WantagYellow;
                             }
@@ -766,14 +769,15 @@ namespace WanTai.Controller.PCR
                  */
             }
             //catch (Exception e)
-           // {
+            // {
             //    string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
             //    LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->QueryTubesPCRTestResult", SessionInfo.ExperimentID);
             //    throw;
-           // }
+            // }
         }
 
-        public string formatTwoColumns(string originString) {
+        public string formatTwoColumns(string originString)
+        {
             string newString = "";
             int occurTimes = 0;
             for (int i = 0; i < originString.Length; i++)
@@ -781,9 +785,12 @@ namespace WanTai.Controller.PCR
                 if (originString[i] == '\n')
                 {
                     occurTimes += 1;
-                    if (occurTimes % 2 == 1) {
+                    if (occurTimes % 2 == 1)
+                    {
                         newString += "  ";
-                    } else {
+                    }
+                    else
+                    {
                         newString += '\n';
                     }
                 }
@@ -1073,7 +1080,7 @@ namespace WanTai.Controller.PCR
                         row = (HSSFRow)new_sheet.CreateRow(i + 5);
                         for (int j = old_sheet.GetRow(i).FirstCellNum; j < old_sheet.GetRow(i).LastCellNum; j++)
                         {
-                             
+
                             string cellValue = old_sheet.GetRow(i).GetCell(j) != null ? old_sheet.GetRow(i).GetCell(j).ToString() : "";
                             cellValue = cellValue.Replace("HBV_Ct", "HBV(Ct)");
                             cellValue = cellValue.Replace("HBVIC_Ct", "HBVIC(Ct)");
@@ -1089,7 +1096,7 @@ namespace WanTai.Controller.PCR
                 old_fs.Close();
                 File.Delete(fileName + ".pre.xls");
 
-                
+
                 new_workbook.Write(new_fs);
                 new_fs.Close();
 
@@ -1358,7 +1365,7 @@ namespace WanTai.Controller.PCR
                 string PCRTimeString = "";
                 string PCRDeviceString = "";
                 string PCRBarCodeString = "";
-                string[] rotationArr = ds.Tables[k].TableName.Split(new char[] {','});
+                string[] rotationArr = ds.Tables[k].TableName.Split(new char[] { ',' });
                 string rotationID = rotationArr[0];
                 string rotationName = rotationArr[1];
 
@@ -1369,7 +1376,8 @@ namespace WanTai.Controller.PCR
                     {
                         PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : ", " + plate.BarCode;
                         XmlDocument xdoc = new XmlDocument();
-                        if (null != plate.PCRContent) {
+                        if (null != plate.PCRContent)
+                        {
                             xdoc.LoadXml(plate.PCRContent);
                             XmlNode node = xdoc.SelectSingleNode("PCRContent");
                             PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
@@ -1382,12 +1390,12 @@ namespace WanTai.Controller.PCR
                 Paragraph p_Rotation = new Paragraph(rotationName.PadRight(62, ' ') + "扩增时间：" + PCRTimeString, fontTitle);
                 document.Add(p_Rotation);
 
-                Paragraph p_PCR = new Paragraph(("PCR仪：" + PCRDeviceString ).PadRight(53, ' ') + "PCR条码：" + PCRBarCodeString, fontTitle);
+                Paragraph p_PCR = new Paragraph(("PCR仪：" + PCRDeviceString).PadRight(53, ' ') + "PCR条码：" + PCRBarCodeString, fontTitle);
                 document.Add(p_PCR);
 
                 if (ds.Tables[k].Rows[0]["检测结果"].ToString().Contains("重新测定") || ds.Tables[k].Rows[1]["检测结果"].ToString().Contains("重新测定"))
                 {
-                    Paragraph p_QC = new Paragraph( "QC: 质控品结果不符合标准，实验无效", fontTitle);
+                    Paragraph p_QC = new Paragraph("QC: 质控品结果不符合标准，实验无效", fontTitle);
                     document.Add(p_QC);
                 }
 
@@ -1396,7 +1404,15 @@ namespace WanTai.Controller.PCR
                 //根据数据表内容创建一个PDF格式的表
                 PdfPTable table = new PdfPTable(ds.Tables[k].Columns.Count - 1);
                 table.WidthPercentage = 100f;
-                table.SetTotalWidth(new float[] { 3, 7, 8, 15, 17, 6, 6, 16, 6, 6, 6, 6, 6, 6, 20, 30 });
+                string PCRTestResultWidths = WanTai.Common.Configuration.GetPCRTestResultWidthList();
+                if (!string.IsNullOrEmpty(PCRTestResultWidths))
+                {
+                    table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));                    
+                }
+                else
+                {
+                    table.SetTotalWidth(new float[] { 3, 7, 8, 15, 17, 6, 6, 16, 6, 6, 6, 6, 6, 6, 20, 30 });
+                }
                 // 添加表头，每一页都有表头
                 for (int j = 0; j < ds.Tables[k].Columns.Count - 1; j++)
                 {
@@ -1438,7 +1454,8 @@ namespace WanTai.Controller.PCR
                                 cell.Phrase = new Phrase(ds.Tables[k].Rows[i][j].ToString(), fontWhite);
                             if (ds.Tables[k].Columns[j].ColumnName == "类型")
                             {
-                                if (ds.Tables[k].Rows[i][j].ToString().Contains("NC")) {
+                                if (ds.Tables[k].Rows[i][j].ToString().Contains("NC"))
+                                {
                                     cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagGreen));
                                     cell.Phrase = new Phrase(ds.Tables[k].Rows[i][j].ToString(), fontWhite);
                                 }
