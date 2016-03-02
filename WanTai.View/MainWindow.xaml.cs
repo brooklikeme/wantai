@@ -50,6 +50,11 @@ namespace WanTai.View
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
             this.imageExpender1.Image = bitmap;
             SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            if (SessionInfo.WorkDeskType == "200")
+                SessionInfo.WorkDeskMaxSize = 72;
+            else
+                SessionInfo.WorkDeskMaxSize = 36;
+            SessionInfo.FirstStepMixing = 0;
             IProcessor processor = null;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {   
@@ -160,6 +165,14 @@ namespace WanTai.View
         {
             if (SessionInfo.CurrentExperimentsInfo != null)
             {
+                if (SessionInfo.FirstStepMixing == 2)
+                {
+                    if (MessageBox.Show("正在进行扫描与上样操作,是否确认关闭实验?", "系统提示!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+                        processor.StopScript();
+                    }
+                }
                 if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing)
                 {
                     MessageBox.Show("当前实验正在运行,请先停止!","系统提示!");
@@ -195,6 +208,7 @@ namespace WanTai.View
               mainFrame.Content = mainPage;
               SessionInfo.BatchIndex = 0;
               SessionInfo.NextTurnStep = -1;
+              SessionInfo.FirstStepMixing = 0;
               WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
               processor.OnNextTurnStepDispse();
                 //  mainFrame.Navigate(mainPage);
@@ -244,6 +258,14 @@ namespace WanTai.View
         {
             if (SessionInfo.CurrentExperimentsInfo != null)
             {
+                if (SessionInfo.FirstStepMixing == 2)
+                {
+                    if (MessageBox.Show("正在进行扫描与上样操作,是否确认关闭实验?", "系统提示!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+                        processor.StopScript();
+                    }
+                }
                 if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing)
                 {
                     MessageBox.Show("当前实验正在运行,请先停止!", "系统提示!");
@@ -264,6 +286,7 @@ namespace WanTai.View
                 SessionInfo.PraperRotation = null;
                 SessionInfo.BatchIndex = 0;
                 SessionInfo.NextTurnStep = -1;
+                SessionInfo.FirstStepMixing = 0;
                 this.Title = "WanTag 全自动核酸提取系统";
             }
             mainFrame.Content = null;
@@ -440,6 +463,14 @@ namespace WanTai.View
             if (EVOClosed) return;
             if (SessionInfo.CurrentExperimentsInfo != null)
             {
+                if (SessionInfo.FirstStepMixing == 2)
+                {
+                    if (MessageBox.Show("正在进行扫描与上样操作,是否确认退出?", "系统提示!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                    {
+                        WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+                        processor.StopScript();
+                    }
+                }
                 if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing)
                 {
                     MessageBox.Show("当前实验正在运行, 请先停止!", "系统提示!");

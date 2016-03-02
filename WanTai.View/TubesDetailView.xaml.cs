@@ -40,7 +40,7 @@ namespace WanTai.View
             set
             {
                 List<WanTai.DataModel.Configuration.LiquidType> LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
-                dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(value, LiquidTypeList).DefaultView; 
+                dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(value, LiquidTypeList, SessionInfo.BatchType).DefaultView; 
             }
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)

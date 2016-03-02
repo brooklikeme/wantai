@@ -336,13 +336,20 @@ namespace WanTai.Controller.Configuration
                 }
                 foreach (ReagentAndSuppliesConfiguration r in list)
                 {
-                    // 修改 枪头 js @ReagentAndSuppliesConfiguration
-                    double volumne = CalcVolume(r.CalculationFormula, operationsOrders, formulaParameters);
-                    r.NeedVolume = r.ItemType >= 100 ? Math.Ceiling(volumne) : volumne;
-                    if (r.ItemType == DiTiType.DiTi200 || r.ItemType == DiTiType.DiTi1000)
+                    if (SessionInfo.BatchType == "A" && r.ItemType < 100)
                     {
-                        r.ActualSavedVolume = volumne;
-                        r.NeedVolume = Math.Ceiling(volumne / 96 * 10) / 10;
+                        r.NeedVolume = 0;
+                    }
+                    else
+                    {
+                        // 修改 枪头 js @ReagentAndSuppliesConfiguration
+                        double volumne = CalcVolume(r.CalculationFormula, operationsOrders, formulaParameters);
+                        r.NeedVolume = r.ItemType >= 100 ? Math.Ceiling(volumne) : volumne;
+                        if (r.ItemType == DiTiType.DiTi200 || r.ItemType == DiTiType.DiTi1000)
+                        {
+                            r.ActualSavedVolume = volumne;
+                            r.NeedVolume = Math.Ceiling(volumne / 96 * 10) / 10;
+                        }
                     }
                 }
             }

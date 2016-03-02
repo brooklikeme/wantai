@@ -1347,6 +1347,25 @@ namespace WanTai.Controller.PCR
 
             document.Add(new Paragraph("\n"));
 
+            PdfPTable header_table = new PdfPTable(6);
+            header_table.WidthPercentage = 100f;
+            header_table.SetTotalWidth(new float[] { 16, 16, 16, 16, 16, 16 });
+
+            for (int i = 0; i < 8; i++)
+            {
+                PdfPCell cell = new PdfPCell(new Phrase("test", font));
+
+                // cell.UseAscender = true;
+                cell.FixedHeight = 20;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+
+                header_table.AddCell(cell);
+            }
+
+
+            document.Add(header_table);
+
             // document.Add(new Paragraph("\n"));
 
             Paragraph p_expName = new Paragraph(("实验名称：" + expInfo.ExperimentName).PadRight(44, ' ') + "操 作 员：" + expInfo.LoginName, fontTitle);

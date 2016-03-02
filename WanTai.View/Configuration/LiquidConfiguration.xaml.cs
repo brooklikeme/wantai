@@ -57,6 +57,7 @@ namespace WanTai.View.Configuration
             else if (SessionInfo.WorkDeskType == "200")
             {
                 range = 37;
+                chb_batchB.Visibility = Visibility.Visible;
             }
 
             for (int i = 1; i < range; i++)
@@ -172,6 +173,7 @@ namespace WanTai.View.Configuration
             else if (SessionInfo.WorkDeskType == "200")
             {
                 range = 37;
+                chb_batchB.Visibility = Visibility.Visible;
             }
             for (int i = 1; i < range; i++)
             {

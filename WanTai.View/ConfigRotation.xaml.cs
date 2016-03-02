@@ -333,7 +333,6 @@ namespace WanTai.View
                 rotationInfo.OperationName = operation.OperationName;
 
                 rotationInfo.RotationSequence = (short)row["Sequence"];
-                rotationInfo.BatchType = SessionInfo.BatchType;
 
                 rotationInfoList.Add(rotationInfo);                
             }

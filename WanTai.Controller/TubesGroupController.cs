@@ -12,7 +12,7 @@ namespace WanTai.Controller
     {
         public TubesBatch SaveTubesGroup(Guid ExperimentID, TubesBatch DelTubesBatch, int BatchIndex, IList<TubeGroup> TubeGroupList, DataTable Tubes, out int ErrType, out string ErrMsg)
         {
-            try
+            try                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
             {
                 ErrMsg = "操作成功！";
                 ErrType = 0;
@@ -68,6 +68,24 @@ namespace WanTai.Controller
                     }
                     #endregion
                     // _WanTaiEntities.SaveChanges();
+                    // update testing Item for del tubesbatch
+                    if (SessionInfo.BatchType == "B")
+                    {
+                        foreach(KeyValuePair<Guid, int> _TestingItem in SessionInfo.BatchATestingItem) {
+                            if (_TestingItem.Value > 0)
+                            {
+                                if (DelTubesBatch.TestingItem.ContainsKey(_TestingItem.Key))
+                                {
+                                    DelTubesBatch.TestingItem[_TestingItem.Key] += _TestingItem.Value;
+                                }
+                                else
+                                {
+                                    DelTubesBatch.TestingItem.Add(_TestingItem.Key, _TestingItem.Value);
+                                }
+                            }
+                        }
+                    }
+
                     #region 保存TubesBatch
                     TubesBatch _TubesBatch = new TubesBatch();
                     _TubesBatch.ExperimentID = ExperimentID;
@@ -78,7 +96,12 @@ namespace WanTai.Controller
                     _WanTaiEntities.AddToTubesBatches(_TubesBatch);
                     #endregion
                     // _WanTaiEntities.SaveChanges();
-                    RotationInfo ExperimentRotation = _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID && (Rotation.BatchType == null || Rotation.BatchType == "B") && Rotation.TubesBatchID == null).FirstOrDefault();
+                    RotationInfo ExperimentRotation = _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID && Rotation.TubesBatchID == null).FirstOrDefault();
+                    if (ExperimentRotation != null && ExperimentRotation.RotationSequence == 1 && SessionInfo.BatchType == "B")
+                    {
+                        ExperimentRotation = null;
+                    }
+                    
                     string CSVPath = WanTai.Common.Configuration.GetWorkListFilePath();
                     string DWFileName = CSVPath + WanTai.Common.Configuration.GetAddSamplesWorkListFileName();
                     
@@ -210,138 +233,150 @@ namespace WanTai.Controller
                                 // 100的有多组阴阳对照物，每组6个管子，但只加样到1块DW板中
                                 NegativePositive = new string[Total100NPItem];
                             }
-                            foreach (string str in Tubes.TableName.Split(']'))
-                            {
-                                if (string.IsNullOrEmpty(str)) continue;
-                                bool ignore100NpTube = true;
-                                int DW100PlatePostion = 0;
-                                Guid tubeTestingItemID = new Guid() ;
-                                string TubesPosition = str.Remove(0, 1);
-                                int ColumnIndex = int.Parse(TubesPosition.Split(',')[0]);
-                                int RowIndex = int.Parse(TubesPosition.Split(',')[1]) - 1;
-                                Tube tube = new Tube();
-                                tube.BarCode = Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
-                                tube.ExperimentID = ExperimentID;
-                                tube.Position = RowIndex + 1;
-                                tube.Grid = ColumnIndex;
-                                int posIndex = (ColumnIndex - 1) * 16 + RowIndex + 1;
-                                if (workDeskType != "100")
-                                {
-                                    tube.TubeGroupID = npTubeGroup.TubeGroupID;
-                                }
-                                else
-                                {
-                                    int _tubeGroupIndex = 0;
-                                    foreach (TubeGroup _tubeGroup in npTubeGroupList) 
-                                    {
-                                        int npGroupStartIndex = int.Parse(_tubeGroup.TubesGroupName.Split(',')[0]);
-                                        int npGroupEndIndex = int.Parse(_tubeGroup.TubesGroupName.Split(',')[1]);
-                                        if (posIndex >= npGroupStartIndex && posIndex <= npGroupEndIndex)
-                                        {
-                                            tube.TubeGroupID = _tubeGroup.TubeGroupID;
-                                            tubeTestingItemID = _tubeGroup.TestingItemConfigurations.FirstOrDefault().TestingItemID;
-                                            ignore100NpTube = false;
-                                            DW100PlatePostion = _tubeGroupIndex * SessionInfo.LiquidCfgCount + (posIndex - npGroupStartIndex) + 1;
-                                            break;
-                                        }
-                                        _tubeGroupIndex++;
-                                    } 
-                                }
-                                tube.TubeID = WanTaiObjectService.NewSequentialGuid();
-                                tube.TubePosBarCode = Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
-                                if (Tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "Complement")
-                                    tube.TubeType = (int)Tubetype.Complement;
-                                if (Tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "NegativeControl")
-                                    tube.TubeType = (int)Tubetype.NegativeControl;
-                                if (Tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "PositiveControl")
-                                    tube.TubeType = (int)Tubetype.PositiveControl;
-                                if (Tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "Tube")
-                                    tube.TubeType = (int)Tubetype.Tube;
-                                // 100的加500到一个板子，其它的分别加480到两个板子
-                                tube.Volume = workDeskType == "100" ? 500 : 480;
 
-                                if (tube.TubeType == (int)Tubetype.PositiveControl || tube.TubeType == (int)Tubetype.NegativeControl 
-                                    || (workDeskType == "100" && tube.TubeType == (int)Tubetype.Complement))
+                            // combine batch a tubes
+                            List<DataTable> TubesArray = new List<DataTable>();
+                            TubesArray.Add(Tubes);
+                            if (SessionInfo.BatchType == "B") {
+                                TubesArray.Add(SessionInfo.BatchATubes);
+                            }
+
+                            foreach (DataTable _tubes in TubesArray)
+                            {
+                                foreach (string str in _tubes.TableName.Split(']'))
                                 {
+                                    if (string.IsNullOrEmpty(str)) continue;
+                                    bool ignore100NpTube = true;
+                                    int DW100PlatePostion = 0;
+                                    Guid tubeTestingItemID = new Guid();
+                                    string TubesPosition = str.Remove(0, 1);
+                                    int ColumnIndex = int.Parse(TubesPosition.Split(',')[0]);
+                                    int RowIndex = int.Parse(TubesPosition.Split(',')[1]) - 1;
+                                    Tube tube = new Tube();
+                                    tube.BarCode = _tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                    tube.ExperimentID = ExperimentID;
+                                    tube.Position = RowIndex + 1;
+                                    tube.Grid = ColumnIndex;
+                                    int posIndex = (ColumnIndex - 1) * 16 + RowIndex + 1;
                                     if (workDeskType != "100")
                                     {
-                                        _WanTaiEntities.AddToTubes(tube);
-                                        DWPlatePosition DWPositionA = new DWPlatePosition();
-                                        DWPositionA.DWPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                                        DWPositionA.TubeGroupID = tube.TubeGroupID;
-                                        DWPositionA.Position = tube.TubeType == (int)Tubetype.PositiveControl ? 2 : 1;
-                                        DWPositionA.PlateID = DWPlate_1.PlateID;
-                                        DWPositionA.Tubes.Add(tube);
-                                        // DWPlate_NegativeControl_1.Tubes.Add(_WanTaiEntities.Tubes.Where(t => t.TubeID == tube.TubeID).FirstOrDefault());
-                                        _WanTaiEntities.AddToDWPlatePositions(DWPositionA);
-
-                                        DWPlatePosition DWPositionB = new DWPlatePosition();
-                                        DWPositionB.DWPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                                        DWPositionB.TubeGroupID = tube.TubeGroupID;
-                                        DWPositionB.Position = tube.TubeType == (int)Tubetype.PositiveControl ? 2 : 1;
-                                        DWPositionB.PlateID = DWPlate_2.PlateID;
-                                        DWPositionB.Tubes.Add(tube);
-                                        // DWPlate_NegativeControl_1.Tubes.Add(_WanTaiEntities.Tubes.Where(t => t.TubeID == tube.TubeID).FirstOrDefault());
-                                        _WanTaiEntities.AddToDWPlatePositions(DWPositionB);
-                                        if (tube.TubeType == (int)Tubetype.PositiveControl)
-                                        {
-                                            DWPlate_PositiveControl_1 = DWPositionA;
-                                            DWPlate_PositiveControl_2 = DWPositionB;
-                                            NegativePositive[1] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate1 + ",2";
-                                            NegativePositive[3] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate2 + ",2";
-                                            //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate1+",2");
-                                            //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate2+",2");
-                                        }
-
-                                        if (tube.TubeType == (int)Tubetype.NegativeControl)
-                                        {
-                                            DWPlate_NegativeControl_1 = DWPositionA;
-                                            DWPlate_NegativeControl_2 = DWPositionB;
-                                            NegativePositive[0] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate1 + ",1";
-                                            NegativePositive[2] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate2 + ",1";
-                                            //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate1+",1");
-                                            //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate2+",1");
-
-                                        }
-                                        PoolingWorkListRowCount += 2;
+                                        tube.TubeGroupID = npTubeGroup.TubeGroupID;
                                     }
                                     else
                                     {
-                                        if (!ignore100NpTube)
+                                        int _tubeGroupIndex = 0;
+                                        foreach (TubeGroup _tubeGroup in npTubeGroupList)
                                         {
-                                            _WanTaiEntities.AddToTubes(tube);
-                                            DWPlatePosition DWPosition = new DWPlatePosition();
-                                            DWPosition.DWPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                                            DWPosition.TubeGroupID = tube.TubeGroupID;
-                                            DWPosition.Position = DW100PlatePostion;;
-                                            DWPosition.PlateID = DWPlate_1.PlateID;
-                                            DWPosition.Tubes.Add(tube);
-                                            _WanTaiEntities.AddToDWPlatePositions(DWPosition);
-
-
-                                            if (null != tubeTestingItemID)
+                                            int npGroupStartIndex = int.Parse(_tubeGroup.TubesGroupName.Split(',')[0]);
+                                            int npGroupEndIndex = int.Parse(_tubeGroup.TubesGroupName.Split(',')[1]);
+                                            if (posIndex >= npGroupStartIndex && posIndex <= npGroupEndIndex)
                                             {
-                                                if (!DWPlatePosition100.ContainsKey(tubeTestingItemID))
-                                                {
-                                                    List<DWPlatePosition> platePositionList = new List<DWPlatePosition>();
-                                                    platePositionList.Add(DWPosition);
-                                                    DWPlatePosition100.Add(tubeTestingItemID, platePositionList);
-                                                }
-                                                else
-                                                {
-                                                    DWPlatePosition100[tubeTestingItemID].Add(DWPosition);
-                                                }
+                                                tube.TubeGroupID = _tubeGroup.TubeGroupID;
+                                                tubeTestingItemID = _tubeGroup.TestingItemConfigurations.FirstOrDefault().TestingItemID;
+                                                ignore100NpTube = false;
+                                                DW100PlatePostion = _tubeGroupIndex * SessionInfo.LiquidCfgCount + (posIndex - npGroupStartIndex) + 1;
+                                                break;
                                             }
-                                            NegativePositive[DWPosition.Position - 1] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",500," + PlateName.DWPlate1 + "," + DWPosition.Position;
-
-                                            PoolingWorkListRowCount += 1;
+                                            _tubeGroupIndex++;
                                         }
                                     }
-                                    // HolePosition++;
+                                    tube.TubeID = WanTaiObjectService.NewSequentialGuid();
+                                    tube.TubePosBarCode = _tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                    if (_tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "Complement")
+                                        tube.TubeType = (int)Tubetype.Complement;
+                                    if (_tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "NegativeControl")
+                                        tube.TubeType = (int)Tubetype.NegativeControl;
+                                    if (_tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "PositiveControl")
+                                        tube.TubeType = (int)Tubetype.PositiveControl;
+                                    if (_tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "Tube")
+                                        tube.TubeType = (int)Tubetype.Tube;
+                                    // 100的加500到一个板子，其它的分别加480到两个板子
+                                    tube.Volume = workDeskType == "100" ? 500 : 480;
 
-                                }// NewTubeGroup.Tubes.Add(tube);
-                            }
+                                    if (tube.TubeType == (int)Tubetype.PositiveControl || tube.TubeType == (int)Tubetype.NegativeControl
+                                        || (workDeskType == "100" && tube.TubeType == (int)Tubetype.Complement))
+                                    {
+                                        if (workDeskType != "100")
+                                        {
+                                            _WanTaiEntities.AddToTubes(tube);
+                                            DWPlatePosition DWPositionA = new DWPlatePosition();
+                                            DWPositionA.DWPlatePositionID = WanTaiObjectService.NewSequentialGuid();
+                                            DWPositionA.TubeGroupID = tube.TubeGroupID;
+                                            DWPositionA.Position = tube.TubeType == (int)Tubetype.PositiveControl ? 2 : 1;
+                                            DWPositionA.PlateID = DWPlate_1.PlateID;
+                                            DWPositionA.Tubes.Add(tube);
+                                            // DWPlate_NegativeControl_1.Tubes.Add(_WanTaiEntities.Tubes.Where(t => t.TubeID == tube.TubeID).FirstOrDefault());
+                                            _WanTaiEntities.AddToDWPlatePositions(DWPositionA);
 
+                                            DWPlatePosition DWPositionB = new DWPlatePosition();
+                                            DWPositionB.DWPlatePositionID = WanTaiObjectService.NewSequentialGuid();
+                                            DWPositionB.TubeGroupID = tube.TubeGroupID;
+                                            DWPositionB.Position = tube.TubeType == (int)Tubetype.PositiveControl ? 2 : 1;
+                                            DWPositionB.PlateID = DWPlate_2.PlateID;
+                                            DWPositionB.Tubes.Add(tube);
+                                            // DWPlate_NegativeControl_1.Tubes.Add(_WanTaiEntities.Tubes.Where(t => t.TubeID == tube.TubeID).FirstOrDefault());
+                                            _WanTaiEntities.AddToDWPlatePositions(DWPositionB);
+                                            if (tube.TubeType == (int)Tubetype.PositiveControl)
+                                            {
+                                                DWPlate_PositiveControl_1 = DWPositionA;
+                                                DWPlate_PositiveControl_2 = DWPositionB;
+                                                NegativePositive[1] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate1 + ",2";
+                                                NegativePositive[3] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate2 + ",2";
+                                                //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate1+",2");
+                                                //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate2+",2");
+                                            }
+
+                                            if (tube.TubeType == (int)Tubetype.NegativeControl)
+                                            {
+                                                DWPlate_NegativeControl_1 = DWPositionA;
+                                                DWPlate_NegativeControl_2 = DWPositionB;
+                                                NegativePositive[0] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate1 + ",1";
+                                                NegativePositive[2] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",480," + PlateName.DWPlate2 + ",1";
+                                                //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate1+",1");
+                                                //DWStreamWriter.WriteLine(tube.BarCode + "," + (RowIndex + 1).ToString() + ",480,"+PlateName.DWPlate2+",1");
+
+                                            }
+                                            PoolingWorkListRowCount += 2;
+                                        }
+                                        else
+                                        {
+                                            if (!ignore100NpTube)
+                                            {
+                                                _WanTaiEntities.AddToTubes(tube);
+                                                DWPlatePosition DWPosition = new DWPlatePosition();
+                                                DWPosition.DWPlatePositionID = WanTaiObjectService.NewSequentialGuid();
+                                                DWPosition.TubeGroupID = tube.TubeGroupID;
+                                                DWPosition.Position = DW100PlatePostion; ;
+                                                DWPosition.PlateID = DWPlate_1.PlateID;
+                                                DWPosition.Tubes.Add(tube);
+                                                _WanTaiEntities.AddToDWPlatePositions(DWPosition);
+
+
+                                                if (null != tubeTestingItemID)
+                                                {
+                                                    if (!DWPlatePosition100.ContainsKey(tubeTestingItemID))
+                                                    {
+                                                        List<DWPlatePosition> platePositionList = new List<DWPlatePosition>();
+                                                        platePositionList.Add(DWPosition);
+                                                        DWPlatePosition100.Add(tubeTestingItemID, platePositionList);
+                                                    }
+                                                    else
+                                                    {
+                                                        DWPlatePosition100[tubeTestingItemID].Add(DWPosition);
+                                                    }
+                                                }
+                                                NegativePositive[DWPosition.Position - 1] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",500," + PlateName.DWPlate1 + "," + DWPosition.Position;
+
+                                                PoolingWorkListRowCount += 1;
+                                            }
+                                        }
+                                        // HolePosition++;
+
+                                    }// NewTubeGroup.Tubes.Add(tube);
+                                }
+                            }                            
+
+                            //
                             if (SessionInfo.BatchType != "B")
                             {
                                 foreach (string str in NegativePositive){
@@ -623,13 +658,15 @@ namespace WanTai.Controller
                                         int ColumnIndex = int.Parse(TubePosition.Split(',')[0]);
                                         int RowIndex = int.Parse(TubePosition.Split(',')[1]) - 1;
                                         Tube tube = new Tube();
-                                        tube.BarCode = Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                        tube.BarCode = (SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A")
+                                            ? SessionInfo.BatchATubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
                                         tube.ExperimentID = ExperimentID;
                                         tube.Position = RowIndex + 1;
                                         tube.Grid = ColumnIndex;
                                         tube.TubeGroupID = NewTubeGroup.TubeGroupID;
                                         tube.TubeID = WanTaiObjectService.NewSequentialGuid();
-                                        tube.TubePosBarCode = Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                        tube.TubePosBarCode = (SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A")
+                                            ? SessionInfo.BatchATubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
                                         tube.TubeType = (int)Tubetype.Tube;
                                         tube.Volume = Volume;
                                         #endregion
@@ -680,13 +717,13 @@ namespace WanTai.Controller
 
                                         if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
                                         {
-                                            DWStreamWriter.WriteLine("Tube" +  (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
+                                            DWStreamWriter.WriteLine("Tube" +  tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
                                             if (workDeskType != "100")
                                             {
                                                 if (ONETubesPosition2.Length > 0)
-                                                    ONETubesPosition2.Append(System.Environment.NewLine + "Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                    ONETubesPosition2.Append(System.Environment.NewLine + "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                 else
-                                                    ONETubesPosition2.Append("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                    ONETubesPosition2.Append("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                             }
                                         }
 
@@ -719,13 +756,15 @@ namespace WanTai.Controller
                                         int ColumnIndex = int.Parse(TubePosition.Split(',')[0]);
                                         int RowIndex = int.Parse(TubePosition.Split(',')[1]) - 1;
                                         Tube tube = new Tube();
-                                        tube.BarCode = Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                        tube.BarCode = (SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A")
+                                            ? SessionInfo.BatchATubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
                                         tube.ExperimentID = ExperimentID;
                                         tube.Position = RowIndex + 1;
                                         tube.Grid = ColumnIndex;
                                         tube.TubeGroupID = NewTubeGroup.TubeGroupID;
                                         tube.TubeID = WanTaiObjectService.NewSequentialGuid();
-                                        tube.TubePosBarCode = Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                        tube.TubePosBarCode = (SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A")
+                                            ? SessionInfo.BatchATubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
                                         tube.TubeType = (int)Tubetype.Tube;
                                         tube.Volume = Volume;
                                         #endregion
@@ -744,7 +783,7 @@ namespace WanTai.Controller
                                             }else
                                                 DWPlate_1_PositionList[demandIndex].Tubes.Add(tube);
                                             if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + demandIndex + 1).ToString());
+                                                DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + demandIndex + 1).ToString());
                                         }
                                         else
                                         {
@@ -763,7 +802,7 @@ namespace WanTai.Controller
                                             else
                                                 DWPlate_2_PositionList[demandIndex].Tubes.Add(tube);
                                             if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + demandIndex + 1).ToString());
+                                                DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + demandIndex + 1).ToString());
                                         }
                                         PoolingWorkListRowCount++;
                                         if (demand <= 8 && (tubeCount++) < 8)
@@ -929,8 +968,8 @@ namespace WanTai.Controller
 
                                                 if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
                                                 {
-                                                    DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
-                                                    DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                    DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
+                                                    DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                 }
 
                                                 HolePosition++;
@@ -947,7 +986,7 @@ namespace WanTai.Controller
                                                     DWPlate_1_Position.Tubes.Add(tube);
                                                     //DWPlate_1_Position.Tubes.Add(_WanTaiEntities.Tubes.Where(t=>t.TubeID==tube.TubeID).FirstOrDefault());
                                                     if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                        DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
+                                                        DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
                                                     PoolingWorkListRowCount++;
                                                 }
                                                 else
@@ -956,7 +995,7 @@ namespace WanTai.Controller
                                                     DWPlate_2_Position.Tubes.Add(tube);
 
                                                     if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                        DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                        DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                     PoolingWorkListRowCount++;
                                                 }
                                                 if (CTubesIndex == PollingRules.TubeNumber)
@@ -981,7 +1020,7 @@ namespace WanTai.Controller
                                                 DWPlate_1_Position.Tubes.Add(tube);
                                                 _WanTaiEntities.AddToDWPlatePositions(DWPlate_1_Position);
                                                 if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                    DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
+                                                    DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
                                                 if (NewTubeGroup.isComplement) //补液
                                                 {
                                                     if (SystemFluid.Count == 0)
@@ -1025,7 +1064,7 @@ namespace WanTai.Controller
                                                         }
                                                     }
                                                     if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                        DWStreamWriter.WriteLine("Tube" + (SystemFluid[SystemFluidIndex].Grid - (SessionInfo.BatchType == "B" ? 18 : 0)).ToString() + "," + SystemFluid[SystemFluidIndex].Position.ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                        DWStreamWriter.WriteLine("Tube" + SystemFluid[SystemFluidIndex] + "," + SystemFluid[SystemFluidIndex].Position.ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                     SystemFluid[SystemFluidIndex].Volume -= Volume;
                                                     PoolingWorkListRowCount++;
                                                 }
@@ -1036,7 +1075,7 @@ namespace WanTai.Controller
                                                     //DWPlate_2_Position.Tubes.Add(_WanTaiEntities.Tubes.Where(t => t.TubeID == tube.TubeID).FirstOrDefault());
                                                     _WanTaiEntities.AddToDWPlatePositions(DWPlate_2_Position);
                                                     if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                        DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                        DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                 }
                                                 HolePosition++;
                                                 CTubesIndex = 0;
@@ -1083,7 +1122,7 @@ namespace WanTai.Controller
                                                         //DWPlate_1_Position.Tubes.Add(_WanTaiEntities.Tubes.Where(t=>t.TubeID==tube.TubeID).FirstOrDefault());
                                                         Volume = 960 / PollingRules.TubeNumber;
                                                         if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                            DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
+                                                            DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
                                                         PoolingWorkListRowCount++;
                                                     }
                                                     else
@@ -1094,7 +1133,7 @@ namespace WanTai.Controller
 
                                                         Volume = 960 / PollingRules.TubeNumber;
                                                         if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                            DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                            DWStreamWriter.WriteLine("Tube" + tube.Grid  + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                         PoolingWorkListRowCount++;
                                                     }
                                                     //_WanTaiEntities.SaveChanges();
@@ -1127,7 +1166,7 @@ namespace WanTai.Controller
                                                             }
                                                         }
                                                         if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                            DWStreamWriter.WriteLine("Tube" + (SystemFluid[SystemFluidIndex].Grid - (SessionInfo.BatchType == "B" ? 18 : 0)).ToString() + "," + SystemFluid[SystemFluidIndex].Position.ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
+                                                            DWStreamWriter.WriteLine("Tube" + SystemFluid[SystemFluidIndex].Grid + "," + SystemFluid[SystemFluidIndex].Position.ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
                                                         SystemFluid[SystemFluidIndex].Volume -= Volume;
                                                         PoolingWorkListRowCount++;
                                                     }
@@ -1160,7 +1199,7 @@ namespace WanTai.Controller
                                                             }
                                                         }
                                                         if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                            DWStreamWriter.WriteLine("Tube" + (SystemFluid[SystemFluidIndex].Grid - (SessionInfo.BatchType == "B" ? 18 : 0)).ToString() + "," + SystemFluid[SystemFluidIndex].Position.ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                            DWStreamWriter.WriteLine("Tube" + SystemFluid[SystemFluidIndex].Grid + "," + SystemFluid[SystemFluidIndex].Position.ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                         PoolingWorkListRowCount++;
                                                         SystemFluid[SystemFluidIndex].Volume -= Volume;
 
@@ -1185,7 +1224,7 @@ namespace WanTai.Controller
                                                         Volume = (int)(480 / Hole1TubesNumber);
                                                         if (Volume > 480) Volume = 480;
                                                         if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                            DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
+                                                            DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate1 + "," + (HolePosition + 1).ToString());
                                                         PoolingWorkListRowCount++;
                                                     }
                                                     else
@@ -1195,7 +1234,7 @@ namespace WanTai.Controller
                                                         Volume = (int)(480 / Hole2TubesNumber);
                                                         if (Volume > 480) Volume = 480;
                                                         if (!(SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A"))
-                                                            DWStreamWriter.WriteLine("Tube" + (tube.Grid - (SessionInfo.BatchType == "B" ? 18 : 0)) + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
+                                                            DWStreamWriter.WriteLine("Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + "," + Volume.ToString() + "," + PlateName.DWPlate2 + "," + (HolePosition + 1).ToString());
                                                         PoolingWorkListRowCount++;
                                                     }
 

@@ -26,10 +26,11 @@ namespace WanTai.UserPrompt
             if (!this.InvokeRequired)
             {
                 this.rboxRecivedMessage.Text += message;
-                if (message.IndexOf("NextStepRun")>=0)
+                if (message.IndexOf("NextStepRun") >= 0)
                     client.SendMessage("ServerClose");
-
-                if (message.IndexOf("NextStepScan")>=0 || message.IndexOf("NextStepRun")>=0)
+                if (message.IndexOf("WaitForSecondMix") >= 0)
+                    client.SendMessage("NotifyForSecondMix");
+                if (message.IndexOf("NextStepScan") >= 0 || message.IndexOf("NextStepRun") >= 0 || message.IndexOf("WaitForSecondMix") >= 0)
                 {
                     System.Threading.Thread.Sleep(100 );
                     this.Close();
@@ -52,7 +53,7 @@ namespace WanTai.UserPrompt
         private void FrmNextTurnStep_Shown(object sender, EventArgs e)
         {
             CommonFunction.WriteLog("FrmNextTurnStep_Shown");
-            // this.Visible = false;
+            this.Visible = false;
             client = new NameDpipesClient();
             client.MessageReceived += new NameDpipesClient.MessageReceivedHandler(DisplayMessage);
             client.Connect();

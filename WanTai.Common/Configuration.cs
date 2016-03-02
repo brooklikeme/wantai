@@ -203,6 +203,11 @@ namespace WanTai.Common
             return ConfigurationManager.AppSettings["WorkListFilePath"];
         }
 
+        public static string GetPCRFilePath()
+        {
+            return ConfigurationManager.AppSettings["PCRFilePath"];
+        }
+
         public static string GetAddSamplesWorkListFileName()
         {
             return ConfigurationManager.AppSettings["AddSamplesWorkListFileName"];

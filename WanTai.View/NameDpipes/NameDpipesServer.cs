@@ -70,7 +70,7 @@ namespace WanTai.View
                         Thread readThread = new Thread(new ParameterizedThreadStart(Read));
                         readThread.IsBackground = true;
                         readThread.Start(client);
-                    }
+                    }                                                       
                 //}
             }));
             thread.IsBackground = true;

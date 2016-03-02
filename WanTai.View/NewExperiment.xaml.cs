@@ -66,6 +66,20 @@ namespace WanTai.View
                 checkBox.Unchecked += new RoutedEventHandler(btn_Enable_Click_Unchecked);
                 testPanel.Children.Add(checkBox);
             }
+            else if (SessionInfo.WorkDeskType == "200")
+            {
+                Label label = new Label();
+                label.Content = "两次上样:";
+                testPanel.Children.Add(label);
+
+                CheckBox checkBox = new CheckBox();
+                checkBox.Height = 20;
+                checkBox.Width = 50;
+                checkBox.Margin = new Thickness(5);
+                checkBox.Checked += new RoutedEventHandler(btn_Enable_Click_Checked);
+                checkBox.Unchecked += new RoutedEventHandler(btn_Enable_Click_Unchecked);
+                testPanel.Children.Add(checkBox);
+            }
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -104,12 +118,13 @@ namespace WanTai.View
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
             if (controller.CreateExperiment(experimentsInfo))
             {
-                new WanTai.Controller.TubesController().AddSampleTimes(BatchType == null?"0":"1");
+                new WanTai.Controller.TubesController().AddSampleTimes(BatchType == "A" ? "1" : "0");
 
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
                 SessionInfo.RotationFormulaParameters=new Dictionary<Guid,FormulaParameters>();
                 SessionInfo.TestingItemIDs = TestingItemList;
                 SessionInfo.PraperRotation = null;
+                SessionInfo.MixTwice = (BatchType == "A");
                 SessionInfo.BatchType = BatchType;
                 LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "新建实验 成功", SessionInfo.LoginName, this.GetType().Name, SessionInfo.ExperimentID);
                 this.DialogResult = true;

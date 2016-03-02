@@ -88,7 +88,6 @@ namespace WanTai.CustomAction
                     con.ConnectionString = connectionStr;
                     try
                     {
-                        MessageBox.Show(con.ConnectionString);
                         con.Open();
                         SqlCommand cmd = new SqlCommand("select * from sysdatabases where name='" + session["DBNAME"] + "'");
                         cmd.Connection = con;

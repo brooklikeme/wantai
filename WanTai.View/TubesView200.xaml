@@ -40,7 +40,7 @@
             <RowDefinition Height="150"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
-            <Label Name="labelRotationName"></Label>
+            <Label Name="labelRotationName" FontWeight="Bold" FontSize="13"></Label>
         </StackPanel>
         <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" FontSize="12"  Grid.Column="0" Grid.ColumnSpan="2"  AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick">
             <DataGrid.Columns>

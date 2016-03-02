@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -31,9 +32,12 @@ namespace WanTai.View
         public delegate void ExperimentRunErrHandler();
         public delegate void ExperimentRunRutrnHandler();
         public delegate string NextStepScan(string message);
+        public delegate string FirstStepScan(string message);
         public delegate void EvoRestorationStatus(bool isEnable);
+        public delegate void SendNextStepRunMsg();
         public event EvoRestorationStatus SetEvoRestorationStatus;
         private ExperimentRunView experimentRunView = new ExperimentRunView();
+        private string EvoVariableOutputPath = WanTai.Common.Configuration.GetEvoVariableOutputPath();
 
         public MainPage()
         {   
@@ -89,6 +93,7 @@ namespace WanTai.View
                 tubesView.labelRotationName.Content = "";
                 tabItem1.Content = tubesView;
                 tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                tubesView.onFirstStepScan += new FirstStepScan(FirstStepScanEvent);
             }
 
             experimentRunView = new ExperimentRunView();
@@ -97,8 +102,7 @@ namespace WanTai.View
             experimentRunView.ExperimentRunViewEvent += new ExperimentRunViewHandler(ExperimentRunViewEvent);
             experimentRunView.ExperimentRunErrEvent += new ExperimentRunErrHandler(ExperimentRunErrEvent);
             experimentRunView.ExperimentRunRutrnEvent += new ExperimentRunRutrnHandler(ExperimentRunRutrnEvent);
-
-            experimentRunView.BackStepEvent += new BackStepHandler(BackStepClick);
+            experimentRunView.NextStepRunEvent += new SendNextStepRunMsg(SendNextStepRunMessage);
 
             tabControl.SelectedIndex = 0;
         }
@@ -176,7 +180,14 @@ namespace WanTai.View
                 if (SessionInfo.NextTurnStep == 1)
                 {
                     SessionInfo.NextTurnStep = -1;
-                    server.SendMessage("NextStepRun");
+                    if (SessionInfo.MixTwice && SessionInfo.BatchType == "A")
+                    {
+                        server.SendMessage("WaitForSecondMix");
+                    }
+                    else
+                    {
+                        server.SendMessage("NextStepRun");
+                    }
                     //change the lamp and set it green
                     WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
                     processor.SetLampStatus(0);
@@ -185,6 +196,10 @@ namespace WanTai.View
                 {
                     SessionInfo.NextTurnStep = -1;
                     ExperimentRun();
+                }
+                else if (SessionInfo.MixTwice && SessionInfo.BatchType == "B")
+                {
+                    server.SendMessage("NextStepRun");
                 }
                 // btnRecover.IsEnabled = false;
                 //runSelect_listBox.IsEnabled = true;
@@ -208,14 +223,32 @@ namespace WanTai.View
             NextRotationEvent();
         }
         #region 2012-1-5 perry 修改运行
-        private NameDpipesServer server; 
+        private NameDpipesServer server;
+
+        public void SendNextStepRunMessage()
+        {
+            if (null != server)
+            {
+                if (SessionInfo.MixTwice && SessionInfo.BatchType == "A")
+                {
+                    server.SendMessage("WaitForSecondMix");
+                }
+                else
+                {
+                    server.SendMessage("NextStepRun");
+                }
+            }
+        }
+
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
             if (server != null)
                 server.Dispose();
         }
         private string NextStepScanFinishedMessage;
+        public string FirstStepScanFinishedMessage;
         private bool NextStepScanFinishedFalg = false;
+        public bool FirstStepScanFinishedFlag = false; 
         private string NextStepScanEvent(string message)
         {
          //   if (message == "NextStepScanFinished") return string.Empty;
@@ -231,6 +264,20 @@ namespace WanTai.View
             }
             return NextStepScanFinishedMessage;
         }
+        private string FirstStepScanEvent(string message)
+        {
+            FirstStepScanFinishedFlag = false;
+            FirstStepScanFinishedMessage = "FirstStepScanStart";
+            server.start();
+            DateTime dtime = DateTime.Now;
+            while (DateTime.Now.Subtract(dtime).TotalMinutes < 15 && !FirstStepScanFinishedFlag)
+            {
+                System.Threading.Thread.Sleep(1000);
+                continue;
+            }
+            return FirstStepScanFinishedMessage;
+        }
+
         private void MessageReceived(string Message)
         {
             WanTai.Common.CommonFunction.WriteLog("MessageReceived-----MessageReceived====》" + Message);
@@ -238,17 +285,38 @@ namespace WanTai.View
             /**********开始第二轮扫描界面***************************************/
             if (Message.IndexOf("GoToScanPage")>=0)
             {
-                this.Dispatcher.BeginInvoke(new onShowNextRotation(this.onShowNextRotationEvent), null); 
-                return;
+                if (SessionInfo.BatchType == "A")
+                {
+                    this.Dispatcher.BeginInvoke(new onShowSecondMix(this.onShowSecondMixEvent), null);
+                    return;
+                }
+                else
+                {
+                    this.Dispatcher.BeginInvoke(new onShowNextRotation(this.onShowNextRotationEvent), null);
+                    return;
+                }
             }
            /**********第二轮扫描开始 1 成功 否则失败*************************************************************/
             if (NextStepScanFinishedMessage == "NextStepScanStart")
             {
-                if (Message.IndexOf( "ScanFinished")>=0)
+                if (Message.IndexOf("ScanFinished")>=0)
                     NextStepScanFinishedMessage = "NextStepScanFinished";
                 else
                     NextStepScanFinishedMessage = "NextStepScanErr";
                 NextStepScanFinishedFalg = true;
+            }
+            // 第一轮扫描+混样开始
+            if (FirstStepScanFinishedMessage == "FirstStepScanStart")
+            {
+                if (Message.IndexOf("ScanFinished") >= 0)
+                {
+                    FirstStepScanFinishedMessage = "FirstStepScanFinished";
+                }
+                else
+                {
+                    FirstStepScanFinishedMessage = "FirstStepScanErr";
+                }
+                FirstStepScanFinishedFlag = true;
             }
             /********第二轮扫描完成，*********************************************/
             if (Message.IndexOf("ServerClose")>=0)
@@ -257,7 +325,68 @@ namespace WanTai.View
                 //server.MessageReceived -= new NameDpipesServer.MessageReceivedHandler(MessageReceived);
                 //server = null;
             }
+            /********wait for second mix*********************************************/
+            if (Message.IndexOf("NotifyForSecondMix") >= 0)
+            {
+                server.Dispose();
+                server.start();
+            }
         }
+        private delegate void onShowSecondMix();
+        private void onShowSecondMixEvent()
+        {
+            SessionInfo.BatchType = "B";
+            WanTai.Common.CommonFunction.WriteLog("onShowSecondMixEvent-----else");
+
+            tabControl.SelectedIndex = 0;
+            ((TabItem)tabControl.Items[2]).IsEnabled = false;
+
+            // 判断显示工作台
+            if (SessionInfo.WorkDeskType == "100")
+            {
+                TubesView100 tubesView = new TubesView100();
+                tabItem1.Content = tubesView;
+                tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+            else if (SessionInfo.WorkDeskType == "150")
+            {
+                if (SessionInfo.BatchType != null)
+                {
+                    TubesView150 tubesView = new TubesView150();
+                    tabItem1.Content = tubesView;
+                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                }
+                else
+                {
+                    TubesView150S tubesView = new TubesView150S();
+                    tabItem1.Content = tubesView;
+                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                }
+
+
+            }
+            else if (SessionInfo.WorkDeskType == "200")
+            {
+                TubesView200 tubesView = new TubesView200();
+                tabItem1.Content = tubesView;
+                tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+
+            //open the lamp and set it green flashing
+            WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+            processor.SetLampStatus(2);
+            tabControl.SelectedIndex = 0;
+            MessageBox.Show("请为下一次上样准备样品!", "系统提示！", MessageBoxButton.OK);
+            tabControl.SelectedIndex = 0;
+            //change the lamp and set it green
+            processor.SetLampStatus(0);
+            //}
+        } 
+
         private delegate void onShowNextRotation();
         private void onShowNextRotationEvent()
         {
@@ -271,82 +400,82 @@ namespace WanTai.View
             //else
             //{
             SessionInfo.NextTurnStep = 0;
-                WanTai.Common.CommonFunction.WriteLog("onShowNextRotationEvent-----else");
-                //btnRun.IsEnabled = false;
-                //btnRecover.IsEnabled = false;
-                ////runSelect_listBox.IsEnabled = false;
-                //btnStop.IsEnabled = false;
-                //btnRStart.IsEnabled = false;
-                // btnStart.Content = "启动";
-                // this.bindRunWithStartAction();
-                List<RotationInfo> rotations = new List<RotationInfo>();
-                rotations = new ConfigRotationController().GetCurrentRotationInfos(SessionInfo.ExperimentID);
-                if (rotations.Count == 0)
-                {
-                    MessageBox.Show("该实验没有建立轮次。", "系统提示");
-                    return;
-                }
+            WanTai.Common.CommonFunction.WriteLog("onShowNextRotationEvent-----else");
+            //btnRun.IsEnabled = false;
+            //btnRecover.IsEnabled = false;
+            ////runSelect_listBox.IsEnabled = false;
+            //btnStop.IsEnabled = false;
+            //btnRStart.IsEnabled = false;
+            // btnStart.Content = "启动";
+            // this.bindRunWithStartAction();
+            List<RotationInfo> rotations = new List<RotationInfo>();
+            rotations = new ConfigRotationController().GetCurrentRotationInfos(SessionInfo.ExperimentID);
+            if (rotations.Count == 0)
+            {
+                MessageBox.Show("该实验没有建立轮次。", "系统提示");
+                return;
+            }
 
-                if (SessionInfo.PraperRotation == null)
-                    SessionInfo.PraperRotation = rotations.FirstOrDefault();
+            if (SessionInfo.PraperRotation == null)
+                SessionInfo.PraperRotation = rotations.FirstOrDefault();
+            else
+            {
+                foreach (RotationInfo rotation in rotations)
+                {
+                    if (rotation.RotationSequence == SessionInfo.PraperRotation.RotationSequence + 1)
+                    {
+                        SessionInfo.PraperRotation = rotation;
+                        break;
+                    }
+                }
+            }
+
+            tabControl.SelectedIndex = 0;
+            ((TabItem)tabControl.Items[2]).IsEnabled = false;
+                
+            // 判断显示工作台
+            if (SessionInfo.WorkDeskType == "100")
+            {
+                TubesView100 tubesView = new TubesView100();
+                tabItem1.Content = tubesView ;
+                tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
+            else if (SessionInfo.WorkDeskType == "150")
+            {
+                if (SessionInfo.BatchType != null)
+                {
+                    TubesView150 tubesView = new TubesView150();
+                    tabItem1.Content = tubesView;
+                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                }
                 else
                 {
-                    foreach (RotationInfo rotation in rotations)
-                    {
-                        if (rotation.RotationSequence == SessionInfo.PraperRotation.RotationSequence + 1)
-                        {
-                            SessionInfo.PraperRotation = rotation;
-                            break;
-                        }
-                    }
-                }
-
-                tabControl.SelectedIndex = 0;
-                ((TabItem)tabControl.Items[2]).IsEnabled = false;
-                
-                // 判断显示工作台
-                if (SessionInfo.WorkDeskType == "100")
-                {
-                    TubesView100 tubesView = new TubesView100();
-                    tabItem1.Content = tubesView ;
+                    TubesView150S tubesView = new TubesView150S();
+                    tabItem1.Content = tubesView;
                     tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
                     tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
                 }
-                else if (SessionInfo.WorkDeskType == "150")
-                {
-                    if (SessionInfo.BatchType != null)
-                    {
-                        TubesView150 tubesView = new TubesView150();
-                        tabItem1.Content = tubesView;
-                        tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
-                        tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
-                    }
-                    else
-                    {
-                        TubesView150S tubesView = new TubesView150S();
-                        tabItem1.Content = tubesView;
-                        tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
-                        tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
-                    }
 
                     
-                }
-                else if (SessionInfo.WorkDeskType == "200")
-                {
-                    TubesView200 tubesView = new TubesView200();
-                    tabItem1.Content = tubesView ;
-                    tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
-                    tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
-                }
+            }
+            else if (SessionInfo.WorkDeskType == "200")
+            {
+                TubesView200 tubesView = new TubesView200();
+                tabItem1.Content = tubesView ;
+                tubesView.onNextStepScan += new NextStepScan(NextStepScanEvent);
+                tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+            }
                
-                //open the lamp and set it green flashing
-                WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
-                processor.SetLampStatus(2);
-                tabControl.SelectedIndex = 0;
-                MessageBox.Show("请为下一轮实验准备样品!", "系统提示！", MessageBoxButton.OK);
-                tabControl.SelectedIndex = 0;
-                //change the lamp and set it green
-                processor.SetLampStatus(0);
+            //open the lamp and set it green flashing
+            WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+            processor.SetLampStatus(2);
+            tabControl.SelectedIndex = 0;
+            MessageBox.Show("请为下一轮实验准备样品!", "系统提示！", MessageBoxButton.OK);
+            tabControl.SelectedIndex = 0;
+            //change the lamp and set it green
+            processor.SetLampStatus(0);
             //}
         }
         private void NextRotationEvent()
@@ -556,19 +685,6 @@ namespace WanTai.View
         {
             server = new NameDpipesServer();
             server.MessageReceived += new NameDpipesServer.MessageReceivedHandler(MessageReceived);
-        }
-
-        private void BackStepClick(object sender, RoutedEventArgs e)
-        {
-            //SessionInfo.ExperimentID = new Guid();
-            SessionInfo.PraperRotation = null;
-            //SessionInfo.CurrentExperimentsInfo = null;
-            tabControl.SelectedIndex = 0;
-            for (int i = 1; i < tabControl.Items.Count; i++)
-            {
-                TabItem item = (TabItem)tabControl.Items[i];
-                item.IsEnabled = false;
-            }
         }
     }
 

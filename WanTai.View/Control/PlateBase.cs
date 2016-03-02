@@ -201,8 +201,8 @@ namespace WanTai.View.Control
                         this.Foreground = Brushes.Gray;
                         this.BorderBrush = Brushes.Red;
                         // 修改警告颜色 js
-                        ((Plate)this).GridPlate.Background = Brushes.Red;
-                        ((Plate)this).txtPlateName.Background = Brushes.Red;
+                        //((ReagentTub)this).GridPlate.Background = Brushes.Red;
+                        //((ReagentTub)this).txtPlateName.Background = Brushes.Red;
                         if (RelatedControls != null)
                         {
                             foreach (object tb in RelatedControls)
@@ -227,9 +227,9 @@ namespace WanTai.View.Control
                         this.Foreground = Brushes.Gray;
                         this.BorderBrush = Brushes.White;
                         // 修改警告颜色 js
-                        ((Plate)this).GridPlate.Background = Brushes.White;
-                        ((Plate)this).txtPlateName.Background = Brushes.White;
-                        ((Plate)this).txtPlateName.FontWeight = FontWeights.Bold;
+                        //((Plate)this).GridPlate.Background = Brushes.White;
+                        //((Plate)this).txtPlateName.Background = Brushes.White;
+                        //((Plate)this).txtPlateName.FontWeight = FontWeights.Bold;
                         if (RelatedControls != null)
                         {
                             foreach (object tb in RelatedControls)

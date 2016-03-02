@@ -336,6 +336,9 @@ namespace WanTai.View
                 }
             }
         }
+
+        public event WanTai.View.MainPage.SendNextStepRunMsg NextStepRunEvent;
+
         /// <summary>
         /// falg 0 启动 1 暂停 2 继续(执行完剩余脚本才结束方法) 10 出错后继续 11出错后重新启动
         /// 混样脚本  (提取+PCR配液+混样)脚本  样品分装脚本  三个脚本
@@ -352,47 +355,20 @@ namespace WanTai.View
                     ExperimentRunRutrnEvent();
                 return false;
             }
-            ///check door lock status
-            //WanTai.Controller.EVO.EVO_DoorLockStatus doorLockStatus = CheckDoorLockStatus();
-            //if (doorLockStatus == Controller.EVO.EVO_DoorLockStatus.ON)
-            //{
-            //    btnDoorLock.Background = new SolidColorBrush() { Color = Colors.Red };
-            //    MessageBox.Show("请关闭防护门", "系统提示");
-            //    if (ExperimentRunRutrnEvent != null)
-            //        ExperimentRunRutrnEvent();
-            //    return false;
-            //}
-            //else if (doorLockStatus == Controller.EVO.EVO_DoorLockStatus.OFF)
-            //{                
-            //    btnDoorLock.Background = null;
-            //}
-            if (CurrentRotation.RunIndex == 0 && CurrentRotation.CurrentOperationIndex==0)
-                WriteTimesCSV(NexRotation?1:0);
+
+            if (CurrentRotation.RunIndex == 0 && CurrentRotation.CurrentOperationIndex == 0)
+            {
+                WriteTimesCSV(NexRotation ? 1 : 0);
+            }
        
             #region 2012-1-5 perry 改流程时修改
-            /*
-            if (CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].OperationType == (short)OperationType.Grouping && NexRotation && falg== ExperimentRunStatus.Start)
-            {
-                if (new RotationController().GetRotationIsBatch(ExperimentRotation[CurrentRotation.RunIndex + 1].RotationID) == null )
-                {
-                    MessageBox.Show("请为下一轮次混样选择采血管!", "系统提示");
-                    if (NewExperimentEvent != null)
-                        NewExperimentEvent();
-                    return false;
-                }
-            }
-             */ 
+
+
             #endregion
             #region 修改参数文件
             if (CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].OperationType == (short)OperationType.Grouping && CurrentRotation.RunIndex > 0 && falg == ExperimentRunStatus.Start)
             {
-                //MessageBoxResult selectResult = MessageBox.Show("请检查DW96Plate3、DW96Plate4、DW96Plate5位置上有板材, 是否运行实验？", "系统提示", MessageBoxButton.YesNo);
-                //if (selectResult != MessageBoxResult.Yes)
-                //{
-                //    if (ExperimentRunRutrnEvent != null)
-                //        ExperimentRunRutrnEvent();
-                //    return false;
-                //}
+
                 string SampleNumberFileName = WanTai.Common.Configuration.GetEvoVariableOutputPath() + ExperimentRotation[CurrentRotation.RunIndex].RotationID.ToString() + WanTai.Common.Configuration.GetSampleNumberFileName();
                 if (File.Exists(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName()))
                     File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName());
@@ -480,6 +456,20 @@ namespace WanTai.View
                                 continue;
                             }
                             WanTai.Common.CommonFunction.WriteLog(RunFalg.ToString() + ";ExperimentName:" + SessionInfo.CurrentExperimentsInfo.ExperimentName + "RunIndex:" + CurrentRotation.RunIndex.ToString() + ";Script--" + scriptFileName);
+                            if (CurrentRotation.RunIndex == 0 && CurrentRotation.CurrentOperationIndex == 0)
+                            {
+                                if (SessionInfo.FirstStepMixing == 2) {
+                                    // send message to namedpipe client
+                                    if (NextStepRunEvent != null)
+                                        NextStepRunEvent();
+                                    while (SessionInfo.FirstStepMixing == 2)
+                                    {
+                                        Thread.Sleep(1000);
+                                    }
+                                    RunReturnValue = SessionInfo.FirstStepMixing == 5;
+                                    continue;
+                                }
+                            }
                             /******Stop Suspend 都返回 True,只有错才返回 False******************************/
                             bool canRecover = false;
                             if (falg == ExperimentRunStatus.Recover)
@@ -1122,7 +1112,7 @@ namespace WanTai.View
                         else
                             NexRotation = false;
                        
-                       WriteTimesCSV(NexRotation ? 1 : 0);
+                        WriteTimesCSV(NexRotation ? 1 : 0);
                     }
                     else //最后一个轮次
                     {
@@ -1410,19 +1400,10 @@ namespace WanTai.View
             }
         }
 
-        public event WanTai.View.MainPage.BackStepHandler BackStepEvent;
-
         private void btnTrash_Click(object sender, RoutedEventArgs e)
         {
             if (FinishedRotation != null)
             {
-                if (SessionInfo.BatchType == "A")
-                {
-                    BackStepEvent(sender, e);
-                    SessionInfo.BatchType = "B";
-                    return;
-                }
-
 
                 RubbishAlert rubbishAlert = new RubbishAlert(FinishedRotation.RotationID);
                 rubbishAlert.ShowDialog();

@@ -27,12 +27,20 @@
             <Label Content="实验名称：" Height="28" Name="label1" />
             <Label Content="" Height="28" Name="ExperimentName_label" />
         </StackPanel>
-        <StackPanel Grid.ColumnSpan="4" Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,30,0">
-            <Button Name="btnImportPCRResult" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0" Click="btnImportPCRResult_Click">
+        <StackPanel Grid.ColumnSpan="5" Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,30,0">
+            <Button Name="btnAutoImportPCRResult" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="0" Click="btnAutoImportPCRResult_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/WanTag;component/Resources/PCR_Importing_hover.gif" Width="20" Height="20" />
-                        <Label Content="PCR结果导入" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                        <Label Content="PCR结果自动导入" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="btnImportPCRResult" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Click="btnImportPCRResult_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/WanTag;component/Resources/PCR_Importing_hover.gif" Width="20" Height="20" />
+                        <Label Content="PCR结果手动导入" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
                     </StackPanel>
                 </Button.Content>
             </Button>

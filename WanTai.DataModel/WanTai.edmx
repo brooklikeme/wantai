@@ -184,7 +184,6 @@
           <Property Name="OperationID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="OperationName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="RotationSequence" Type="smallint" />
-          <Property Name="BatchType" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="RotationOperate">
           <Key>
@@ -266,6 +265,7 @@
           <Property Name="ExperimentID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TubesBatchID" Type="uniqueidentifier" />
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="BatchType" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="Tubes">
           <Key>
@@ -842,7 +842,6 @@
           <Property Type="String" Name="OperationName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="TubesBatch" Relationship="WanTaiModel.FK_RotationInfo_TubesBatch" FromRole="RotationInfo" ToRole="TubesBatch" />
           <Property Type="Int16" Name="RotationSequence" />
-          <Property Name="BatchType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RotationOperate">
           <Key>
@@ -890,6 +889,7 @@
           <Property Type="Guid" Name="ExperimentID" Nullable="false" />
           <Property Type="Guid" Name="TubesBatchID" />
           <Property Type="DateTime" Name="CreateTime" Nullable="false" Precision="3" />
+          <Property Name="BatchType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="true" />
           <NavigationProperty Name="PoolingRulesConfiguration" Relationship="WanTaiModel.FK_TubeGroup_PoolingRulesConfiguration" FromRole="TubeGroup" ToRole="PoolingRulesConfiguration" />
           <NavigationProperty Name="TubesBatch" Relationship="WanTaiModel.FK_TubeGroup_TubesBatch" FromRole="TubeGroup" ToRole="TubesBatch" />
           <NavigationProperty Name="Tubes" Relationship="WanTaiModel.FK_Tubes_TubeGroup" FromRole="TubeGroup" ToRole="Tube" />
@@ -1266,7 +1266,6 @@
           <EntitySetMapping Name="RotationInfoes">
             <EntityTypeMapping TypeName="WanTaiModel.RotationInfo">
               <MappingFragment StoreEntitySet="RotationInfo">
-                <ScalarProperty Name="BatchType" ColumnName="BatchType" />
                 <ScalarProperty Name="RotationSequence" ColumnName="RotationSequence" />
                 <ScalarProperty Name="OperationName" ColumnName="OperationName" />
                 <ScalarProperty Name="OperationID" ColumnName="OperationID" />
@@ -1320,6 +1319,7 @@
           <EntitySetMapping Name="TubeGroups">
             <EntityTypeMapping TypeName="WanTaiModel.TubeGroup">
               <MappingFragment StoreEntitySet="TubeGroup">
+		<ScalarProperty Name="BatchType" ColumnName="BatchType" />
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="TubesBatchID" ColumnName="TubesBatchID" />
                 <ScalarProperty Name="ExperimentID" ColumnName="ExperimentID" />

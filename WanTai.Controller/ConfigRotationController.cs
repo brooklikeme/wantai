@@ -76,7 +76,7 @@ namespace WanTai.Controller
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var oldRotations = entities.RotationInfoes.Where(c => c.ExperimentID == SessionInfo.ExperimentID && c.BatchType == SessionInfo.BatchType);
+                    var oldRotations = entities.RotationInfoes.Where(c => c.ExperimentID == SessionInfo.ExperimentID);
                     
                     if (oldRotations.Count() > 0)
                     {                        
@@ -118,17 +118,9 @@ namespace WanTai.Controller
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    if (SessionInfo.BatchType == null)
-                    {
-                        var rotations = entities.RotationInfoes.Where(c => c.ExperimentID == experimentID).OrderBy(c => c.RotationSequence);
-                        return rotations.ToList<RotationInfo>();
-                    }
-                    else
-                    {
-                        var rotations = entities.RotationInfoes.Where(c => c.ExperimentID == experimentID && c.BatchType == SessionInfo.BatchType).OrderBy(c => c.RotationSequence);
-                        return rotations.ToList<RotationInfo>();
-                    }
 
+                    var rotations = entities.RotationInfoes.Where(c => c.ExperimentID == experimentID).OrderBy(c => c.RotationSequence);
+                    return rotations.ToList<RotationInfo>();
                 }
             }
             catch (Exception e)

@@ -226,7 +226,7 @@ namespace WanTai.View
             Dictionary<short, bool> operationOrders = new OperationController().GetOperationOrders(SessionInfo.PraperRotation.OperationID);
             ReagentSuppliesConfigurationController configController = new ReagentSuppliesConfigurationController();
             reagentAndSupplies = configController.GetReagentAndSuppliesNeeded(operationOrders, SessionInfo.RotationFormulaParameters[SessionInfo.PraperRotation.RotationID]);
-            if (!isFirstRotation)
+            if (!isFirstRotation || SessionInfo.BatchType == "B")
             {
                 configController.UpdateExperimentVolume(SessionInfo.ExperimentID, ref reagentAndSupplies, new short[]{ConsumptionType.FirstAdd,ConsumptionType.Add,
                     ConsumptionType.consume}, ReagentAndSuppliesConfiguration.CurrentVolumeFieldName);
@@ -310,10 +310,10 @@ namespace WanTai.View
 
             if (SessionInfo.BatchType == "A")
             {
-                btnReagent.Visibility = Visibility.Hidden;
-                dgReagent.Visibility = Visibility.Hidden;
-                stackPanelTestItem.Visibility = Visibility.Hidden;
-                stackPanelTestItem2.Visibility = Visibility.Hidden;
+                //btnReagent.Visibility = Visibility.Hidden;
+                //dgReagent.Visibility = Visibility.Hidden;
+                //stackPanelTestItem.Visibility = Visibility.Hidden;
+                //stackPanelTestItem2.Visibility = Visibility.Hidden;
             }
             else
             {

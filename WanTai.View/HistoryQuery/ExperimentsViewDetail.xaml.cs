@@ -211,6 +211,14 @@ namespace WanTai.View.HistoryQuery
                     System.Windows.Forms.MessageBox.Show("导出文件失败：" + ex.Message);
                 }
             }
-        }        
+        }
+
+        private void btnAutoImportPCRResult_Click(object sender, RoutedEventArgs e)
+        {
+            PCR.ImportPCRTestResultFile importPCR = new PCR.ImportPCRTestResultFile(experimentId);
+            importPCR.AutoImportPCRResults();
+            dataTable.Rows.Clear();
+            initDataGrid();
+        }
     }
 }
