@@ -576,7 +576,6 @@ CREATE TABLE [dbo].[RotationInfo](
 	[OperationID] [uniqueidentifier] NOT NULL,
 	[OperationName] [varchar](255) NOT NULL,
 	[RotationSequence] [smallint] NULL,
-	[BatchType] [varchar] (10) NULL,
  CONSTRAINT [PK_RotationInfo] PRIMARY KEY CLUSTERED 
 (
 	[RotationID] ASC
@@ -611,6 +610,7 @@ CREATE TABLE [dbo].[TubeGroup](
 	[ExperimentID] [uniqueidentifier] NOT NULL,
 	[TubesBatchID] [uniqueidentifier] NULL,
 	[CreateTime] [datetime] NOT NULL,
+	[BatchType] [varchar] (10) NULL,
  CONSTRAINT [PK_TubeGroup] PRIMARY KEY CLUSTERED 
 (
 	[TubeGroupID] ASC

@@ -50,6 +50,7 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AlterObject.sql" />
     <Content Include="CreateObject.sql" />
     <Content Include="CreateRecords.sql" />
     <Content Include="License.rtf" />

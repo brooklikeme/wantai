@@ -14,57 +14,59 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="70"/>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="70"/>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="70"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="80"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="22"/>
             <RowDefinition Height="22"/>
-            <RowDefinition Height="12"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="22"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="22"/>
             <RowDefinition Height="22"/>
+            <RowDefinition Height="10"/>
             <RowDefinition Height="22"/>
-            <RowDefinition Height="22"/>
-            <RowDefinition Height="12"/>
-            <RowDefinition Height="22"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition/>
             <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,5,0,5" Grid.Column="4" HorizontalAlignment="Right" Grid.RowSpan="2">
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,5,0,5" Grid.Column="4" HorizontalAlignment="Right" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <Label Content="样品条码：" />
             <TextBox x:Name="tube_barcode" Width="200" />
             <Button x:Name="barcodequery_button" Content="查询" Margin="10,0,0,0"  Click="barcodequery_button_Click" HorizontalAlignment="Center"/>
         </StackPanel>
-        <Label Content="实验名称：" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="experiment_name" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="操作员：" Grid.Row="1"  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="0" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="login_name" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="仪器型号：" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="instrument_type" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="仪器编码：" Grid.Row="1"  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="instrument_number" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="检验人：" Grid.Row="0" Grid.Column="4" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="___________________" Grid.Row="0" Grid.Column="5" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="复核人：" Grid.Row="1"  Grid.Column="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="___________________" Grid.Row="1"  Grid.Column="5" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
+        <Label Content="实验名称：" Grid.Row="0" Grid.Column="0" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="experiment_name" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei"/>
+        <Label Content="操作员：" Grid.Row="1"  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="0" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="login_name" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei" Grid.Row="1"/>
+        <Label Content="仪器型号：" Grid.Row="0" Grid.Column="2" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="instrument_type" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei"/>
+        <Label Content="仪器编码：" Grid.Row="1"  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="instrument_number" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" Grid.Row="1"/>
+        <Label Content="" Grid.Row="2" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" Grid.ColumnSpan="6" HorizontalAlignment="Left" FontSize="10"/>
+        <Label x:Name="rotation" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.ColumnSpan="2" FontFamily="Microsoft YaHei"/>
+        <Label Content="样本数量：" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="sample_number" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei"/>
+        <Label Content="试剂批号：" Grid.Row="5" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="reagent_batch" Grid.Row="5" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei"/>
+        <Label Content="质控品批号：" Grid.Row="6" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="qc_batch" Grid.Row="6" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei"/>
 
-        <Label x:Name="rotation" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.ColumnSpan="2" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="样本数量：" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="sample_number" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="实验时间：" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="experiment_time" Grid.Row="1" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="扩增时间：" Grid.Row="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="pcr_time" Grid.Row="2" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="PCR仪：" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="pcr_device" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="1" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label Content="PCR条码：" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="pcr_barcode" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <Label x:Name="qc_result" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red" Grid.ColumnSpan="3" FontFamily="Microsoft YaHei" FontSize="10"/>
-        <DataGrid Grid.Row="5" AutoGenerateColumns="False" FontSize="11" CanUserAddRows="False" HorizontalAlignment="Stretch" x:Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged" FontFamily="Microsoft YaHei" Grid.ColumnSpan="5">
+        <Label Content="提取时间：" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="experiment_time" Grid.Row="3" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" Grid.ColumnSpan="3"/>
+        <Label Content="扩增时间：" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="pcr_time" Grid.Row="4" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" Grid.ColumnSpan="3"/>
+        <Label Content="PCR仪：" Grid.Row="5" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" Grid.Column="2"/>
+        <Label x:Name="pcr_device" Grid.Row="5" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" Grid.ColumnSpan="3"/>
+        <Label Content="PCR条码：" Grid.Row="6" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="2" FontFamily="Microsoft YaHei"/>
+        <Label x:Name="pcr_barcode" Grid.Row="6" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Black" Grid.Column="3" FontFamily="Microsoft YaHei" Grid.ColumnSpan="3"/>
+        <Label Content="-----------------------------------------" Grid.Row="7" VerticalContentAlignment="Stretch" Foreground="Black" FontFamily="Microsoft YaHei" FontSize="10" Grid.ColumnSpan="6" HorizontalAlignment="Left"/>
+        <Label x:Name="qc_result" Grid.Row="8" HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="Red" Grid.ColumnSpan="6" FontFamily="Microsoft YaHei"/>
+        <DataGrid Grid.Row="9" AutoGenerateColumns="False" FontSize="11" CanUserAddRows="False" HorizontalAlignment="Stretch" x:Name="dataGrid_view" VerticalAlignment="Top" PreviewMouseDoubleClick="dataGrid_view_PreviewMouseDoubleClick" DataContextChanged="dataGrid_view_DataContextChanged" FontFamily="Microsoft YaHei" Grid.ColumnSpan="6">
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Number" Header="序号" Width="20" Binding="{Binding Number}" CanUserSort="False" IsReadOnly="True" FontFamily="Microsoft YaHei"/>
                 <DataGridTextColumn x:Name="TubeTypeName" Binding="{Binding TubeTypeName}" CanUserSort="False" ClipboardContentBinding="{x:Null}" FontFamily="Microsoft YaHei" Header="类型" HeaderStringFormat="" SortMemberPath="TubeType" Width="70" FontSize="10">
@@ -203,6 +205,6 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="6" x:Name="StackPanel_contrast" Grid.ColumnSpan="5"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="10" x:Name="StackPanel_contrast" Grid.ColumnSpan="6"/>
     </Grid>
 </UserControl>

@@ -89,21 +89,45 @@ namespace WanTai.Controller.PCR
             return null;
         }
 
-        public int GetSampleNumber(Guid experimentID)
+        public int GetSampleNumber(Guid experimentID, Guid rotationID)
         {
+            int sampleNumber = 0;
             try
             {
-                using (WanTaiEntities entities = new WanTaiEntities())
+                string connectionString = WanTai.Common.Configuration.GetConnectionString();
+                string commandText = "select count(*) from Tubes, TubeGroup, TubesBatch, RotationInfo "
+                    + "where Tubes.TubeGroupID = TubeGroup.TubeGroupID "
+                    + "and TubeGroup.TubesBatchID = TubesBatch.TubesBatchID "
+                    + "and TubesBatch.TubesBatchID = RotationInfo.TubesBatchID "
+                    + "and RotationInfo.RotationID = @RotationID "
+                    + "and RotationInfo.ExperimentID = @ExperimentID";
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    return entities.Tubes.Where(t => t.ExperimentID == experimentID && t.TubeType == 0).Count();
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@RotationID", rotationID);
+                        cmd.Parameters.AddWithValue("@ExperimentID", experimentID);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
+                        {
+                            if (reader.Read())
+                            {
+                                sampleNumber = reader.GetInt32(0);
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
                 string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
-                LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->GetSampleNumber", experimentID);
+                LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->GetPCRResultRotation", SessionInfo.ExperimentID);
                 throw;
             }
+
+            return sampleNumber;
         }
 
         public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage)
@@ -1035,7 +1059,7 @@ namespace WanTai.Controller.PCR
                     row.CreateCell(3).SetCellValue(expInfo.LoginName);
                     row = (HSSFRow)new_sheet.CreateRow(1);
                     row.CreateCell(0).SetCellValue("样本数量");
-                    row.CreateCell(1).SetCellValue(GetSampleNumber(expInfo.ExperimentID));
+                    row.CreateCell(1).SetCellValue(GetSampleNumber(expInfo.ExperimentID, rotationInfo.RotationID));
                     row.CreateCell(2).SetCellValue("实验时间");
                     row.CreateCell(3).SetCellValue(expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss"));
                     List<Plate> plateList = GetPCRPlateList(rotationInfo.RotationID, expInfo.ExperimentID);
@@ -1349,30 +1373,129 @@ namespace WanTai.Controller.PCR
 
             PdfPTable header_table = new PdfPTable(6);
             header_table.WidthPercentage = 100f;
-            header_table.SetTotalWidth(new float[] { 16, 16, 16, 16, 16, 16 });
+            header_table.SetTotalWidth(new float[] { 8, 25, 8, 25, 8, 26 });
 
-            for (int i = 0; i < 8; i++)
-            {
-                PdfPCell cell = new PdfPCell(new Phrase("test", font));
+            // 实验名称
+            PdfPCell cell = new PdfPCell(new Phrase("实验名称：", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
 
-                // cell.UseAscender = true;
-                cell.FixedHeight = 20;
-                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            cell = new PdfPCell(new Phrase(expInfo.ExperimentName, font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
 
-                header_table.AddCell(cell);
-            }
+            // 仪器型号
+            cell = new PdfPCell(new Phrase("仪器型号：", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
 
+            cell = new PdfPCell(new Phrase(SessionInfo.WorkDeskType, font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            // 检验人
+            cell = new PdfPCell(new Phrase("检验人：", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("___________________", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            // 操作员
+            cell = new PdfPCell(new Phrase("操作员：", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(expInfo.LoginName, font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            // 仪器编码
+            cell = new PdfPCell(new Phrase("仪器编码：", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(WanTai.Common.Configuration.GetInstrumentNumber(), font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            // 复核人
+            cell = new PdfPCell(new Phrase("复核人：", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("___________________", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0; 
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            // empty
+            cell = new PdfPCell(new Phrase("", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 5;
+            cell.Colspan = 6;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
 
             document.Add(header_table);
 
             // document.Add(new Paragraph("\n"));
 
-            Paragraph p_expName = new Paragraph(("实验名称：" + expInfo.ExperimentName).PadRight(44, ' ') + "操 作 员：" + expInfo.LoginName, fontTitle);
-            document.Add(p_expName);
+            // Paragraph p_expName = new Paragraph(("实验名称：" + expInfo.ExperimentName).PadRight(44, ' ') + "操 作 员：" + expInfo.LoginName, fontTitle);
+            // document.Add(p_expName);
 
-            Paragraph p_expLoginName = new Paragraph(("样本数量：" + GetSampleNumber(expInfo.ExperimentID)).PadRight(55, ' ') + "实验时间：" + expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss"), fontTitle);
-            document.Add(p_expLoginName);
+            // Paragraph p_expLoginName = new Paragraph(("样本数量：" + GetSampleNumber(expInfo.ExperimentID, new Guid())).PadRight(55, ' ') + "实验时间：" + expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss"), fontTitle);
+            // document.Add(p_expLoginName);
 
             for (int k = 0; k < ds.Tables.Count; k++)
             {
@@ -1393,27 +1516,150 @@ namespace WanTai.Controller.PCR
                 {
                     foreach (Plate plate in plateList)
                     {
-                        PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : ", " + plate.BarCode;
+                        PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : " " + plate.BarCode;
                         XmlDocument xdoc = new XmlDocument();
                         if (null != plate.PCRContent)
                         {
                             xdoc.LoadXml(plate.PCRContent);
                             XmlNode node = xdoc.SelectSingleNode("PCRContent");
-                            PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
+                            PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : " " + node.SelectSingleNode("PCRDevice").InnerText;
                             string timeString = node.SelectSingleNode("PCRStartTime").InnerText + "--" + node.SelectSingleNode("PCREndTime").InnerText;
-                            PCRTimeString += PCRTimeString == "" ? timeString : ", " + timeString;
+                            PCRTimeString += PCRTimeString == "" ? timeString : "\n" + timeString;
                         }
                     }
                 }
 
-                Paragraph p_Rotation = new Paragraph(rotationName.PadRight(62, ' ') + "扩增时间：" + PCRTimeString, fontTitle);
-                document.Add(p_Rotation);
+                PdfPTable rotation_table = new PdfPTable(4);
+                rotation_table.WidthPercentage = 100f;
+                rotation_table.SetTotalWidth(new float[] { 8, 25, 8, 59 });
 
-                Paragraph p_PCR = new Paragraph(("PCR仪：" + PCRDeviceString).PadRight(53, ' ') + "PCR条码：" + PCRBarCodeString, fontTitle);
-                document.Add(p_PCR);
+                // 轮次
+                cell = new PdfPCell(new Phrase(rotationName, font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
 
+                cell = new PdfPCell(new Phrase("", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                // 提取时间
+                cell = new PdfPCell(new Phrase("提取时间：", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss"), font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                // 样本数量：
+                cell = new PdfPCell(new Phrase("样本数量：", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(GetSampleNumber(expInfo.ExperimentID, new Guid(rotationID)).ToString(), font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                // 扩增时间：
+                cell = new PdfPCell(new Phrase("扩增时间：", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(PCRTimeString, font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                // 试剂批号
+                cell = new PdfPCell(new Phrase("试剂批号：", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                // "PCR仪：
+                cell = new PdfPCell(new Phrase(rotationName, font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(PCRDeviceString, font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                // 质控品批号
+                cell = new PdfPCell(new Phrase("质控品批号：", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase("", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                // PCR板条码：
+                cell = new PdfPCell(new Phrase("PCR板条码：", font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                cell = new PdfPCell(new Phrase(PCRBarCodeString, font));
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                rotation_table.AddCell(cell);
+
+                document.Add(rotation_table);
+
+ 
                 if (ds.Tables[k].Rows[0]["检测结果"].ToString().Contains("重新测定") || ds.Tables[k].Rows[1]["检测结果"].ToString().Contains("重新测定"))
                 {
+                    Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, iTextSharp.text.Color.BLACK, Element.ALIGN_LEFT, 1)));
+                    document.Add(p);
                     Paragraph p_QC = new Paragraph("QC: 质控品结果不符合标准，实验无效", fontTitle);
                     document.Add(p_QC);
                 }
@@ -1437,7 +1683,7 @@ namespace WanTai.Controller.PCR
                 {
                     string cellName = ds.Tables[k].Columns[j].ColumnName;
                     cellName = cellName.Replace("BarCode", "条码").Replace("Position", "孔位");
-                    PdfPCell cell = new PdfPCell(new Phrase(cellName, font));
+                    cell = new PdfPCell(new Phrase(cellName, font));
 
                     // cell.UseAscender = true;
                     cell.FixedHeight = 20;
@@ -1464,7 +1710,7 @@ namespace WanTai.Controller.PCR
                     {
                         try
                         {
-                            PdfPCell cell = new PdfPCell(new Phrase(ds.Tables[k].Rows[i][j].ToString(), font));
+                            cell = new PdfPCell(new Phrase(ds.Tables[k].Rows[i][j].ToString(), font));
                             System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(ds.Tables[k].Rows[i]["Color"].ToString());
                             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
                             cell.HorizontalAlignment = Element.ALIGN_CENTER;

@@ -31,6 +31,7 @@
 
     <Binary Id='CreateDBObj' SourceFile='CreateObject.sql' />
     <Binary Id='CreateDBRecords' SourceFile='CreateRecords.sql' />
+    <Binary Id='AlterDBObj' SourceFile='AlterObject.sql' />    
     <Icon Id="WanTai.View.exe.config" SourceFile="../WanTai.View/bin/Debug/WanTag.exe.config" />
     <Icon Id="WanTai.View.exe" SourceFile="../WanTai.View/bin/Debug/WanTag.exe" />
     <!--<Icon Id="EVOApiErrorMsg.dll" SourceFile="../WanTai.View/bin/Debug/EVOApiErrorMsg.dll" />
@@ -78,6 +79,14 @@
         <ComponentRef Id="CreateDB_SqlAuth" />
         <!--<ComponentRef Id="DropDB_SqlAuth" />-->
       </Feature>
+      <Feature Id="Feature_AlterDB_WinAuth" Title="Database" Level="1" Display="hidden">
+        <ComponentRef Id="AlterDB_WinAuth" />
+        <!--<ComponentRef Id="DropDB_WinAuth" />-->
+      </Feature>
+      <Feature Id="Feature_AlterDB_SqlAuth" Title="Database" Level="1" Display="hidden">
+        <ComponentRef Id="AlterDB_SqlAuth" />
+        <!--<ComponentRef Id="DropDB_SqlAuth" />-->
+      </Feature>      
     </Feature>
     
     <Binary Id='ConnectDBClass'  SourceFile='../WanTai.CustomAction/bin/Debug/WanTai.CustomAction.CA.dll' />
@@ -236,6 +245,24 @@
           <!--DROP DATABASE [DBNAME]-->
         </sql:SqlDatabase>
       </Component>
+      <Component Id="AlterDB_WinAuth" Guid="b59e4e12-d931-11e5-807f-64006a2088e2" Directory='INSTALLDIR' KeyPath="yes">
+        <Condition>AUTHENTICATION = "0" and DBPOSITION = "0" and CREATEDB = "0"</Condition>
+        <!-- Create a DB with Windows Authentication -->
+        <sql:SqlDatabase Id='SqlDatabaseWinAuth2' Database='[DBNAME]' Server='[DBSERVER]' CreateOnInstall='yes' DropOnUninstall='no' ContinueOnError='no'>
+          <sql:SqlScript Id='AlterObjSQLScriptWinAuth' ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='AlterDBObj' Sequence='1' />
+          <!--<sql:SqlString Id='DropRecordsSQLScriptWinAuth' ExecuteOnUninstall='no' SQL='use master' ExecuteOnReinstall='no'  Sequence='4' />-->
+          <!--DROP DATABASE [DBNAME]-->
+        </sql:SqlDatabase>
+      </Component>
+      <Component Id="AlterDB_SqlAuth" Guid="b59e4e28-d931-11e5-807f-64006a2088e2" Directory='INSTALLDIR' KeyPath="yes">
+        <Condition>AUTHENTICATION = "1" and DBPOSITION = "0" and CREATEDB = "0"</Condition>
+        <!-- Create a DB with SQL-Server Authentication -->
+        <sql:SqlDatabase Id='SqlDatabaseSQLAuth2' Database='[DBNAME]'  User='DBCreationUser' Server='[DBSERVER]' CreateOnInstall='yes' DropOnUninstall='no' ContinueOnError='no'>
+          <sql:SqlScript Id='AlterObjSQLScriptSQLAuth'  ExecuteOnInstall='yes' ExecuteOnReinstall='no' BinaryKey='AlterDBObj' Sequence='1'  />
+          <!--<sql:SqlString Id='DropRecordsSQLScriptSQLAuth' ExecuteOnUninstall='no' SQL='use master' ExecuteOnReinstall='no'  Sequence='4' />-->
+          <!--DROP DATABASE [DBNAME]-->
+        </sql:SqlDatabase>
+      </Component>      
       <!--<Component Id="DropDB_WinAuth" Guid="3A10A7F9-E920-430a-88B1-E97584AC65E9" Directory='INSTALLDIR' KeyPath="yes">
         <Condition>AUTHENTICATION = "0"</Condition>
         --><!-- Create a DB with Windows Authentication --><!--

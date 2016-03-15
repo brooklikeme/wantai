@@ -134,8 +134,10 @@ namespace WanTai.View.PCR
                 ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
                 this.experiment_name.Content = expInfo.ExperimentName;
                 this.login_name.Content = expInfo.LoginName;
-                this.sample_number.Content = controller.GetSampleNumber(expInfo.ExperimentID);
+                this.sample_number.Content = controller.GetSampleNumber(expInfo.ExperimentID, rotationId);
                 this.experiment_time.Content = expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss");
+                this.instrument_type.Content = SessionInfo.WorkDeskType;
+                this.instrument_number.Content = WanTai.Common.Configuration.GetInstrumentNumber();
                 string PCRTimeString = "";
                 string PCRDeviceString = "";
                 string PCRBarCodeString = "";
@@ -145,15 +147,26 @@ namespace WanTai.View.PCR
                 {
                     foreach (Plate plate in plateList)
                     {
-                        PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : ", " + plate.BarCode;
+                        PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : " " + plate.BarCode;
                         XmlDocument xdoc = new XmlDocument();
                         if (null != plate.PCRContent)
                         {
                             xdoc.LoadXml(plate.PCRContent);
                             XmlNode node = xdoc.SelectSingleNode("PCRContent");
-                            PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
-                            string timeString = node.SelectSingleNode("PCRStartTime").InnerText + "--" + node.SelectSingleNode("PCREndTime").InnerText;
-                            PCRTimeString += PCRTimeString == "" ? timeString : ", " + timeString;
+                            PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : " " + node.SelectSingleNode("PCRDevice").InnerText;
+                            DateTime pcrStartTime, pcrEndTime;
+                            string pcrStartTimeString = node.SelectSingleNode("PCRStartTime").InnerText;
+                            string pcrEndTimeString = node.SelectSingleNode("PCREndTime").InnerText;
+                            if (DateTime.TryParse(pcrStartTimeString, out pcrStartTime))
+                            {
+                                pcrStartTimeString = pcrStartTime.ToString("yyyy/MM/dd HH:mm:ss");
+                            }
+                            if (DateTime.TryParse(pcrEndTimeString, out pcrEndTime))
+                            {
+                                pcrEndTimeString = pcrEndTime.ToString("yyyy/MM/dd HH:mm:ss");
+                            } 
+                            string timeString = pcrStartTimeString + "--" + pcrEndTimeString;
+                            PCRTimeString += PCRTimeString == "" ? timeString : "\n " + timeString;
                         }
                     }
                 }

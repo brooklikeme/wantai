@@ -448,6 +448,9 @@ namespace WanTai.View
                     {
                         try
                         {
+                            WanTai.Common.CommonFunction.WriteLog(RunFalg.ToString() + ";ExperimentName:" + SessionInfo.CurrentExperimentsInfo.ExperimentName + "RunIndex:" + CurrentRotation.RunIndex.ToString() + ";Script--" + scriptFileName);
+                            WanTai.Common.CommonFunction.WriteLog("OperationCount:" + RunOperation.Count() + ";CurrentOperationIndex:" + CurrentRotation.CurrentOperationIndex);
+
                             DateTime scriptStartTime =RunScriptTime= ExperimentStartTime = WanTai.Controller.EVO.ProcessorFactory.GetDateTimeNow();
                             if (CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].IsExistsRunScript == null)
                                 CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].IsExistsRunScript = string.Empty;
@@ -455,7 +458,6 @@ namespace WanTai.View
                             {
                                 continue;
                             }
-                            WanTai.Common.CommonFunction.WriteLog(RunFalg.ToString() + ";ExperimentName:" + SessionInfo.CurrentExperimentsInfo.ExperimentName + "RunIndex:" + CurrentRotation.RunIndex.ToString() + ";Script--" + scriptFileName);
                             if (CurrentRotation.RunIndex == 0 && CurrentRotation.CurrentOperationIndex == 0)
                             {
                                 if (SessionInfo.FirstStepMixing == 2) {
@@ -538,6 +540,8 @@ namespace WanTai.View
                         {
                             errorMessage = e.Message;
                             MessageBox.Show("run script error：" + e.Message, "系统提示");
+                            WanTai.Common.CommonFunction.WriteLog(e.Message);
+                            WanTai.Common.CommonFunction.WriteLog(e.StackTrace);
                             RunFalg = RotationInfoStatus.Fail;                            
                             return;
                         }
