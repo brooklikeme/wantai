@@ -28,6 +28,7 @@ namespace WanTai.View.HistoryQuery
         DataTable dataTable = new DataTable();
         private Guid experimentId;
         private string experimentName;
+        private string mixTimes;
 
         public ExperimentsViewDetail()
         {
@@ -44,6 +45,11 @@ namespace WanTai.View.HistoryQuery
             set { experimentName = value; }
         }
 
+        public string MixTimes
+        {
+            set { mixTimes = value; }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             dataTable.Columns.Add("Number", typeof(int));
@@ -54,6 +60,7 @@ namespace WanTai.View.HistoryQuery
             dataTable.Columns.Add("TubesBatchID", typeof(string));
             dataTable.Columns.Add("State", typeof(string));
             dataTable.Columns.Add("PCRTestResult", typeof(string));
+            dataTable.Columns.Add("PCRTestResultExport", typeof(string));
             dataTable.Columns.Add("Color", typeof(string));
             dataTable.Columns.Add("logTitle", typeof(string)).DefaultValue = "查看日志";
             dataGrid_view.ItemsSource = dataTable.DefaultView;
@@ -100,6 +107,7 @@ namespace WanTai.View.HistoryQuery
                     if (new WanTai.Controller.PCR.PCRTestResultViewListController().CheckRotationHasPCRTestResult(rotation.RotationID, experimentId))
                     {
                         dRow["PCRTestResult"] = "查看";
+                        dRow["PCRTestResultExport"] = "导出";
                     }
                 }
 
@@ -127,7 +135,7 @@ namespace WanTai.View.HistoryQuery
             int selectedIndex = dataGrid_view.SelectedIndex;
             string TubesBatchID = dataTable.Rows[selectedIndex]["TubesBatchID"].ToString();
             TubesDetailView detailView = new TubesDetailView();
-            detailView.BatchID = new Guid(TubesBatchID);
+            detailView.ViewExperimentBatch(new Guid(TubesBatchID), mixTimes == "2" ? "A" : "null");
             detailView.ShowDialog();
         }
 
@@ -148,6 +156,48 @@ namespace WanTai.View.HistoryQuery
             pcrView.pCRTestResultDataGridUserControl.RotationName = dataTable.Rows[selectedIndex]["RotationName"].ToString();
             pcrView.pCRTestResultDataGridUserControl.ExperimentId = experimentId;
             pcrView.ShowDialog();            
+        }
+
+        private void OnPCRTestResultExportClick(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = dataGrid_view.SelectedIndex;
+            Guid rotationID = (Guid)dataTable.Rows[selectedIndex]["RotationID"];
+            string rotationName = dataTable.Rows[selectedIndex]["RotationName"].ToString();
+
+            System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
+            //string experimentName = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId).ExperimentName;
+            sfd.FileName = experimentName + "_" + DateTime.Now.ToString("yyyyMMdd") + (dataTable.Rows.Count > 1 ? "_" + rotationName : "");
+            sfd.Filter = "pdf(*.pdf)|*.pdf|excel(*.xls)|*.xls";
+            //System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+            //string folderPath = string.Empty;
+            //if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            //{
+            //    folderPath = folderDialog.SelectedPath;
+            //}
+            string fileName = string.Empty;
+            if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                fileName = sfd.FileName;
+            }
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                try
+                {
+                    bool result = new WanTai.Controller.PCR.PCRTestResultViewListController().SaveExcelFile(fileName, experimentId, rotationID, rotationName);
+                    if (result)
+                    {
+                        if (System.Windows.Forms.MessageBox.Show("导出文件成功! 是否打开文件?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == (System.Windows.Forms.DialogResult.Yes))
+                        {
+                            System.Diagnostics.Process.Start(fileName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show("导出文件失败：" + ex.Message);
+                }
+            }
         }
 
         private void OnRotationNameClick(object sender, RoutedEventArgs e)
@@ -177,6 +227,7 @@ namespace WanTai.View.HistoryQuery
 
         private void btnExportPCRResult_Click(object sender, RoutedEventArgs e)
         {
+            /*
             System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
             //string experimentName = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId).ExperimentName;
             sfd.FileName = experimentName + "_" + DateTime.Now.ToString("yyyyMMdd");
@@ -210,7 +261,7 @@ namespace WanTai.View.HistoryQuery
                 {
                     System.Windows.Forms.MessageBox.Show("导出文件失败：" + ex.Message);
                 }
-            }
+            }*/
         }
 
         private void btnAutoImportPCRResult_Click(object sender, RoutedEventArgs e)

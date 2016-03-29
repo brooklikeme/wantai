@@ -826,6 +826,8 @@
                     <Label Content="阳性对照" Width="65" Name="lab_PositiveControl" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" />
                     <TextBlock Height="16" Margin="5,0,0,0"  Width="16" Grid.Row="1" Name="txt_Complement" HorizontalAlignment="Left"  Background="Magenta" VerticalAlignment="Center" />
                     <Label Content="样品补充液" Name="lab_Complement" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" />
+                    <TextBlock Height="16" Margin="5,19.644,0,19.644"  Width="16" Name="txt_QC" HorizontalAlignment="Left"  Background="Magenta" VerticalAlignment="Center" />
+                    <Label Content="质控品" Name="lab_QC" HorizontalAlignment="Left"   VerticalAlignment="Center" Margin="0,14.575,0,14.576" />
                     <Label Content="(阴性对照、阳性对照、样品补充液不能分组！)" Visibility="Collapsed" Name="lab_tip" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" />
                 </StackPanel>
             </Border>           

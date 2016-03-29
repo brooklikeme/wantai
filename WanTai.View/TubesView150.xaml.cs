@@ -120,6 +120,11 @@ namespace WanTai.View
                     txt_NegativeControl.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_LiquidType.Color));
                     lab_NegativeControl.Content = _LiquidType.TypeName;
                 }
+                if (_LiquidType.TypeId == 4)
+                {
+                    txt_QC.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_LiquidType.Color));
+                    lab_QC.Content = _LiquidType.TypeName;
+                }
                 stringBuilder.Append(_LiquidType.TypeName + "、");
             }
             if (stringBuilder.ToString().Length > 0)
@@ -1038,8 +1043,8 @@ namespace WanTai.View
             {
                 if (SystemFluid.IndexOf("1,") >= 0)
                 {
-                    MessageBox.Show("没有样品补充液!","系统提示!");
-                    return;
+                    // MessageBox.Show("没有样品补充液!","系统提示!");
+                    // return;
                 }
             }
             

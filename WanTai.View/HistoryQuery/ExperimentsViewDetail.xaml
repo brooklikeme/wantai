@@ -44,14 +44,14 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button Name="btnExportPCRResult" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Click="btnExportPCRResult_Click">
+            <!--<Button Name="btnExportPCRResult" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Click="btnExportPCRResult_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/WanTag;component/Resources/PCR_Importing_hover.gif" Width="20" Height="20" />
                         <Label Content="导出PCR检测结果" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
                     </StackPanel>
                 </Button.Content>
-            </Button>
+            </Button>-->
             <Button Name="btnReagent" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Click="btnReagent_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
@@ -63,8 +63,8 @@
         </StackPanel>
             <DataGrid AutoGenerateColumns="False" FontSize="12" CanUserAddRows="False" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Stretch" Name="dataGrid_view" VerticalAlignment="Top"  >
             <DataGrid.Columns >
-                <DataGridTextColumn Header="" Width="50" Binding="{Binding Number}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>                
-                <DataGridHyperlinkColumn Header="轮次名称" ContentBinding="{Binding Path=RotationName}" Width="100" CanUserSort="False" IsReadOnly="True">
+                <DataGridTextColumn Header="" Width="30" Binding="{Binding Number}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>                
+                <DataGridHyperlinkColumn Header="轮次" ContentBinding="{Binding Path=RotationName}" Width="50" CanUserSort="False" IsReadOnly="True">
                     <DataGridHyperlinkColumn.ElementStyle> 
                         <Style TargetType="TextBlock">
                            
@@ -74,7 +74,7 @@
                     </DataGridHyperlinkColumn.ElementStyle>
                 </DataGridHyperlinkColumn>
                 <DataGridTextColumn Header="操作" Width="250" Binding="{Binding OperationName}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridHyperlinkColumn Header="采血管批次" ContentBinding="{Binding Path=TubesBatchName}" Width="100" CanUserSort="False" IsReadOnly="True">
+                <DataGridHyperlinkColumn Header="采血管批次" ContentBinding="{Binding Path=TubesBatchName}" Width="80" CanUserSort="False" IsReadOnly="True">
                     <DataGridHyperlinkColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <EventSetter Event="Hyperlink.Click" Handler="OnTubesBatchNameClick">
@@ -82,8 +82,8 @@
                         </Style>
                     </DataGridHyperlinkColumn.ElementStyle>
                 </DataGridHyperlinkColumn>
-                <DataGridTextColumn Header="状态" Width="100" Binding="{Binding State}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
-                <DataGridHyperlinkColumn Header="日志" Width="100" ContentBinding="{Binding  Path=logTitle}"  CanUserSort="False" IsReadOnly="True">
+                <DataGridTextColumn Header="状态" Width="50" Binding="{Binding State}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridHyperlinkColumn Header="日志" Width="80" ContentBinding="{Binding  Path=logTitle}"  CanUserSort="False" IsReadOnly="True">
                     <DataGridHyperlinkColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="Uid" Value="{Binding RotationID}"></Setter>
@@ -95,10 +95,18 @@
                         </Style>
                     </DataGridHyperlinkColumn.ElementStyle>
                 </DataGridHyperlinkColumn>
-                <DataGridHyperlinkColumn Header="PCR检测结果" ContentBinding="{Binding Path=PCRTestResult}" Width="*" CanUserSort="False" IsReadOnly="True">
+                <DataGridHyperlinkColumn Header="PCR结果查看" ContentBinding="{Binding Path=PCRTestResult}" Width="*" CanUserSort="False" IsReadOnly="True">
                     <DataGridHyperlinkColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <EventSetter Event="Hyperlink.Click" Handler="OnPCRTestResultClick">
+                            </EventSetter>
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>
+                <DataGridHyperlinkColumn Header="PCR结果导出" ContentBinding="{Binding Path=PCRTestResultExport}" Width="*" CanUserSort="False" IsReadOnly="True">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="Hyperlink.Click" Handler="OnPCRTestResultExportClick">
                             </EventSetter>
                         </Style>
                     </DataGridHyperlinkColumn.ElementStyle>

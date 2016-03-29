@@ -51,6 +51,7 @@ namespace WanTai.View.HistoryQuery
             dataTable.Columns.Add("LoginName", typeof(string));
             dataTable.Columns.Add("Remark", typeof(string));
             dataTable.Columns.Add("State", typeof(string));
+            dataTable.Columns.Add("MixTimes", typeof(int));
             dataTable.Columns.Add("Color", typeof(string));
             dataTable.Columns.Add("CanDelete", typeof(string));
             dataGrid_view.ItemsSource = dataTable.DefaultView;
@@ -101,6 +102,7 @@ namespace WanTai.View.HistoryQuery
                 dRow["LoginName"] = experiment.LoginName;
                 dRow["Remark"] = experiment.Remark;
                 dRow["State"] = controller.ConvertEnumStatusToText((ExperimentStatus)experiment.State);
+                dRow["MixTimes"] = experiment.MixTimes == 2 ? 2 : 1;
                 if (startIndex % 2 == 0)
                 {
                     dRow["Color"] = WindowCustomizer.alternativeColor;
@@ -228,6 +230,8 @@ namespace WanTai.View.HistoryQuery
             ExperimentsViewDetail detail = new ExperimentsViewDetail();
             detail.ExperimentId = experimentID;
             detail.ExperimentName = experimentName;
+            detail.MixTimes = dataTable.Rows[selectedIndex]["MixTimes"].ToString();
+            // detail.MixTimes = ;
             detail.ShowDialog();
         }
 

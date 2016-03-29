@@ -12,6 +12,7 @@ namespace WanTai.DataModel.Configuration
         private bool hasVolume;
         private int defaultVolume;
         private bool canSelectedMultiCell;
+        private bool canGroup;
         private short typeId;
 
         public string TypeName
@@ -71,6 +72,18 @@ namespace WanTai.DataModel.Configuration
             get
             {
                 return canSelectedMultiCell;
+            }
+        }
+
+        public bool CanGroup
+        {
+            set
+            {
+                canGroup = value;
+            }
+            get
+            {
+                return canGroup;
             }
         }
 

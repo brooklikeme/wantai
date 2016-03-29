@@ -693,7 +693,7 @@ namespace WanTai.View
             }
             item.FirstAddVolume = Math.Round(Convert.ToDouble(addVolume), 3);
 
-            if (isFirstRotation)
+            if (isFirstRotation && SessionInfo.BatchType != "B")
             {
                 if (item.FirstAddVolume < item.NeedVolume)
                 {
@@ -708,8 +708,21 @@ namespace WanTai.View
             }
             else
             {
-                //check if 剩余量>总需求量-消耗量
-                if (item.CurrentVolume < (item.TotalNeedValueAndConsumption + item.NeedVolume))
+                if (isFirstRotation && SessionInfo.BatchType == "B")
+                {
+                    //check if 当前量>总需求量-消耗量
+                    if ((item.FirstAddVolume + item.CurrentVolume) < item.NeedVolume)
+                    {
+                        string message = item.DisplayName + "为" + addVolume.ToString() + item.Unit + "建议量为" +
+                        (item.NeedVolume - item.CurrentVolume).ToString() + item.Unit + "。是否继续确认？“是”确认，“否”继续添加。";
+                        MessageBoxResult msResult = MessageBox.Show(message, "系统提示", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                        if (msResult == MessageBoxResult.No)
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
                 {
                     //check if 当前量>总需求量-消耗量
                     if ((item.FirstAddVolume + item.CurrentVolume) < (item.TotalNeedValueAndConsumption + item.NeedVolume))
@@ -723,8 +736,8 @@ namespace WanTai.View
                         }
                     }
                 }
-            }
 
+            }
 
             item.Correct = true;
             if (ViewPlates.FirstOrDefault(P => (P.ChineseName == item.DisplayName && P.ItemType == item.ItemType)) != null)
@@ -1078,9 +1091,13 @@ namespace WanTai.View
                 foreach (ReagentAndSuppliesConfiguration item in dg.Items)
                 {
                     double addedVolume = 0;
-                    if (isFirstRotation)
+                    if (isFirstRotation && SessionInfo.BatchType != "B")
                     {
                         addedVolume = item.NeedVolume;
+                    }
+                    else if (isFirstRotation && SessionInfo.BatchType == "B")
+                    {
+                        addedVolume = item.NeedVolume - item.CurrentVolume;
                     }
                     else if (item.CurrentVolume < (item.TotalNeedValueAndConsumption + item.NeedVolume) && (item.FirstAddVolume + item.CurrentVolume) < (item.TotalNeedValueAndConsumption + item.NeedVolume))
                     {
@@ -1100,7 +1117,7 @@ namespace WanTai.View
                     foreach (ReagentAndSuppliesConfiguration item in dataGrid.Items)
                     {
                         double addedVolume = 0;
-                        if (isFirstRotation)
+                        if (isFirstRotation && SessionInfo.BatchType != "B")
                         {
                             addedVolume = item.NeedVolume;
                         }

@@ -1814,95 +1814,101 @@ namespace WanTai.View.PCR
                         bool hasRecord = controller.IsPlateHasImportedResult(info.RotationID, plateId, currentExperimentId);
                         if (!hasRecord)
                         {
-                            string needFileName = experimentInfo.StartTime.ToString("yyyy-M-d-") + rotationIndex;
-                            string[] matchFileNames = System.IO.Directory.GetFiles(PCRFilePath, needFileName + ".*");
-                            string matchFileName = null;
-                            string PCRDevice = "";
-                            foreach (string filename in matchFileNames)
+                            // get item names
+                            List<string> testItemNames = controller.GetTestItemNamesByPlateID(plateId, currentExperimentId);
+                            Dictionary<string, int> matchedFileNameDict = new Dictionary<string,int>();
+                            foreach (string testItemName in testItemNames)
                             {
+                                string needFileName = experimentInfo.StartTime.ToString("yyyy-M-d-") + rotationIndex + "-*" + testItemName + "*.*";
+                                string[] matchFileNames = System.IO.Directory.GetFiles(PCRFilePath, needFileName);
+                                foreach (string filename in matchFileNames) {
+                                    if (!matchedFileNameDict.ContainsKey(filename)) {
+                                        matchedFileNameDict.Add(filename, 1);
+                                    }
+                                }
+                            }
+                            foreach (string filename in matchedFileNameDict.Keys) {
+                                string matchFileName = null;
+                                string PCRDevice = "";
                                 string extension = System.IO.Path.GetExtension(filename);
                                 if (extension.Equals(".xls", StringComparison.CurrentCultureIgnoreCase) || extension.Equals(".xlsx", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    type_comboBox.SelectedIndex = 0;
                                     matchFileName = filename;
                                     PCRDevice = "ABI 7500";
-                                    break;
                                 }
                                 else if (extension.Equals(".csv", StringComparison.CurrentCultureIgnoreCase))
                                 {
-                                    type_comboBox.SelectedIndex = 1;
                                     matchFileName = filename;
                                     PCRDevice = "BIO-RAD CFX96";
-                                    break;
+                                }
+                                bool isRightFormat = false;
+                                bool isRightPositionNumber = true;
+                                string PCRStartTime = "";
+                                string PCREndTime = "";
+
+                                if (matchFileName != null)
+                                {
+                                    if (PCRDevice == "ABI 7500")
+                                    {
+                                        if (SessionInfo.WorkDeskType != "100")
+                                        {
+                                            isRightFormat = preProcessABIFile(matchFileName, out PCRStartTime, out PCREndTime) && processABIFile(matchFileName, info.RotationID, plate, out isRightPositionNumber);
+                                        }
+                                        else
+                                        {
+                                            isRightFormat = preProcessABIFile(matchFileName, out PCRStartTime, out PCREndTime) && processABIFile100(matchFileName, info.RotationID, plate, out isRightPositionNumber);
+                                        }
+                                    }
+                                    else if (PCRDevice == "BIO-RAD CFX96")
+                                    {
+                                        if (SessionInfo.WorkDeskType != "100")
+                                        {
+                                            isRightFormat = processBIORADFile(matchFileName, info.RotationID, plate, out isRightPositionNumber, out PCRStartTime, out PCREndTime);
+                                        }
+                                        else
+                                        {
+                                            isRightFormat = processBIORADFile100(matchFileName, info.RotationID, plate, out isRightPositionNumber, out PCRStartTime, out PCREndTime);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (SessionInfo.WorkDeskType != "100")
+                                        {
+                                            isRightFormat = processStratageneFile(matchFileName, info.RotationID, plate, out isRightPositionNumber);
+                                        }
+                                        else
+                                        {
+                                            isRightFormat = processStratageneFile100(matchFileName, info.RotationID, plate, out isRightPositionNumber);
+                                        }
+
+                                    }
+
+                                    if (!isRightFormat)
+                                    {
+                                        MessageBox.Show("[" + matchFileName + "]文件格式不对，请选择正确的文件", "系统提示");
+                                        return;
+                                    }
+
+                                    if (!isRightPositionNumber)
+                                    {
+                                        return;
+                                    }
+
+                                    bool result = controller.Create(pcrResultList) && controller.SetPCRPlateExtContent(plateId, currentExperimentId, PCRStartTime, PCREndTime, PCRDevice);
+                                    WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "导入PCR检测结果" + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), SessionInfo.ExperimentID);
+                                    if (result)
+                                    {
+                                        importedNum++;
+                                        pcrResultList = new List<PCRTestResult>();
+
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("[" + matchFileName + "]文件导入失败", "系统提示");
+                                    }
                                 }
                             }
-                            bool isRightFormat = false;
-                            bool isRightPositionNumber = true;
-                            string PCRStartTime = "";
-                            string PCREndTime = "";
-
-                            if (matchFileName != null)
-                            {
-                                if (type_comboBox.SelectedIndex == 0)
-                                {
-                                    if (SessionInfo.WorkDeskType != "100")
-                                    {
-                                        isRightFormat = preProcessABIFile(matchFileName, out PCRStartTime, out PCREndTime) && processABIFile(matchFileName, info.RotationID, plate, out isRightPositionNumber);
-                                    }
-                                    else
-                                    {
-                                        isRightFormat = preProcessABIFile(matchFileName, out PCRStartTime, out PCREndTime) && processABIFile100(matchFileName, info.RotationID, plate, out isRightPositionNumber);
-                                    }
-                                }
-                                else if (type_comboBox.SelectedIndex == 1)
-                                {
-                                    if (SessionInfo.WorkDeskType != "100")
-                                    {
-                                        isRightFormat = processBIORADFile(matchFileName, info.RotationID, plate, out isRightPositionNumber, out PCRStartTime, out PCREndTime);
-                                    }
-                                    else
-                                    {
-                                        isRightFormat = processBIORADFile100(matchFileName, info.RotationID, plate, out isRightPositionNumber, out PCRStartTime, out PCREndTime);
-                                    }
-                                }
-                                else if (type_comboBox.SelectedIndex == 2)
-                                {
-                                    if (SessionInfo.WorkDeskType != "100")
-                                    {
-                                        isRightFormat = processStratageneFile(matchFileName, info.RotationID, plate, out isRightPositionNumber);
-                                    }
-                                    else
-                                    {
-                                        isRightFormat = processStratageneFile100(matchFileName, info.RotationID, plate, out isRightPositionNumber);
-                                    }
-
-                                }
-
-                                if (!isRightFormat)
-                                {
-                                    MessageBox.Show("[" + matchFileName + "]文件格式不对，请选择正确的文件", "系统提示");
-                                    return;
-                                }
-
-                                if (!isRightPositionNumber)
-                                {
-                                    return;
-                                }
-
-                                bool result = controller.Create(pcrResultList) && controller.SetPCRPlateExtContent(plateId, currentExperimentId, PCRStartTime, PCREndTime, PCRDevice);
-                                WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "导入PCR检测结果" + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), SessionInfo.ExperimentID);
-                                if (result)
-                                {
-                                    importedNum++;
-                                    pcrResultList = new List<PCRTestResult>();
-
-                                }
-                                else
-                                {
-                                    MessageBox.Show("[" + matchFileName + "]文件导入失败", "系统提示");
-                                }
-                            }
-                        }
+                         }
                     }
                 }
             }

@@ -98,6 +98,7 @@ namespace WanTai.View.PCR
 
         private void exportPCRTest_button_Click(object sender, RoutedEventArgs e)
         {
+            /*
             System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
             sfd.FileName = SessionInfo.CurrentExperimentsInfo.ExperimentName + "_" + DateTime.Now.ToString("yyyyMMdd");
             sfd.Filter = "pdf(*.pdf)|*.pdf|excel(*.xls)|*.xls";
@@ -125,7 +126,7 @@ namespace WanTai.View.PCR
                 {
                     MessageBox.Show("导出文件失败：" + ex.Message);
                 }
-            }
+            }*/
         }        
     }
 }

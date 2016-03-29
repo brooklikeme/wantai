@@ -39,6 +39,7 @@
           <Property Name="LoginName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Remark" Type="varchar" MaxLength="2000" />
           <Property Name="State" Type="smallint" Nullable="false" />
+	  <Property Name="MixTimes" Type="smallint" Nullable="true" />
         </EntityType>
         <EntityType Name="LogInfo">
           <Key>
@@ -702,6 +703,7 @@
           <Property Type="String" Name="LoginName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Remark" MaxLength="2000" FixedLength="false" Unicode="false" />
           <Property Type="Int16" Name="State" Nullable="false" />
+          <Property Name="MixTimes" Type="Int16" Nullable="true" />
           <NavigationProperty Name="TubesBatches" Relationship="WanTaiModel.FK_TubesBatch_ExperimentsInfo" FromRole="ExperimentsInfo" ToRole="TubesBatch" />
         </EntityType>
         <EntityType Name="LogInfo">
@@ -1131,6 +1133,7 @@
             <EntityTypeMapping TypeName="WanTaiModel.ExperimentsInfo">
               <MappingFragment StoreEntitySet="ExperimentsInfo">
                 <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="MixTimes" ColumnName="MixTimes" />
                 <ScalarProperty Name="Remark" ColumnName="Remark" />
                 <ScalarProperty Name="LoginName" ColumnName="LoginName" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />

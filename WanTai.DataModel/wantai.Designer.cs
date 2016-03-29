@@ -1310,6 +1310,30 @@ namespace WanTai.DataModel
         private global::System.Int16 _State;
         partial void OnStateChanging(global::System.Int16 value);
         partial void OnStateChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> MixTimes
+        {
+            get
+            {
+                return _MixTimes;
+            }
+            set
+            {
+                OnMixTimesChanging(value);
+                ReportPropertyChanging("MixTimes");
+                _MixTimes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MixTimes");
+                OnMixTimesChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _MixTimes;
+        partial void OnMixTimesChanging(Nullable<global::System.Int16> value);
+        partial void OnMixTimesChanged();
 
         #endregion
 

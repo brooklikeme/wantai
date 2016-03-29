@@ -126,17 +126,19 @@ namespace WanTai.View.PCR
         private void loadDataGrid()
         {
             string errorMessage = string.Empty;
+            string reagent_batch = "";
+            string qc_batch = "";
             dataTable.Rows.Clear();
             if (rotationId != null && rotationId != Guid.Empty)
             {                
                 PCRTestResultViewListController controller = new PCRTestResultViewListController();
-                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage);
+                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage, out reagent_batch, out qc_batch);
                 ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
                 this.experiment_name.Content = expInfo.ExperimentName;
                 this.login_name.Content = expInfo.LoginName;
                 this.sample_number.Content = controller.GetSampleNumber(expInfo.ExperimentID, rotationId);
                 this.experiment_time.Content = expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss");
-                this.instrument_type.Content = SessionInfo.WorkDeskType;
+                this.instrument_type.Content = SessionInfo.InstrumentType;
                 this.instrument_number.Content = WanTai.Common.Configuration.GetInstrumentNumber();
                 string PCRTimeString = "";
                 string PCRDeviceString = "";
@@ -157,6 +159,16 @@ namespace WanTai.View.PCR
                             DateTime pcrStartTime, pcrEndTime;
                             string pcrStartTimeString = node.SelectSingleNode("PCRStartTime").InnerText;
                             string pcrEndTimeString = node.SelectSingleNode("PCREndTime").InnerText;
+                            int spaceIndex = pcrStartTimeString.IndexOf(' ', pcrStartTimeString.IndexOf(' ') + 1);
+                            if (spaceIndex > 0)
+                            {
+                                pcrStartTimeString = pcrStartTimeString.Substring(0, spaceIndex);
+                            }
+                            spaceIndex = pcrEndTimeString.IndexOf(' ', pcrEndTimeString.IndexOf(' ') + 1);
+                            if (spaceIndex > 0)
+                            {
+                                pcrEndTimeString = pcrEndTimeString.Substring(0, spaceIndex);
+                            }
                             if (DateTime.TryParse(pcrStartTimeString, out pcrStartTime))
                             {
                                 pcrStartTimeString = pcrStartTime.ToString("yyyy/MM/dd HH:mm:ss");
@@ -174,6 +186,8 @@ namespace WanTai.View.PCR
                 this.pcr_time.Content = PCRTimeString;
                 this.pcr_device.Content = PCRDeviceString;
                 this.pcr_barcode.Content = PCRBarCodeString;
+                this.qc_batch.Content = qc_batch;
+                this.reagent_batch.Content = reagent_batch;
               
                 if (!string.IsNullOrEmpty(errorMessage))
                 {
@@ -224,7 +238,8 @@ namespace WanTai.View.PCR
         }
 
         private void barcodequery_button_Click(object sender, RoutedEventArgs e)
-        {            
+        {           
+            /*
             if (!string.IsNullOrEmpty(tube_barcode.Text))
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -244,7 +259,7 @@ namespace WanTai.View.PCR
                         index++;
                     }
                 }                
-            }
+            }*/
         }
     }
 }

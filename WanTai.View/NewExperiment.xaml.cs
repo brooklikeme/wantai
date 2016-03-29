@@ -114,6 +114,7 @@ namespace WanTai.View
             experimentsInfo.LoginName = txtOrperatorName.Text;
             experimentsInfo.Remark = txtRemark.Text;
             experimentsInfo.StartTime = DateTime.Now;
+            experimentsInfo.MixTimes = (short) (BatchType == "A" ? 2 : 1);
             experimentsInfo.State = (short)ExperimentStatus.Create; ;
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
             if (controller.CreateExperiment(experimentsInfo))

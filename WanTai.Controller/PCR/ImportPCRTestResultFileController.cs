@@ -206,6 +206,45 @@ namespace WanTai.Controller.PCR
             return result;
         }
 
+        public List<string> GetTestItemNamesByPlateID(Guid PCRPlateID, Guid experimentId)
+        {
+            List<string> testItemNames = new List<string>();
+            DataTable dataTable = new DataTable();
+            try
+            {
+                string connectionString = WanTai.Common.Configuration.GetConnectionString();
+                string commandText = "SELECT distinct TestName FROM View_Tubes_PCRPlatePosition"
+                    + " WHERE PCRPlateID=@PCRPlateID";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@PCRPlateID", PCRPlateID);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
+                        {
+                            dataTable.Load(reader);
+                        }
+                    }
+                }
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    testItemNames.Add(row["TestName"].ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
+                LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->GetTestItemNamesByPlateID", experimentId);
+                throw;
+            }
+
+            return testItemNames;
+        }
+
         public bool SetPCRPlateExtContent(Guid PCRPlateID, Guid experimentId, string PCRStartTime, string PCREndTime, string PCRDevice){
             try
             {

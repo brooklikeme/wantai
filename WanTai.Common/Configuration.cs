@@ -30,6 +30,7 @@ namespace WanTai.Common
         protected static string PlatesBarCodes = "PlatesBarCodes";
         protected static string ScanTubesColumnNumberFileName = "ScanTubesColumnNumberFileName";
         protected static string AddSampleTimesFileName = "AddSampleTimesFileName";
+        protected static string ScanConditionFileName = "ScanConditionFileName";
         protected static string TecanRestorationScriptName = "TecanRestorationScriptName";
         protected static string NextTurnStepScriptName = "NextTurnStepScriptName";
 
@@ -51,6 +52,10 @@ namespace WanTai.Common
         public static string GetAddSampleTimesFileName()
         {
             return ConfigurationManager.AppSettings[AddSampleTimesFileName];
+        }
+        public static string GetScanConditionFileName()
+        {
+            return ConfigurationManager.AppSettings[ScanConditionFileName];
         }
         public static string GetPlatesBarCodesFile()
         {
@@ -169,6 +174,7 @@ namespace WanTai.Common
                     liquidType.HasVolume = string.IsNullOrEmpty(element.HasVolume) ? false : Boolean.Parse(element.HasVolume);
                     liquidType.DefaultVolume = string.IsNullOrEmpty(element.DefaultVolume) ? 0 : int.Parse(element.DefaultVolume);
                     liquidType.CanSelectedMultiCell = string.IsNullOrEmpty(element.CanSelectedMultiCell) ? false : Boolean.Parse(element.CanSelectedMultiCell);
+                    liquidType.CanGroup = string.IsNullOrEmpty(element.CanGroup) ? false : Boolean.Parse(element.CanGroup);
                     liquidType.TypeId = string.IsNullOrEmpty(element.TypeId) ? (short)1 : short.Parse(element.TypeId);
                     typeList.Add(liquidType);
                 }

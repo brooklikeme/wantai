@@ -102,6 +102,11 @@ namespace WanTai.View
                     txt_NegativeControl.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_LiquidType.Color));
                     lab_NegativeControl.Content = _LiquidType.TypeName;
                 }
+                if (_LiquidType.TypeId == 4)
+                {
+                    txt_QC.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_LiquidType.Color));
+                    lab_QC.Content = _LiquidType.TypeName;
+                }
                 stringBuilder.Append(_LiquidType.TypeName + "、");
             }
             if (stringBuilder.ToString().Length > 0)

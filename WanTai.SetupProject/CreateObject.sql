@@ -234,6 +234,7 @@ CREATE TABLE [dbo].[ExperimentsInfo](
 	[LoginName] [varchar](255) NOT NULL,
 	[Remark] [varchar](2000) NULL,
 	[State] [smallint] NOT NULL,
+	[MixTimes] [smallint] NOT NULL,
  CONSTRAINT [PK_ExperimentsInfo] PRIMARY KEY CLUSTERED 
 (
 	[ExperimentID] ASC
@@ -703,7 +704,7 @@ SELECT DISTINCT
                       dbo.PoolingRulesConfiguration.PoolingRulesName, dbo.PoolingRulesConfiguration.TubeNumber, dbo.RotationInfo.RotationID, 
                       dbo.Plates.BarCode AS PCRPlateBarcode, dbo.Plates.PlateName AS PCRPlateName, dbo.PCRPlatePosition.Position AS PCRPosition, 
                       dbo.PCRPlatePosition.TestName, dbo.Plates.PlateID AS PCRPlateID, dbo.DWPlatePosition.Position AS DWPosition, 
-                      Plates_1.BarCode AS DWPlateBarCode, Plates_1.PlateName AS DWPlateName, dbo.Tubes.TubePosBarCode
+                      Plates_1.BarCode AS DWPlateBarCode, Plates_1.PlateName AS DWPlateName, dbo.Tubes.TubePosBarCode, dbo.TubeGroup.BatchType
 FROM         dbo.TubeGroup INNER JOIN
                       dbo.Tubes INNER JOIN
                       dbo.Tube_PlatePosition ON dbo.Tubes.TubeID = dbo.Tube_PlatePosition.TubeID ON 

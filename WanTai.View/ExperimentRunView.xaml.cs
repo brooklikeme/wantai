@@ -251,7 +251,8 @@ namespace WanTai.View
                     if (BatchID != null)
                     {
                         TubesDetailView detailView = new TubesDetailView();
-                        detailView.BatchID = (Guid)BatchID;
+                        // detailView.BatchID = (Guid)BatchID;
+                        detailView.ViewExperimentBatch((Guid)BatchID, SessionInfo.MixTwice ? "A" : "null");
                         detailView.ShowDialog();
                     }
                 });
@@ -388,10 +389,16 @@ namespace WanTai.View
                     {
                         File.Delete(CSVPath + Testing.WorkListFileName);
                     }
-                       
+
                     if (File.Exists(CSVPath + ExperimentRotation[CurrentRotation.RunIndex].RotationID.ToString() + Testing.WorkListFileName))
+                    {
+                        if (File.Exists(CSVPath + Testing.WorkListFileName))
+                        {
+                            File.Delete(CSVPath + Testing.WorkListFileName);
+                        };
                         File.Move(CSVPath + ExperimentRotation[CurrentRotation.RunIndex].RotationID.ToString() + Testing.WorkListFileName,
                             CSVPath + Testing.WorkListFileName);
+                    }
                 }
             }
             #endregion
@@ -460,11 +467,11 @@ namespace WanTai.View
                             }
                             if (CurrentRotation.RunIndex == 0 && CurrentRotation.CurrentOperationIndex == 0)
                             {
-                                if (SessionInfo.FirstStepMixing == 2) {
+                                if (SessionInfo.FirstStepMixing == 3) {
                                     // send message to namedpipe client
                                     if (NextStepRunEvent != null)
                                         NextStepRunEvent();
-                                    while (SessionInfo.FirstStepMixing == 2)
+                                    while (SessionInfo.FirstStepMixing == 3)
                                     {
                                         Thread.Sleep(1000);
                                     }

@@ -24,6 +24,8 @@ namespace WanTai.View
     /// </summary>
     public partial class TubesDetailView : Window
     {
+        private Guid batchID_;
+
         public TubesDetailView()
         {
             InitializeComponent();
@@ -36,13 +38,27 @@ namespace WanTai.View
                 dg_Bules.ItemsSource = value.DefaultView;
             }
         }
-        public Guid BatchID { 
+        public Guid BatchID
+        {
             set
             {
+                batchID_ = value;
                 List<WanTai.DataModel.Configuration.LiquidType> LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
-                dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(value, LiquidTypeList, SessionInfo.BatchType).DefaultView; 
+                dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(value, LiquidTypeList, SessionInfo.BatchType).DefaultView;
             }
         }
+
+        public void ViewExperimentBatch(Guid batchID, string BatchType)
+        {
+            batchID_ = batchID;
+            this.MixTime.Items.Add("1");
+            if (BatchType == "A")
+            {
+                this.MixTime.Items.Add("2");
+            }
+            this.MixTime.SelectedIndex = 0;
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             var TestItems = new TestItemController().GetActiveTestItemConfigurations();
@@ -135,6 +151,28 @@ namespace WanTai.View
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             dg_Bules.RowHeight = (dg_Bules.ActualHeight - dg_Bules.ColumnHeaderHeight) / 16 -1.2;
+        }
+
+        private void MixTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<WanTai.DataModel.Configuration.LiquidType> LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
+            if (this.MixTime.Items.Count == 2)
+            {
+                if (this.MixTime.SelectedIndex == 0)
+                {
+                    dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(this.batchID_, LiquidTypeList, "A").DefaultView;
+                }
+                else
+                {
+                    dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(this.batchID_, LiquidTypeList, "B").DefaultView;
+
+                }
+            }
+            else
+            {
+                dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(this.batchID_, LiquidTypeList, "null").DefaultView;
+
+            }
         }
     }
 }

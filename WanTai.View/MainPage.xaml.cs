@@ -35,6 +35,7 @@ namespace WanTai.View
         public delegate string FirstStepScan(string message);
         public delegate void EvoRestorationStatus(bool isEnable);
         public delegate void SendNextStepRunMsg();
+        public delegate void SendStopRunMsg();
         public event EvoRestorationStatus SetEvoRestorationStatus;
         private ExperimentRunView experimentRunView = new ExperimentRunView();
         private string EvoVariableOutputPath = WanTai.Common.Configuration.GetEvoVariableOutputPath();
@@ -64,6 +65,7 @@ namespace WanTai.View
             {
                ((TabItem)tabControl.Items[i]).IsEnabled = false;
             }
+            SessionInfo.BatchBScanTimes = 0;
             // 判断工作台
             if (SessionInfo.WorkDeskType == "100")
             {
@@ -177,6 +179,9 @@ namespace WanTai.View
             {
                 btnRun.IsEnabled = true;
 
+                // reset scan condition
+                new WanTai.Controller.TubesController().ScanCondition("0");
+
                 if (SessionInfo.NextTurnStep == 1)
                 {
                     SessionInfo.NextTurnStep = -1;
@@ -229,6 +234,7 @@ namespace WanTai.View
         {
             if (null != server)
             {
+                new WanTai.Controller.TubesController().ScanCondition("0");
                 if (SessionInfo.MixTwice && SessionInfo.BatchType == "A")
                 {
                     server.SendMessage("WaitForSecondMix");
@@ -237,6 +243,17 @@ namespace WanTai.View
                 {
                     server.SendMessage("NextStepRun");
                 }
+                System.Threading.Thread.Sleep(500);
+            }
+        }
+
+        public void SendStopRunMessage()
+        {
+            if (null != server)
+            {
+                new WanTai.Controller.TubesController().ScanCondition("2");
+                server.SendMessage("NextStepRun");
+                System.Threading.Thread.Sleep(500);
             }
         }
 
@@ -266,6 +283,11 @@ namespace WanTai.View
         }
         private string FirstStepScanEvent(string message)
         {
+            if (message == "FirstStepScanAgain")
+            {
+                server.SendMessage("NextStepRun");
+                System.Threading.Thread.Sleep(1000);
+            }
             FirstStepScanFinishedFlag = false;
             FirstStepScanFinishedMessage = "FirstStepScanStart";
             server.start();
@@ -292,6 +314,12 @@ namespace WanTai.View
                 }
                 else
                 {
+                    // init session info
+                    if (SessionInfo.MixTwice)
+                    {
+                        SessionInfo.BatchType = "A";
+                        SessionInfo.AllowMixTwice = true;
+                    }
                     this.Dispatcher.BeginInvoke(new onShowNextRotation(this.onShowNextRotationEvent), null);
                     return;
                 }
@@ -380,7 +408,14 @@ namespace WanTai.View
             WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
             processor.SetLampStatus(2);
             tabControl.SelectedIndex = 0;
-            MessageBox.Show("请为下一次上样准备样品!", "系统提示！", MessageBoxButton.OK);
+            if (!SessionInfo.AllowMixTwice)
+            {
+                MessageBox.Show("混样数已达96，请略过第二次上样!", "系统提示！", MessageBoxButton.OK);
+            }
+            else
+            {
+                MessageBox.Show("请为下一次上样准备样品!", "系统提示！", MessageBoxButton.OK);
+            }
             tabControl.SelectedIndex = 0;
             //change the lamp and set it green
             processor.SetLampStatus(0);
@@ -473,6 +508,7 @@ namespace WanTai.View
             processor.SetLampStatus(2);
             tabControl.SelectedIndex = 0;
             MessageBox.Show("请为下一轮实验准备样品!", "系统提示！", MessageBoxButton.OK);
+            // set add sample times
             tabControl.SelectedIndex = 0;
             //change the lamp and set it green
             processor.SetLampStatus(0);
@@ -552,6 +588,10 @@ namespace WanTai.View
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
             tabControl.SelectedIndex = 3;
+            if (SessionInfo.BatchBScanTimes > 0)
+            {
+                SendStopRunMessage();
+            }
             experimentRunView.Stop();
             this.bindRunWithStartAction();
             //runSelect_listBox.IsEnabled = false;    

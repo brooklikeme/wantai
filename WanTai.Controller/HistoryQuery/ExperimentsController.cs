@@ -170,6 +170,10 @@ namespace WanTai.Controller.HistoryQuery
                                 }
 
                                 info.State = (short)reader.GetValue(7);
+                                if (reader.GetValue(8) != DBNull.Value)
+                                {
+                                    info.MixTimes = (short)reader.GetValue(8);
+                                }
                                 recordList.Add(info);
                             }
                         }

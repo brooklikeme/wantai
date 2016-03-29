@@ -100,6 +100,11 @@ namespace WanTai.View
                     txt_NegativeControl.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_LiquidType.Color));
                     lab_NegativeControl.Content = _LiquidType.TypeName;
                 }
+                if (_LiquidType.TypeId == 4)
+                {
+                    txt_QC.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_LiquidType.Color));
+                    lab_QC.Content = _LiquidType.TypeName;
+                }
                 stringBuilder.Append(_LiquidType.TypeName + "、");
             }
             if (stringBuilder.ToString().Length > 0)
@@ -217,6 +222,11 @@ namespace WanTai.View
                 TubesController controller = new TubesController();
                 if (SessionInfo.NextTurnStep == 0 || SessionInfo.BatchType == "B")
                 {
+                    if (SessionInfo.BatchBScanTimes > 0)
+                    {
+                        new WanTai.Controller.TubesController().ScanCondition("1");
+                    }
+                    SessionInfo.BatchBScanTimes++;
                     scanResult = true;
                     string NextStepScanFinished = onNextStepScan("NextStepScan");
                     if (NextStepScanFinished != "NextStepScanFinished")
@@ -235,18 +245,28 @@ namespace WanTai.View
                 }
                 else
                 {
-                    SessionInfo.FirstStepMixing = 1;
-                    if (controller.CallScanScript())
+                    if (SessionInfo.FirstStepMixing == 0)
                     {
-                        SessionInfo.FirstStepMixing = 5;
-                        worker.ReportProgress(1, ErrMsg);
-                        while (WaitFalg)
-                            Thread.Sleep(1000);
+                        new WanTai.Controller.TubesController().ScanCondition("0");
+                        SessionInfo.FirstStepMixing = 1;
+                        if (controller.CallScanScript())
+                        {
+                            SessionInfo.FirstStepMixing = 5;
+                            worker.ReportProgress(1, ErrMsg);
+                            while (WaitFalg)
+                                Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                            SessionInfo.FirstStepMixing = 6;
+                        }
                     }
-                    else
+                    else if (SessionInfo.FirstStepMixing != 1)
                     {
-                        SessionInfo.FirstStepMixing = 6;
-                    }
+                        // scan again, initialize scan condition
+                        SessionInfo.FirstStepMixing = 2;
+                        new WanTai.Controller.TubesController().ScanCondition("1");
+                    } 
                 }
             };
             worker.ProgressChanged += delegate(object s, ProgressChangedEventArgs args)
@@ -273,21 +293,21 @@ namespace WanTai.View
                 wait_worker.DoWork += delegate(object s, DoWorkEventArgs args)
                 {
                     scanResult = true;
-                    string FirstStepScanFinished = onFirstStepScan("FirstStepScan");
+                    string FirstStepScanFinished = SessionInfo.FirstStepMixing == 2 ? onFirstStepScan("FirstStepScanAgain") : onFirstStepScan("FirstStepScan");
                     if (FirstStepScanFinished != "FirstStepScanFinished")
                     {
-                        SessionInfo.FirstStepMixing = 3;
+                        SessionInfo.FirstStepMixing = 4;
                         ErrMsg = "扫描未完成！";
                         return;
                     }
                     else
                     {
-                        SessionInfo.FirstStepMixing = 2;
+                        SessionInfo.FirstStepMixing = 3;
                     }
                 };
                 wait_worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
                 {
-                    if (SessionInfo.FirstStepMixing == 2)
+                    if (SessionInfo.FirstStepMixing == 3)
                     {
                         Tubes = new WanTai.Controller.TubesController().GetTubes(SessionInfo.LiquidTypeList, fileCreatedTime, out ErrMsg, out SystemFluid);
                         if (null != Tubes)
@@ -405,7 +425,8 @@ namespace WanTai.View
                 {
                     TuubesGroupName = 0;
                     btn_Next.IsEnabled = false;
-                    btn_Save.IsEnabled = false;
+                    if (!(SessionInfo.MixTwice && SessionInfo.BatchType == "B"))
+                        btn_Save.IsEnabled = false;
                 }
                 else
                     dg_TubesGroup.SelectedIndex = TuubesGroupName-1;
@@ -427,7 +448,8 @@ namespace WanTai.View
             {
                 int  ColumnIndex = CommFuntion.GetDataGridCellColumnIndex(Cell);
                 int  RowIndex = CommFuntion.GetDataGridCellRowIndex(Cell);
-                if (Tubes.Rows[RowIndex - 1]["TubeType" + ColumnIndex.ToString()].ToString() != "Tube")
+                if (Tubes.Rows[RowIndex - 1]["TubeType" + ColumnIndex.ToString()].ToString() != "Tube"
+                    && Tubes.Rows[RowIndex - 1]["TubeType" + ColumnIndex.ToString()].ToString() != "QC")
                 {
                     if (Tubes.Rows[RowIndex - 1]["TubeType" + ColumnIndex.ToString()].ToString() == "-1") continue;
                     if (MessageBox.Show("单元格[" + ColumnIndex.ToString() + "," + RowIndex.ToString() + "]阴阳对应液及样品补充液不能参加分组，是否继续？","系统提示！",MessageBoxButton.YesNo) == MessageBoxResult.No)
@@ -553,7 +575,12 @@ namespace WanTai.View
                 CurrentTubesPositions = "";
             }
             IsPoack = true;
-         
+
+            if (SessionInfo.MixTwice && SessionInfo.BatchType == "B")
+            {
+                btn_Save.IsEnabled = true;
+            }
+
             labelRotationName.Content = (SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName)
                 + (SessionInfo.BatchType == "A" ? "(第1次上样)" : "") + (SessionInfo.BatchType == "B" ? "(第2次上样)" : "");
         }
@@ -684,6 +711,7 @@ namespace WanTai.View
             {
                 NextStepEvent(sender, e);
             }
+            SessionInfo.BatchBScanTimes = 0;
         }
 
         private void cb_PoolingRulesConfigurations_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -747,7 +775,7 @@ namespace WanTai.View
         private IList<TubeGroup> TubeGroupList;
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
-            int TotalHole = 2;
+            int TotalHole = SessionInfo.BatchType == "B" ? 0 : 2;
             TubeGroupList = new List<TubeGroup>();
             CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
 
@@ -777,7 +805,7 @@ namespace WanTai.View
                     return;
                 SessionInfo.BatchIndex = 1;
             }
-            if (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0)
+            if (SystemFluid != null && (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0))
             {
                 MessageBox.Show("阴阳对照物必须有!", "系统提示!");
                 return;
@@ -811,17 +839,25 @@ namespace WanTai.View
                 TubeGroupList.Add(Item);
                 if (Item.isComplement) _SystemFluid = true;
             }
+            SessionInfo.AllowMixTwice = true;
             if (TotalHole > 96)
             {
-                MessageBox.Show("混样数大于96,无法进行混样!","系统提示!");
+                MessageBox.Show("混样数大于96, 无法进行混样!","系统提示!");
                 return;
+            } else if (TotalHole == 96)
+            {
+                if (SessionInfo.MixTwice && SessionInfo.BatchType == "A")
+                {
+                    // forbid twice mix
+                    SessionInfo.AllowMixTwice = false;
+                }
             }
             if (_SystemFluid)
             {
                 if (SystemFluid.IndexOf("1,") >= 0)
                 {
-                    MessageBox.Show("没有样品补充液!","系统提示!");
-                    return;
+                    // MessageBox.Show("没有样品补充液!","系统提示!");
+                    // return;
                 }
             }
             string ErrMsg;

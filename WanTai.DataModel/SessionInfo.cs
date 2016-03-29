@@ -19,7 +19,9 @@ namespace WanTai.DataModel
         public static Dictionary<Guid, FormulaParameters> RotationFormulaParameters { get; set; }
         public static int NextButIndex { get; set; }
         public static Boolean MixTwice { get; set; }
+        public static Boolean AllowMixTwice {get; set;}
         public static string BatchType { get; set; }  //A轮、 B轮 
+        public static int BatchBScanTimes { get; set; }
         public static List<Guid> TestingItemIDs { get; set; }
         public static List<TubeGroup> BatchATubeGroups { get; set; }
         public static DataTable BatchATubes { get; set; }
@@ -29,6 +31,7 @@ namespace WanTai.DataModel
         public static Dictionary<Guid, int> BatchATestingItem { get; set; }
 
         public static string WorkDeskType { get; set; }
+        public static string InstrumentType { get; set; }
 
         public static int WorkDeskMaxSize { get; set; }
         public static int LiquidCfgCount { get; set; }

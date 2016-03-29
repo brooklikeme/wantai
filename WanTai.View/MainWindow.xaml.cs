@@ -29,6 +29,7 @@ namespace WanTai.View
     public partial class MainWindow : Window
     {
         private Boolean EVOClosed = false;
+        public event WanTai.View.MainPage.SendStopRunMsg StopRunEvent;
 
         public MainWindow()
         {
@@ -50,10 +51,19 @@ namespace WanTai.View
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
             this.imageExpender1.Image = bitmap;
             SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
-            if (SessionInfo.WorkDeskType == "200")
+            SessionInfo.BatchBScanTimes = 0;
+            if (SessionInfo.WorkDeskType == "200") {
                 SessionInfo.WorkDeskMaxSize = 72;
-            else
+                SessionInfo.InstrumentType = "1.0";
+            }
+            else {
+                if (SessionInfo.WorkDeskType == "150") {
+                    SessionInfo.InstrumentType = "2.0";
+                } else{
+                    SessionInfo.InstrumentType = "3.0";
+                }
                 SessionInfo.WorkDeskMaxSize = 36;
+            }
             SessionInfo.FirstStepMixing = 0;
             IProcessor processor = null;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
@@ -172,10 +182,11 @@ namespace WanTai.View
                 }
                 else
                 {
-                    if (SessionInfo.FirstStepMixing == 2)
+                    if (SessionInfo.FirstStepMixing == 3)
                     {
                         if (MessageBox.Show("正在进行扫描与上样操作,是否确认关闭实验?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                             return;
+                        if (null != StopRunEvent) StopRunEvent();
                         WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
                         processor.StopScript();
                     }
@@ -207,6 +218,7 @@ namespace WanTai.View
               MainPage mainPage = new MainPage();
               mainPage.SetEvoRestorationStatus+=new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
               mainPage.AddEvoRestorationStatusEvent();
+              StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
               mainFrame.Content = mainPage;
               SessionInfo.BatchIndex = 0;
               SessionInfo.NextTurnStep = -1;
@@ -267,10 +279,11 @@ namespace WanTai.View
                 }
                 else
                 {
-                    if (SessionInfo.FirstStepMixing == 2)
+                    if (SessionInfo.FirstStepMixing == 3)
                     {
                         if (MessageBox.Show("正在进行扫描与上样操作,是否确认关闭实验?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                             return;
+                        if (null != StopRunEvent) StopRunEvent();
                         WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
                         processor.StopScript();
                     }
@@ -476,10 +489,14 @@ namespace WanTai.View
                 }
                 else
                 {
-                    if (SessionInfo.FirstStepMixing == 2)
+                    if (SessionInfo.FirstStepMixing == 3)
                     {
                         if (MessageBox.Show("正在进行扫描与上样操作,是否确认退出?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                        {
+                            e.Cancel = true;
                             return;
+                        }
+                        if (null != StopRunEvent) StopRunEvent();
                         WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
                         processor.StopScript();
                     }

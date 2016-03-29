@@ -137,6 +137,20 @@ namespace WanTai.Common
             }
         }
 
+        [ConfigurationProperty("canGroup", DefaultValue = "", IsKey = false, IsRequired = false)]
+        public string CanGroup
+        {
+            get
+            {
+                return ((string)(base["canGroup"]));
+            }
+
+            set
+            {
+                base["canGroup"] = value;
+            }
+        }
+
         [ConfigurationProperty("typeId", DefaultValue = "", IsKey = false, IsRequired = false)]
         public string TypeId
         {

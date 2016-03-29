@@ -125,14 +125,17 @@ namespace WanTai.Controller
         }
         public void UpdateTubesBatch(Guid rotationID, Guid tuibesBatchID)
         {
-            using (WanTaiEntities _WanTaiEntities = new WanTaiEntities())
+            if (SessionInfo.BatchType != "A")
             {
-                RotationInfo rotation = _WanTaiEntities.RotationInfoes.FirstOrDefault(P => P.RotationID == rotationID);
-                if (rotation != null)
+                using (WanTaiEntities _WanTaiEntities = new WanTaiEntities())
                 {
-                    rotation.TubesBatchID = tuibesBatchID;
+                    RotationInfo rotation = _WanTaiEntities.RotationInfoes.FirstOrDefault(P => P.RotationID == rotationID);
+                    if (rotation != null)
+                    {
+                        rotation.TubesBatchID = tuibesBatchID;
+                    }
+                    _WanTaiEntities.SaveChanges();
                 }
-                _WanTaiEntities.SaveChanges();
             }
         }        
     }

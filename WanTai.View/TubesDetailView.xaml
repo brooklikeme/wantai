@@ -9,7 +9,19 @@
         <local:TubeShowID   x:Key="TubeShowID"/>
     </Window.Resources>
     <Grid>
-        <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" ColumnHeaderHeight="30" SelectionMode="Extended" SelectionUnit="Cell" Margin="0" RowHeaderWidth="30" Padding="0" HorizontalAlignment="Stretch" Name="dg_Bules" VerticalAlignment="Stretch" ItemsSource="{Binding}"  ColumnWidth="160" LoadingRow="dg_Bules_LoadingRow">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Label Content="上样轮次：" Height="28" Name="label1" />
+            <ComboBox x:Name="MixTime" HorizontalAlignment="Left" Margin="30,1,0,0" VerticalAlignment="Center" Width="120" SelectionChanged="MixTime_SelectionChanged"/>
+        </StackPanel>
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" ColumnHeaderHeight="30" SelectionMode="Extended" SelectionUnit="Cell" Margin="0" RowHeaderWidth="30" Padding="0" HorizontalAlignment="Stretch" Name="dg_Bules" VerticalAlignment="Stretch" ItemsSource="{Binding}"  ColumnWidth="160" LoadingRow="dg_Bules_LoadingRow">
             <DataGrid.Columns>
                 <DataGridTemplateColumn >
                     <DataGridTemplateColumn.CellTemplate>
@@ -553,5 +565,6 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        </StackPanel>
     </Grid>
 </Window>

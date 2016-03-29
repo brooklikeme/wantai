@@ -252,7 +252,7 @@ namespace WanTai.Controller
                     string message = "";
                     foreach (LiquidType _liquidType in LiquidTypeList)
                     {
-                        if (SystemFluidName.ToString().IndexOf(_liquidType.TypeName + ";") < 0)
+                        if (_liquidType.TypeId != 1 && _liquidType.TypeId != 4 && SystemFluidName.ToString().IndexOf(_liquidType.TypeName + ";") < 0)
                         {
                             message += _liquidType.TypeName + "、";
                             SystemFluid += _liquidType.TypeId + ",";
@@ -327,7 +327,7 @@ namespace WanTai.Controller
                 //1(Position);1;1(Grid);Tube 13*100mm 16 Pos;Tube1;013/035678;11
                 using (WanTai.DataModel.WanTaiEntities wanTaiEntities = new WanTaiEntities())
                 {
-                    var TubesGroup = wanTaiEntities.TubeGroups.Where(Batch => Batch.TubesBatchID == BatchID && Batch.BatchType == batchType);
+                    var TubesGroup = wanTaiEntities.TubeGroups.Where(Batch => Batch.TubesBatchID == BatchID && (batchType == "null" ? Batch.BatchType == null : Batch.BatchType == batchType));
                     foreach (TubeGroup tubeGroup in TubesGroup)
                     {
                         var tubes = wanTaiEntities.Tubes.Where(tube => tube.TubeGroupID == tubeGroup.TubeGroupID);
@@ -408,9 +408,9 @@ namespace WanTai.Controller
                     else
                     {
                         List<SystemFluidConfiguration> _SystemFluidConfigurationList = null;
-                        if (SessionInfo.BatchType == "B")
+                        if (batchType == "B")
                         {
-                            _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == SessionInfo.BatchType).ToList();
+                            _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == "B").ToList();
                         }
                         else
                         {
@@ -477,6 +477,19 @@ namespace WanTai.Controller
             using (StreamWriter writer = new StreamWriter(new FileStream(addSampleFilePath, FileMode.Create, FileAccess.Write)))
             {
                 writer.WriteLine("Add Sample Times");
+                writer.WriteLine(content);
+
+                return true;
+            }
+        }
+
+        public bool ScanCondition(string content)
+        {
+            string scanConditionFilePath = WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetScanConditionFileName();
+
+            using (StreamWriter writer = new StreamWriter(new FileStream(scanConditionFilePath, FileMode.Create, FileAccess.Write)))
+            {
+                writer.WriteLine("Scan Condition");
                 writer.WriteLine(content);
 
                 return true;

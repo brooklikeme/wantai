@@ -161,6 +161,8 @@ namespace WanTai.Controller
                                 npTubeGroup.PoolingRulesID = _WanTaiEntities.PoolingRulesConfigurations.Where(PoolingRules => (PoolingRules.TubeNumber == 1)).FirstOrDefault().PoolingRulesID;
 
                                 npTubeGroup.isComplement = false;
+                                if (SessionInfo.MixTwice)
+                                    npTubeGroup.BatchType = "A";
 
                                 foreach (KeyValuePair<Guid, int> _TestingItem in DelTubesBatch.TestingItem)
                                 {
@@ -243,6 +245,7 @@ namespace WanTai.Controller
 
                             foreach (DataTable _tubes in TubesArray)
                             {
+                                if (_tubes == null) continue;
                                 foreach (string str in _tubes.TableName.Split(']'))
                                 {
                                     if (string.IsNullOrEmpty(str)) continue;
