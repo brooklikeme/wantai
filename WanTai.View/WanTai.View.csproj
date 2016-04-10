@@ -151,6 +151,9 @@
     <Compile Include="Control\Shelf.xaml.cs">
       <DependentUpon>Shelf.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HistoryQuery\NATViewList.xaml.cs">
+      <DependentUpon>NATViewList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TecanRestoration.xaml.cs">
       <DependentUpon>TecanRestoration.xaml</DependentUpon>
     </Compile>
@@ -359,6 +362,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Control\Shelf.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HistoryQuery\NATViewList.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

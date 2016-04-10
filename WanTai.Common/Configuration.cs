@@ -149,6 +149,16 @@ namespace WanTai.Common
             return Boolean.Parse(ConfigurationManager.AppSettings["IgnoreSampleTracking"]);
         }
 
+        public static bool GetShowReagentExport()
+        {
+            return Boolean.Parse(ConfigurationManager.AppSettings["ShowReagentExport"]);
+        }
+
+        public static int GetPCRPlateType()
+        {
+            return Convert.ToInt32(ConfigurationManager.AppSettings["PCRPlateType"]);
+        }
+
         public static string GetPCRTestResultWidthList()
         {
             return ConfigurationManager.AppSettings[PCRTestResultWidthList];
@@ -254,9 +264,19 @@ namespace WanTai.Common
             return ConfigurationManager.AppSettings["CheckDoorLockStatusCommand"];
         }
 
-        public static string GetMaintainEvoScriptName()
+        public static string GetMaintainDayEvoScriptName()
         {
-            return ConfigurationManager.AppSettings["MaintainEvoScriptName"];
+            return ConfigurationManager.AppSettings["MaintainDayEvoScriptName"];
+        }
+
+        public static string GetMaintainWeekEvoScriptName()
+        {
+            return ConfigurationManager.AppSettings["MaintainWeekEvoScriptName"];
+        }
+
+        public static string GetMaintainMonthEvoScriptName()
+        {
+            return ConfigurationManager.AppSettings["MaintainMonthEvoScriptName"];
         }
 
         public static string GetThermoUsername()
@@ -282,6 +302,11 @@ namespace WanTai.Common
         public static bool GetIsMock()
         {
             return Boolean.Parse(ConfigurationManager.AppSettings["IsMock"]);
+        }
+
+        public static bool GetIsSimulation()
+        {
+            return Boolean.Parse(ConfigurationManager.AppSettings["IsSimulation"]);
         }
 
         public static bool GetIsRemote()

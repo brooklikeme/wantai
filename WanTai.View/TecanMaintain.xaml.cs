@@ -20,9 +20,27 @@ namespace WanTai.View
     /// </summary>
     public partial class TecanMaintain : Window
     {
-        public TecanMaintain()
+        public TecanMaintain(string type)
         {
             InitializeComponent();
+            if (type == "week")
+            {
+                imgWeek.Visibility = Visibility.Visible;
+                imgMonth.Visibility = Visibility.Hidden;
+                imgDay.Visibility = Visibility.Hidden;
+            }
+            else if (type == "day")
+            {
+                imgDay.Visibility = Visibility.Visible;
+                imgWeek.Visibility = Visibility.Hidden;
+                imgMonth.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                imgMonth.Visibility = Visibility.Visible;
+                imgWeek.Visibility = Visibility.Hidden;
+                imgDay.Visibility = Visibility.Hidden;
+            }
         }
         public string scriptFileName { get; set; }
         bool RunFalg = true;

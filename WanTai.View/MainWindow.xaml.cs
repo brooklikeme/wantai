@@ -44,13 +44,16 @@ namespace WanTai.View
             btnNewExperiment.IsEnabled = false;
             CloseExperiment_button.IsEnabled = false;
             CloseLamp_button.IsEnabled = false;
-            TecanMaintain_Button.IsEnabled = false;
+            TecanMaintainDay_Button.IsEnabled = false;
+            TecanMaintainWeek_Button.IsEnabled = false;
+            TecanMaintainMonth_Button.IsEnabled = false;
             TecanRestoration_Button.IsEnabled = false;
             exit_button.IsEnabled = false;
             Stream imageStream = Application.GetResourceStream(new Uri("/WanTag;component/Resources/loading.gif", UriKind.Relative)).Stream;
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
             this.imageExpender1.Image = bitmap;
             SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            QueryNAT_Button.Visibility = WanTai.Common.Configuration.GetShowReagentExport() ? Visibility.Visible : Visibility.Collapsed;
             SessionInfo.BatchBScanTimes = 0;
             if (SessionInfo.WorkDeskType == "200") {
                 SessionInfo.WorkDeskMaxSize = 72;
@@ -87,7 +90,9 @@ namespace WanTai.View
                 btnNewExperiment.IsEnabled = true;
                 CloseExperiment_button.IsEnabled = true;
                 CloseLamp_button.IsEnabled = true;
-                TecanMaintain_Button.IsEnabled = true;
+                TecanMaintainDay_Button.IsEnabled = true;
+                TecanMaintainWeek_Button.IsEnabled = true;
+                TecanMaintainMonth_Button.IsEnabled = true;
                 TecanRestoration_Button.IsEnabled = true;
                 exit_button.IsEnabled = true;
                 imageExpender1.Image = null;
@@ -201,7 +206,9 @@ namespace WanTai.View
                 }
             }
 
-            TecanMaintain_Button.IsEnabled = false;
+            TecanMaintainDay_Button.IsEnabled = false;
+            TecanMaintainWeek_Button.IsEnabled = false;
+            TecanMaintainMonth_Button.IsEnabled = false;
           
             SessionInfo.ExperimentID = new Guid();
             SessionInfo.PraperRotation = null;
@@ -297,7 +304,9 @@ namespace WanTai.View
                     }
                 }
 
-                TecanMaintain_Button.IsEnabled = true;
+                TecanMaintainDay_Button.IsEnabled = true;
+                TecanMaintainWeek_Button.IsEnabled = true;
+                TecanMaintainMonth_Button.IsEnabled = true;
                 TecanRestoration_Button.IsEnabled = true;
                 SessionInfo.CurrentExperimentsInfo = null;
                 SessionInfo.ExperimentID = new Guid();
@@ -332,6 +341,13 @@ namespace WanTai.View
         {
             HistoryQuery.ExperimentsViewList experimentsViewList = new HistoryQuery.ExperimentsViewList();
             experimentsViewList.ShowDialog();
+        }
+
+
+        private void QueryNAT_Button_Click(object sender, RoutedEventArgs e)
+        {
+            HistoryQuery.NATViewList natViewList = new HistoryQuery.NATViewList();
+            natViewList.ShowDialog();
         }
 
         private void exit_button_Click(object sender, RoutedEventArgs e)
@@ -441,14 +457,26 @@ namespace WanTai.View
             logViewList.ShowDialog();
         }
 
-        private void TecanMaintain_Button_Click(object sender, RoutedEventArgs e)
+        private void TecanMaintainDay_Button_Click(object sender, RoutedEventArgs e)
         {
-            TecanMaintain frm = new TecanMaintain();
-            frm.scriptFileName = WanTai.Common.Configuration.GetMaintainEvoScriptName();
+            TecanMaintain frm = new TecanMaintain("day");
+            frm.scriptFileName = WanTai.Common.Configuration.GetMaintainDayEvoScriptName();
             frm.ShowDialog();
-            //MaintainEvo maintainEvo = new MaintainEvo();
-            //maintainEvo.ShowDialog();
         }
+
+        private void TecanMaintainWeek_Button_Click(object sender, RoutedEventArgs e)
+        {
+            TecanMaintain frm = new TecanMaintain("week");
+            frm.scriptFileName = WanTai.Common.Configuration.GetMaintainWeekEvoScriptName();
+            frm.ShowDialog();
+        }
+        private void TecanMaintainMonth_Button_Click(object sender, RoutedEventArgs e)
+        {
+            TecanMaintain frm = new TecanMaintain("month");
+            frm.scriptFileName = WanTai.Common.Configuration.GetMaintainMonthEvoScriptName();
+            frm.ShowDialog();
+        }
+
         private void TecanRestoration_Button_Click(object sender, RoutedEventArgs e)
         {
             TecanRestoration frm = new TecanRestoration();
@@ -536,7 +564,9 @@ namespace WanTai.View
             btnNewExperiment.IsEnabled = false;
             CloseExperiment_button.IsEnabled = false;
             CloseLamp_button.IsEnabled = false;
-            TecanMaintain_Button.IsEnabled = false;
+            TecanMaintainDay_Button.IsEnabled = false;
+            TecanMaintainWeek_Button.IsEnabled = false;
+            TecanMaintainMonth_Button.IsEnabled = false;
             TecanRestoration_Button.IsEnabled = false;
             exit_button.IsEnabled = false;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
@@ -556,7 +586,9 @@ namespace WanTai.View
                 btnNewExperiment.IsEnabled = true;
                 CloseExperiment_button.IsEnabled = true;
                 CloseLamp_button.IsEnabled = true;
-                TecanMaintain_Button.IsEnabled = true;
+                TecanMaintainDay_Button.IsEnabled = true;
+                TecanMaintainWeek_Button.IsEnabled = true;
+                TecanMaintainMonth_Button.IsEnabled = true;
                 TecanRestoration_Button.IsEnabled = true;
                 exit_button.IsEnabled = true;
                 imageExpender1.Image = null;

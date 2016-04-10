@@ -106,7 +106,7 @@ namespace WanTai.View
             thread.Start();
             Thread threadRunScript = new Thread(new ThreadStart(delegate()
             {
-                string[] scripotNames= WanTai.Common.Configuration.GetMaintainEvoScriptName().Split(',');
+                string[] scripotNames= WanTai.Common.Configuration.GetMaintainMonthEvoScriptName().Split(',');
                 foreach(string scriptName in scripotNames)
                 {
                     if (String.IsNullOrEmpty(scriptName))

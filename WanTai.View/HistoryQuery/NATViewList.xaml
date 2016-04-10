@@ -1,0 +1,64 @@
+﻿<Window x:Class="WanTai.View.HistoryQuery.NATViewList"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="试剂耗材查询" Height="700" Width="1024" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Icon="/WanTag;component/Resources/logo.ico">
+    <Window.Resources>
+        <Style TargetType="{x:Type DataGridRow}">
+            <Style.Setters>
+                <Setter Property="Background" Value="{Binding Path=Color}"></Setter>
+            </Style.Setters>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"></ColumnDefinition>
+            <ColumnDefinition Width="551*"></ColumnDefinition>
+            <ColumnDefinition Width="15"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="480*"></RowDefinition>
+            <RowDefinition Height="45" Name="Grid3"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="0,5,0,5">
+            <Label Content="开始日期：" ></Label>
+            <DatePicker Name="beginDate_datePicker"  Width="115" Loaded="beginDate_datePicker_Loaded" />
+            <Label Content="结束日期：" Margin="20,0,0,0"></Label>
+            <DatePicker Name="endDate_datePicker"  Width="115" Loaded="endDate_datePicker_Loaded" />
+            <Button Name="query_button" Content="查询" Margin="30,0,0,0" Click="query_button_Click" Width="50"></Button>
+            <Button Name="export_button" Content="导出查询结果" Margin="10,0,0,0"  Click="export_button_Click"></Button>
+        </StackPanel>
+      <!--  <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" Margin="0,5,0,5">
+            <Label >
+                <CheckBox x:Name="cbxShowReagent" Content="显示试剂用量" IsChecked="True"/>
+            </Label>
+            <Label >
+                <CheckBox x:Name="cbxShowSupply" Content="显示耗材用量" IsChecked="True"/>
+            </Label>
+            
+        </StackPanel>-->
+        <DataGrid AutoGenerateColumns="False" FontSize="12" CanUserAddRows="False" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Stretch" Name="dataGrid_view" VerticalAlignment="Top"  >
+            <DataGrid.Columns >
+                <DataGridTextColumn Header="" Width="30" Binding="{Binding Number}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
+                <DataGridTextColumn Header="日期" Width="100" Binding="{Binding StartTime}" CanUserSort="True" IsReadOnly="True" SortDirection="Descending" ></DataGridTextColumn>
+                <DataGridTextColumn Header="NC" Width="*" Binding="{Binding NC}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="PC" Width="*" Binding="{Binding PC}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="QC" Width="*" Binding="{Binding QC}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="6混数" Width="*" Binding="{Binding Mix}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="拆分数" Width="*" Binding="{Binding Split}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="单检数" Width="*" Binding="{Binding Single}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="理论试剂用量/T" Width="*" Binding="{Binding ReagentTheory}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="试剂损耗/T" Width="*" Binding="{Binding ReagentCost}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="试剂总用量/T" Width="*" Binding="{Binding ReagentTotal}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Diti1000 /盒" Width="*" Binding="{Binding Diti1000}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Diti200 /盒" Width="*" Binding="{Binding Diti200}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="DW 96深孔板/个" Width="*" Binding="{Binding DW96}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="磁头套管/个" Width="*" Binding="{Binding Microtiter}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="100ml试剂槽/个" Width="*" Binding="{Binding ReagentSlot}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="扩增耗材(8联排或PCR板)" Width="*" Binding="{Binding PCR}" CanUserSort="False" IsReadOnly="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

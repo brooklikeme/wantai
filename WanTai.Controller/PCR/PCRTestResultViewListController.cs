@@ -416,7 +416,8 @@ namespace WanTai.Controller.PCR
                                                 }
                                                 else
                                                 {
-                                                    qc_batch = qc_batch + "\n" + tubeBarCode;
+                                                    if (!qc_batch.Contains(tubeBarCode))
+                                                        qc_batch = qc_batch + "\n" + tubeBarCode;
                                                 }
                                             }
                                         }    
@@ -433,7 +434,8 @@ namespace WanTai.Controller.PCR
                                                 }
                                                 else
                                                 {
-                                                    qc_batch = qc_batch + "\n" + tubeBarCode;
+                                                    if (!qc_batch.Contains(tubeBarCode))
+                                                        qc_batch = qc_batch + "\n" + tubeBarCode;
                                                 }
                                             }
                                         }
