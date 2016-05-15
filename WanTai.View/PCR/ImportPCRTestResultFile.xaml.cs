@@ -635,8 +635,7 @@ namespace WanTai.View.PCR
                     DataRow row = dc[info.Position];
                     bool isSingle = (int)row["TubeNumber"] == 1 ? true : false;
                     Tubetype tubeType = (Tubetype)((short)row["TubeType"]);
-                    info.Result = checkPCRResult(bioData, row["TestName"].ToString(), isSingle, tubeType);
-
+                    info.Result = checkPCRResult(bioData, row["TestName"].ToString(), isSingle, tubeType);                   
                     info.ExperimentID = currentExperimentId;
                     if (plate.BarCode != null)
                     {
@@ -1070,6 +1069,11 @@ namespace WanTai.View.PCR
             string rox = null;
             string hex = null;
             string fam = null;
+            string cy5 = null;
+            string HBVResult = null;
+            string HCVResult = null;
+            string HIVResult = null;
+
 
             if ("ROX" == data.Detector)
             {
@@ -1082,6 +1086,10 @@ namespace WanTai.View.PCR
             else if ("HEX" == data.Detector || "VIC" == data.Detector)
             {
                 hex = data.Ct;
+            }
+            else if ("CY5" == data.Detector)
+            {
+                cy5 = data.Ct;
             }
 
             if (data.DataList != null)
@@ -1100,6 +1108,10 @@ namespace WanTai.View.PCR
                     {
                         hex = subData.Ct;
                     }
+                    else if ("CY5" == subData.Detector)
+                    {
+                        cy5 = subData.Ct;
+                    }
                 }
             }
  
@@ -1114,6 +1126,10 @@ namespace WanTai.View.PCR
             if (!string.IsNullOrEmpty(rox) && (rox == "Undetermined" || rox == "No Ct" || rox == "N/A"))
             {
                 rox = "45";
+            }
+            if (!string.IsNullOrEmpty(cy5) && (cy5 == "Undetermined" || cy5 == "No Ct" || cy5 == "N/A"))
+            {
+                cy5 = "45";
             }
 
             float outNumber = 0;
@@ -1159,6 +1175,29 @@ namespace WanTai.View.PCR
                     }
 
                     return PCRTest.InvalidResult;
+                }
+                else if (testItemName == "BCI")
+                {
+                    bool hbvValid = false;
+                    bool hcvValid = false;
+                    bool hivValid = false;
+                    if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
+                    {
+                        float hexNumber = float.Parse(hex);
+                        if (hexNumber <= 35) {
+                            // check HBV
+                            hbvValid = (rox == "45");
+                            // check HCV
+                            hcvValid = (fam == "45");
+                            // check HIV
+                            hivValid = (cy5 == "45");
+                        }
+                    }
+                    HBVResult = hbvValid ? PCRTest.NegativeResult : PCRTest.InvalidResult;
+                    HCVResult = hcvValid ? PCRTest.NegativeResult : PCRTest.InvalidResult;
+                    HIVResult = hivValid ? PCRTest.NegativeResult : PCRTest.InvalidResult;
+
+                    return "BCI|" + HBVResult + "|" + HCVResult + "|" + HIVResult;
                 }
                 else
                 {
@@ -1206,6 +1245,30 @@ namespace WanTai.View.PCR
 
                     return PCRTest.InvalidResult;
                 }
+                else if (testItemName == "BCI")
+                {
+                    bool hbvValid = false;
+                    bool hcvValid = false;
+                    bool hivValid = false;
+                    if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
+                    {
+                        float hexNumber = float.Parse(hex);
+                        if (hexNumber <= 35)
+                        {
+                            // check HBV
+                            hbvValid = float.TryParse(rox, out outNumber) && float.Parse(rox) <= 33;
+                            // check HCV
+                            hcvValid = float.TryParse(fam, out outNumber) && float.Parse(fam) <= 33;
+                            // check HIV
+                            hivValid = float.TryParse(cy5, out outNumber) && float.Parse(cy5) <= 33;
+                        }
+                    }
+                    HBVResult = hbvValid ? PCRTest.PositiveResult : PCRTest.InvalidResult;
+                    HCVResult = hcvValid ? PCRTest.PositiveResult : PCRTest.InvalidResult;
+                    HIVResult = hivValid ? PCRTest.PositiveResult : PCRTest.InvalidResult;
+
+                    return "BCI|" + HBVResult + "|" + HCVResult + "|" + HIVResult;
+                }
                 else
                 {
                     return PCRTest.NoResult;
@@ -1215,6 +1278,7 @@ namespace WanTai.View.PCR
             float HBVValue = 0;
             float HCVValue = 0;
             float HIVValue = 0;
+            float BCIValue = 35;
             if (isSingle)
             {
                 HBVValue = 35;
@@ -1308,6 +1372,97 @@ namespace WanTai.View.PCR
                 {
                     return PCRTest.NoResult;
                 }
+            }
+            else if (testItemName == "BCI")
+            {
+                // check HBV result
+                if (!string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) <= BCIValue)
+                {
+                    HBVResult = PCRTest.PositiveResult;
+                }
+                else if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
+                {
+                    float hexNumber = float.Parse(hex);
+                    if (hexNumber <= BCIValue && rox == "45")
+                    {
+                        HBVResult = PCRTest.NegativeResult;
+                    }
+                    else if (!string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) > BCIValue)
+                    {
+                        HBVResult = PCRTest.InvalidResult;
+                    }
+                    else if (hexNumber > BCIValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) > BCIValue)
+                    {
+                        HBVResult = PCRTest.InvalidResult;
+                    }
+                    else
+                    {
+                        HBVResult = PCRTest.NoResult;
+                    }
+                }
+                else
+                {
+                    HBVResult = PCRTest.NoResult;
+                }
+                // check HCV result
+                if (!string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber) && float.Parse(fam) <= BCIValue)
+                {
+                    HCVResult = PCRTest.PositiveResult;
+                }
+                else if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
+                {
+                    float hexNumber = float.Parse(hex);
+                    if (hexNumber <= BCIValue && fam == "45")
+                    {
+                        HCVResult = PCRTest.NegativeResult;
+                    }
+                    else if (!string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber) && float.Parse(fam) > BCIValue)
+                    {
+                        HCVResult = PCRTest.InvalidResult;
+                    }
+                    else if (hexNumber > BCIValue && !string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber) && float.Parse(fam) > BCIValue)
+                    {
+                        HCVResult = PCRTest.InvalidResult;
+                    }
+                    else
+                    {
+                        HCVResult = PCRTest.NoResult;
+                    }
+                }
+                else
+                {
+                    HCVResult = PCRTest.NoResult;
+                }
+                // check HIV result
+                if (!string.IsNullOrEmpty(cy5) && float.TryParse(cy5, out outNumber) && float.Parse(cy5) <= BCIValue)
+                {
+                    HIVResult = PCRTest.PositiveResult;
+                }
+                else if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
+                {
+                    float hexNumber = float.Parse(hex);
+                    if (hexNumber <= BCIValue && cy5 == "45")
+                    {
+                        HIVResult = PCRTest.NegativeResult;
+                    }
+                    else if (!string.IsNullOrEmpty(cy5) && float.TryParse(cy5, out outNumber) && float.Parse(cy5) > BCIValue)
+                    {
+                        HIVResult = PCRTest.InvalidResult;
+                    }
+                    else if (hexNumber > BCIValue && !string.IsNullOrEmpty(cy5) && float.TryParse(cy5, out outNumber) && float.Parse(cy5) > BCIValue)
+                    {
+                        HIVResult = PCRTest.InvalidResult;
+                    }
+                    else
+                    {
+                        HIVResult = PCRTest.NoResult;
+                    }
+                }
+                else
+                {
+                    HIVResult = PCRTest.NoResult;
+                }
+                return "BCI|" + HBVResult + "|" + HCVResult + "|" + HIVResult;
             }
             else
             {
@@ -1798,7 +1953,8 @@ namespace WanTai.View.PCR
             int importedNum = 0;
             ExperimentsInfo experimentInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(currentExperimentId);
             List<RotationInfo> rotationList = controller.GetFinishedRotation(currentExperimentId);
-            int rotationIndex = 0;
+            // Get today's earlier experiments      
+            int rotationIndex = new WanTai.Controller.HistoryQuery.ExperimentsController().GetEarlierRotationCount(experimentInfo.StartTime);
             int plateIndex = 0;
             foreach (RotationInfo info in rotationList)
             {

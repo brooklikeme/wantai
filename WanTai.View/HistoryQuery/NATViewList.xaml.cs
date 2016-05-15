@@ -65,7 +65,7 @@ namespace WanTai.View.HistoryQuery
 
         private void initDataGrid()
         {
-            int startIndex = 0;
+            int startIndex = 1;
             DateTime beginDate = (DateTime)beginDate_datePicker.SelectedDate;
             DateTime endDate = (DateTime)endDate_datePicker.SelectedDate;
             beginDate = beginDate.Date;
@@ -155,7 +155,6 @@ namespace WanTai.View.HistoryQuery
             // add summarize
             System.Data.DataRow sumRow = dataTable.NewRow();
             sumRow["StartTime"] = "合计";
-            sumRow["Number"] = startIndex;
             sumRow["NC"] = NC_SUM;
             sumRow["PC"] = PC_SUM;
             sumRow["QC"] = QC_SUM;

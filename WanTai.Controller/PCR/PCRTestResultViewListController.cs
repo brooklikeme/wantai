@@ -215,7 +215,7 @@ namespace WanTai.Controller.PCR
                             {
                                 if (reader["TubeID"] != DBNull.Value && !tubeSampleCheckResult.ContainsKey((Guid)reader["TubeID"]))
                                 {
-                                    tubeSampleCheckResult.Add((Guid)reader["TubeID"], "混样血管吸取量不足");
+                                    tubeSampleCheckResult.Add((Guid)reader["TubeID"], "加样不足");
                                 }
 
                                 if (reader["ItemID"] != DBNull.Value)
@@ -258,7 +258,7 @@ namespace WanTai.Controller.PCR
                     }
 
                     //2 PCR配液-get PCRLiquidPlateBarCode
-                    OperationSequence = 2;
+                    OperationSequence = 3;
                     string selectCommand = "SELECT BarcodePrefix FROM ReagentAndSuppliesConfiguration WHERE ItemType=@ItemType and WorkDeskType=@WorkDeskType";
                     using (SqlCommand cmd = new SqlCommand(selectCommand, conn))
                     {
@@ -299,7 +299,7 @@ namespace WanTai.Controller.PCR
                     }
 
                     //4试剂模板分装
-                    OperationSequence = 4;
+                    OperationSequence = 5;
                     using (SqlCommand cmd = new SqlCommand(commandText_FenZhuang, conn))
                     {
                         cmd.Parameters.AddWithValue("@RotationID", rotationId);
@@ -312,13 +312,13 @@ namespace WanTai.Controller.PCR
                             {
                                 if (!tubeSampleCheckResult.ContainsKey((Guid)reader["TubeID"]))
                                 {
-                                    tubeSampleCheckResult.Add((Guid)reader["TubeID"], "试剂模板分装吸取量不够");
+                                    tubeSampleCheckResult.Add((Guid)reader["TubeID"], "分装不足");
                                 }
                                 else
                                 {
                                     string message = tubeSampleCheckResult[(Guid)reader["TubeID"]];
-                                    if (message.IndexOf("试剂模板分装吸取量不够") < 0)
-                                        tubeSampleCheckResult[(Guid)reader["TubeID"]] = message + Environment.NewLine + "试剂模板分装吸取量不够";
+                                    if (message.IndexOf("分装不足") < 0)
+                                        tubeSampleCheckResult[(Guid)reader["TubeID"]] = message + Environment.NewLine + "分装不足";
                                 }
 
                                 if (reader["ItemID"] != DBNull.Value)
@@ -442,7 +442,7 @@ namespace WanTai.Controller.PCR
                                     }
                                 }
 
-                                dRow["TubePosition"] = "Tube" + (reader["BatchType"] == DBNull.Value ? "" : reader["BatchType"] + ":") +  reader["Grid"].ToString() + "_" + reader["Position"].ToString();
+                                dRow["TubePosition"] = reader["BatchType"] == DBNull.Value ? "Tube" + reader["Grid"].ToString() + "_" + reader["Position"].ToString() : reader["BatchType"] + ":Tube" + reader["Grid"].ToString() + "_" + reader["Position"].ToString();
                                 dRow["TubeType"] = reader["TubeType"];
                                 dRow["TestingItemName"] = reader["TestName"];
 

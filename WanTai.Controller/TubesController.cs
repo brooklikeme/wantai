@@ -131,6 +131,10 @@ namespace WanTai.Controller
                         Tubes.Rows[Grid]["Position" + Position.ToString()] = Position;
                         Tubes.Rows[Grid]["Grid" + Position.ToString()] = Grid + 1;
                         Tubes.Rows[Grid]["BarCode" + Position.ToString()] = aryline[6];
+                        if (WanTai.Common.Configuration.GetIsSimulation())
+                        {
+                            Tubes.Rows[Grid]["BarCode" + Position.ToString()] = SessionInfo.BatchType + ":SIM" + Grid.ToString() + "_" + Position.ToString();
+                        }
                         Tubes.Rows[Grid]["TubeType" + Position.ToString()] = Tubetype.Tube;
                         if (!string.IsNullOrEmpty(aryline[5]))
                             Tubes.Rows[Grid]["TubePosBarCode" + Position.ToString()] = aryline[5];

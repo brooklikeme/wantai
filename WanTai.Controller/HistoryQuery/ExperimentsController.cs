@@ -202,6 +202,11 @@ namespace WanTai.Controller.HistoryQuery
 
             try
             {
+                WanTaiEntities _WanTaiEntities = new WanTaiEntities();
+
+                List<SystemFluidConfiguration> SystemFluid = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.BatchType != "B" && systemFluidConfiguration.ItemType == 4).ToList();
+                List<SystemFluidConfiguration> SystemFluidB = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.BatchType == "B" && systemFluidConfiguration.ItemType == 4).ToList();
+
                 string connectionString = WanTai.Common.Configuration.GetConnectionString();
                 ///todo: add control,each role user only can see the specific experiments
                 string commandText = "SELECT [ExperimentID], [StartTime] FROM [dbo].[ExperimentsInfo] WHERE [State]=20 and [StartTime] between CONVERT(datetime,'"
@@ -266,6 +271,58 @@ namespace WanTai.Controller.HistoryQuery
                             }
                         }
 
+                        int qc_single = 0;
+                        int qc_mix = 0;
+                        commandText = "select Tubes.Grid, Tubes.Position, PoolingRulesConfiguration.PoolingRulesName,TubeGroup.BatchType from Tubes, TubeGroup, PoolingRulesConfiguration"
+                            + " where Tubes.TubeGroupID = TubeGroup.TubeGroupID and TubeGroup.PoolingRulesID = PoolingRulesConfiguration.PoolingRulesID and TubeGroup.ExperimentID = @ExperimentID";
+                        using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@ExperimentID", info.ExperimentID);
+                            using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
+                            {
+                                while (reader.Read())
+                                {
+                                    if (reader.GetValue(3) != null && reader.GetValue(3) == "B")
+                                    {
+                                        foreach (SystemFluidConfiguration sf in SystemFluidB)
+                                        {
+                                            if (sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
+                                            {
+                                                info.QC += 1;
+                                                if ((string)reader.GetValue(2) == "单检")
+                                                {
+                                                    qc_single += 1;
+                                                }
+                                                else
+                                                {
+                                                    qc_mix += 1;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        foreach (SystemFluidConfiguration sf in SystemFluid)
+                                        {
+                                            if (sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
+                                            {
+                                                info.QC += 1;
+                                                if ((string)reader.GetValue(2) == "单检")
+                                                {
+                                                    qc_single += 1;
+                                                }
+                                                else
+                                                {
+                                                    qc_mix += 1;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
                         commandText = "select Tubes.TubeType, PoolingRulesConfiguration.PoolingRulesName,count(*) from Tubes, TubeGroup,PoolingRulesConfiguration"
                                     + " where Tubes.TubeGroupID = TubeGroup.TubeGroupID and TubeGroup.PoolingRulesID = PoolingRulesConfiguration.PoolingRulesID and TubeGroup.ExperimentID = @ExperimentID"
                                     + " group by Tubes.TubeType, PoolingRulesConfiguration.PoolingRulesName";
@@ -286,14 +343,7 @@ namespace WanTai.Controller.HistoryQuery
                                     }
                                     else if ((short)reader.GetValue(0) == (short)Tubetype.QC)
                                     {
-                                        if ((string)reader.GetValue(1) == "单检")
-                                        {
-                                            info.QC += (int)reader.GetValue(2);
-                                        }
-                                        else
-                                        {
-                                            info.QC = 1;
-                                        }
+                                        //
                                     }
                                     else if ((short)reader.GetValue(0) == (short)Tubetype.Tube)
                                     {
@@ -309,6 +359,10 @@ namespace WanTai.Controller.HistoryQuery
                                 }
                             }
                         }
+
+                        info.Single -= qc_single;
+                        info.Mix -= qc_mix;
+
                         /*
                         commandText = "select sum(Volume) from ReagentsAndSuppliesConsumption where ExperimentID=@ExperimentID and VolumeType=3 and ReagentAndSupplieID in (select ItemID from ReagentAndSupplies where ItemType=0 and ExperimentID=@ExperimentID)";
                         using (SqlCommand cmd = new SqlCommand(commandText, conn))
@@ -326,9 +380,9 @@ namespace WanTai.Controller.HistoryQuery
                         info.Single = info.Single - info.Split;
                         info.ReagentTheory = (int)Math.Ceiling(info.Mix * 1.0 / 6) + info.Single + info.NC + info.PC + info.QC;
                         info.ReagentCost = 8;
-                        info.ReagentTotal = info.ReagentTheory + info.ReagentCost;
-                        info.Diti1000 = (info.NC + info.PC + info.QC + info.Mix + info.Single + info.Split) + 13;
-                        info.Diti200 = (int)Math.Ceiling((info.NC + info.PC + info.QC + info.Mix + info.Single + info.Split) * 1.0 / 2 + 24);
+                        info.ReagentTotal = info.ReagentTheory + info.ReagentCost - 5;
+                        info.Diti1000 = (info.NC * 2 + info.PC * 2 + info.QC + info.Mix + info.Single * 2 + info.Split * 2) + 34;
+                        info.Diti200 = (int)Math.Ceiling((info.NC + info.PC + qc_single * 2 + qc_mix + info.Mix + info.Single + info.Split) * 1.0 / 2 + 24);
                         if (pcrPlateType == 0)
                         {
                             commandText = "select count(*) from Plates where ExperimentID=@ExperimentID and PlateType=2";
@@ -401,6 +455,45 @@ namespace WanTai.Controller.HistoryQuery
             }
         }
 
+        public int GetEarlierRotationCount(DateTime startTime)
+        {
+            int count = 0;
+
+            try
+            {
+                string connectionString = WanTai.Common.Configuration.GetConnectionString();
+                ///todo: add control,each role user only can see the specific experiments
+                string commandText = "select count(*) from RotationInfo, ExperimentsInfo"
+                                   + " where ExperimentsInfo.ExperimentID = RotationInfo.ExperimentID"
+                                   + " and ExperimentsInfo.State=20 and RotationInfo.State=20"
+                                   + " and ExperimentsInfo.StartTime >= CONVERT(datetime,'" + startTime.ToString("yyyy-MM-dd 00:00:00")
+                                   + "',101) and ExperimentsInfo.StartTime < CONVERT(datetime,'" + startTime.ToString("yyyy-MM-dd HH:mm:ss") + "',101)";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
+                        {
+                            if (reader.Read())
+                            {
+                                count = (int)reader.GetValue(0);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
+                LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->GetEarlierRotationCount", SessionInfo.ExperimentID);
+                throw;
+            }
+
+            return count;
+        }
+
         public string ConvertEnumStatusToText(ExperimentStatus status)
         {
             if (status == ExperimentStatus.Create)
@@ -433,8 +526,8 @@ namespace WanTai.Controller.HistoryQuery
             new_dt.Columns.Add("PCR理论试剂用量/T");
             new_dt.Columns.Add("试剂损耗/T");
             new_dt.Columns.Add("试剂总用量/T");
-            new_dt.Columns.Add("Diti1000/盒");
-            new_dt.Columns.Add("Diti200/盒");
+            new_dt.Columns.Add("Diti1000");
+            new_dt.Columns.Add("Diti200");
             new_dt.Columns.Add("DW 96深孔板/个");
             new_dt.Columns.Add("磁头套管/个");
             new_dt.Columns.Add("100ml试剂槽/个");

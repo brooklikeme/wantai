@@ -741,6 +741,19 @@
     <Resource Include="Resources\kingfisher_rubbish_100_r.gif" />
     <Resource Include="Resources\kingfisher_rubbish_100_w.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Login_Bg.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Login_Bg.png" />
+    <Resource Include="Resources\Login_Bg1.gif" />
+    <Resource Include="Resources\Login_Bg_old.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\MaintainEvoDay.png" />
+    <Resource Include="Resources\MaintainEvoMonth.png" />
+    <Resource Include="Resources\MaintainEvoWeek.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -125,7 +125,7 @@
                                          Label="实验查询" Click="QueryExperiment_Button_Click"/>
                         <my:RibbonButton x:Name="QueryNAT_Button"   
                                          LargeImageSource="Resources\ReagentSuppliesConfig.gif"
-                                         Label="试剂耗材" Click="QueryNAT_Button_Click"/>
+                                         Label="试剂耗材查询" Click="QueryNAT_Button_Click"/>
                         <my:RibbonButton x:Name="LogView_Button"   
                                          LargeImageSource="Resources\SearchAlarm_icon.gif"
                                          Label="系统日志" Click="LogView_Button_Click"/>
@@ -134,13 +134,13 @@
                        
                         <my:RibbonButton x:Name="TecanMaintainDay_Button"   
                                          LargeImageSource="Resources\Maintain_icon.gif"
-                                         Label="仪器日维护" Click="TecanMaintainDay_Button_Click"/>
+                                         Label="日维护" Click="TecanMaintainDay_Button_Click"/>
                         <my:RibbonButton x:Name="TecanMaintainWeek_Button"   
                                          LargeImageSource="Resources\Maintain_icon.gif"
-                                         Label="仪器周维护" Click="TecanMaintainWeek_Button_Click"/>
+                                         Label="周维护" Click="TecanMaintainWeek_Button_Click"/>
                         <my:RibbonButton x:Name="TecanMaintainMonth_Button"   
                                          LargeImageSource="Resources\Maintain_icon.gif"
-                                         Label="仪器月维护" Click="TecanMaintainMonth_Button_Click"/>
+                                         Label="月维护" Click="TecanMaintainMonth_Button_Click"/>
                         <my:RibbonButton x:Name="TecanRestoration_Button" 
                                          LargeImageSource="Resources\TecanRestoration_icon.gif"
                                          Label="仪器复位" Click="TecanRestoration_Button_Click"/>

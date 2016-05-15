@@ -52,8 +52,8 @@
                 <DataGridTextColumn Header="理论试剂用量/T" Width="*" Binding="{Binding ReagentTheory}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="试剂损耗/T" Width="*" Binding="{Binding ReagentCost}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="试剂总用量/T" Width="*" Binding="{Binding ReagentTotal}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Diti1000 /盒" Width="*" Binding="{Binding Diti1000}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Diti200 /盒" Width="*" Binding="{Binding Diti200}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Diti1000" Width="*" Binding="{Binding Diti1000}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Diti200" Width="*" Binding="{Binding Diti200}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="DW 96深孔板/个" Width="*" Binding="{Binding DW96}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="磁头套管/个" Width="*" Binding="{Binding Microtiter}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="100ml试剂槽/个" Width="*" Binding="{Binding ReagentSlot}" CanUserSort="False" IsReadOnly="True"/>

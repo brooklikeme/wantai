@@ -868,13 +868,18 @@ namespace WanTai.Controller
                                         int ColumnIndex = int.Parse(TubePosition.Split(',')[0]);
                                         int RowIndex = int.Parse(TubePosition.Split(',')[1]) - 1;
                                         Tube tube = new Tube();
-                                        tube.BarCode = Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                        // tube.BarCode = Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                        tube.BarCode = (SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A")
+                                             ? SessionInfo.BatchATubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
                                         tube.ExperimentID = ExperimentID;
                                         tube.Position = RowIndex + 1;
                                         tube.Grid = ColumnIndex;
                                         tube.TubeGroupID = NewTubeGroup.TubeGroupID;
                                         tube.TubeID = WanTaiObjectService.NewSequentialGuid();
-                                        tube.TubePosBarCode = Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                        // tube.TubePosBarCode = Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                        tube.TubePosBarCode = (SessionInfo.BatchType == "B" && NewTubeGroup.BatchType == "A")
+                                             ? SessionInfo.BatchATubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+
                                         tube.TubeType = (int)Tubetype.Tube;
                                         tube.Volume = Volume;
                                         #endregion

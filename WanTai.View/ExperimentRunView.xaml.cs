@@ -465,8 +465,10 @@ namespace WanTai.View
                             {
                                 continue;
                             }
+                            bool isFirstStepMixing = false;
                             if (CurrentRotation.RunIndex == 0 && CurrentRotation.CurrentOperationIndex == 0)
                             {
+                                isFirstStepMixing = true;
                                 if (SessionInfo.FirstStepMixing == 3) {
                                     // send message to namedpipe client
                                     if (NextStepRunEvent != null)
@@ -476,7 +478,6 @@ namespace WanTai.View
                                         Thread.Sleep(1000);
                                     }
                                     RunReturnValue = SessionInfo.FirstStepMixing == 5;
-                                    continue;
                                 }
                             }
                             /******Stop Suspend 都返回 True,只有错才返回 False******************************/
@@ -492,7 +493,7 @@ namespace WanTai.View
                                 }
                             }
 
-                            if(!canRecover)
+                            if (!canRecover && !isFirstStepMixing)
                             {
                                 RunReturnValue = processor.StartScript((RunScrtiptName = scriptFileName));
                             }
