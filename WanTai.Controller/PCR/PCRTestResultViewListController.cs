@@ -130,10 +130,11 @@ namespace WanTai.Controller.PCR
             return sampleNumber;
         }
 
-        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch)
+        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch, out bool has_bci)
         {
             reagent_batch = "";
             qc_batch = "";
+            has_bci = false;
             //try
             {
                 bool ignoreSampleTracking = WanTai.Common.Configuration.GetIgnoreSampleTracking();
@@ -651,6 +652,28 @@ namespace WanTai.Controller.PCR
                                                 }
                                             }
                                         }
+                                        else if (dRow["TestingItemName"].ToString() == "BCI")
+                                        {
+                                            has_bci = true;
+                                            if ("ROX" == Detector)
+                                            {
+                                                dRow["HBV"] = ctString;
+                                            }
+                                            else if ("FAM" == Detector)
+                                            {
+                                                dRow["HCV"] = ctString;
+                                            }
+                                            else if ("CY5" == Detector)
+                                            {
+                                                dRow["HIV"] = ctString;
+                                            }
+                                            else if ("VIC" == Detector || "HEX" == Detector)
+                                            {
+                                                dRow["HBVIC"] = ctString;
+                                                dRow["HCVIC"] = ctString;
+                                                dRow["HIVIC"] = ctString;
+                                            }
+                                        }
                                     }
                                 }
                                 if (reader["Result"] != DBNull.Value)
@@ -661,7 +684,7 @@ namespace WanTai.Controller.PCR
                                     {
                                         dRow["Color"] = WantagColor.WantagRed;
                                     }
-                                    else if (reader["Result"].ToString() == PCRTest.InvalidResult || reader["Result"].ToString() == PCRTest.NoResult)
+                                    else if (reader["Result"].ToString().Contains(PCRTest.InvalidResult) || reader["Result"].ToString().Contains(PCRTest.NoResult))
                                     {
                                         dRow["Color"] = WantagColor.WantagYellow;
                                     }
@@ -782,8 +805,20 @@ namespace WanTai.Controller.PCR
                         {
                             dataRow.ItemArray = middRow.ItemArray;
                             dataRow["Number"] = dataIndex;
-                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"].ToString() != "")
-                                dataRow["PCRTestResult"] = middRow["TestingItemName"] + " " + dataRow["PCRTestResult"];
+                            if (middRow["PCRTestResult"] != null && middRow["PCRTestResult"].ToString() != "") {
+                                if (middRow["TestingItemName"].ToString() == "BCI")
+                                {
+                                    string [] pcrResults = dataRow["PCRTestResult"].ToString().Split('|');
+                                    if (pcrResults.Length > 3)
+                                    {
+                                        dataRow["PCRTestResult"] = "HBV " + pcrResults[1];
+                                        dataRow["PCRTestResult"] += "\nHCV " + pcrResults[2];
+                                        dataRow["PCRTestResult"] += "\nHIV " + pcrResults[3];
+                                    }
+                                } else {
+                                    dataRow["PCRTestResult"] = middRow["TestingItemName"] + " " + dataRow["PCRTestResult"];
+                                }
+                            }                                
                             else
                                 dataRow["PCRTestResult"] = " ";
                             dataTable.Rows.Add(dataRow);
@@ -1236,7 +1271,8 @@ namespace WanTai.Controller.PCR
                     _pcrTable.Clear();
                     string reagent_batch;
                     string qc_batch;
-                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch);
+                    bool has_bci;
+                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
 
                     dt.Columns.Add("序号");
                     dt.Columns.Add("类型");
@@ -1248,11 +1284,14 @@ namespace WanTai.Controller.PCR
                     // dt.Columns.Add("PCR板条码");
                     dt.Columns.Add("PCR孔位");
                     dt.Columns.Add("HBV(Ct)");
-                    dt.Columns.Add("HBVIC(Ct)");
+                    if (!has_bci) dt.Columns.Add("HBVIC(Ct)");
                     dt.Columns.Add("HCV(Ct)");
-                    dt.Columns.Add("HCVIC(Ct)");
+                    if (!has_bci) dt.Columns.Add("HCVIC(Ct)");
                     dt.Columns.Add("HIV(Ct)");
-                    dt.Columns.Add("HIVIC(Ct)");
+                    if (!has_bci) 
+                        dt.Columns.Add("HIVIC(Ct)"); 
+                    else 
+                        dt.Columns.Add("IC(Ct)");
                     dt.Columns.Add("检测结果");
                     dt.Columns.Add("实验记录");
                     dt.Columns.Add("Color");
@@ -1272,18 +1311,23 @@ namespace WanTai.Controller.PCR
                         // dr["PCR板条码"] = row["PCRPlateBarCode"].ToString();
                         dr["PCR孔位"] = row["PCRPosition"].ToString();
                         dr["HBV(Ct)"] = row["HBV"].ToString().Replace("Undetermined", "No Ct");
-                        dr["HBVIC(Ct)"] = row["HBVIC"].ToString().Replace("Undetermined", "No Ct");
+                        if (!has_bci)
+                            dr["HBVIC(Ct)"] = row["HBVIC"].ToString().Replace("Undetermined", "No Ct");
                         dr["HCV(Ct)"] = row["HCV"].ToString().Replace("Undetermined", "No Ct");
-                        dr["HCVIC(Ct)"] = row["HCVIC"].ToString().Replace("Undetermined", "No Ct");
+                        if (!has_bci)
+                            dr["HCVIC(Ct)"] = row["HCVIC"].ToString().Replace("Undetermined", "No Ct");
                         dr["HIV(Ct)"] = row["HIV"].ToString().Replace("Undetermined", "No Ct");
-                        dr["HIVIC(Ct)"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
+                        if (!has_bci) 
+                            dr["HIVIC(Ct)"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
+                        else
+                            dr["IC(Ct)"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
                         dr["检测结果"] = row["PCRTestResult"].ToString();
                         dr["实验记录"] = row["SimpleTrackingResult"].ToString();
                         dr["Color"] = row["Color"];
                         dt.Rows.Add(dr);
                     }
 
-                    return ExportToPdf(dt, fileName, expInfo, reagent_batch, qc_batch);
+                    return ExportToPdf(dt, fileName, expInfo, reagent_batch, qc_batch, has_bci);
                 }
                 else if (extension.Equals(".xls"))
                 {
@@ -1297,10 +1341,16 @@ namespace WanTai.Controller.PCR
                         _pcrTable.Clear();
                         string reagent_batch;
                         string qc_batch;
-                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch);
-
-                        string createTableSql = "create table [" + rotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] nvarchar,[样本位置] nvarchar,"
-                            + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV_Ct] nvarchar,[HBVIC_Ct] nvarchar,[HCV_Ct] nvarchar,[HCVIC_Ct] nvarchar,[HIV_Ct] nvarchar,[HIVIC_Ct] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
+                        bool has_bci;
+                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
+                        
+                        string createTableSql = "";
+                        if (!has_bci)
+                            createTableSql = "create table [" + rotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] nvarchar,[样本位置] nvarchar,"
+                                + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV_Ct] nvarchar,[HBVIC_Ct] nvarchar,[HCV_Ct] nvarchar,[HCVIC_Ct] nvarchar,[HIV_Ct] nvarchar,[HIVIC_Ct] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
+                        else
+                            createTableSql = "create table [" + rotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] nvarchar,[样本位置] nvarchar,"
+                                + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV_Ct] nvarchar,[HCV_Ct] nvarchar,[HIV_Ct] nvarchar,[IC_Ct] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
                         command.CommandText = createTableSql;
                         command.ExecuteNonQuery();
 
@@ -1313,24 +1363,42 @@ namespace WanTai.Controller.PCR
                             {
                                 PCRTestOK = false;
                             }
-                            insertSql = string.Format("Insert into [" + rotationName + "] (序号,类型,样本名称,样本条码,样本位置,检测方式,检测项目,PCR孔位,HBV_Ct,HBVIC_Ct,HCV_Ct,HCVIC_Ct,HIV_Ct,HIVIC_Ct,检测结果,实验记录) "
-                                + "values({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}', '{11}','{12}','{13}','{14}','{15}')",
-                                    row["Number"].ToString(),
-                                    row["TubeTypeName"].ToString(),
-                                    row["PCRName"].ToString(),
-                                    row["TubeBarCode"].ToString(),
-                                    row["TubePosition"].ToString(),
-                                    row["PoolingRuleName"].ToString(),
-                                    row["TestingItemName"].ToString(),
-                                    row["PCRPosition"].ToString(),
-                                    row["HBV"].ToString(),
-                                    row["HBVIC"].ToString(),
-                                    row["HCV"].ToString(),
-                                    row["HCVIC"].ToString(),
-                                    row["HIV"].ToString(),
-                                    row["HIVIC"].ToString(),
-                                    row["PCRTestResult"].ToString(),
-                                    row["SimpleTrackingResult"].ToString());
+                            if (!has_bci) 
+                                insertSql = string.Format("Insert into [" + rotationName + "] (序号,类型,样本名称,样本条码,样本位置,检测方式,检测项目,PCR孔位,HBV_Ct,HBVIC_Ct,HCV_Ct,HCVIC_Ct,HIV_Ct,HIVIC_Ct,检测结果,实验记录) "
+                                    + "values({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}', '{11}','{12}','{13}','{14}','{15}')",
+                                        row["Number"].ToString(),
+                                        row["TubeTypeName"].ToString(),
+                                        row["PCRName"].ToString(),
+                                        row["TubeBarCode"].ToString(),
+                                        row["TubePosition"].ToString(),
+                                        row["PoolingRuleName"].ToString(),
+                                        row["TestingItemName"].ToString(),
+                                        row["PCRPosition"].ToString(),
+                                        row["HBV"].ToString(),
+                                        row["HBVIC"].ToString(),
+                                        row["HCV"].ToString(),
+                                        row["HCVIC"].ToString(),
+                                        row["HIV"].ToString(),
+                                        row["HIVIC"].ToString(),
+                                        row["PCRTestResult"].ToString(),
+                                        row["SimpleTrackingResult"].ToString());
+                            else
+                                insertSql = string.Format("Insert into [" + rotationName + "] (序号,类型,样本名称,样本条码,样本位置,检测方式,检测项目,PCR孔位,HBV_Ct,HCV_Ct,HIV_Ct,IC_Ct,检测结果,实验记录) "
+                                    + "values({0},'{1}','{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}', '{11}','{12}','{13}')",
+                                        row["Number"].ToString(),
+                                        row["TubeTypeName"].ToString(),
+                                        row["PCRName"].ToString(),
+                                        row["TubeBarCode"].ToString(),
+                                        row["TubePosition"].ToString(),
+                                        row["PoolingRuleName"].ToString(),
+                                        row["TestingItemName"].ToString(),
+                                        row["PCRPosition"].ToString(),
+                                        row["HBV"].ToString(),
+                                        row["HCV"].ToString(),
+                                        row["HIV"].ToString(),
+                                        row["HIVIC"].ToString(),
+                                        row["PCRTestResult"].ToString(),
+                                        row["SimpleTrackingResult"].ToString());
                             command.CommandText = insertSql;
                             command.ExecuteNonQuery();
                         }
@@ -1358,7 +1426,7 @@ namespace WanTai.Controller.PCR
         /// <param name="ds"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        private bool ExportToPdf(DataTable dt, string fileName, ExperimentsInfo expInfo, string reagent_batch, string qc_batch)
+        private bool ExportToPdf(DataTable dt, string fileName, ExperimentsInfo expInfo, string reagent_batch, string qc_batch, bool has_bci)
         {
             ///设置导出字体
             string FontPath = "C://WINDOWS//Fonts//msyh.ttf"; //"C://WINDOWS//Fonts//simsun.ttc,1";
@@ -1712,11 +1780,17 @@ namespace WanTai.Controller.PCR
             string PCRTestResultWidths = WanTai.Common.Configuration.GetPCRTestResultWidthList();
             if (!string.IsNullOrEmpty(PCRTestResultWidths))
             {
-                table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));                    
+                if (!has_bci)
+                    table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));    
+                else
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             else
             {
-                table.SetTotalWidth(new float[] { 3, 7, 8, 15, 17, 6, 6, 16, 6, 6, 6, 6, 6, 6, 20, 30 });
+                if (!has_bci)
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
+                else
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             // 添加表头，每一页都有表头
             for (int j = 0; j < dt.Columns.Count - 1; j++)

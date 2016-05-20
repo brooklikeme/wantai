@@ -128,11 +128,15 @@ namespace WanTai.View.PCR
             string errorMessage = string.Empty;
             string reagent_batch = "";
             string qc_batch = "";
+            bool has_bci = false;
             dataTable.Rows.Clear();
             if (rotationId != null && rotationId != Guid.Empty)
             {                
                 PCRTestResultViewListController controller = new PCRTestResultViewListController();
-                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage, out reagent_batch, out qc_batch);
+                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
+                HBVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
+                HCVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
+                HIVIC.Header = has_bci ? "IC(Ct)" : "HBVIC(Ct)";
                 ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
                 this.experiment_name.Content = expInfo.ExperimentName;
                 this.login_name.Content = expInfo.LoginName;
