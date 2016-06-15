@@ -1087,7 +1087,7 @@ namespace WanTai.View.PCR
             {
                 hex = data.Ct;
             }
-            else if ("CY5" == data.Detector)
+            else if ("CY5" == data.Detector.ToUpper())
             {
                 cy5 = data.Ct;
             }
@@ -1108,7 +1108,7 @@ namespace WanTai.View.PCR
                     {
                         hex = subData.Ct;
                     }
-                    else if ("CY5" == subData.Detector)
+                    else if ("CY5" == subData.Detector.ToUpper())
                     {
                         cy5 = subData.Ct;
                     }
