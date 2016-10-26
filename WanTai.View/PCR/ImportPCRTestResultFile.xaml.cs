@@ -1115,19 +1115,19 @@ namespace WanTai.View.PCR
                 }
             }
  
-            if (!string.IsNullOrEmpty(fam) && (fam == "Undetermined" || fam == "No Ct" || fam == "N/A"))
+            if (!string.IsNullOrEmpty(fam) && (fam == "Undetermined" || fam == "No Ct" || fam == "N/A" || fam == "NaN"))
             {
                 fam = "45";
             }
-            if (!string.IsNullOrEmpty(hex) && (hex == "Undetermined" || hex == "No Ct" || hex == "N/A"))
+            if (!string.IsNullOrEmpty(hex) && (hex == "Undetermined" || hex == "No Ct" || hex == "N/A" || hex == "NaN"))
             {
                 hex = "45";
             }
-            if (!string.IsNullOrEmpty(rox) && (rox == "Undetermined" || rox == "No Ct" || rox == "N/A"))
+            if (!string.IsNullOrEmpty(rox) && (rox == "Undetermined" || rox == "No Ct" || rox == "N/A" || rox == "NaN"))
             {
                 rox = "45";
             }
-            if (!string.IsNullOrEmpty(cy5) && (cy5 == "Undetermined" || cy5 == "No Ct" || cy5 == "N/A"))
+            if (!string.IsNullOrEmpty(cy5) && (cy5 == "Undetermined" || cy5 == "No Ct" || cy5 == "N/A" || cy5 == "NaN"))
             {
                 cy5 = "45";
             }
@@ -1297,9 +1297,14 @@ namespace WanTai.View.PCR
                 if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
                 {
                     float hexNumber = float.Parse(hex);
-                    if (hexNumber > HBVValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
+
+                    if (hex == "45" && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
                     {
                         return PCRTest.NegativeResult;
+                    }
+                    else if (hexNumber > HBVValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
+                    {
+                        return PCRTest.LowResult;
                     }
                     else if (hexNumber <= HBVValue)
                     {
@@ -1324,9 +1329,13 @@ namespace WanTai.View.PCR
                 if (!string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber))
                 {
                     float famNumber = float.Parse(fam);
-                    if (famNumber > HCVValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
+                    if (fam == "45" && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
                     {
                         return PCRTest.NegativeResult;
+                    }
+                    else if (famNumber > HCVValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
+                    {
+                        return PCRTest.LowResult;
                     }
                     else if (famNumber <= HCVValue)
                     {
@@ -1351,9 +1360,13 @@ namespace WanTai.View.PCR
                 if (!string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber))
                 {
                     float famNumber = float.Parse(fam);
-                    if (famNumber > HIVValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
+                    if (fam == "45" && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
                     {
                         return PCRTest.NegativeResult;
+                    }
+                    else if (famNumber > HIVValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) < 36)
+                    {
+                        return PCRTest.LowResult;
                     }
                     else if (famNumber <= HIVValue)
                     {
@@ -1573,7 +1586,7 @@ namespace WanTai.View.PCR
                     && float.TryParse(IC, out outNumber) 
                     && float.Parse(IC) <= 35
                     && null != Quantity
-                    && ("No Ct" == Quantity || "Undetermined" == Quantity || "N/A" == Quantity || Quantity.Trim() == ""))
+                    && ("No Ct" == Quantity || "Undetermined" == Quantity || "N/A" == Quantity || "NaN" == Quantity || Quantity.Trim() == ""))
                 {
                     return Quantity;
                 }
@@ -1606,9 +1619,9 @@ namespace WanTai.View.PCR
                         && float.TryParse(IC, out outNumber) 
                         && float.Parse(IC) <= 35
                         && null != CT
-                        && ("No Ct" == CT || "N/A" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && ("No Ct" == CT || "N/A" == CT || "NaN" == CT || CT.Trim() == "" || "Undetermined" == CT)
                         && null != Quantity
-                        && ("No Ct" == Quantity || Quantity.Trim() == "" || Quantity == "N/A" || "Undetermined" == Quantity))
+                        && ("No Ct" == Quantity || Quantity.Trim() == "" || Quantity == "N/A" || Quantity == "NaN" || "Undetermined" == Quantity))
                     {
                         return Quantity;
                     }
@@ -1679,9 +1692,9 @@ namespace WanTai.View.PCR
                         && float.TryParse(IC, out outNumber)
                         && float.Parse(IC) <= 35
                         && null != CT
-                        && ("No Ct" == CT || "N/A" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && ("No Ct" == CT || "N/A" == CT || "NaN" == CT || CT.Trim() == "" || "Undetermined" == CT)
                         && null != Quantity
-                        && ("No Ct" == Quantity || Quantity.Trim() == "" || Quantity.Trim() == "N/A" || "Undetermined" == Quantity))
+                        && ("No Ct" == Quantity || Quantity.Trim() == "" || Quantity.Trim() == "N/A" || Quantity.Trim() == "NaN"|| "Undetermined" == Quantity))
                     {
                         return Quantity;
                     }
@@ -1752,9 +1765,9 @@ namespace WanTai.View.PCR
                         && float.TryParse(IC, out outNumber)
                         && float.Parse(IC) <= 35
                         && null != CT
-                        && ("No Ct" == CT || "N/A" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && ("No Ct" == CT || "N/A" == CT || "NaN" == CT || CT.Trim() == "" || "Undetermined" == CT)
                         && null != Quantity
-                        && ("No Ct" == Quantity || "N/A" == Quantity || Quantity.Trim() == "" || "Undetermined" == Quantity))
+                        && ("No Ct" == Quantity || "N/A" == Quantity || "NaN" == Quantity || Quantity.Trim() == "" || "Undetermined" == Quantity))
                     {
                         return Quantity;
                     }
@@ -1805,9 +1818,9 @@ namespace WanTai.View.PCR
                         && float.TryParse(IC, out outNumber)
                         && float.Parse(IC) > 35
                         && null != CT
-                        && ("No Ct" == CT || "N/A" == CT || CT.Trim() == "" || "Undetermined" == CT)
+                        && ("No Ct" == CT || "N/A" == CT || "NaN" == CT || CT.Trim() == "" || "Undetermined" == CT)
                         && null != Quantity
-                        && ("No Ct" == Quantity || "N/A" == Quantity || Quantity.Trim() == "" || "Undetermined" == Quantity))
+                        && ("No Ct" == Quantity || "N/A" == Quantity || "NaN" == Quantity|| Quantity.Trim() == "" || "Undetermined" == Quantity))
                     {
                         return PCRTest.InvalidResult;
                     }

@@ -131,6 +131,8 @@ namespace WanTai.DataModel
         public static string PositiveResult = "阳性";
         public static string InvalidResult = "重新测定";
         public static string NoResult = "计算无结果";
+        public static string LowResult = "低于检测限";
+
     }
 
     public class WantagColor
