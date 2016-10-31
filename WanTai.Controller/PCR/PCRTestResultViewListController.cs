@@ -708,6 +708,7 @@ namespace WanTai.Controller.PCR
                                         && dRow["PCRTestResult"].ToString() != PCRTest.NoResult
                                         && "No Ct" != dRow["PCRTestResult"].ToString()
                                         && "N/A" != dRow["PCRTestResult"].ToString()
+                                        && "NaN" != dRow["PCRTestResult"].ToString()
                                         && "" != dRow["PCRTestResult"].ToString().Trim()
                                         && "Undetermined" != dRow["PCRTestResult"].ToString()))
                                         ? ((dRow["TestingItemName"].ToString() == "HBV" || dRow["TestingItemName"].ToString() == "HCV") ? " IU/ml" : " cps/ml") : "");

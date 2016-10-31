@@ -136,7 +136,7 @@ namespace WanTai.View.PCR
                 controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
                 HBVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
                 HCVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
-                HIVIC.Header = has_bci ? "IC(Ct)" : "HBVIC(Ct)";
+                HIVIC.Header = has_bci ? "IC(Ct)" : "HIVIC(Ct)";
                 ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
                 this.experiment_name.Content = expInfo.ExperimentName;
                 this.login_name.Content = expInfo.LoginName;

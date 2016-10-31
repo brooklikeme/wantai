@@ -73,6 +73,7 @@ namespace WanTai.View
                 tubesView.labelRotationName.Content = "";
                 tabItem1.Content = tubesView ;
                 tubesView.NextStepEvent += new NextStepHandler(Button_Click_1);
+                tubesView.onFirstStepScan += new FirstStepScan(FirstStepScanEvent);
             }
             else if (SessionInfo.WorkDeskType == "150")
             {
