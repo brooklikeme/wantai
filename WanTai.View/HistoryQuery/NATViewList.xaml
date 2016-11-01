@@ -45,10 +45,12 @@
                 <DataGridTextColumn Header="日期" Width="100" Binding="{Binding StartTime}" CanUserSort="True" IsReadOnly="True" SortDirection="Descending" ></DataGridTextColumn>
                 <DataGridTextColumn Header="NC" Width="*" Binding="{Binding NC}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="PC" Width="*" Binding="{Binding PC}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="dgfComplement" Header="定量参考品" Width="*" Binding="{Binding QC}" CanUserSort="False" IsReadOnly="True" Visibility="Hidden"/>
                 <DataGridTextColumn Header="QC" Width="*" Binding="{Binding QC}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="6混数" Width="*" Binding="{Binding Mix}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="拆分数" Width="*" Binding="{Binding Split}" CanUserSort="False" IsReadOnly="True"/>
-                <DataGridTextColumn Header="单检数" Width="*" Binding="{Binding Single}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="dgfSample" Header="样本数" Width="*" Binding="{Binding Mix}" CanUserSort="False" IsReadOnly="True" Visibility="Hidden"/>
+                <DataGridTextColumn x:Name="dgfMix" Header="6混数" Width="*" Binding="{Binding Mix}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="dgfSplit" Header="拆分数" Width="*" Binding="{Binding Split}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTextColumn x:Name="dgfSingle" Header="单检数" Width="*" Binding="{Binding Single}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="理论试剂用量/T" Width="*" Binding="{Binding ReagentTheory}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="试剂损耗/T" Width="*" Binding="{Binding ReagentCost}" CanUserSort="False" IsReadOnly="True"/>
                 <DataGridTextColumn Header="试剂总用量/T" Width="*" Binding="{Binding ReagentTotal}" CanUserSort="False" IsReadOnly="True"/>

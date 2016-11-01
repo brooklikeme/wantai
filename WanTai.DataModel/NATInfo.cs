@@ -14,7 +14,9 @@ namespace WanTai.DataModel
         public int RotationNumber { get; set; }  // 轮次数
         public DateTime StartTime { get; set; }  
         public int NC { get; set; }  
-        public int PC { get; set; }  
+        public int PC { get; set; }
+        public int Complement { get; set; }
+        public int Sample { get; set; }
         public int QC { get; set; }  
         public int Mix { get; set; }  
         public int Split { get; set; }  

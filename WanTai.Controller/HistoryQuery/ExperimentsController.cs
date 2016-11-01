@@ -341,12 +341,17 @@ namespace WanTai.Controller.HistoryQuery
                                     {
                                         info.PC += (int)reader.GetValue(2);
                                     }
+                                    else if ((short)reader.GetValue(0) == (short)Tubetype.Complement)
+                                    {
+                                        info.Complement += (int)reader.GetValue(2);
+                                    }
                                     else if ((short)reader.GetValue(0) == (short)Tubetype.QC)
                                     {
                                         //
                                     }
                                     else if ((short)reader.GetValue(0) == (short)Tubetype.Tube)
                                     {
+                                        info.Sample += (int)reader.GetValue(2);
                                         if ((string)reader.GetValue(1) == "单检")
                                         {
                                             info.Single += (int)reader.GetValue(2);
@@ -361,6 +366,7 @@ namespace WanTai.Controller.HistoryQuery
                         }
 
                         info.Single -= qc_single;
+                        info.Sample -= qc_single;
                         info.Mix -= qc_mix;
 
                         /*
@@ -378,11 +384,34 @@ namespace WanTai.Controller.HistoryQuery
                         }*/
                         // aggregate data
                         info.Single = info.Single - info.Split;
-                        info.ReagentTheory = (int)Math.Ceiling(info.Mix * 1.0 / 6) + info.Single + info.NC + info.PC + info.QC;
-                        info.ReagentCost = 8;
-                        info.ReagentTotal = info.ReagentTheory + info.ReagentCost - 5;
-                        info.Diti1000 = (info.NC * 2 + info.PC * 2 + info.QC + info.Mix + info.Single * 2 + info.Split * 2) + 34;
-                        info.Diti200 = (int)Math.Ceiling((info.NC + info.PC + qc_single * 2 + qc_mix + info.Mix + info.Single + info.Split) * 1.0 / 2 + 24);
+                        if (SessionInfo.WorkDeskType == "100")
+                        {
+                            info.ReagentTheory = info.Sample + info.NC + info.PC + info.QC + info.Complement;
+                        }
+                        else
+                        {
+                            info.ReagentTheory = (int)Math.Ceiling(info.Mix * 1.0 / 6) + info.Single + info.NC + info.PC + info.QC;
+                        }
+                        // info.ReagentCost = 8;
+                        if (info.ReagentTheory <= 32)
+                            info.ReagentCost = 5;
+                        else if (info.ReagentTheory > 32 && info.ReagentTheory <= 64)
+                            info.ReagentCost = 7;
+                        else if (info.ReagentTheory > 64 && info.ReagentTheory <= 96)
+                            info.ReagentCost = 10;
+                        if (info.ReagentTheory <= 32) info.ReagentCost = 5;
+                        // info.ReagentTotal = info.ReagentTheory + info.ReagentCost - 5;
+                        info.ReagentTotal = info.ReagentTheory + info.ReagentCost;
+                        // info.Diti1000 = (info.NC * 2 + info.PC * 2 + info.QC + info.Mix + info.Single * 2 + info.Split * 2) + 34;
+                        if (SessionInfo.WorkDeskType == "100")
+                            info.Diti1000 = (int)Math.Ceiling((info.Sample + info.NC + info.PC + info.QC + info.Complement + 16) * 1.0 / 96);
+                        else
+                            info.Diti1000 = (int)Math.Ceiling(((int)Math.Ceiling(info.Mix * 1.0 / 6) + info.Single * 2 + info.Split * 2 + info.NC + info.PC + info.QC + 34) * 1.0 / 96);
+                        // info.Diti200 = (int)Math.Ceiling((info.NC + info.PC + qc_single * 2 + qc_mix + info.Mix + info.Single + info.Split) * 1.0 / 2 + 24);
+                        if (SessionInfo.WorkDeskType == "100")
+                            info.Diti200 = (int)Math.Ceiling((info.Sample + info.NC + info.PC + info.QC + info.Complement + 10) * 1.0 / 96);
+                        else
+                            info.Diti200 = (int)Math.Ceiling((info.ReagentTheory * 2 + 22) * 1.0 / 96);
                         if (pcrPlateType == 0)
                         {
                             commandText = "select count(*) from Plates where ExperimentID=@ExperimentID and PlateType=2";
@@ -400,7 +429,10 @@ namespace WanTai.Controller.HistoryQuery
                         }
                         else
                         {
-                            info.PCR = (int)Math.Ceiling((((info.NC + info.PC + info.QC + info.Mix + info.Single + info.Split) * 1.0 / 6 + 2) * 1.0 / 8) * 3);
+                            if (SessionInfo.WorkDeskType == "100")
+                                info.PCR = (int)Math.Ceiling(info.ReagentTheory * 1.0 / 8);
+                            else
+                                info.PCR = (int)Math.Ceiling((((info.NC + info.PC + info.QC + info.Mix + info.Single + info.Split) * 1.0 / 6 + 2) * 1.0 / 8) * 3);
                         }
                     }
                 }
@@ -519,10 +551,21 @@ namespace WanTai.Controller.HistoryQuery
             new_dt.Columns.Add("日期");
             new_dt.Columns.Add("NC");
             new_dt.Columns.Add("PC");
+            if (SessionInfo.WorkDeskType == "100")
+            {
+                new_dt.Columns.Add("定量参考品");
+            }
             new_dt.Columns.Add("QC");
-            new_dt.Columns.Add("6混数");
-            new_dt.Columns.Add("拆分数");
-            new_dt.Columns.Add("单检数");
+            if (SessionInfo.WorkDeskType == "100")
+            {
+                new_dt.Columns.Add("样本数");
+            }
+            else
+            {
+                new_dt.Columns.Add("6混数");
+                new_dt.Columns.Add("拆分数");
+                new_dt.Columns.Add("单检数");
+            }
             new_dt.Columns.Add("PCR理论试剂用量/T");
             new_dt.Columns.Add("试剂损耗/T");
             new_dt.Columns.Add("试剂总用量/T");
@@ -532,29 +575,38 @@ namespace WanTai.Controller.HistoryQuery
             new_dt.Columns.Add("磁头套管/个");
             new_dt.Columns.Add("100ml试剂槽/个");
             new_dt.Columns.Add("扩增耗材(8联排或PCR板)");
-            new_dt.Columns.Add("Color");
 
             foreach (DataRow row in dt.Rows)
             {
                 DataRow dr = new_dt.NewRow();
-                dr["序号"] = (int)row["Number"];
+                dr["序号"] = row["Number"];
                 dr["日期"] = row["StartTime"].ToString();
                 dr["NC"] = row["NC"].ToString();
                 dr["PC"] = row["PC"].ToString();
+                if (SessionInfo.WorkDeskType == "100")
+                {
+                    dr["定量参考品"] = row["Complement"].ToString();
+                }
                 dr["QC"] = row["QC"].ToString();
-                dr["6混数"] = row["Mix"].ToString();
-                dr["拆分数"] = row["Split"].ToString();
-                dr["单检数"] = row["Single"].ToString();
+                if (SessionInfo.WorkDeskType == "100")
+                {
+                    dr["样本数"] = row["Sample"].ToString();
+                }
+                else
+                {
+                    dr["6混数"] = row["Mix"].ToString();
+                    dr["拆分数"] = row["Split"].ToString();
+                    dr["单检数"] = row["Single"].ToString();
+                }
                 dr["PCR理论试剂用量/T"] = row["ReagentTheory"].ToString();
                 dr["试剂损耗/T"] = row["ReagentCost"].ToString();
                 dr["试剂总用量/T"] = row["ReagentTotal"].ToString();
-                dr["Diti1000/盒"] = row["Diti1000"].ToString();
-                dr["Diti200/盒"] = row["Diti200"].ToString();
+                dr["Diti1000"] = row["Diti1000"].ToString();
+                dr["Diti200"] = row["Diti200"].ToString();
                 dr["DW 96深孔板/个"] = row["DW96"].ToString();
                 dr["磁头套管/个"] = row["Microtiter"].ToString();
                 dr["100ml试剂槽/个"] = row["ReagentSlot"].ToString();
                 dr["扩增耗材(8联排或PCR板)"] = row["PCR"].ToString();
-                dr["Color"] = row["Color"];
                 new_dt.Rows.Add(dr);
             }
 
@@ -607,14 +659,16 @@ namespace WanTai.Controller.HistoryQuery
 
 
             //根据数据表内容创建一个PDF格式的表
-            PdfPTable table = new PdfPTable(dt.Columns.Count - 1);
-            table.WidthPercentage = 100f;
-            table.SetTotalWidth(new float[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 });
-
+            PdfPTable table = new PdfPTable(new_dt.Columns.Count);
+            table.WidthPercentage = 100f;            
+            if (SessionInfo.WorkDeskType == "100")
+                table.SetTotalWidth(new float[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 });
+            else
+                table.SetTotalWidth(new float[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 });
             PdfPCell cell;
 
             // 添加表头，每一页都有表头
-            for (int i = 0; i < new_dt.Columns.Count - 1; i++)
+            for (int i = 0; i < new_dt.Columns.Count; i++)
             {
                 string cellName = new_dt.Columns[i].ColumnName;
                 cell = new PdfPCell(new Phrase(cellName, font));
@@ -639,10 +693,10 @@ namespace WanTai.Controller.HistoryQuery
                     try
                     {
                         cell = new PdfPCell(new Phrase(new_dt.Rows[i][j].ToString(), font));
-                        System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(new_dt.Rows[i]["Color"].ToString());
+                        // System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(new_dt.Rows[i]["Color"].ToString());
                         cell.VerticalAlignment = Element.ALIGN_MIDDLE;
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                        cell.BackgroundColor = new iTextSharp.text.Color(Color);
+                       //  cell.BackgroundColor = new iTextSharp.text.Color(Color);
                         table.AddCell(cell);
                     }
                     catch (Exception e)
