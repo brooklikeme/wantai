@@ -21,6 +21,9 @@ using System.Diagnostics;
 using Microsoft.Windows.Controls.Ribbon;
 using System.Threading;
 using System.ComponentModel;
+using System.Data.SqlClient;
+using System.Drawing;
+
 namespace WanTai.View
 {
     /// <summary>
@@ -597,6 +600,143 @@ namespace WanTai.View
                 Application.Current.Shutdown();
             };
             worker.RunWorkerAsync();
+        }
+
+        private void BackupDB_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //
+            string db_name = "";
+            if (InputBox("设置要备份的数据库名", "数据库名(可查看配置文件获取)：", ref db_name) == System.Windows.Forms.DialogResult.OK)
+            {
+                if (!string.IsNullOrEmpty(db_name))
+                {
+                    System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
+                    sfd.FileName = db_name + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".bak";
+                    sfd.Filter = "Bak Files(*.bak)|All Files(*.*)";
+                    string fileName = string.Empty;
+                    if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        fileName = sfd.FileName;
+                    }
+
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                        try
+                        {
+                            string connectionString = WanTai.Common.Configuration.GetConnectionString();
+
+                            using (SqlConnection conn = new SqlConnection(connectionString))
+                            {
+                                conn.Open();
+                                string CommandText = "backup database [" + db_name + "] to disk =" + "'" + fileName + "'";
+
+                                using (SqlCommand cmd = new SqlCommand(CommandText, conn))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+
+                                    cmd.ExecuteNonQuery();
+                                }
+                                conn.Close();
+                            }
+                            System.Windows.Forms.MessageBox.Show("导出数据库成功!");
+                        }
+                        catch (Exception exxx)
+                        {
+                            System.Windows.Forms.MessageBox.Show("导出数据库失败：" + exxx.Message);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void RestoreDB_Button_Click(object sender, RoutedEventArgs e)
+        {
+            //
+            System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
+            ofd.Filter = "Bak Files(*.bak)|All Files(*.*)";
+            string fileName = string.Empty;
+            if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                fileName = ofd.FileName;
+            }
+
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                string db_name = "";
+                if (InputBox("设置要恢复的数据库名", "数据库名不能和已有数据库重复：", ref db_name) == System.Windows.Forms.DialogResult.OK)
+                {
+                    if (!string.IsNullOrEmpty(db_name))
+                    {
+                        try
+                        {
+                            string connectionString = WanTai.Common.Configuration.GetConnectionString();
+
+                            using (SqlConnection conn = new SqlConnection(connectionString))
+                            {
+                                conn.Open();
+                                string CommandText = "restore database [" + db_name + "] from disk =" + "'" + fileName + "'";
+
+                                using (SqlCommand cmd = new SqlCommand(CommandText, conn))
+                                {
+                                    cmd.CommandType = CommandType.Text;
+
+                                    cmd.ExecuteNonQuery();
+                                }
+                                conn.Close();
+                            }
+                            System.Windows.Forms.MessageBox.Show("恢复数据库成功!");
+                        }
+                        catch (Exception exxx)
+                        {
+                            System.Windows.Forms.MessageBox.Show("恢复数据库失败：" + exxx.Message);
+                        }
+                    }      
+                }
+            }
+        }
+
+
+        
+        public static System.Windows.Forms.DialogResult InputBox(string title, string promptText, ref string value)
+        {
+            System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            System.Windows.Forms.Label label = new System.Windows.Forms.Label();
+            System.Windows.Forms.TextBox textBox = new System.Windows.Forms.TextBox();
+            System.Windows.Forms.Button buttonOk = new System.Windows.Forms.Button();
+            System.Windows.Forms.Button buttonCancel = new System.Windows.Forms.Button();
+
+            form.Text = title;
+            label.Text = promptText;
+            textBox.Text = value;
+
+            buttonOk.Text = "OK";
+            buttonCancel.Text = "Cancel";
+            buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
+            buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+
+            label.SetBounds(9, 20, 372, 13);
+            textBox.SetBounds(12, 36, 372, 30);
+            buttonOk.SetBounds(228, 72, 75, 23);
+            buttonCancel.SetBounds(309, 72, 75, 23);
+
+            label.AutoSize = true;
+            textBox.Anchor = textBox.Anchor | System.Windows.Forms.AnchorStyles.Right;
+            buttonOk.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            buttonCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+
+            form.ClientSize = new System.Drawing.Size(396, 107);
+            form.Controls.AddRange(new System.Windows.Forms.Control[] { label, textBox, buttonOk, buttonCancel });
+            form.ClientSize = new System.Drawing.Size(Math.Max(300, label.Right + 10), form.ClientSize.Height);
+            form.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            form.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            form.MinimizeBox = false;
+            form.MaximizeBox = false;
+            form.AcceptButton = buttonOk;
+            form.CancelButton = buttonCancel;
+
+            System.Windows.Forms.DialogResult dialogResult = form.ShowDialog();
+            value = textBox.Text;
+            return dialogResult;
         }
     }
 }

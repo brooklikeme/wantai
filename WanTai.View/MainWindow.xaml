@@ -189,6 +189,17 @@
                                          Label="修改密码" Click="EditPassword_Button_Click" />
                     </my:RibbonGroup>
                 </my:RibbonTab>
+                <my:RibbonTab x:Name="TabSystemManagement" FontStyle="Normal" FontStretch="Normal">
+                    <my:RibbonTab.Header>
+                        <Label Content="系统管理" FontSize="16"  FontWeight="Bold"></Label>
+                    </my:RibbonTab.Header>
+                    <my:RibbonGroup  VerticalAlignment="Center" >
+                        <my:RibbonButton x:Name="BackupDB_Button"  LargeImageSource="Resources\Operation.gif"                                         
+                                         Label="备份数据库" Click="BackupDB_Button_Click" />
+                        <my:RibbonButton x:Name="RestoreDBButton"     LargeImageSource="Resources\Operation.gif"                                    
+                                         Label="恢复数据库" Click="RestoreDB_Button_Click" />
+                    </my:RibbonGroup>
+                </my:RibbonTab>                
             </my:Ribbon>
         </Border>
         <ScrollViewer  Grid.Row="1" Grid.ColumnSpan="2"  Name="mainFrame"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
