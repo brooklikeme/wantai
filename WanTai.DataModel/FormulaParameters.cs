@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WanTai.DataModel
 {
+    [Serializable]  
     public class FormulaParameters
     {
         /// <summary>

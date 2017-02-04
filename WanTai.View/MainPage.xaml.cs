@@ -39,6 +39,7 @@ namespace WanTai.View
         public event EvoRestorationStatus SetEvoRestorationStatus;
         private ExperimentRunView experimentRunView = new ExperimentRunView();
         private string EvoVariableOutputPath = WanTai.Common.Configuration.GetEvoVariableOutputPath();
+        public event WanTai.View.MainWindow.ExperimentRunStatusHandler ExperimentRunStatusEvent;
 
         public MainPage()
         {   
@@ -131,8 +132,25 @@ namespace WanTai.View
             btnRun.IsEnabled = false;
             btnRecover.IsEnabled = false;
             bindRunWithStartAction();
+            if (ExperimentRunStatusEvent != null)
+                ExperimentRunStatusEvent();
            // runSelect_listBox.IsEnabled = false;
             //btnRStart.IsEnabled = false;
+        }
+
+        public void ContinueExperiment()
+        {
+            experimentRunView.BindView();
+            ((TabItem)tabControl.Items[0]).IsEnabled = false;
+            ((TabItem)tabControl.Items[1]).IsEnabled = false;
+            ((TabItem)tabControl.Items[2]).IsEnabled = false;
+            ((TabItem)tabControl.Items[3]).IsEnabled = true;
+            tabControl.SelectedIndex = 3;
+            btnRun.IsEnabled = true;
+            btnStop.IsEnabled = true;
+            ExperimentRun();
+            if (ExperimentRunStatusEvent != null)
+                ExperimentRunStatusEvent();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -598,6 +616,8 @@ namespace WanTai.View
             //runSelect_listBox.IsEnabled = false;    
             btnRecover.IsEnabled = false;
             btnRun.IsEnabled = false;
+            if (ExperimentRunStatusEvent != null)
+                ExperimentRunStatusEvent();
         }
 
         private void bindRunWithStartAction()
@@ -715,11 +735,14 @@ namespace WanTai.View
             btnRecover.IsEnabled = false;
             this.bindRunWithPauseAction();
             btnRun.IsOpen = false;
+            if (ExperimentRunStatusEvent != null)
+                ExperimentRunStatusEvent();
         }
-
         private void btnRun_Click(object sender, RoutedEventArgs e)
         {
             ExperimentRun();
+            if (ExperimentRunStatusEvent != null)
+                ExperimentRunStatusEvent();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)

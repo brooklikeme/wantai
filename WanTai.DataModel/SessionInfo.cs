@@ -38,6 +38,15 @@ namespace WanTai.DataModel
 
         public static int FirstStepMixing { get; set; }
 
+        public static bool ResumeExecution { get; set; }
+
+        public static bool WaitForSuspend { get; set; }
+
+        public static RotationInfo CurrentRotation { get; set; }
+
+        public static bool NexRotation { get; set; }
+
+
         /**************在提取运行 TEST_3_TIQUANDMIX 脚本时，判断是否要跳转到扫描，-1时开始扫描文件 TECAN\EVOware\output\NextTurnStep.csv，
          *如果扫描到 0时跳转，
          *-1: 默认, 0:收到脚本消息，扫描进行中, 1:扫描分组完成，发送消息给脚本, 2:二次上样扫描进行中, 3:二次上样扫描完成

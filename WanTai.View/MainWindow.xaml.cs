@@ -32,6 +32,7 @@ namespace WanTai.View
     public partial class MainWindow : Window
     {
         private Boolean EVOClosed = false;
+        public delegate void ExperimentRunStatusHandler();
         public event WanTai.View.MainPage.SendStopRunMsg StopRunEvent;
 
         public MainWindow()
@@ -52,10 +53,12 @@ namespace WanTai.View
             TecanMaintainMonth_Button.IsEnabled = false;
             TecanRestoration_Button.IsEnabled = false;
             exit_button.IsEnabled = false;
+            suspend_exit_button.IsEnabled = false;
             Stream imageStream = Application.GetResourceStream(new Uri("/WanTag;component/Resources/loading.gif", UriKind.Relative)).Stream;
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
             this.imageExpender1.Image = bitmap;
             SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            SessionInfo.WaitForSuspend = false;
             QueryNAT_Button.Visibility = WanTai.Common.Configuration.GetShowReagentExport() ? Visibility.Visible : Visibility.Collapsed;
             SessionInfo.BatchBScanTimes = 0;
             if (SessionInfo.WorkDeskType == "200") {
@@ -71,6 +74,8 @@ namespace WanTai.View
                 SessionInfo.WorkDeskMaxSize = 36;
             }
             SessionInfo.FirstStepMixing = 0;
+
+ 
             IProcessor processor = null;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {   
@@ -98,6 +103,7 @@ namespace WanTai.View
                 TecanMaintainMonth_Button.IsEnabled = true;
                 TecanRestoration_Button.IsEnabled = true;
                 exit_button.IsEnabled = true;
+                suspend_exit_button.IsEnabled = false;
                 imageExpender1.Image = null;
                 imageExpender1.Dispose();
                 this.mainFrame.Content = null;
@@ -109,6 +115,8 @@ namespace WanTai.View
                 {
                     EVOOfflineStatus.Content = "联机";
                 }
+                // load last experment
+                LoadLastExperiment();
             };            
             worker.RunWorkerAsync();
             
@@ -164,6 +172,39 @@ namespace WanTai.View
         }
         private delegate void ShowTextHandle(string text);
 
+        public void LoadLastExperiment()
+        {
+            // resume execution
+            SessionInfo.ResumeExecution = File.Exists("SessionInfo.bin");
+            if (SessionInfo.ResumeExecution)
+            {
+                if (MessageBox.Show("上次实验未完成，是否继续执行？选择不继续会删除已执行结果!", "系统提示!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    // load last session info
+                    SerializeStatic serialize = new SerializeStatic();
+                    serialize.Load("SessionInfo.bin");
+                    // new main page
+                    MainPage mainPage = new MainPage();
+                    mainPage.SetEvoRestorationStatus += new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
+                    mainPage.AddEvoRestorationStatusEvent();
+                    mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
+                    StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
+                    mainFrame.Content = mainPage;
+                    this.Title = "WanTag 全自动核酸提取系统——实验 " + SessionInfo.CurrentExperimentsInfo.ExperimentName;
+                    mainPage.ContinueExperiment();
+                }
+                else
+                {
+                    // File.Delete("SessionInfo.bin");
+                }
+            }
+        }
+
+        private void SuspendExitButtonControl()
+        {
+            suspend_exit_button.IsEnabled = (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing);
+        }
+
         /// <summary>
         /// 显示文本
         /// </summary>
@@ -181,6 +222,7 @@ namespace WanTai.View
         }
         private void btnNewExperiment_Click(object sender, RoutedEventArgs e)
         {
+
             if (SessionInfo.CurrentExperimentsInfo != null)
             {
                 if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Processing)
@@ -228,6 +270,7 @@ namespace WanTai.View
               MainPage mainPage = new MainPage();
               mainPage.SetEvoRestorationStatus+=new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
               mainPage.AddEvoRestorationStatusEvent();
+              mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
               StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
               mainFrame.Content = mainPage;
               SessionInfo.BatchIndex = 0;
@@ -239,7 +282,7 @@ namespace WanTai.View
                 //mainFrame.Source = new Uri("MainPage.xaml", UriKind.Relative);
                 // mainFrame.Navigate(new Uri("MainPage.xaml", UriKind.Relative));
 
-                this.Title = "WanTag 全自动核酸提取系统——实验 " + newExperiment.txtExperimentName.Text;
+              this.Title = "WanTag 全自动核酸提取系统——实验 " + newExperiment.txtExperimentName.Text;
             }
             mainFrame.IsEnabled = true;
             ribbon.IsEnabled = true;
@@ -356,6 +399,20 @@ namespace WanTai.View
         private void exit_button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void suspend_exit_button_Click(object sender, RoutedEventArgs e)
+        {
+            if (suspend_exit_button.IsChecked == false)
+            {
+                SessionInfo.WaitForSuspend = false;
+                MessageBox.Show("中断已取消!", "系统提示!");
+            }
+            else
+            {
+                SessionInfo.WaitForSuspend = true;
+                MessageBox.Show("当前脚本执行完成后会中断并退出，下次启动可以继续执行!", "系统提示!");
+            }                
         }
 
         private void CloseLamp_button_Click(object sender, RoutedEventArgs e)
@@ -572,6 +629,7 @@ namespace WanTai.View
             TecanMaintainMonth_Button.IsEnabled = false;
             TecanRestoration_Button.IsEnabled = false;
             exit_button.IsEnabled = false;
+            suspend_exit_button.IsEnabled = false;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {
                 if (!ProcessorFactory.HasClosed)

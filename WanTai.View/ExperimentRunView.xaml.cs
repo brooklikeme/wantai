@@ -29,7 +29,12 @@ namespace WanTai.View
     {
         public ExperimentRunView()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            if (SessionInfo.ResumeExecution)
+            {
+                CurrentRotation = SessionInfo.CurrentRotation;
+                NexRotation = SessionInfo.NexRotation;
+            }
         }        
         private Guid ExperimentID { get { return SessionInfo.ExperimentID; } }
         private List<RotationInfo> _ExperimentRotation;
@@ -214,8 +219,11 @@ namespace WanTai.View
                 spOperationView.Children.Add(labOperationLegend);
             }
             int RunIndex = 0;
-            CurrentRotation = null;
-            NexRotation = false;
+            if (!SessionInfo.ResumeExecution)
+            {
+                CurrentRotation = null;
+                NexRotation = false;
+            }
             if (stackPanel.Children.Count > 0)
                 stackPanel.Children.Clear();
            // StackPanel stackPanel = new StackPanel();
@@ -667,7 +675,66 @@ namespace WanTai.View
                     SetEvoRestorationStatus(true);
                 }
             };
-            #endregion 
+            #endregion
+            
+            // 更新已完成数据
+            if (SessionInfo.ResumeExecution) {
+                foreach (RotationInfo finishedRotation in ExperimentRotation)
+                {
+                    foreach (OperationConfiguration finishedOperation in finishedRotation.Operations)
+                    {
+                        if (finishedRotation.RunIndex < CurrentRotation.RunIndex
+                            || finishedOperation.OperationSequence < CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].OperationSequence)
+                        {
+                            if (finishedOperation.OperationType == 0)
+                            {
+                                // 单一操作
+                                Grid grid = (stackPanel.FindName("grid" + (finishedRotation.RunIndex + 1).ToString()) as Grid);
+                                if (grid != null)
+                                {
+                                    ProgressBar bar = grid.FindName("ProgressBar" + (finishedRotation.RunIndex + 1).ToString() + finishedOperation.OperationID.ToString().Replace("-", "")) as ProgressBar;
+                                    if (bar != null)
+                                    {
+                                        bar.Value = (int)finishedOperation.RunTime * 60;
+                                        bar.Tag = ExperimentRunStatus.Finish;
+                                    }
+                                    Label lab = grid.FindName("lab" + (finishedRotation.RunIndex + 1).ToString() + finishedOperation.OperationID.ToString().Replace("-", "")) as Label;
+                                    if (lab != null)
+                                    {
+                                        lab.Content = "(已完成)";
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // 组合操作
+                                foreach (string operationID in finishedOperation.SubOperationIDs.Split(','))
+                                {
+                                    if (string.IsNullOrEmpty(operationID)) continue;
+                                    OperationConfiguration SubOperationConfiguration = OperationConfigurations.Where(operation => operation.OperationID == new Guid(operationID)).FirstOrDefault();
+                                    if (SubOperationConfiguration == null) continue;
+                                    Grid grid = (stackPanel.FindName("grid" + (finishedRotation.RunIndex + 1).ToString()) as Grid);
+                                    if (grid != null)
+                                    {
+                                        ProgressBar bar = grid.FindName("ProgressBar" + (finishedRotation.RunIndex + 1).ToString() + SubOperationConfiguration.OperationID.ToString().Replace("-", "")) as ProgressBar;
+                                        if (bar != null)
+                                        {
+                                            bar.Value = (int)SubOperationConfiguration.RunTime * 60;
+                                            bar.Tag = ExperimentRunStatus.Finish;
+                                            Label lab = grid.FindName("lab" + (finishedRotation.RunIndex + 1).ToString() + SubOperationConfiguration.OperationID.ToString().Replace("-", "")) as Label;
+                                            if (lab != null)
+                                            {
+                                                lab.Content = "(已完成)";
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             /***********实时更新UI********************************************************************/
             #region 实时更新UI
             DateTime fileBeforeCreatedTime = WanTai.Controller.EVO.ProcessorFactory.GetDateTimeNow();
@@ -1144,7 +1211,22 @@ namespace WanTai.View
                 else
                     CurrentRotation.CurrentOperationIndex++;
                 SessionInfo.CurrentExperimentsInfo.State = (short)ExperimentStatus.Suspend;
-                Start(ExperimentRunStatus.Start);
+                if (SessionInfo.WaitForSuspend)
+                {
+                    // save current status
+                    SessionInfo.CurrentRotation = CurrentRotation;
+                    SessionInfo.NexRotation = NexRotation;
+
+                    SerializeStatic serialize = new SerializeStatic();
+                    serialize.Save("SessionInfo.bin");
+
+                    MessageBox.Show("当前脚本执行完毕，中断成功!", "系统提示");
+                    return;
+                }
+                else
+                {
+                    Start(ExperimentRunStatus.Start);
+                }
             };
             worker.RunWorkerAsync();
 

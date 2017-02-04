@@ -157,6 +157,9 @@
                         <my:RibbonButton x:Name="exit_button" Click="exit_button_Click"
                                           LargeImageSource="Resources\QuitSystem_icon.gif"
                                          Label="退出系统" ></my:RibbonButton>
+                        <my:RibbonToggleButton x:Name="suspend_exit_button" Click="suspend_exit_button_Click"
+                                          LargeImageSource="Resources\QuitSystem_icon.gif"
+                                         Label="中断退出" />
                     </my:RibbonGroup>                    
                 </my:RibbonTab>                
                 <my:RibbonTab x:Name="TabSettings" >

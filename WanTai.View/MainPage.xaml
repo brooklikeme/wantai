@@ -78,9 +78,11 @@
                              <Label Content="Run" x:Name="labRun"  Margin="2,0,0,0" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
                      </StackPanel>
                 </extToolkit:SplitButton.Content>
+                
                 <extToolkit:SplitButton.DropDownContent>
                     <Button Click="btnRecover_Click" IsEnabled="False" x:Name="btnRecover"  Content="恢复" Width="95" Height="50"/>
                 </extToolkit:SplitButton.DropDownContent>
+
             </extToolkit:SplitButton>
           
             <!--<Label Content="轮次[0/0]" Height="28" Name="labRotation"  VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>-->

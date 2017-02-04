@@ -52,6 +52,7 @@
     <Compile Include="ReagentAndSuppliesConfiguration.cs" />
     <Compile Include="RotationInfo.cs" />
     <Compile Include="NATInfo.cs" />
+    <Compile Include="SerializeStatic.cs" />
     <Compile Include="SessionInfo.cs" />
     <Compile Include="TestingItemConfiguration.cs" />
     <Compile Include="Tube.cs" />
