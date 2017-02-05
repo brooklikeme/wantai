@@ -66,7 +66,7 @@ namespace WanTai.View
             {
                ((TabItem)tabControl.Items[i]).IsEnabled = false;
             }
-            SessionInfo.BatchBScanTimes = 0;
+            SessionInfo.BatchScanTimes = 0;
             // 判断工作台
             if (SessionInfo.WorkDeskType == "100")
             {
@@ -119,6 +119,9 @@ namespace WanTai.View
             btnStop.IsEnabled = false;
             if (SessionInfo.CurrentExperimentsInfo.State != (short)ExperimentStatus.Stop)
                 this.bindRunWithRestarAction();
+            if (ExperimentRunStatusEvent != null)
+                ExperimentRunStatusEvent();
+
             //btnStart.Content = "启动";
             //btnRStart.IsEnabled = true;
         }
@@ -607,7 +610,7 @@ namespace WanTai.View
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
             tabControl.SelectedIndex = 3;
-            if (SessionInfo.BatchBScanTimes > 0)
+            if (SessionInfo.BatchScanTimes > 0)
             {
                 SendStopRunMessage();
             }

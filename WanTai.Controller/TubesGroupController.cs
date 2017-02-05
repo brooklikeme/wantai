@@ -10,7 +10,7 @@ namespace WanTai.Controller
 {
     public class TubesGroupController
     {
-        public TubesBatch SaveTubesGroup(Guid ExperimentID, TubesBatch DelTubesBatch, int BatchIndex, IList<TubeGroup> TubeGroupList, DataTable Tubes, out int ErrType, out string ErrMsg)
+        public TubesBatch SaveTubesGroup(Guid ExperimentID, TubesBatch DelTubesBatch, int RotationIndex, IList<TubeGroup> TubeGroupList, DataTable Tubes, out int ErrType, out string ErrMsg)
         {
             try                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
             {
@@ -71,7 +71,7 @@ namespace WanTai.Controller
                     // update testing Item for del tubesbatch
                     if (SessionInfo.BatchType == "B")
                     {
-                        foreach(KeyValuePair<Guid, int> _TestingItem in SessionInfo.BatchATestingItem) {
+                        foreach(KeyValuePair<Guid, int> _TestingItem in SessionInfo.BatchTestingItem) {
                             if (_TestingItem.Value > 0)
                             {
                                 if (DelTubesBatch.TestingItem.ContainsKey(_TestingItem.Key))
@@ -92,7 +92,7 @@ namespace WanTai.Controller
                     _TubesBatch.CreateTime = DateTime.Now;
                     _TubesBatch.TestingItem = DelTubesBatch.TestingItem;
                     _TubesBatch.TubesBatchID = WanTaiObjectService.NewSequentialGuid();
-                    _TubesBatch.TubesBatchName = "批次" + BatchIndex.ToString();
+                    _TubesBatch.TubesBatchName = "批次" + RotationIndex.ToString();
                     _WanTaiEntities.AddToTubesBatches(_TubesBatch);
                     #endregion
                     // _WanTaiEntities.SaveChanges();
@@ -240,7 +240,7 @@ namespace WanTai.Controller
                             List<DataTable> TubesArray = new List<DataTable>();
                             TubesArray.Add(Tubes);
                             if (SessionInfo.BatchType == "B") {
-                                TubesArray.Add(SessionInfo.BatchATubes);
+                                TubesArray.Add(SessionInfo.BatchTubes);
                             }
 
                             foreach (DataTable _tubes in TubesArray)
@@ -609,7 +609,7 @@ namespace WanTai.Controller
                             if (SessionInfo.BatchType == "B")
                             {
                                 // 联合A轮和B轮的TubeGroup
-                                TubeGroupList = SessionInfo.BatchATubeGroups.Concat(TubeGroupList).ToList<TubeGroup>();
+                                TubeGroupList = SessionInfo.BatchTubeGroups.Concat(TubeGroupList).ToList<TubeGroup>();
                             }
                             foreach (TubeGroup _TubeGroup in TubeGroupList)
                             {

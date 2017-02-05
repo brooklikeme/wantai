@@ -41,7 +41,7 @@ namespace WanTai.View
 
             if (SessionInfo.BatchType != "B")
             {
-                SessionInfo.BatchIndex++;
+                SessionInfo.RotationIndex++;
             }
 
             DataGridTemplateColumn _DataGridTemplateColumn = new DataGridTemplateColumn() { Header = "检测项目", Width = new DataGridLength(100, DataGridLengthUnitType.Star) };
@@ -737,12 +737,12 @@ namespace WanTai.View
 
             if (SessionInfo.BatchType == "A")
             {
-                SessionInfo.BatchATubes = Tubes.Copy();
+                SessionInfo.BatchTubes = Tubes.Copy();
             }
             btn_Next.IsEnabled = false;
             Items1 = dg_TubesGroup.Items;
-            if (null != SessionInfo.BatchATubeGroups)
-                SessionInfo.BatchATubeGroups.Clear();
+            if (null != SessionInfo.BatchTubeGroups)
+                SessionInfo.BatchTubeGroups.Clear();
 
             
             if (SessionInfo.ExperimentID == new Guid())
@@ -750,7 +750,7 @@ namespace WanTai.View
                 //NewExperiment Experiment = new NewExperiment();
                 //if (!(bool)Experiment.ShowDialog())
                 //    return;
-                SessionInfo.BatchIndex = 1;
+                SessionInfo.RotationIndex = 1;
             }
             if (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0)
             {
@@ -779,7 +779,7 @@ namespace WanTai.View
                 TotalHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
                 if (SessionInfo.BatchType == "B") {
                     Item.BatchType = "A";
-                    SessionInfo.BatchATubeGroups.Add(Item);
+                    SessionInfo.BatchTubeGroups.Add(Item);
                 }
                 else
                     TubeGroupList.Add(Item);
@@ -802,7 +802,7 @@ namespace WanTai.View
             
             string ErrMsg;
             int ErrType;
-            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.BatchIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
+            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.RotationIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
             if (ErrType == -1)
             {
                 MessageBox.Show(ErrMsg, "系统提示!");

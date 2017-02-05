@@ -60,7 +60,7 @@ namespace WanTai.View
             SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             SessionInfo.WaitForSuspend = false;
             QueryNAT_Button.Visibility = WanTai.Common.Configuration.GetShowReagentExport() ? Visibility.Visible : Visibility.Collapsed;
-            SessionInfo.BatchBScanTimes = 0;
+            SessionInfo.BatchScanTimes = 0;
             if (SessionInfo.WorkDeskType == "200") {
                 SessionInfo.WorkDeskMaxSize = 72;
                 SessionInfo.InstrumentType = "1.0";
@@ -195,7 +195,7 @@ namespace WanTai.View
                 }
                 else
                 {
-                    // File.Delete("SessionInfo.bin");
+                    File.Delete("SessionInfo.bin");
                 }
             }
         }
@@ -273,7 +273,7 @@ namespace WanTai.View
               mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
               StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
               mainFrame.Content = mainPage;
-              SessionInfo.BatchIndex = 0;
+              SessionInfo.RotationIndex = 0;
               SessionInfo.NextTurnStep = -1;
               SessionInfo.FirstStepMixing = 0;
               WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
@@ -357,7 +357,7 @@ namespace WanTai.View
                 SessionInfo.CurrentExperimentsInfo = null;
                 SessionInfo.ExperimentID = new Guid();
                 SessionInfo.PraperRotation = null;
-                SessionInfo.BatchIndex = 0;
+                SessionInfo.RotationIndex = 0;
                 SessionInfo.NextTurnStep = -1;
                 SessionInfo.FirstStepMixing = 0;
                 this.Title = "WanTag 全自动核酸提取系统";

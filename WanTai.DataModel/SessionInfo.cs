@@ -15,20 +15,18 @@ namespace WanTai.DataModel
         public static RotationInfo PraperRotation { get; set; }  // 轮次
         public static List<LiquidType> LiquidTypeList { get; set; }
         public static ExperimentsInfo CurrentExperimentsInfo { get; set; }
-        public static int BatchIndex { get; set; }
         public static Dictionary<Guid, FormulaParameters> RotationFormulaParameters { get; set; }
         public static int NextButIndex { get; set; }
-        public static Boolean MixTwice { get; set; }
-        public static Boolean AllowMixTwice {get; set;}
-        public static string BatchType { get; set; }  //A轮、 B轮 
-        public static int BatchBScanTimes { get; set; }
+        public static int RotationIndex { get; set; }
+        public static int BatchTimes { get; set; }
+        public static Boolean AllowBatchMore {get; set;}
+        public static string BatchType { get; set; }  //"1,2,3,4,5,6"
+        public static int BatchScanTimes { get; set; }
         public static List<Guid> TestingItemIDs { get; set; }
-        public static List<TubeGroup> BatchATubeGroups { get; set; }
-        public static DataTable BatchATubes { get; set; }
-
-        public static int BatchATotalHoles { get; set; }
-
-        public static Dictionary<Guid, int> BatchATestingItem { get; set; }
+        public static List<TubeGroup> BatchTubeGroups { get; set; }
+        public static List<DataTable> BatchTubeList { get; set; }
+        public static int BatchTotalHoles { get; set; }
+        public static Dictionary<Guid, int> BatchTestingItem { get; set; }
 
         public static string WorkDeskType { get; set; }
         public static string InstrumentType { get; set; }

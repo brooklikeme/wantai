@@ -39,7 +39,7 @@ namespace WanTai.View
         {
             if (SessionInfo.BatchType != "B")
             {
-                SessionInfo.BatchIndex++;
+                SessionInfo.RotationIndex++;
             }
             DataGridTemplateColumn _DataGridTemplateColumn = new DataGridTemplateColumn() { Header = "检测项目", Width = new DataGridLength(100, DataGridLengthUnitType.Star) };
             var TestItems = new TestItemController().GetActiveTestItemConfigurations();
@@ -222,11 +222,11 @@ namespace WanTai.View
                 TubesController controller = new TubesController();
                 if (SessionInfo.NextTurnStep == 0 || SessionInfo.BatchType == "B")
                 {
-                    if (SessionInfo.BatchBScanTimes > 0)
+                    if (SessionInfo.BatchScanTimes > 0)
                     {
                         new WanTai.Controller.TubesController().ScanCondition("1");
                     }
-                    SessionInfo.BatchBScanTimes++;
+                    SessionInfo.BatchScanTimes++;
                     scanResult = true;
                     string NextStepScanFinished = onNextStepScan("NextStepScan");
                     if (NextStepScanFinished != "NextStepScanFinished")
@@ -711,7 +711,7 @@ namespace WanTai.View
             {
                 NextStepEvent(sender, e);
             }
-            SessionInfo.BatchBScanTimes = 0;
+            SessionInfo.BatchScanTimes = 0;
         }
 
         private void cb_PoolingRulesConfigurations_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -775,25 +775,39 @@ namespace WanTai.View
         private IList<TubeGroup> TubeGroupList;
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
-            int TotalHole = SessionInfo.BatchType == "B" ? 0 : 2;
+            int TotalHole = 0;
             TubeGroupList = new List<TubeGroup>();
             CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
 
-            if (SessionInfo.BatchType == "A")
+            if (String.IsNullOrEmpty(SessionInfo.BatchType))
             {
-                if (null == SessionInfo.BatchATubeGroups)
-                    SessionInfo.BatchATubeGroups = new List<TubeGroup>();
-                else
-                    SessionInfo.BatchATubeGroups.Clear();
-                if (null == SessionInfo.BatchATestingItem)
-                    SessionInfo.BatchATestingItem = new Dictionary<Guid, int>();
-                else
-                    SessionInfo.BatchATestingItem.Clear();
-                SessionInfo.BatchATotalHoles = 2;
+                TotalHole = 2;
             }
-            else if (SessionInfo.BatchType == "B")
+            else
             {
-                TotalHole += SessionInfo.BatchATotalHoles;
+                if (int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+                {
+                    if (null == SessionInfo.BatchTubeGroups)
+                        SessionInfo.BatchTubeGroups = new List<TubeGroup>();
+                    else if (SessionInfo.BatchType == "1")
+                        SessionInfo.BatchTubeGroups.Clear();
+                    if (null == SessionInfo.BatchTestingItem)
+                        SessionInfo.BatchTestingItem = new Dictionary<Guid, int>();
+                    else if (SessionInfo.BatchType == "1")
+                        SessionInfo.BatchTestingItem.Clear();
+                    if (null == SessionInfo.BatchTubeList)
+                        SessionInfo.BatchTubeList = new List<DataTable>();
+                    else if (SessionInfo.BatchType == "1")
+                        SessionInfo.BatchTubeList.Clear();
+                    if (SessionInfo.BatchType == "1")
+                        TotalHole = 2;
+                    else
+                        TotalHole += SessionInfo.BatchTotalHoles;
+                }
+                else if (int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+                {
+                    TotalHole += SessionInfo.BatchTotalHoles;
+                }
             }
 
             btn_Next.IsEnabled = false;
@@ -803,7 +817,7 @@ namespace WanTai.View
                 NewExperiment Experiment = new NewExperiment();
                 if (!(bool)Experiment.ShowDialog())
                     return;
-                SessionInfo.BatchIndex = 1;
+                SessionInfo.RotationIndex = 1;
             }
             if (SystemFluid != null && (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0))
             {
@@ -827,29 +841,30 @@ namespace WanTai.View
                         CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
                 }
                 TotalHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
-                if (SessionInfo.BatchType == "A")
+                if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 {
-                    Item.BatchType = "A";
-                    SessionInfo.BatchATubeGroups.Add(Item);
+                    Item.BatchType = SessionInfo.BatchType;
+                    SessionInfo.BatchTubeGroups.Add(Item);
                 }
-                else if (SessionInfo.BatchType == "B")
+                else if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
                 {
-                    Item.BatchType = "B";
+                    Item.BatchType = SessionInfo.BatchType;
                 }
                 TubeGroupList.Add(Item);
                 if (Item.isComplement) _SystemFluid = true;
             }
-            SessionInfo.AllowMixTwice = true;
+            SessionInfo.AllowBatchMore = true;
             if (TotalHole > 96)
             {
                 MessageBox.Show("混样数大于96, 无法进行混样!","系统提示!");
                 return;
             } else if (TotalHole == 96)
             {
-                if (SessionInfo.MixTwice && SessionInfo.BatchType == "A")
+                if (SessionInfo.BatchTimes > 1 && !String.IsNullOrEmpty(SessionInfo.BatchType) 
+                    && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 {
                     // forbid twice mix
-                    SessionInfo.AllowMixTwice = false;
+                    SessionInfo.AllowBatchMore = false;
                 }
             }
             if (_SystemFluid)
@@ -862,7 +877,7 @@ namespace WanTai.View
             }
             string ErrMsg;
             int ErrType;
-            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.BatchIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
+            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.RotationIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
             if (ErrType == -1)
             {
                 MessageBox.Show(ErrMsg, "系统提示!");
@@ -870,11 +885,11 @@ namespace WanTai.View
                 return; 
             }
             // update batch a info
-            if (SessionInfo.BatchType == "A")
+            if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
-                SessionInfo.BatchATotalHoles = TotalHole;
-                SessionInfo.BatchATestingItem = CurrentTubesBatch.TestingItem;
-                SessionInfo.BatchATubes = Tubes.Copy();
+                SessionInfo.BatchTotalHoles += TotalHole;
+                SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Concat(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);
+                SessionInfo.BatchTubeList.Add(Tubes.Copy());
             }
             //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
            // MessageBox.Show("生成成功！", "系统提示!");

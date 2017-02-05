@@ -38,7 +38,7 @@ namespace WanTai.View
         private LoadFrom loadFrom;
         private void AddColumns()
         {
-            SessionInfo.BatchIndex++;
+            SessionInfo.RotationIndex++;
             DataGridTemplateColumn _DataGridTemplateColumn = new DataGridTemplateColumn() { Header = "检测项目", Width = new DataGridLength(100, DataGridLengthUnitType.Star) };
             var TestItems = new TestItemController().GetActiveTestItemConfigurations();
             FrameworkElementFactory _StackPanel = new FrameworkElementFactory(typeof(StackPanel));
@@ -320,11 +320,11 @@ namespace WanTai.View
                 TubesController controller = new TubesController();
                 if (SessionInfo.NextTurnStep == 0 || SessionInfo.BatchType == "B")
                 {
-                    if (SessionInfo.BatchBScanTimes > 0)
+                    if (SessionInfo.BatchScanTimes > 0)
                     {
                         new WanTai.Controller.TubesController().ScanCondition("1");
                     }
-                    SessionInfo.BatchBScanTimes++;
+                    SessionInfo.BatchScanTimes++;
                     scanResult = true;
                     string NextStepScanFinished = onNextStepScan("NextStepScan");
                     if (NextStepScanFinished != "NextStepScanFinished")
@@ -869,7 +869,7 @@ namespace WanTai.View
                 NewExperiment Experiment = new NewExperiment();
                 if (!(bool)Experiment.ShowDialog())
                     return;
-                SessionInfo.BatchIndex = 1;
+                SessionInfo.RotationIndex = 1;
             }
             if (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0)
             {
@@ -914,7 +914,7 @@ namespace WanTai.View
             }
             string ErrMsg;
             int ErrType;
-            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.BatchIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
+            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.RotationIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
             if (ErrType == -1)
             {
                 MessageBox.Show(ErrMsg, "系统提示!");
