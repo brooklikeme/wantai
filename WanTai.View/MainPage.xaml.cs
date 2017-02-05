@@ -207,7 +207,7 @@ namespace WanTai.View
                 if (SessionInfo.NextTurnStep == 1)
                 {
                     SessionInfo.NextTurnStep = -1;
-                    if (SessionInfo.MixTwice && SessionInfo.BatchType == "A")
+                    if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                     {
                         server.SendMessage("WaitForSecondMix");
                     }
@@ -224,7 +224,7 @@ namespace WanTai.View
                     SessionInfo.NextTurnStep = -1;
                     ExperimentRun();
                 }
-                else if (SessionInfo.MixTwice && SessionInfo.BatchType == "B")
+                else if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
                 {
                     server.SendMessage("NextStepRun");
                 }
@@ -257,7 +257,7 @@ namespace WanTai.View
             if (null != server)
             {
                 new WanTai.Controller.TubesController().ScanCondition("0");
-                if (SessionInfo.MixTwice && SessionInfo.BatchType == "A")
+                if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 {
                     server.SendMessage("WaitForSecondMix");
                 }
@@ -329,7 +329,7 @@ namespace WanTai.View
             /**********开始第二轮扫描界面***************************************/
             if (Message.IndexOf("GoToScanPage")>=0)
             {
-                if (SessionInfo.BatchType == "A")
+                if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 {
                     this.Dispatcher.BeginInvoke(new onShowSecondMix(this.onShowSecondMixEvent), null);
                     return;
@@ -337,10 +337,10 @@ namespace WanTai.View
                 else
                 {
                     // init session info
-                    if (SessionInfo.MixTwice)
+                    if (SessionInfo.BatchTimes > 1)
                     {
-                        SessionInfo.BatchType = "A";
-                        SessionInfo.AllowMixTwice = true;
+                        SessionInfo.BatchType = "1";
+                        SessionInfo.AllowBatchMore = true;
                     }
                     this.Dispatcher.BeginInvoke(new onShowNextRotation(this.onShowNextRotationEvent), null);
                     return;
@@ -430,7 +430,7 @@ namespace WanTai.View
             WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
             processor.SetLampStatus(2);
             tabControl.SelectedIndex = 0;
-            if (!SessionInfo.AllowMixTwice)
+            if (!SessionInfo.AllowBatchMore)
             {
                 MessageBox.Show("混样数已达96，请略过第二次上样!", "系统提示！", MessageBoxButton.OK);
             }

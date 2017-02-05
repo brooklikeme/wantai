@@ -425,7 +425,7 @@ namespace WanTai.View
                 {
                     TuubesGroupName = 0;
                     btn_Next.IsEnabled = false;
-                    if (!(SessionInfo.MixTwice && SessionInfo.BatchType == "B"))
+                    if (!(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                         btn_Save.IsEnabled = false;
                 }
                 else
@@ -576,7 +576,7 @@ namespace WanTai.View
             }
             IsPoack = true;
 
-            if (SessionInfo.MixTwice && SessionInfo.BatchType == "B")
+            if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
             {
                 btn_Save.IsEnabled = true;
             }
