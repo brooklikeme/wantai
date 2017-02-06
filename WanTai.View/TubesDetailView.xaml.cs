@@ -48,13 +48,12 @@ namespace WanTai.View
             }
         }
 
-        public void ViewExperimentBatch(Guid batchID, string BatchType)
+        public void ViewExperimentBatch(Guid batchID, int batchTimes)
         {
             batchID_ = batchID;
-            this.MixTime.Items.Add("1");
-            if (BatchType == "A")
+            for (int i = 1; i <= batchTimes; i++)
             {
-                this.MixTime.Items.Add("2");
+                this.MixTime.Items.Add(i.ToString());
             }
             this.MixTime.SelectedIndex = 0;
         }
@@ -150,23 +149,15 @@ namespace WanTai.View
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            dg_Bules.RowHeight = (dg_Bules.ActualHeight - dg_Bules.ColumnHeaderHeight) / 16 -1.2;
+            dg_Bules.RowHeight = (dg_Bules.ActualHeight - dg_Bules.ColumnHeaderHeight) / 16 - 1.2;
         }
 
         private void MixTime_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             List<WanTai.DataModel.Configuration.LiquidType> LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
-            if (this.MixTime.Items.Count == 2)
+            if (this.MixTime.Items.Count > 1)
             {
-                if (this.MixTime.SelectedIndex == 0)
-                {
-                    dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(this.batchID_, LiquidTypeList, "A").DefaultView;
-                }
-                else
-                {
-                    dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(this.batchID_, LiquidTypeList, "B").DefaultView;
-
-                }
+                dg_Bules.ItemsSource = new WanTai.Controller.TubesController().GetTubes(this.batchID_, LiquidTypeList, this.MixTime.SelectedItem.ToString()).DefaultView;
             }
             else
             {

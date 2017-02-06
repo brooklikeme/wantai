@@ -232,7 +232,7 @@ namespace WanTai.View
             int selectedIndex = rotation_dataGrid.SelectedIndex;
             string TubesBatchID = dataTable.Rows[selectedIndex]["TubesBatchID"].ToString();
             TubesDetailView detailView = new TubesDetailView();
-            detailView.ViewExperimentBatch(new Guid(TubesBatchID), SessionInfo.MixTwice ? "A" : "null");
+            detailView.ViewExperimentBatch(new Guid(TubesBatchID), SessionInfo.BatchTimes);
             // detailView.BatchID = new Guid(TubesBatchID);
             detailView.ShowDialog();
         }

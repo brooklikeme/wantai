@@ -260,7 +260,7 @@ namespace WanTai.View
                     {
                         TubesDetailView detailView = new TubesDetailView();
                         // detailView.BatchID = (Guid)BatchID;
-                        detailView.ViewExperimentBatch((Guid)BatchID, SessionInfo.MixTwice ? "A" : "null");
+                        detailView.ViewExperimentBatch((Guid)BatchID, SessionInfo.BatchTimes);
                         detailView.ShowDialog();
                     }
                 });

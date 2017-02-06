@@ -135,7 +135,7 @@ namespace WanTai.View.HistoryQuery
             int selectedIndex = dataGrid_view.SelectedIndex;
             string TubesBatchID = dataTable.Rows[selectedIndex]["TubesBatchID"].ToString();
             TubesDetailView detailView = new TubesDetailView();
-            detailView.ViewExperimentBatch(new Guid(TubesBatchID), mixTimes == "2" ? "A" : "null");
+            detailView.ViewExperimentBatch(new Guid(TubesBatchID), SessionInfo.BatchTimes);
             detailView.ShowDialog();
         }
 

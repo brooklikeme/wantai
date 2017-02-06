@@ -23,7 +23,7 @@ namespace WanTai.View
     {
 
         private List<Guid> TestingItemList = new List<Guid>();
-        private string BatchType;
+        private string BatchType = null;
 
         public NewExperiment()
         {
@@ -55,9 +55,21 @@ namespace WanTai.View
             else if (SessionInfo.WorkDeskType == "150")
             {
                 Label label = new Label();
-                label.Content = "两次上样:";
+                label.Content = "上样次数:";
                 testPanel.Children.Add(label);
 
+                ComboBox timesBox = new ComboBox();
+                timesBox.Height = 20;
+                timesBox.Width = 50;
+                timesBox.Margin = new Thickness(5);
+                for (int i = 1; i <= 6; i ++) {
+                    timesBox.Items.Add(i.ToString());
+                }
+                timesBox.SelectedIndex = 0;
+                timesBox.SelectionChanged += new SelectionChangedEventHandler(timesBox_SelectionChanged);
+                testPanel.Children.Add(timesBox);
+
+                /*
                 CheckBox checkBox = new CheckBox();
                 checkBox.Height = 20;
                 checkBox.Width = 50;
@@ -65,13 +77,27 @@ namespace WanTai.View
                 checkBox.Checked += new RoutedEventHandler(btn_Enable_Click_Checked);
                 checkBox.Unchecked += new RoutedEventHandler(btn_Enable_Click_Unchecked);
                 testPanel.Children.Add(checkBox);
+                 */
             }
             else if (SessionInfo.WorkDeskType == "200")
             {
                 Label label = new Label();
-                label.Content = "两次上样:";
+                label.Content = "上样次数:";
                 testPanel.Children.Add(label);
 
+                ComboBox timesBox = new ComboBox();
+                timesBox.Height = 20;
+                timesBox.Width = 50;
+                timesBox.Margin = new Thickness(5);
+                for (int i = 1; i <= 6; i++)
+                {
+                    timesBox.Items.Add(i.ToString());
+                }
+                timesBox.SelectedIndex = 0;
+                timesBox.SelectionChanged += new SelectionChangedEventHandler(timesBox_SelectionChanged);
+                testPanel.Children.Add(timesBox);
+
+                /*
                 CheckBox checkBox = new CheckBox();
                 checkBox.Height = 20;
                 checkBox.Width = 50;
@@ -79,6 +105,7 @@ namespace WanTai.View
                 checkBox.Checked += new RoutedEventHandler(btn_Enable_Click_Checked);
                 checkBox.Unchecked += new RoutedEventHandler(btn_Enable_Click_Unchecked);
                 testPanel.Children.Add(checkBox);
+                 */
             }
         }
 
@@ -114,20 +141,20 @@ namespace WanTai.View
             experimentsInfo.LoginName = txtOrperatorName.Text;
             experimentsInfo.Remark = txtRemark.Text;
             experimentsInfo.StartTime = DateTime.Now;
-            experimentsInfo.MixTimes = (short) (BatchType == "A" ? 2 : 1);
+            experimentsInfo.MixTimes = (short)(null == BatchType ? 1 : int.Parse(BatchType));
             experimentsInfo.State = (short)ExperimentStatus.Create; ;
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
             if (controller.CreateExperiment(experimentsInfo))
             {
-                new WanTai.Controller.TubesController().AddSampleTimes(BatchType == "A" ? "1" : "0");
+                new WanTai.Controller.TubesController().AddSampleTimes((experimentsInfo.MixTimes - 1).ToString());
 
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
                 SessionInfo.RotationFormulaParameters=new Dictionary<Guid,FormulaParameters>();
                 SessionInfo.TestingItemIDs = TestingItemList;
                 SessionInfo.PraperRotation = null;
-                SessionInfo.MixTwice = (BatchType == "A");
+                SessionInfo.BatchTimes = (int)experimentsInfo.MixTimes;
                 SessionInfo.BatchType = BatchType;
-                LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "新建实验 成功", SessionInfo.LoginName, this.GetType().Name, SessionInfo.ExperimentID);
+                LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "新建实验成功", SessionInfo.LoginName, this.GetType().Name, SessionInfo.ExperimentID);
                 this.DialogResult = true;
                 this.Close();
             }
@@ -157,14 +184,11 @@ namespace WanTai.View
             errInfo.Text = "";
         }
 
-        private void btn_Enable_Click_Checked(object sender, RoutedEventArgs e)
+        private void timesBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BatchType = "A";
-        }
-
-        private void btn_Enable_Click_Unchecked(object sender, RoutedEventArgs e)
-        {
-            BatchType = null;
+            if (((ComboBox)sender).SelectedItem == null) return;
+            ComboBoxItem selectedItem = (ComboBoxItem)(((ComboBox)sender).SelectedItem);
+            BatchType = selectedItem.ToString() == "1" ? null : selectedItem.ToString();
         }
          
     }

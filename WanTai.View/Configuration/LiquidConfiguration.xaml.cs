@@ -24,7 +24,7 @@ namespace WanTai.View.Configuration
     /// </summary>
     public partial class LiquidConfiguration : Window
     {
-        bool batchB = false;
+        String batchType = "1";
         LiquidConfigurationController controller = new LiquidConfigurationController();
         System.Data.DataTable dTable = new System.Data.DataTable();
         public LiquidConfiguration()
@@ -52,13 +52,21 @@ namespace WanTai.View.Configuration
             else if (SessionInfo.WorkDeskType == "150")
             {
                 range = 19;
-                chb_batchB.Visibility = Visibility.Visible;
+                lb_batchTimes.Visibility = Visibility.Visible;
+                cbx_batchTimes.Visibility = Visibility.Visible;
             }
             else if (SessionInfo.WorkDeskType == "200")
             {
                 range = 37;
-                chb_batchB.Visibility = Visibility.Visible;
+                lb_batchTimes.Visibility = Visibility.Visible;
+                cbx_batchTimes.Visibility = Visibility.Visible;
             }
+
+            for (int i = 1; i <= 6; i ++)
+            {
+                cbx_batchTimes.Items.Add(i.ToString());
+            }
+            cbx_batchTimes.SelectedIndex = 0;
 
             for (int i = 1; i < range; i++)
             {
@@ -134,7 +142,7 @@ namespace WanTai.View.Configuration
                     volumeUnitlabel.Visibility = Visibility.Hidden;
                 }
 
-                List<SystemFluidConfiguration> configRecords = controller.GetLiquidConfigurationByTypeId(type.TypeId, batchB);
+                List<SystemFluidConfiguration> configRecords = controller.GetLiquidConfigurationByTypeId(type.TypeId, batchType);
                 if (configRecords != null && configRecords.Count > 0)
                 {
                     foreach (SystemFluidConfiguration config in configRecords)
@@ -168,12 +176,14 @@ namespace WanTai.View.Configuration
             else if (SessionInfo.WorkDeskType == "150")
             {
                 range = 19;
-                chb_batchB.Visibility = Visibility.Visible;
+                lb_batchTimes.Visibility = Visibility.Visible;
+                cbx_batchTimes.Visibility = Visibility.Visible;
             }
             else if (SessionInfo.WorkDeskType == "200")
             {
                 range = 37;
-                chb_batchB.Visibility = Visibility.Visible;
+                lb_batchTimes.Visibility = Visibility.Visible;
+                cbx_batchTimes.Visibility = Visibility.Visible;
             }
             for (int i = 1; i < range; i++)
             {
@@ -182,7 +192,7 @@ namespace WanTai.View.Configuration
                     dTable.Rows[j]["type" + i] = "";
                 }
             }
-            List<SystemFluidConfiguration> configRecords = controller.GetAllLiquidConfiguration(batchB);
+            List<SystemFluidConfiguration> configRecords = controller.GetAllLiquidConfiguration(batchType);
             if (configRecords != null && configRecords.Count > 0)
             {
                 foreach (SystemFluidConfiguration config in configRecords)
@@ -227,8 +237,7 @@ namespace WanTai.View.Configuration
                 liquidConfiguration.ItemID = WanTaiObjectService.NewSequentialGuid();
                 liquidConfiguration.Position = rowIndex;
                 liquidConfiguration.Grid = columnIndex;
-                if (batchB)
-                    liquidConfiguration.BatchType = "B";
+                liquidConfiguration.BatchType = batchType;
                 liquidConfiguration.ItemType = ((LiquidType)selectedItem.DataContext).TypeId;
                 if(volume_TextBox.IsVisible)
                 {
@@ -260,7 +269,7 @@ namespace WanTai.View.Configuration
             LiquidType type = (LiquidType)selectedItem.DataContext;
             if (type != null)
             {
-                bool result = controller.Delete(type.TypeId, batchB);
+                bool result = controller.Delete(type.TypeId, batchType);
                 WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "删除：" + ((LiquidType)selectedItem.DataContext).TypeName + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), null);            
              
                 if (result)
@@ -293,8 +302,7 @@ namespace WanTai.View.Configuration
                 liquidConfiguration.Position = rowIndex;
                 liquidConfiguration.Grid = columnIndex;
                 liquidConfiguration.ItemType = typeId;
-                if (batchB)
-                    liquidConfiguration.BatchType = "B";
+                liquidConfiguration.BatchType = batchType;
                 if (volume_TextBox.IsVisible)
                 {
                     liquidConfiguration.Volume = double.Parse(volume_TextBox.Text);
@@ -303,7 +311,7 @@ namespace WanTai.View.Configuration
                 recordList.Add(liquidConfiguration);                
             }
 
-            bool result = controller.EditByTypeId(recordList, typeId, batchB);
+            bool result = controller.EditByTypeId(recordList, typeId, batchType);
             WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "修改：" + ((LiquidType)selectedItem.DataContext).TypeName + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), null);            
                     
             if (result)
@@ -405,16 +413,12 @@ namespace WanTai.View.Configuration
             return true;
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void cbx_batchTimes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            batchB = true;
-            if (liquidType_comboBox.SelectedItem != null)
-                liquidType_comboBox_SelectionChanged(null, null);
-        }
-
-        private void chb_batchB_Unchecked(object sender, RoutedEventArgs e)
-        {
-            batchB = false;
+            if (cbx_batchTimes.SelectedItem == null) return;
+            ComboBoxItem selectedItem = (ComboBoxItem)cbx_batchTimes.SelectedItem;
+            batchType = selectedItem.ToString();
+ 
             if (liquidType_comboBox.SelectedItem != null)
                 liquidType_comboBox_SelectionChanged(null, null);
         }

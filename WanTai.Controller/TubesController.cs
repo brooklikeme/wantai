@@ -220,7 +220,7 @@ namespace WanTai.Controller
                     else
                     {
                         List<SystemFluidConfiguration> _SystemFluidConfigurationList = null;
-                        if (SessionInfo.BatchType == "B")
+                        if (SessionInfo.BatchTimes > 1)
                         {
                             _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == SessionInfo.BatchType).ToList();
                         }
@@ -251,7 +251,7 @@ namespace WanTai.Controller
                     }
                     Tubes.TableName += builder.ToString();
                 }
-                if (SessionInfo.BatchType != "B")
+                if (!(SessionInfo.BatchTimes > 1 && SessionInfo.BatchType == SessionInfo.BatchTimes.ToString()))
                 {
                     string message = "";
                     foreach (LiquidType _liquidType in LiquidTypeList)
@@ -412,13 +412,13 @@ namespace WanTai.Controller
                     else
                     {
                         List<SystemFluidConfiguration> _SystemFluidConfigurationList = null;
-                        if (batchType == "B")
+                        if (batchType == null)
                         {
-                            _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == "B").ToList();
+                            _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == "1").ToList();
                         }
                         else
                         {
-                            _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).ToList();
+                            _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == batchType).ToList();
                         }
                         foreach (SystemFluidConfiguration _SystemFluidConfiguration in _SystemFluidConfigurationList)
                         {
