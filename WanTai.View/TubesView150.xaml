@@ -30,24 +30,18 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="auto"></ColumnDefinition>
+            <ColumnDefinition Width="50*"></ColumnDefinition>
+            <ColumnDefinition Width="50*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="80"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="30*"></RowDefinition>
+            <RowDefinition Height="70*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0">
-            <Label>首次上样</Label>
+            <Label></Label>
         </StackPanel>
-        <StackPanel Grid.Column="1" Grid.Row="0">
-            <Label>二次上样</Label>
-        </StackPanel>
-        <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" FontSize="12"  Grid.Column="0"  AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick">
+        <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" Grid.RowSpan="2" FontSize="12"  Grid.Column="0" AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="1" Width="*">
                     <DataGridTemplateColumn.CellStyle>
@@ -463,362 +457,21 @@
             </DataGrid.Columns>
         </DataGrid>
         
-        <DataGrid AutoGenerateColumns="False"  CanUserAddRows="False" Grid.Row="1" FontSize="12"  Grid.Column="1" AlternationCount="2" HorizontalAlignment="Stretch" SelectionUnit="Cell" SelectionMode="Extended"  Name="dg_Bules2" VerticalAlignment="Stretch"   LoadingRow="dg_Bules_LoadingRow" PreviewMouseDoubleClick="dg_Bules_PreviewMouseDoubleClick" IsEnabled="True">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="1" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background19}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected19}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode19}" PlottedProperty="{Binding Path=TextItemCount19}" HorizontalAlignment="Center"  x:Name="pie_19" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="2" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background20}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected20}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode20}" PlottedProperty="{Binding Path=TextItemCount20}" HorizontalAlignment="Center"  x:Name="pie_20" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="3" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background21}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected21}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode21}" PlottedProperty="{Binding Path=TextItemCount21}" HorizontalAlignment="Center"  x:Name="pie_21" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="4" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background22}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected22}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode22}" PlottedProperty="{Binding Path=TextItemCount22}" HorizontalAlignment="Center"  x:Name="pie_22" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="5" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background23}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected23}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode23}" PlottedProperty="{Binding Path=TextItemCount23}" HorizontalAlignment="Center"  x:Name="pie_23" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="6" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background24}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected24}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode24}" PlottedProperty="{Binding Path=TextItemCount24}" HorizontalAlignment="Center"  x:Name="pie_24" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="7" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background25}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected25}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode25}" PlottedProperty="{Binding Path=TextItemCount25}" HorizontalAlignment="Center"  x:Name="pie_25" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="8" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background26}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected26}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode26}" PlottedProperty="{Binding Path=TextItemCount26}" HorizontalAlignment="Center"  x:Name="pie_26" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="9" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background27}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected27}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode27}" PlottedProperty="{Binding Path=TextItemCount27}" HorizontalAlignment="Center"  x:Name="pie_27" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="10" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background28}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected28}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode28}" PlottedProperty="{Binding Path=TextItemCount28}" HorizontalAlignment="Center"  x:Name="pie_28" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="11" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background29}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected29}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode29}" PlottedProperty="{Binding Path=TextItemCount29}" HorizontalAlignment="Center"  x:Name="pie_29" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="12" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background30}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected30}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode30}" PlottedProperty="{Binding Path=TextItemCount30}" HorizontalAlignment="Center"  x:Name="pie_30" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="13" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background31}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected31}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode31}" PlottedProperty="{Binding Path=TextItemCount31}" HorizontalAlignment="Center"  x:Name="pie_31" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-
-                <DataGridTemplateColumn Header="14" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background32}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected32}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode32}" PlottedProperty="{Binding Path=TextItemCount32}" HorizontalAlignment="Center"  x:Name="pie_32" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="15" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background33}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected33}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode33}" PlottedProperty="{Binding Path=TextItemCount33}" HorizontalAlignment="Center"  x:Name="pie_33" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="16" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background34}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected34}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode34}" PlottedProperty="{Binding Path=TextItemCount34}" HorizontalAlignment="Center"  x:Name="pie_34" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="17" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background35}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected35}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode35}" PlottedProperty="{Binding Path=TextItemCount35}" HorizontalAlignment="Center"  x:Name="pie_35" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                
-                <DataGridTemplateColumn Header="18" Width="*">
-                    <DataGridTemplateColumn.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Background" Value="{Binding Path=Background36}"   />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="{Binding Path=IsSelected36}"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTemplateColumn.CellStyle>
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <my1:PieLoayout Height="24" ToolTip="{Binding Path=BarCode36}" PlottedProperty="{Binding Path=TextItemCount36}" HorizontalAlignment="Center"  x:Name="pie_36" VerticalAlignment="Center" Width="24" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions >
-                <ColumnDefinition Width="250"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="250"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border BorderBrush="Silver" BorderThickness="2,0,1,0" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                   <Button Content="扫描"  Height="30" Name="btn_scan" Width="80" Click="btn_scan_Click" />
-                   <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail" Width="100" Margin="40,0,0,0" Click="btn_detail_Click" />
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Silver" BorderThickness="2,0,1,0"  Grid.Column="0" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="分组"   Height="30" IsEnabled="False" Name="btn_Group" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
-                    <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save" Width="100" Margin="40,0,0,0" Click="btn_Save_Click" />
-                </StackPanel>
-            </Border>
-            <Border BorderBrush="Silver" BorderThickness="1" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
-                <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" />
-            </Border>
-            
-            <Border BorderBrush="Silver" BorderThickness="1,1,2,0" Grid.Column="2" Grid.Row="0"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel  HorizontalAlignment="Left" Orientation="Horizontal" Margin="20,0,0,0">
                     <Label Content="图    示:" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" Width="70" HorizontalContentAlignment="Center"/>
                     <TextBlock Height="16" Margin="5,0,0,0"  Width="16" Grid.Row="1" Name="txt_NegativeControl" HorizontalAlignment="Left"  Background="LightGray" VerticalAlignment="Center" />
@@ -827,65 +480,45 @@
                     <Label Content="阳性对照" Width="65" Name="lab_PositiveControl" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" />
                     <TextBlock Height="16" Margin="5,0,0,0"  Width="16" Grid.Row="1" Name="txt_Complement" HorizontalAlignment="Left"  Background="Magenta" VerticalAlignment="Center" />
                     <Label Content="样品补充液" Name="lab_Complement" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" />
+                    <Label Content="(阴性对照、阳性对照、样品补充液不能分组！)" Visibility="Collapsed" Name="lab_tip" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" />
                     <TextBlock Height="16" Margin="5,19.644,0,19.644"  Width="16" Name="txt_QC" HorizontalAlignment="Left"  Background="Magenta" VerticalAlignment="Center" />
                     <Label Content="质控品" Name="lab_QC" HorizontalAlignment="Left"   VerticalAlignment="Center" Margin="0,14.575,0,14.576" />
-                    <Label Content="(阴性对照、阳性对照、样品补充液不能分组！)" Visibility="Collapsed" Name="lab_tip" Grid.Row="1" HorizontalAlignment="Left"   VerticalAlignment="Center" />
                 </StackPanel>
-            </Border>           
-            
-            <Border BorderBrush="Silver" BorderThickness="1,0,2,1" Grid.Column="2" Grid.Row="1"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            </Border>
+
+            <Border BorderBrush="Silver" BorderThickness="0,0,0,0" Grid.Row="1" Grid.ColumnSpan="4"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel  Name="sp_pointout" HorizontalAlignment="Left" Orientation="Horizontal" Margin="20,0,0,0">
                     <Label Content="检测项目:" Grid.Row="1"  HorizontalAlignment="Left"   VerticalAlignment="Center" Width="70" HorizontalContentAlignment="Center"/>
                 </StackPanel>
             </Border>
-            <Border Name="repeat_border_scan" BorderBrush="Silver" BorderThickness="0,0,1,0" Grid.Column="3" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Visibility="Visible">
+
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="扫描"  Height="30" IsEnabled="False" Name="btn_scan2" Width="80" Click="btn_scan_Click" />
-                    <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail2" Width="100" Margin="40,0,0,0" Click="btn_detail_Click" />
+                   <Button Content="扫描"  Height="30" Name="btn_scan" Width="80" Click="btn_scan_Click" />
                 </StackPanel>
             </Border>
-            <Border Name="repeat_border_group" BorderBrush="Silver" BorderThickness="0,0,1,0"  Grid.Column="3" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Visibility="Visible">
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="分组" Height="30" IsEnabled="False" Name="btn_Group2" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
-                    <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save2" Width="100" Margin="40,0,0,0" Click="btn_Save_Click" />
+                    <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail" Width="100" Margin="40,0,0,0" Click="btn_detail_Click" />
                 </StackPanel>
             </Border>
-            <Border Name="repeat_border_next" BorderBrush="Silver" BorderThickness="1" Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Visibility="Visible">
-                <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next2" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" />
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="分组"   Height="30" IsEnabled="False" Name="btn_Group" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
+                </StackPanel>
             </Border>
-        <!--    
-            <Border BorderBrush="Silver" BorderThickness="1" Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                <Button Name="btn_Use" Content="启用"  CommandParameter="TubesViewNext" Height="30" Width="80" Margin="0,0,0,0" Click="btn_Enable_Click" />
-            </Border>   -->
+            <Border BorderBrush="Silver"  BorderThickness="0,1,0,1" Grid.Row="3" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="保存" Height="30" IsEnabled="False" Name="btn_Save" Width="100" Margin="40,0,0,0" Click="btn_Save_Click" />
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="Silver" BorderThickness="0,1" Grid.Column="3" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="下一步"  CommandParameter="TubesViewNext" Height="30" IsEnabled="False" Name="btn_Next" Width="80" Margin="0,0,0,0" Click="btn_Next_Click" />
+                </StackPanel>
+            </Border>
         </Grid>
-       
-        <!--AutoGeneratedColumns="dg_TubesGroup_AutoGeneratedColumns" AutoGeneratingColumn="dg_TubesGroup_AutoGeneratingColumn" CellEditEnding="dg_TubesGroup_CellEditEnding" BeginningEdit="dg_TubesGroup_BeginningEdit" ColumnDisplayIndexChanged="dg_TubesGroup_ColumnDisplayIndexChanged" 
-                  InitializingNewItem="dg_TubesGroup_InitializingNewItem" ColumnHeaderDragCompleted="dg_TubesGroup_ColumnHeaderDragCompleted" UnloadingRowDetails="dg_TubesGroup_UnloadingRowDetails" UnloadingRow="dg_TubesGroup_UnloadingRow" Unloaded="dg_TubesGroup_Unloaded" 
-                  TouchUp="dg_TubesGroup_TouchUp" TouchMove="dg_TubesGroup_TouchMove" TouchLeave="dg_TubesGroup_TouchLeave" TouchEnter="dg_TubesGroup_TouchEnter" TouchDown="dg_TubesGroup_TouchDown"
-                  ToolTipOpening="dg_TubesGroup_ToolTipOpening" ToolTipClosing="dg_TubesGroup_ToolTipClosing" TextInput="dg_TubesGroup_TextInput" TargetUpdated="dg_TubesGroup_TargetUpdated" StylusUp="dg_TubesGroup_StylusUp" StylusSystemGesture="dg_TubesGroup_StylusSystemGesture" 
-                  StylusOutOfRange="dg_TubesGroup_StylusOutOfRange" StylusMove="dg_TubesGroup_StylusMove" StylusLeave="dg_TubesGroup_StylusLeave" StylusInRange="dg_TubesGroup_StylusInRange" StylusInAirMove="dg_TubesGroup_StylusInAirMove" StylusEnter="dg_TubesGroup_StylusEnter" 
-                  StylusDown="dg_TubesGroup_StylusDown" StylusButtonUp="dg_TubesGroup_StylusButtonUp" StylusButtonDown="dg_TubesGroup_StylusButtonDown" SourceUpdated="dg_TubesGroup_SourceUpdated"
-                  Sorting="dg_TubesGroup_Sorting" SizeChanged="dg_TubesGroup_SizeChanged" SelectionChanged="dg_TubesGroup_SelectionChanged" SelectedCellsChanged="dg_TubesGroup_SelectedCellsChanged"
-                  RowEditEnding="dg_TubesGroup_RowEditEnding" RowDetailsVisibilityChanged="dg_TubesGroup_RowDetailsVisibilityChanged" RequestBringIntoView="dg_TubesGroup_RequestBringIntoView" QueryCursor="dg_TubesGroup_QueryCursor" QueryContinueDrag="dg_TubesGroup_QueryContinueDrag" 
-                  PreviewTouchUp="dg_TubesGroup_PreviewTouchUp" PreviewTouchMove="dg_TubesGroup_PreviewTouchMove" PreviewTouchDown="dg_TubesGroup_PreviewTouchDown" PreviewTextInput="dg_TubesGroup_PreviewTextInput" PreviewStylusUp="dg_TubesGroup_PreviewStylusUp" 
-                  PreviewStylusSystemGesture="dg_TubesGroup_PreviewStylusSystemGesture" PreviewStylusOutOfRange="dg_TubesGroup_PreviewStylusOutOfRange" PreviewStylusMove="dg_TubesGroup_PreviewStylusMove" PreviewStylusInRange="dg_TubesGroup_PreviewStylusInRange" PreviewStylusInAirMove="dg_TubesGroup_PreviewStylusInAirMove"
-                  PreviewStylusDown="dg_TubesGroup_PreviewStylusDown" PreviewStylusButtonUp="dg_TubesGroup_PreviewStylusButtonUp" PreviewStylusButtonDown="dg_TubesGroup_PreviewStylusButtonDown" PreviewQueryContinueDrag="dg_TubesGroup_PreviewQueryContinueDrag" 
-                  PreviewMouseWheel="dg_TubesGroup_PreviewMouseWheel" PreviewMouseUp="dg_TubesGroup_PreviewMouseUp" PreviewMouseRightButtonUp="dg_TubesGroup_PreviewMouseRightButtonUp" PreviewMouseRightButtonDown="dg_TubesGroup_PreviewMouseRightButtonDown" 
-                  PreviewMouseMove="dg_TubesGroup_PreviewMouseMove" PreviewMouseLeftButtonUp="dg_TubesGroup_PreviewMouseLeftButtonUp" PreviewMouseLeftButtonDown="dg_TubesGroup_PreviewMouseLeftButtonDown" PreviewMouseDown="dg_TubesGroup_PreviewMouseDown" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick" 
-                  PreviewLostKeyboardFocus="dg_TubesGroup_PreviewLostKeyboardFocus" PreviewKeyUp="dg_TubesGroup_PreviewKeyUp" PreviewKeyDown="dg_TubesGroup_PreviewKeyDown" PreviewGotKeyboardFocus="dg_TubesGroup_PreviewGotKeyboardFocus" PreviewGiveFeedback="dg_TubesGroup_PreviewGiveFeedback" 
-                  PreviewDrop="dg_TubesGroup_PreviewDrop" PreviewDragOver="dg_TubesGroup_PreviewDragOver" PreviewDragLeave="dg_TubesGroup_PreviewDragLeave" PreviewDragEnter="dg_TubesGroup_PreviewDragEnter" PreparingCellForEdit="dg_TubesGroup_PreparingCellForEdit" MouseWheel="dg_TubesGroup_MouseWheel" 
-                  MouseUp="dg_TubesGroup_MouseUp" MouseRightButtonUp="dg_TubesGroup_MouseRightButtonUp" MouseRightButtonDown="dg_TubesGroup_MouseRightButtonDown" MouseMove="dg_TubesGroup_MouseMove" MouseLeftButtonUp="dg_TubesGroup_MouseLeftButtonUp" MouseLeftButtonDown="dg_TubesGroup_MouseLeftButtonDown" 
-                  MouseLeave="dg_TubesGroup_MouseLeave" MouseEnter="dg_TubesGroup_MouseEnter" MouseDown="dg_TubesGroup_MouseDown" MouseDoubleClick="dg_TubesGroup_MouseDoubleClick" ManipulationStarting="dg_TubesGroup_ManipulationStarting" ManipulationStarted="dg_TubesGroup_ManipulationStarted" 
-                  ManipulationInertiaStarting="dg_TubesGroup_ManipulationInertiaStarting" ManipulationDelta="dg_TubesGroup_ManipulationDelta" ManipulationCompleted="dg_TubesGroup_ManipulationCompleted" ManipulationBoundaryFeedback="dg_TubesGroup_ManipulationBoundaryFeedback" LostTouchCapture="dg_TubesGroup_LostTouchCapture" 
-                  LostStylusCapture="dg_TubesGroup_LostStylusCapture" LostMouseCapture="dg_TubesGroup_LostMouseCapture" LostKeyboardFocus="dg_TubesGroup_LostKeyboardFocus" LostFocus="dg_TubesGroup_LostFocus" 
-                  LoadingRowDetails="dg_TubesGroup_LoadingRowDetails" Loaded="dg_TubesGroup_Loaded" LayoutUpdated="dg_TubesGroup_LayoutUpdated" ColumnHeaderDragDelta="dg_TubesGroup_ColumnHeaderDragDelta" ColumnHeaderDragStarted="dg_TubesGroup_ColumnHeaderDragStarted" ColumnReordered="dg_TubesGroup_ColumnReordered" 
-                  ColumnReordering="dg_TubesGroup_ColumnReordering" ContextMenuClosing="dg_TubesGroup_ContextMenuClosing" ContextMenuOpening="dg_TubesGroup_ContextMenuOpening" CopyingRowClipboardContent="dg_TubesGroup_CopyingRowClipboardContent" CurrentCellChanged="dg_TubesGroup_CurrentCellChanged" 
-                  DataContextChanged="dg_TubesGroup_DataContextChanged" DragEnter="dg_TubesGroup_DragEnter" DragLeave="dg_TubesGroup_DragLeave" DragOver="dg_TubesGroup_DragOver" Drop="dg_TubesGroup_Drop" FocusableChanged="dg_TubesGroup_FocusableChanged" GiveFeedback="dg_TubesGroup_GiveFeedback" 
-                  GotFocus="dg_TubesGroup_GotFocus" GotKeyboardFocus="dg_TubesGroup_GotKeyboardFocus" GotMouseCapture="dg_TubesGroup_GotMouseCapture" GotStylusCapture="dg_TubesGroup_GotStylusCapture" GotTouchCapture="dg_TubesGroup_GotTouchCapture" Initialized="dg_TubesGroup_Initialized" 
-                  IsEnabledChanged="dg_TubesGroup_IsEnabledChanged" IsHitTestVisibleChanged="dg_TubesGroup_IsHitTestVisibleChanged" IsKeyboardFocusedChanged="dg_TubesGroup_IsKeyboardFocusedChanged" IsKeyboardFocusWithinChanged="dg_TubesGroup_IsKeyboardFocusWithinChanged" 
-                  IsMouseCapturedChanged="dg_TubesGroup_IsMouseCapturedChanged" IsMouseCaptureWithinChanged="dg_TubesGroup_IsMouseCaptureWithinChanged" IsMouseDirectlyOverChanged="dg_TubesGroup_IsMouseDirectlyOverChanged" IsStylusCapturedChanged="dg_TubesGroup_IsStylusCapturedChanged" 
-                  IsStylusCaptureWithinChanged="dg_TubesGroup_IsStylusCaptureWithinChanged" IsStylusDirectlyOverChanged="dg_TubesGroup_IsStylusDirectlyOverChanged" IsVisibleChanged="dg_TubesGroup_IsVisibleChanged" KeyDown="dg_TubesGroup_KeyDown" KeyUp="dg_TubesGroup_KeyUp"-->
-        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="3" FontSize="12" Grid.Column="0" HorizontalAlignment="Stretch"  Name="dg_TubesGroup" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
+        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="2" FontSize="12" Grid.Column="1" Grid.RowSpan="2" HorizontalAlignment="Stretch"  Name="dg_TubesGroup" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="分组名称" Width="80">
                     <DataGridTemplateColumn.CellTemplate>
@@ -943,65 +576,5 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-
-        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" RowHeaderWidth="0" Grid.Row="3" FontSize="12" Grid.Column="1" HorizontalAlignment="Stretch"  Name="dg_TubesGroup2" VerticalAlignment="Stretch" LoadingRow="dg_TubesGroup_LoadingRow" SelectionMode="Single" PreviewMouseDoubleClick="dg_TubesGroup_PreviewMouseDoubleClick">
-            <DataGrid.Columns>
-                <DataGridTemplateColumn Header="分组名称" Width="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <Label Content="{Binding Path=TubesGroupName}"  Name="lab_TubesGroupName"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="样品数量" Width="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                <Label Content="{Binding Path=TubesNumber}"  Name="lab_TubesNumber"  />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="混样模式" Width="100" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <ComboBox Name="cb_PoolingRulesConfigurations" SelectionChanged="cb_PoolingRulesConfigurations_SelectionChanged2" HorizontalAlignment="Stretch" SelectedIndex="0" SelectedValue="{Binding PoolingRulesID}" SelectedValuePath="PoolingRulesID" DisplayMemberPath="PoolingRulesName"  ItemsSource="{Binding Source={StaticResource PoolingRulesConfigurations }}"   />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="是否补液" Width="80">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                <CheckBox Content="补液" IsEnabled="False" Height="16" HorizontalAlignment="Center"  Name="ch_Complement" VerticalAlignment="Center" Unchecked="ch_Complement_Unchecked" Checked="ch_Complement_Checked" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="编辑" Width="100">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" >
-                                <Button Content="删除" Height="26" Width="75" Margin="0,0,0,0" HorizontalAlignment="Center" Click="btn_del_Click2"  Name="btn_del2" VerticalAlignment="Center"  />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="样品" Width="*" Visibility="Hidden">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate >
-                            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left" VerticalAlignment="Center" >
-                                <Label  HorizontalAlignment="Left"  Name="lab_TubesPosition2" VerticalAlignment="Center" >
-                                    <Label.Content>
-                                        <Binding Path="TubesPosition" />
-                                    </Label.Content>
-                                </Label>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-
     </Grid>
 </UserControl>

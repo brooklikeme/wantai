@@ -265,17 +265,14 @@
     <Compile Include="TubesScanParameter.xaml.cs">
       <DependentUpon>TubesScanParameter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TubesView150S.xaml.cs">
-      <DependentUpon>TubesView150S.xaml</DependentUpon>
+    <Compile Include="TubesView150.xaml.cs">
+      <DependentUpon>TubesView150.xaml</DependentUpon>
     </Compile>
     <Compile Include="TubesView200.xaml.cs">
       <DependentUpon>TubesView200.xaml</DependentUpon>
     </Compile>
     <Compile Include="TubesView100.xaml.cs">
       <DependentUpon>TubesView100.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TubesView150.xaml.cs">
-      <DependentUpon>TubesView150.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserManagement\AddUser.xaml.cs">
       <DependentUpon>AddUser.xaml</DependentUpon>
@@ -513,7 +510,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="TubesView150S.xaml">
+    <Page Include="TubesView150.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -522,10 +519,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TubesView100.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="TubesView150.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

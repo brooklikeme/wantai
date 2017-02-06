@@ -58,32 +58,25 @@ namespace WanTai.View
                 checkBox.SetValue(CheckBox.IsCheckedProperty, false);
                 checkBox.SetValue(CheckBox.ContentProperty, _TestingItem.TestingItemName);
 
-                if (SessionInfo.BatchType == "B")
-                {
-                    checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked2));
-                    checkBox.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(checkBox_Unchecked2));
-                }
-                else
-                {
-                    checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked));
-                    checkBox.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(checkBox_Unchecked));
+                checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked));
+                checkBox.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(checkBox_Unchecked));
 
-                    TextBlock textBlock = new TextBlock();
-                    textBlock.Height = 16;
-                    textBlock.Margin = new Thickness(5, 0, 0, 0);
-                    textBlock.Width = 16;
-                    textBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                    textBlock.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                    textBlock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_TestingItem.TestingItemColor));
-                    sp_pointout.Children.Add(textBlock);
+                TextBlock textBlock = new TextBlock();
+                textBlock.Height = 16;
+                textBlock.Margin = new Thickness(5, 0, 0, 0);
+                textBlock.Width = 16;
+                textBlock.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                textBlock.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                textBlock.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(_TestingItem.TestingItemColor));
+                sp_pointout.Children.Add(textBlock);
 
-                    Label label = new Label();
-                    label.Content = _TestingItem.TestingItemName;
-                    label.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                    label.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                    label.Width = 65;
-                    sp_pointout.Children.Add(label);
-                }
+                Label label = new Label();
+                label.Content = _TestingItem.TestingItemName;
+                label.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                label.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+                label.Width = 65;
+                sp_pointout.Children.Add(label);
+
                 _StackPanel.AppendChild(checkBox);
 
             }
@@ -91,14 +84,7 @@ namespace WanTai.View
             dataTemplate.VisualTree = _StackPanel;
             _DataGridTemplateColumn.CellTemplate = dataTemplate;
 
-            if (SessionInfo.BatchType == "B")
-            {
-                dg_TubesGroup2.Columns.Insert(2, _DataGridTemplateColumn);
-            }
-            else
-            {
-                dg_TubesGroup.Columns.Insert(2, _DataGridTemplateColumn);
-            }
+            dg_TubesGroup.Columns.Insert(2, _DataGridTemplateColumn);
 
             PoolingRules = new WanTai.Controller.PoolingRulesConfigurationController().GetPoolingRulesConfiguration();
             List<LiquidType> LiquidTypeList = SessionInfo.LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
@@ -224,11 +210,7 @@ namespace WanTai.View
             btn_scan.IsEnabled = false;
             btn_Save.IsEnabled = false;
             btn_Next.IsEnabled = false;
-            btn_detail2.IsEnabled = false;
-            btn_Group2.IsEnabled = false;
-            btn_scan2.IsEnabled = false;
-            btn_Save2.IsEnabled = false;
-            btn_Next2.IsEnabled = false;
+
             LoadFrom loadFrom = new LoadFrom();
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
@@ -277,14 +259,8 @@ namespace WanTai.View
             };
             worker.ProgressChanged += delegate(object s, ProgressChangedEventArgs args)
             {
-                if (SessionInfo.BatchType == "B")
-                {
-                    dg_Bules2.ItemsSource = Tubes.DefaultView;
-                }
-                else
-                {
-                    dg_Bules.ItemsSource = Tubes.DefaultView;
-                }
+                dg_Bules.ItemsSource = Tubes.DefaultView;
+                
                 //if (args.UserState.ToString() == "success")
                 //    dg_Bules.ItemsSource = Tubes.DefaultView;
                 //else dg_Bules.ItemsSource = (Tubes = new DataTable()).DefaultView;
@@ -294,14 +270,8 @@ namespace WanTai.View
             {
                 loadFrom.Close();
                 
-                if (SessionInfo.BatchType == "B")
-                {
-                    btn_scan2.IsEnabled = true;
-                }
-                else
-                {
-                    btn_scan.IsEnabled = true;
-                }
+                btn_scan.IsEnabled = true;
+
                 if (!scanResult)
                 {
                     MessageBox.Show("execute scan error", "系统提示");
@@ -316,19 +286,10 @@ namespace WanTai.View
                     MessageBox.Show(ErrMsg, "系统提示!");
                 else
                 {
-                    if (SessionInfo.BatchType == "B")
-                    {
-                        btn_detail2.IsEnabled = true;
-                        btn_Group2.IsEnabled = true;
-                        dg_TubesGroup2.Items.Clear();
-                    }
-                    else
-                    {
-                        btn_detail.IsEnabled = true;
-                        btn_Group.IsEnabled = true;
-                        dg_TubesGroup.Items.Clear();
-                    }
-                   
+                    btn_detail.IsEnabled = true;
+                    btn_Group.IsEnabled = true;
+                    dg_TubesGroup.Items.Clear();
+
                     RowIndex = 0;
                     TuubesGroupName = 0;
                     CurrentTubesPositions = "";
@@ -420,63 +381,7 @@ namespace WanTai.View
                 else
                     dg_TubesGroup.SelectedIndex = TuubesGroupName-1;
             }
-        }
-
-        private void btn_del_Click2(object sender, RoutedEventArgs e)
-        {
-            if (dg_TubesGroup2.SelectedItem != null)
-            {
-                TubeGroup _TubeGroup = ((TubeGroup)dg_TubesGroup2.SelectedItem);
-                foreach (string TubesPosition in ((TubeGroup)dg_TubesGroup2.SelectedItem).TubesPosition.Split(']'))
-                {
-                    if (string.IsNullOrEmpty(TubesPosition)) continue;
-                    string str = TubesPosition.Remove(0, 1);
-                    int ColumnIndex = int.Parse(str.Split(',')[0]);
-                    int RowIndex = int.Parse(str.Split(',')[1]);
-                    Tubes.Rows[RowIndex - 1]["Background" + ColumnIndex.ToString()] = null;
-                    string TextItemCount = Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()].ToString();
-
-
-                    foreach (TestingItemConfiguration _TestingItemConfiguration in _TubeGroup.TestingItemConfigurations)
-                    {
-                        TextItemCount = TextItemCount.Replace("," + _TubeGroup.RowIndex.ToString() + ";" + _TestingItemConfiguration.TestingItemColor, "");
-                    }
-                    Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()] = TextItemCount;
-                    Tubes.Rows[RowIndex - 1]["DetailView" + ColumnIndex.ToString()] = Tubes.Rows[RowIndex - 1]["DetailView" + ColumnIndex.ToString()].ToString().Replace(_TubeGroup.TubesGroupName + " " + _TubeGroup.PoolingRulesName + _TubeGroup.TestintItemName + ",", "");
-
-                }
-                while (_TubeGroup.TestingItemConfigurations.Count > 0)
-                {
-                    TestingItemConfiguration _TestingItemConfiguration = _TubeGroup.TestingItemConfigurations.First();
-
-                    ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).TestintItemName.Replace(" " + _TestingItemConfiguration.TestingItemName, "");
-
-                    bool b = _TubeGroup.TestingItemConfigurations.Remove(_TubeGroup.TestingItemConfigurations.Where(tic => tic.TestingItemID == _TestingItemConfiguration.TestingItemID).FirstOrDefault());
-                }
-                dg_TubesGroup2.Items.Remove(dg_TubesGroup2.SelectedItem);
-
-                for (int i = 0; i < dg_TubesGroup2.Items.Count; i++)
-                {
-                    Label labTuubesGroupName = CommFuntion.FindName(dg_TubesGroup2, 0, i, "lab_TubesGroupName") as Label;
-
-                    //  Label labTuubesGroupName = CommFuntion.FindCellControl<Label>("lab_TubesGroupName", dg_TubesGroup, i, 0);
-                    if (labTuubesGroupName != null)
-                        labTuubesGroupName.Content = "分组" + (i + 1).ToString();
-                    //  ((TubeGroup)dg_TubesGroup.Items[i]).TuubesGroupName = "分组" + (i+1).ToString();
-                    TuubesGroupName = i + 1;
-                }
-
-                if (dg_TubesGroup2.Items.Count == 0)
-                {
-                    TuubesGroupName = 0;
-                    btn_Next.IsEnabled = false;
-                    btn_Save.IsEnabled = false;
-                }
-                else
-                    dg_TubesGroup2.SelectedIndex = TuubesGroupName - 1;
-            }
-        }
-       
+        }       
 
         private void btn_Group_Click(object sender, RoutedEventArgs e)
         {
@@ -489,18 +394,9 @@ namespace WanTai.View
             dt.Columns.Add("TubeCell", typeof(TubeCell));
 
             IList<DataGridCellInfo> Cells = null;
-            if (SessionInfo.BatchType == "B") 
-            {
-                Cells = dg_Bules2.SelectedCells;
-            } 
-            else 
-            {
-                Cells = dg_Bules.SelectedCells;
-            }
+            Cells = dg_Bules.SelectedCells;
 
             int position = 0;
-            if (SessionInfo.BatchType == "B")
-                position = 18;
 
             foreach (DataGridCellInfo Cell in Cells)
             {
@@ -553,18 +449,9 @@ namespace WanTai.View
    
            // TubeGroupList.Add(new TubeGroup() { TuubesGroupName = "分组" + (++TuubesGroupName).ToString(), ExperimentID = SessionInfo.ExperimentID, PoolingRulesConfiguration = PoolingRules, PoolingRulesID = PoolingRules.PoolingRulesID, CreateTime = DateTime.Now, TubesPosition = CellBuilder.ToString() });
 
-            if (SessionInfo.BatchType == "B")
-            {
-                int SelectItemIndex = dg_TubesGroup2.Items.Add(new TubeGroup() { isComplement = false, TubesNumber = TubesNumber, RowIndex = (this.RowIndex++), TubesGroupName = "分组" + (++TuubesGroupName).ToString(), ExperimentID = SessionInfo.ExperimentID, PoolingRulesConfiguration = PoolingRules, PoolingRulesName = PoolingRules.PoolingRulesName, PoolingRulesID = PoolingRules.PoolingRulesID, CreateTime = DateTime.Now, TubesPosition = CellBuilder.ToString() });
-                dg_TubesGroup2.SelectedIndex = SelectItemIndex;
-                btn_Save2.IsEnabled = true;
-            }
-            else
-            {
-                int SelectItemIndex = dg_TubesGroup.Items.Add(new TubeGroup() { isComplement = false, TubesNumber = TubesNumber, RowIndex = (this.RowIndex++), TubesGroupName = "分组" + (++TuubesGroupName).ToString(), ExperimentID = SessionInfo.ExperimentID, PoolingRulesConfiguration = PoolingRules, PoolingRulesName = PoolingRules.PoolingRulesName, PoolingRulesID = PoolingRules.PoolingRulesID, CreateTime = DateTime.Now, TubesPosition = CellBuilder.ToString() });
-                dg_TubesGroup.SelectedIndex = SelectItemIndex;
-                btn_Save.IsEnabled = true;
-            }
+            int SelectItemIndex = dg_TubesGroup.Items.Add(new TubeGroup() { isComplement = false, TubesNumber = TubesNumber, RowIndex = (this.RowIndex++), TubesGroupName = "分组" + (++TuubesGroupName).ToString(), ExperimentID = SessionInfo.ExperimentID, PoolingRulesConfiguration = PoolingRules, PoolingRulesName = PoolingRules.PoolingRulesName, PoolingRulesID = PoolingRules.PoolingRulesID, CreateTime = DateTime.Now, TubesPosition = CellBuilder.ToString() });
+            dg_TubesGroup.SelectedIndex = SelectItemIndex;
+            btn_Save.IsEnabled = true;
             
         }
         private int RowIndex = 0;
@@ -581,16 +468,8 @@ namespace WanTai.View
         private void btn_detail_Click(object sender, RoutedEventArgs e)
         {
            // Tubes.Namespace = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            ItemCollection Items = null;
-            if (SessionInfo.BatchType == "B")
-            {
-                Items = dg_TubesGroup2.Items;
-            }
-            else
-            {
-                Items = dg_TubesGroup.Items;
-            }
-
+            ItemCollection Items = dg_TubesGroup.Items;
+            
             foreach(TubeGroup tubeGroup in Items)
             {
                 foreach (string TubesPosition in tubeGroup.TubesPosition.Split(']'))
@@ -654,12 +533,7 @@ namespace WanTai.View
                 CurrentTubesPositions = "";
             }
             IsPoack = true;
-
-            if (SessionInfo.BatchType == "B")
-            {
-                btn_scan2.IsEnabled = true;
-            }
-         
+ 
           //  labelRotationName.Content = SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName;
         }
 
@@ -701,29 +575,6 @@ namespace WanTai.View
             }
         }
 
-        public void checkBox_Checked2(object sender, RoutedEventArgs e)
-        {
-
-            if (dg_TubesGroup2.SelectedItem != null)
-            {
-                TestingItemConfiguration _TestingItemConfiguration = (TestingItemConfiguration)(((System.Windows.Controls.CheckBox)(sender)).DataContext);
-                WanTai.DataModel.TubeGroup tubeGroup = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem));
-                string TubesPositions = tubeGroup.TubesPosition;
-                foreach (string TubesPosition in TubesPositions.Split(']'))
-                {
-                    if (string.IsNullOrEmpty(TubesPosition)) continue;
-                    string str = TubesPosition.Remove(0, 1);
-                    int ColumnIndex = int.Parse(str.Split(',')[0]);
-                    int RowIndex = int.Parse(str.Split(',')[1]);
-
-                    string TextItemCount = Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()].ToString() + "," + tubeGroup.RowIndex.ToString() + ";" + _TestingItemConfiguration.TestingItemColor;
-                    Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()] = TextItemCount.ToString();
-                }
-                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).TestintItemName + " " + _TestingItemConfiguration.TestingItemName;
-                //  ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestingItemConfigurations.Add(IestingItemList.Where(tic => tic.TestingItemID == _TestingItemConfiguration.TestingItemID).FirstOrDefault());
-                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).TestingItemConfigurations.Add(new TestingItemConfiguration() { TestingItemID = _TestingItemConfiguration.TestingItemID, TestingItemName = _TestingItemConfiguration.TestingItemName, TestingItemColor = _TestingItemConfiguration.TestingItemColor });
-            }
-        }
         private List<TestingItemConfiguration> _IestingItemList;
         private List<TestingItemConfiguration> IestingItemList
         {
@@ -763,27 +614,6 @@ namespace WanTai.View
                 bool b = _TubeGroup.TestingItemConfigurations.Remove(_TubeGroup.TestingItemConfigurations.Where(tic => tic.TestingItemID == _TestingItemConfiguration.TestingItemID).FirstOrDefault());
             }
         }
-        public void checkBox_Unchecked2(object sender, RoutedEventArgs e)
-        {
-            if (dg_TubesGroup2.SelectedItem != null)
-            {
-                TestingItemConfiguration _TestingItemConfiguration = (TestingItemConfiguration)(((System.Windows.Controls.CheckBox)(sender)).DataContext);
-                WanTai.DataModel.TubeGroup _TubeGroup = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem));
-
-                foreach (string TubesPosition in _TubeGroup.TubesPosition.Split(']'))
-                {
-                    if (string.IsNullOrEmpty(TubesPosition)) continue;
-                    string str = TubesPosition.Remove(0, 1);
-                    int ColumnIndex = int.Parse(str.Split(',')[0]);
-                    int RowIndex = int.Parse(str.Split(',')[1]);
-
-                    string TextItemCount = Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()].ToString();
-                    Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()] = TextItemCount.Replace("," + _TubeGroup.RowIndex.ToString() + ";" + _TestingItemConfiguration.TestingItemColor, "");
-                }
-                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).TestintItemName.Replace(" " + _TestingItemConfiguration.TestingItemName, "");
-                bool b = _TubeGroup.TestingItemConfigurations.Remove(_TubeGroup.TestingItemConfigurations.Where(tic => tic.TestingItemID == _TestingItemConfiguration.TestingItemID).FirstOrDefault());
-            }
-        }
 
         public event WanTai.View.MainPage.NextStepHandler NextStepEvent;
         private void btn_Next_Click(object sender, RoutedEventArgs e)
@@ -807,16 +637,9 @@ namespace WanTai.View
                 }
                 new PlateController().UpdateRotationId(CurrentTubesBatch.TubesBatchID, SessionInfo.PraperRotation.RotationID);
             }
-            if (SessionInfo.BatchType == "B")
-            {
-                dg_TubesGroup2.IsEnabled = false;
-                dg_Bules2.IsEnabled = false;
-            }
-            else
-            {
-                dg_TubesGroup.IsEnabled = false;
-                dg_Bules.IsEnabled = false;
-            }
+
+            dg_TubesGroup.IsEnabled = false;
+            dg_Bules.IsEnabled = false;
             
             //for (int i = 0; i < dg_TubesGroup.Items.Count; i++)
             //{
@@ -876,54 +699,17 @@ namespace WanTai.View
                 }
             }
         }
-        private void cb_PoolingRulesConfigurations_SelectionChanged2(object sender, SelectionChangedEventArgs e)
-        {
-            if (dg_TubesGroup2.SelectedItem != null)
-            {
-                WanTai.DataModel.TubeGroup tubeGroup = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem));
-                PoolingRulesConfiguration PoolingRules = ((PoolingRulesConfiguration)e.AddedItems[0]);
 
-                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).PoolingRulesID = ((PoolingRulesConfiguration)e.AddedItems[0]).PoolingRulesID;
-                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).PoolingRulesName = ((PoolingRulesConfiguration)e.AddedItems[0]).PoolingRulesName;
-                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).PoolingRulesTubesNumber = ((PoolingRulesConfiguration)e.AddedItems[0]).TubeNumber;
-                CheckBox ch_Complement = CommFuntion.FindCellControl<CheckBox>("ch_Complement", dg_TubesGroup2, dg_TubesGroup2.SelectedIndex, 4);
-
-                if (ch_Complement != null)
-                {
-                    if ((tubeGroup.TubesPosition.Split(']').Length - 1) % PoolingRules.TubeNumber > 0)
-                    {
-                        ch_Complement.IsEnabled = true;
-                        if (MessageBox.Show("该分组需要补液，是否补液？", "系统提示!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-                            ch_Complement.IsChecked = true;
-                        else
-                            ch_Complement.IsChecked = false;
-                    }
-                    else
-                    {
-                        ch_Complement.IsEnabled = false;
-                        ch_Complement.IsChecked = false;
-                    }
-                }
-            }
-        }
         private string CurrentTubesPositions { get; set; }
         private void dg_TubesGroup_PreviewMouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             DataGridCellInfo Cell = ((System.Windows.Controls.DataGrid)(e.Source)).CurrentCell;
 
             if (Cell == null || Tubes == null || Cell.Column == null || Cell.Item == null) return;
-            if (Tubes.Rows.Count == 0) return;
-            
-            if (SessionInfo.BatchType == "B")
-            {
-                if (dg_TubesGroup2.Items.Count == 0) return;
-                dg_Bules2.SelectedCells.Clear();
-            }
-            else
-            {
-                if (dg_TubesGroup.Items.Count == 0) return;
-                dg_Bules.SelectedCells.Clear();
-            }
+            if (Tubes.Rows.Count == 0) return;  
+
+            if (dg_TubesGroup.Items.Count == 0) return;
+            dg_Bules.SelectedCells.Clear();
             
             foreach (string TubesPosition in CurrentTubesPositions.Split(']'))
             {
@@ -948,28 +734,16 @@ namespace WanTai.View
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
             ItemCollection Items1 = null;
-            ItemCollection Items2 = null;
-            if (SessionInfo.BatchType == "B")
+
+            if (SessionInfo.BatchType == "A")
             {
-                btn_Next2.IsEnabled = false;
-                Items1 = dg_TubesGroup.Items;
-                Items2 = dg_TubesGroup2.Items;
-                if (null != SessionInfo.BatchTubeGroups)
-                    SessionInfo.BatchTubeGroups.Clear();
-                else
-                    SessionInfo.BatchTubeGroups = new List<TubeGroup>();
+                SessionInfo.BatchTubes = Tubes.Copy();
             }
-            else
-            {
-                if (SessionInfo.BatchType == "A")
-                {
-                    SessionInfo.BatchTubes = Tubes.Copy();
-                }
-                btn_Next.IsEnabled = false;
-                Items1 = dg_TubesGroup.Items;
-                if (null != SessionInfo.BatchTubeGroups)
-                    SessionInfo.BatchTubeGroups.Clear();
-            }
+            btn_Next.IsEnabled = false;
+            Items1 = dg_TubesGroup.Items;
+            if (null != SessionInfo.BatchTubeGroups)
+                SessionInfo.BatchTubeGroups.Clear();
+
             
             if (SessionInfo.ExperimentID == new Guid())
             {
@@ -1011,29 +785,7 @@ namespace WanTai.View
                     TubeGroupList.Add(Item);
                 if (Item.isComplement) _SystemFluid = true;
             }
-            if (SessionInfo.BatchType == "B")
-            {
-                foreach (TubeGroup Item in Items2)
-                {
-                    if (Item.TestingItemConfigurations.Count == 0)
-                    {
-                        MessageBox.Show(Item.TubesGroupName + "没有选择检测项目，请选择！", "系统提示!");
-                        return;
-                    }
-                    foreach (TestingItemConfiguration TestingItem in Item.TestingItemConfigurations)
-                    {
-                        int TestintItemNumber = Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
-                        if (CurrentTubesBatch.TestingItem.ContainsKey(TestingItem.TestingItemID))
-                            CurrentTubesBatch.TestingItem[TestingItem.TestingItemID] += TestintItemNumber;
-                        else
-                            CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
-                    }
-                    TotalHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
-                    Item.BatchType = "B";
-                    TubeGroupList.Add(Item);
-                    if (Item.isComplement) _SystemFluid = true;
-                }
-            }
+           
             if (TotalHole > 96)
             {
                 MessageBox.Show("混样数大于96,无法进行混样!","系统提示!");
@@ -1059,51 +811,25 @@ namespace WanTai.View
             
             //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
            // MessageBox.Show("生成成功！", "系统提示!");
-            if (SessionInfo.BatchType == "B")
-            {
-                btn_Next2.IsEnabled = true;
-            }
-            else
-            {
-                btn_Next.IsEnabled = true;
-            }
+
+            btn_Next.IsEnabled = true;
             
         }
 
         private void ch_Complement_Unchecked(object sender, RoutedEventArgs e)
         {
-            if (SessionInfo.BatchType == "B")
+
+            if (dg_TubesGroup.SelectedItem != null)
             {
-                if (dg_TubesGroup2.SelectedItem != null)
-                {
-                    ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).isComplement = false;
-                }
+                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).isComplement = false;
             }
-            else
-            {
-                if (dg_TubesGroup.SelectedItem != null)
-                {
-                    ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).isComplement = false;
-                }
-            }
-            
         }
 
         private void ch_Complement_Checked(object sender, RoutedEventArgs e)
         {
-            if (SessionInfo.BatchType == "B")
+            if (dg_TubesGroup.SelectedItem != null)
             {
-                if (dg_TubesGroup2.SelectedItem != null)
-                {
-                    ((WanTai.DataModel.TubeGroup)(dg_TubesGroup2.SelectedItem)).isComplement = true;
-                }
-            }
-            else
-            {
-                if (dg_TubesGroup.SelectedItem != null)
-                {
-                    ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).isComplement = true;
-                }
+                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).isComplement = true;
             }
         }
 
@@ -1121,16 +847,5 @@ namespace WanTai.View
             public string CellValue { get; set; }
         }
 
-        private void btn_Enable_Click(object sender, RoutedEventArgs e)
-        {
-            ((Border)((Button)sender).Parent).Visibility = Visibility.Hidden;
-
-            repeat_border_scan.Visibility = Visibility.Visible;
-            repeat_border_group.Visibility = Visibility.Visible;
-            repeat_border_next.Visibility = Visibility.Visible;
-
-            dg_Bules2.IsEnabled = true;
-            SessionInfo.BatchType = "A";
-        }
     }
 }
