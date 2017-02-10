@@ -318,7 +318,7 @@ namespace WanTai.View
             {
                 //DateTime fileCreatedTime = WanTai.Controller.EVO.ProcessorFactory.GetDateTimeNow();
                 TubesController controller = new TubesController();
-                if (SessionInfo.NextTurnStep == 0 || SessionInfo.BatchType == "B")
+                if (SessionInfo.NextTurnStep == 0 || (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                 {
                     if (SessionInfo.BatchScanTimes > 0)
                     {
@@ -375,7 +375,7 @@ namespace WanTai.View
             };
             worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
             {
-                if (SessionInfo.NextTurnStep == 0 || SessionInfo.BatchType == "B")
+                if (SessionInfo.NextTurnStep == 0 || (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                 {
                     CloseLoadingForm(scanResult, ErrMsg);
                 }
@@ -383,7 +383,7 @@ namespace WanTai.View
             btn_scan.IsEnabled = false;
             worker.RunWorkerAsync();
 
-            if (SessionInfo.NextTurnStep != 0 && SessionInfo.BatchType != "B")
+            if (SessionInfo.NextTurnStep != 0 && !(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
             {
                 BackgroundWorker wait_worker = new BackgroundWorker();
                 wait_worker.WorkerReportsProgress = false;

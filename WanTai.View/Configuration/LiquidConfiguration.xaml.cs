@@ -416,8 +416,7 @@ namespace WanTai.View.Configuration
         private void cbx_batchTimes_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbx_batchTimes.SelectedItem == null) return;
-            ComboBoxItem selectedItem = (ComboBoxItem)cbx_batchTimes.SelectedItem;
-            batchType = selectedItem.ToString();
+            batchType = cbx_batchTimes.SelectedItem.ToString();
  
             if (liquidType_comboBox.SelectedItem != null)
                 liquidType_comboBox_SelectionChanged(null, null);

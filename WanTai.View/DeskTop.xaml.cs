@@ -226,7 +226,7 @@ namespace WanTai.View
             Dictionary<short, bool> operationOrders = new OperationController().GetOperationOrders(SessionInfo.PraperRotation.OperationID);
             ReagentSuppliesConfigurationController configController = new ReagentSuppliesConfigurationController();
             reagentAndSupplies = configController.GetReagentAndSuppliesNeeded(operationOrders, SessionInfo.RotationFormulaParameters[SessionInfo.PraperRotation.RotationID]);
-            if (!isFirstRotation || SessionInfo.BatchType == "B")
+            if (!isFirstRotation || (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
             {
                 configController.UpdateExperimentVolume(SessionInfo.ExperimentID, ref reagentAndSupplies, new short[]{ConsumptionType.FirstAdd,ConsumptionType.Add,
                     ConsumptionType.consume}, ReagentAndSuppliesConfiguration.CurrentVolumeFieldName);
@@ -308,7 +308,7 @@ namespace WanTai.View
                 DeskTopWithGrid.Children.Add(c);
             }
 
-            if (SessionInfo.BatchType == "A")
+            if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
                 //btnReagent.Visibility = Visibility.Hidden;
                 //dgReagent.Visibility = Visibility.Hidden;
@@ -693,7 +693,7 @@ namespace WanTai.View
             }
             item.FirstAddVolume = Math.Round(Convert.ToDouble(addVolume), 3);
 
-            if (isFirstRotation && SessionInfo.BatchType != "B")
+            if (isFirstRotation && !(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
             {
                 if (item.FirstAddVolume < item.NeedVolume)
                 {
@@ -708,7 +708,7 @@ namespace WanTai.View
             }
             else
             {
-                if (isFirstRotation && SessionInfo.BatchType == "B")
+                if (isFirstRotation && (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                 {
                     //check if 当前量>总需求量-消耗量
                     if ((item.FirstAddVolume + item.CurrentVolume) < item.NeedVolume)
@@ -1091,11 +1091,11 @@ namespace WanTai.View
                 foreach (ReagentAndSuppliesConfiguration item in dg.Items)
                 {
                     double addedVolume = 0;
-                    if (isFirstRotation && SessionInfo.BatchType != "B")
+                    if (isFirstRotation && !(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                     {
                         addedVolume = item.NeedVolume;
                     }
-                    else if (isFirstRotation && SessionInfo.BatchType == "B")
+                    else if (isFirstRotation && (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                     {
                         addedVolume = item.NeedVolume - item.CurrentVolume;
                     }
@@ -1117,7 +1117,7 @@ namespace WanTai.View
                     foreach (ReagentAndSuppliesConfiguration item in dataGrid.Items)
                     {
                         double addedVolume = 0;
-                        if (isFirstRotation && SessionInfo.BatchType != "B")
+                        if (isFirstRotation && !(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                         {
                             addedVolume = item.NeedVolume;
                         }

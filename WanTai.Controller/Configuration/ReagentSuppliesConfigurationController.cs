@@ -336,7 +336,7 @@ namespace WanTai.Controller.Configuration
                 }
                 foreach (ReagentAndSuppliesConfiguration r in list)
                 {
-                    if (SessionInfo.BatchType == "A" && r.ItemType < 100)
+                    if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes && r.ItemType < 100)
                     {
                         r.NeedVolume = 0;
                     }

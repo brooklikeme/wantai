@@ -152,7 +152,7 @@ namespace WanTai.Controller
                 {
                     if (SessionInfo.WorkDeskType == "100")
                     {
-                        List<SystemFluidConfiguration> _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).OrderBy(s => s.Grid).ThenBy(s => s.Position).ToList();
+                        List<SystemFluidConfiguration> _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == "1").OrderBy(s => s.Grid).ThenBy(s => s.Position).ToList();
                         SessionInfo.LiquidCfgCount = _SystemFluidConfigurationList.Count;
                         /*
                         SystemFluidConfiguration sfcg = _SystemFluidConfigurationList[_SystemFluidConfigurationList.Count - 1];                      
@@ -221,13 +221,9 @@ namespace WanTai.Controller
                     {
                         List<SystemFluidConfiguration> _SystemFluidConfigurationList = null;
                         if (SessionInfo.BatchTimes > 1)
-                        {
                             _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == SessionInfo.BatchType).ToList();
-                        }
                         else
-                        {
-                            _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).ToList();
-                        }
+                            _SystemFluidConfigurationList = _WanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == "1").ToList();
 
                         foreach (SystemFluidConfiguration _SystemFluidConfiguration in _SystemFluidConfigurationList)
                         {
@@ -365,7 +361,7 @@ namespace WanTai.Controller
                     }
                     if (SessionInfo.WorkDeskType == "100")
                     {
-                        List<SystemFluidConfiguration> _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == null).OrderBy(s => s.Grid).ThenBy(s => s.Position).ToList();
+                        List<SystemFluidConfiguration> _SystemFluidConfigurationList = wanTaiEntities.SystemFluidConfigurations.Where(s => s.BatchType == "1").OrderBy(s => s.Grid).ThenBy(s => s.Position).ToList();
                         SessionInfo.LiquidCfgCount = _SystemFluidConfigurationList.Count;
 
                         /*

@@ -48,9 +48,9 @@
             <Button Content="删除" Height="23" Name="delete_Button" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Width="75" Margin="15,0,0,0" Click="delete_Button_Click" />
             <Button Content="取消" Height="23" Name="cancel" HorizontalAlignment="Center" VerticalAlignment="Center" Width="75" Margin="15,0,0,0" Click="cancel_Click" />
         </StackPanel>
-        <StackPanel Grid.Column="2" Grid.Row="2">
-            <Label Content="上样批次" Name="lb_batchTimes" HorizontalAlignment="Left"   VerticalAlignment="Center" Visibility="Hidden"/>
-            <ComboBox x:Name="cbx_batchTimes"  HorizontalAlignment="Left" Margin="0, 0, 0, 5" VerticalAlignment="Center" SelectionChanged="cbx_batchTimes_SelectionChanged" Visibility="Hidden"/>
+        <StackPanel Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Label Content="上样批次" Name="lb_batchTimes" HorizontalAlignment="Left"   VerticalAlignment="Center" Visibility="Visible"/>
+            <ComboBox Width="50" Height="23" x:Name="cbx_batchTimes" HorizontalAlignment="Right" Margin="0, 0, 0, 5" VerticalAlignment="Center" SelectionChanged="cbx_batchTimes_SelectionChanged" Visibility="Visible"/>
         </StackPanel>
     </Grid>
 </Window>

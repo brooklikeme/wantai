@@ -154,12 +154,13 @@
                         <my:RibbonButton x:Name="Help_button"
                                          LargeImageSource="Resources\help.gif"
                                          Label="系统帮助" Click="Help_button_Click" />
-                        <my:RibbonButton x:Name="exit_button" Click="exit_button_Click"
-                                          LargeImageSource="Resources\QuitSystem_icon.gif"
-                                         Label="退出系统" ></my:RibbonButton>
                         <my:RibbonToggleButton x:Name="suspend_exit_button" Click="suspend_exit_button_Click"
                                           LargeImageSource="Resources\QuitSystem_icon.gif"
                                          Label="中断退出" />
+                        <my:RibbonButton x:Name="exit_button" Click="exit_button_Click"
+                                          LargeImageSource="Resources\QuitSystem_icon.gif"
+                                         Label="退出系统" ></my:RibbonButton>
+
                     </my:RibbonGroup>                    
                 </my:RibbonTab>                
                 <my:RibbonTab x:Name="TabSettings" >

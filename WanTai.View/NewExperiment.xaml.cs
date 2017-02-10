@@ -23,7 +23,7 @@ namespace WanTai.View
     {
 
         private List<Guid> TestingItemList = new List<Guid>();
-        private string BatchType = null;
+        private string BatchType = "1";
 
         public NewExperiment()
         {
@@ -141,7 +141,7 @@ namespace WanTai.View
             experimentsInfo.LoginName = txtOrperatorName.Text;
             experimentsInfo.Remark = txtRemark.Text;
             experimentsInfo.StartTime = DateTime.Now;
-            experimentsInfo.MixTimes = (short)(null == BatchType ? 1 : int.Parse(BatchType));
+            experimentsInfo.MixTimes = short.Parse(BatchType);
             experimentsInfo.State = (short)ExperimentStatus.Create; ;
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
             if (controller.CreateExperiment(experimentsInfo))
@@ -153,7 +153,7 @@ namespace WanTai.View
                 SessionInfo.TestingItemIDs = TestingItemList;
                 SessionInfo.PraperRotation = null;
                 SessionInfo.BatchTimes = (int)experimentsInfo.MixTimes;
-                SessionInfo.BatchType = BatchType;
+                SessionInfo.BatchType = BatchType == "1" ? null : "1";
                 LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "新建实验成功", SessionInfo.LoginName, this.GetType().Name, SessionInfo.ExperimentID);
                 this.DialogResult = true;
                 this.Close();
@@ -187,8 +187,7 @@ namespace WanTai.View
         private void timesBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (((ComboBox)sender).SelectedItem == null) return;
-            ComboBoxItem selectedItem = (ComboBoxItem)(((ComboBox)sender).SelectedItem);
-            BatchType = selectedItem.ToString() == "1" ? null : selectedItem.ToString();
+            BatchType = ((ComboBox)sender).SelectedItem.ToString();
         }
          
     }

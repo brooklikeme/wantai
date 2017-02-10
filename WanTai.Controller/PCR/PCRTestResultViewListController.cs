@@ -385,8 +385,7 @@ namespace WanTai.Controller.PCR
                         {
                             WanTaiEntities _WanTaiEntities = new WanTaiEntities();
 
-                            List<SystemFluidConfiguration> SystemFluid = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.BatchType != "B" && systemFluidConfiguration.ItemType == 4).ToList();
-                            List<SystemFluidConfiguration> SystemFluidB = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.BatchType == "B" && systemFluidConfiguration.ItemType == 4).ToList();
+                            List<SystemFluidConfiguration> SystemFluid = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.ItemType == 4).ToList();
 
                             int index = 1;
                             int refIndex = 1;
@@ -406,10 +405,10 @@ namespace WanTai.Controller.PCR
                                         reagent_batch = tubeBarCode.Substring(0, tubeBarCode.Length - 2);
                                     }
                                     string batchType = reader["BatchType"].ToString();
-                                    if (batchType == "B")
+                                    if (batchType == null || batchType == "null")
                                     {
-                                        foreach (SystemFluidConfiguration sf in SystemFluidB) {
-                                            if (sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
+                                        foreach (SystemFluidConfiguration sf in SystemFluid) {
+                                            if (sf.BatchType == "1" && sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
                                             {
                                                 if (qc_batch == "")
                                                 {
@@ -427,7 +426,7 @@ namespace WanTai.Controller.PCR
                                     {
                                         foreach (SystemFluidConfiguration sf in SystemFluid)
                                         {
-                                            if (sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
+                                            if (sf.BatchType == batchType && sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
                                             {
                                                 if (qc_batch == "")
                                                 {

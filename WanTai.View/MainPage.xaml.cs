@@ -317,7 +317,7 @@ namespace WanTai.View
         {
             WanTai.Common.CommonFunction.WriteLog("MessageReceived-----MessageReceived====》" + Message);
 
-            /**********开始第二轮扫描界面***************************************/
+            /**********开始第N轮扫描界面***************************************/
             if (Message.IndexOf("GoToScanPage")>=0)
             {
                 if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
@@ -376,7 +376,8 @@ namespace WanTai.View
         private delegate void onShowSecondMix();
         private void onShowSecondMixEvent()
         {
-            SessionInfo.BatchType = "B";
+            if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+                SessionInfo.BatchType = (int.Parse(SessionInfo.BatchType) + 1).ToString();
             WanTai.Common.CommonFunction.WriteLog("onShowSecondMixEvent-----else");
 
             tabControl.SelectedIndex = 0;

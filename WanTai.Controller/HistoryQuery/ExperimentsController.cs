@@ -204,8 +204,7 @@ namespace WanTai.Controller.HistoryQuery
             {
                 WanTaiEntities _WanTaiEntities = new WanTaiEntities();
 
-                List<SystemFluidConfiguration> SystemFluid = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.BatchType != "B" && systemFluidConfiguration.ItemType == 4).ToList();
-                List<SystemFluidConfiguration> SystemFluidB = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.BatchType == "B" && systemFluidConfiguration.ItemType == 4).ToList();
+                List<SystemFluidConfiguration> SystemFluid = _WanTaiEntities.SystemFluidConfigurations.ToList().Where(systemFluidConfiguration => systemFluidConfiguration.ItemType == 4).ToList();
 
                 string connectionString = WanTai.Common.Configuration.GetConnectionString();
                 ///todo: add control,each role user only can see the specific experiments
@@ -282,11 +281,11 @@ namespace WanTai.Controller.HistoryQuery
                             {
                                 while (reader.Read())
                                 {
-                                    if (reader.GetValue(3) != null && reader.GetValue(3) == "B")
+                                    if (reader.GetValue(3) == null || reader.GetValue(3).ToString() == "null")
                                     {
-                                        foreach (SystemFluidConfiguration sf in SystemFluidB)
+                                        foreach (SystemFluidConfiguration sf in SystemFluid)
                                         {
-                                            if (sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
+                                            if (sf.BatchType == "1" && sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
                                             {
                                                 info.QC += 1;
                                                 if ((string)reader.GetValue(2) == "单检")
@@ -304,7 +303,7 @@ namespace WanTai.Controller.HistoryQuery
                                     {
                                         foreach (SystemFluidConfiguration sf in SystemFluid)
                                         {
-                                            if (sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
+                                            if (sf.BatchType == reader.GetValue(3).ToString() && sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])
                                             {
                                                 info.QC += 1;
                                                 if ((string)reader.GetValue(2) == "单检")

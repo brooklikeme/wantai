@@ -30,16 +30,14 @@ namespace WanTai.View
         public TubesView150()
         {
             InitializeComponent();
-            //if (SessionInfo.PraperRotation != null)
-                //labelRotationName.Content = SessionInfo.PraperRotation.RotationName;
+            if (SessionInfo.PraperRotation != null)
+                labelRotationName.Content = SessionInfo.PraperRotation.RotationName;
         }
 
         private bool IsPoack = false;
         private void AddColumns()
         {
-
-
-            if (SessionInfo.BatchType != "B")
+            if (SessionInfo.BatchTimes == 1 || int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
                 SessionInfo.RotationIndex++;
             }
@@ -189,53 +187,59 @@ namespace WanTai.View
             e.Row.Header = e.Row.GetIndex() + 1;
         }
         private string SystemFluid ;
-    
+
         public event MainPage.NextStepScan onNextStepScan;
+
+        public event MainPage.FirstStepScan onFirstStepScan;
+
+        private LoadFrom loadFrom;
+
         private void btn_scan_Click(object sender, RoutedEventArgs e)
         {
 
-           //System.Windows.Input.Cursor currentCurson = this.Cursor;
-           // this.Cursor = Cursors.Wait;
+            //System.Windows.Input.Cursor currentCurson = this.Cursor;
+            // this.Cursor = Cursors.Wait;
             TubesScanParameter tubeScanParameter = new TubesScanParameter();
             if (!(bool)tubeScanParameter.ShowDialog())
             {
-                MessageBox.Show("请输入要扫描的列数！","系统提示！");
+                MessageBox.Show("请输入要扫描的列数！", "系统提示！");
                 return;
             }
-
-            //btn_Use.IsEnabled = false;
-
             btn_detail.IsEnabled = false;
             btn_Group.IsEnabled = false;
             btn_scan.IsEnabled = false;
             btn_Save.IsEnabled = false;
             btn_Next.IsEnabled = false;
-
-            LoadFrom loadFrom = new LoadFrom();
+            loadFrom = new LoadFrom();
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
             bool WaitFalg = true;
-            bool scanResult=false;
-            string ErrMsg="";
+            bool scanResult = false;
+            string ErrMsg = "";
             SystemFluid = "";
+            DateTime fileCreatedTime = DateTime.MinValue;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {
                 //DateTime fileCreatedTime = WanTai.Controller.EVO.ProcessorFactory.GetDateTimeNow();
-                DateTime fileCreatedTime = DateTime.MinValue;
                 TubesController controller = new TubesController();
-                if (SessionInfo.NextTurnStep == 0)
+                if (SessionInfo.NextTurnStep == 0 || (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1))
                 {
+                    if (SessionInfo.BatchScanTimes > 0)
+                    {
+                        new WanTai.Controller.TubesController().ScanCondition("1");
+                    }
+                    SessionInfo.BatchScanTimes++;
                     scanResult = true;
                     string NextStepScanFinished = onNextStepScan("NextStepScan");
                     if (NextStepScanFinished != "NextStepScanFinished")
                     {
-                        ErrMsg="扫描未完成！";
+                        ErrMsg = "扫描未完成！";
                         return;
                     }
                     else
                     {
-                       Tubes = new WanTai.Controller.TubesController().GetTubes(SessionInfo.LiquidTypeList, fileCreatedTime, out ErrMsg, out SystemFluid);
+                        Tubes = new WanTai.Controller.TubesController().GetTubes(SessionInfo.LiquidTypeList, fileCreatedTime, out ErrMsg, out SystemFluid);
                         worker.ReportProgress(1, ErrMsg);
                         while (WaitFalg)
                             Thread.Sleep(1000);
@@ -244,64 +248,112 @@ namespace WanTai.View
                 }
                 else
                 {
-                    if ((scanResult = controller.CallScanScript()))
+                    if (SessionInfo.FirstStepMixing == 0)
                     {
-                        // Complement = 1,
-                        //  PositiveControl = 2,
-                        //  NegativeControl = 3
-                        //call scan method
-                        Tubes = new WanTai.Controller.TubesController().GetTubes(SessionInfo.LiquidTypeList, fileCreatedTime, out ErrMsg, out SystemFluid);
-                        worker.ReportProgress(1, ErrMsg);
-                        while (WaitFalg)
-                            Thread.Sleep(1000);
+                        new WanTai.Controller.TubesController().ScanCondition("0");
+                        SessionInfo.FirstStepMixing = 1;
+                        if (controller.CallScanScript())
+                        {
+                            SessionInfo.FirstStepMixing = 5;
+                            worker.ReportProgress(1, ErrMsg);
+                            while (WaitFalg)
+                                Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                            SessionInfo.FirstStepMixing = 6;
+                        }
+                    }
+                    else if (SessionInfo.FirstStepMixing != 1)
+                    {
+                        // scan again, initialize scan condition
+                        SessionInfo.FirstStepMixing = 2;
+                        new WanTai.Controller.TubesController().ScanCondition("1");
                     }
                 }
             };
             worker.ProgressChanged += delegate(object s, ProgressChangedEventArgs args)
             {
-                dg_Bules.ItemsSource = Tubes.DefaultView;
-                
-                //if (args.UserState.ToString() == "success")
-                //    dg_Bules.ItemsSource = Tubes.DefaultView;
-                //else dg_Bules.ItemsSource = (Tubes = new DataTable()).DefaultView;
+                if (null != Tubes)
+                    dg_Bules.ItemsSource = Tubes.DefaultView;
                 WaitFalg = false;
             };
             worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
             {
-                loadFrom.Close();
-                
-                btn_scan.IsEnabled = true;
-
-                if (!scanResult)
+                if (SessionInfo.NextTurnStep == 0 || (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1))
                 {
-                    MessageBox.Show("execute scan error", "系统提示");
-                    return;
+                    CloseLoadingForm(scanResult, ErrMsg);
                 }
-                if (SystemFluid.IndexOf("2,") > 0 || SystemFluid.IndexOf("3,") > 0)
-                {
-                    MessageBox.Show("阴阳对照物必须有!", "系统提示!");
-                    return;
-                }
-                if (ErrMsg != "success")
-                    MessageBox.Show(ErrMsg, "系统提示!");
-                else
-                {
-                    btn_detail.IsEnabled = true;
-                    btn_Group.IsEnabled = true;
-                    dg_TubesGroup.Items.Clear();
-
-                    RowIndex = 0;
-                    TuubesGroupName = 0;
-                    CurrentTubesPositions = "";
-                }
-               
             };
             btn_scan.IsEnabled = false;
             worker.RunWorkerAsync();
+
+            if (SessionInfo.NextTurnStep != 0 && !((SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1)))
+            {
+                BackgroundWorker wait_worker = new BackgroundWorker();
+                wait_worker.WorkerReportsProgress = false;
+                wait_worker.WorkerSupportsCancellation = true;
+                wait_worker.DoWork += delegate(object s, DoWorkEventArgs args)
+                {
+                    scanResult = true;
+                    string FirstStepScanFinished = SessionInfo.FirstStepMixing == 2 ? onFirstStepScan("FirstStepScanAgain") : onFirstStepScan("FirstStepScan");
+                    if (FirstStepScanFinished != "FirstStepScanFinished")
+                    {
+                        SessionInfo.FirstStepMixing = 4;
+                        ErrMsg = "扫描未完成！";
+                        return;
+                    }
+                    else
+                    {
+                        SessionInfo.FirstStepMixing = 3;
+                    }
+                };
+                wait_worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
+                {
+                    if (SessionInfo.FirstStepMixing == 3)
+                    {
+                        Tubes = new WanTai.Controller.TubesController().GetTubes(SessionInfo.LiquidTypeList, fileCreatedTime, out ErrMsg, out SystemFluid);
+                        if (null != Tubes)
+                            dg_Bules.ItemsSource = Tubes.DefaultView;
+                    }
+                    CloseLoadingForm(scanResult, ErrMsg);
+                };
+                wait_worker.RunWorkerAsync();
+            }
+
             loadFrom.ShowDialog();
+
             //   sp_ScanLoad.Visibility = System.Windows.Visibility.Collapsed;
 
         }
+
+        private void CloseLoadingForm(Boolean scanResult, string ErrMsg)
+        {
+            loadFrom.Close();
+            btn_scan.IsEnabled = true;
+            if (!scanResult)
+            {
+                MessageBox.Show("execute scan error", "系统提示");
+                return;
+            }
+            if (SystemFluid.IndexOf("2,") > 0 || SystemFluid.IndexOf("3,") > 0)
+            {
+                MessageBox.Show("阴阳对照物必须有!", "系统提示!");
+                return;
+            }
+            if (ErrMsg != "success")
+                MessageBox.Show(ErrMsg, "系统提示!");
+            else
+            {
+                btn_detail.IsEnabled = true;
+                btn_Group.IsEnabled = true;
+                dg_TubesGroup.Items.Clear();
+                RowIndex = 0;
+                TuubesGroupName = 0;
+                CurrentTubesPositions = "";
+            }
+        }
+
         private void btn_del_Click(object sender, RoutedEventArgs e)
         {
             if (dg_TubesGroup.SelectedItem != null)
@@ -313,16 +365,16 @@ namespace WanTai.View
                     string str = TubesPosition.Remove(0, 1);
                     int ColumnIndex = int.Parse(str.Split(',')[0]);
                     int RowIndex = int.Parse(str.Split(',')[1]);
-                    Tubes.Rows[RowIndex-1]["Background" + ColumnIndex.ToString()] = null;
+                    Tubes.Rows[RowIndex - 1]["Background" + ColumnIndex.ToString()] = null;
                     string TextItemCount = Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()].ToString();
 
-                   
+
                     foreach (TestingItemConfiguration _TestingItemConfiguration in _TubeGroup.TestingItemConfigurations)
                     {
-                       TextItemCount= TextItemCount.Replace("," + _TubeGroup.RowIndex.ToString() + ";" + _TestingItemConfiguration.TestingItemColor, "");
+                        TextItemCount = TextItemCount.Replace("," + _TubeGroup.RowIndex.ToString() + ";" + _TestingItemConfiguration.TestingItemColor, "");
                     }
                     Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()] = TextItemCount;
-                    Tubes.Rows[RowIndex - 1]["DetailView" + ColumnIndex.ToString()] = Tubes.Rows[RowIndex - 1]["DetailView" + ColumnIndex.ToString()].ToString().Replace(_TubeGroup.TubesGroupName+" "+_TubeGroup.PoolingRulesName+_TubeGroup.TestintItemName + ",","");
+                    Tubes.Rows[RowIndex - 1]["DetailView" + ColumnIndex.ToString()] = Tubes.Rows[RowIndex - 1]["DetailView" + ColumnIndex.ToString()].ToString().Replace(_TubeGroup.TubesGroupName + " " + _TubeGroup.PoolingRulesName + _TubeGroup.TestintItemName + ",", "");
 
 
                     //int i = 0;
@@ -330,7 +382,7 @@ namespace WanTai.View
                     //{
                     //    TestingItemConfiguration _TestingItemConfiguration = _TubeGroup.TestingItemConfigurations.ToList()[i++];
                     //    Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()] = TextItemCount.Replace("," + _TubeGroup.RowIndex.ToString() + ";" + _TestingItemConfiguration.TestingItemColor, "");
-                        
+
                     //    //((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName.Replace(" " + _TestingItemConfiguration.TestingItemName, "");
                     //    //if (_TestingItemConfiguration.TestingItemName == "HBV")
                     //    //    HBVNumber -= _TubeGroup.TubesNumber;
@@ -356,7 +408,7 @@ namespace WanTai.View
                     //else
                     //    CurrentTubesBatch.TestingItem.Add(_TestingItemConfiguration.TestingItemID, 0);
 
-               
+
                     bool b = _TubeGroup.TestingItemConfigurations.Remove(_TubeGroup.TestingItemConfigurations.Where(tic => tic.TestingItemID == _TestingItemConfiguration.TestingItemID).FirstOrDefault());
                 }
                 dg_TubesGroup.Items.Remove(dg_TubesGroup.SelectedItem);
@@ -376,10 +428,11 @@ namespace WanTai.View
                 {
                     TuubesGroupName = 0;
                     btn_Next.IsEnabled = false;
-                    btn_Save.IsEnabled = false;
+                    if (!(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
+                        btn_Save.IsEnabled = false;
                 }
                 else
-                    dg_TubesGroup.SelectedIndex = TuubesGroupName-1;
+                    dg_TubesGroup.SelectedIndex = TuubesGroupName - 1;
             }
         }       
 
@@ -526,15 +579,21 @@ namespace WanTai.View
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            //SessionInfo.BatchType = "B";
-            if (!IsPoack || SessionInfo.BatchType == "B")
+            if (!IsPoack)
             {
                 AddColumns();
                 CurrentTubesPositions = "";
             }
             IsPoack = true;
+
+            if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+            {
+                btn_Save.IsEnabled = true;
+            }
+
+            labelRotationName.Content = (SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName)
+                + (SessionInfo.BatchTimes > 1 ? "(第" + SessionInfo.BatchType + "次上样)" : ""); 
  
-          //  labelRotationName.Content = SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName;
         }
 
         public void checkBox_Checked(object sender, RoutedEventArgs e)
@@ -667,6 +726,7 @@ namespace WanTai.View
             {
                 NextStepEvent(sender, e);
             }
+            SessionInfo.BatchScanTimes = 0;
         }
 
         private void cb_PoolingRulesConfigurations_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -733,40 +793,62 @@ namespace WanTai.View
         private IList<TubeGroup> TubeGroupList;
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
-            ItemCollection Items1 = null;
+            int TotalHole = 0;
+            TubeGroupList = new List<TubeGroup>();
+            CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
 
-            if (SessionInfo.BatchType == "A")
+            if (String.IsNullOrEmpty(SessionInfo.BatchType))
             {
-                SessionInfo.BatchTubes = Tubes.Copy();
+                TotalHole = 2;
             }
-            btn_Next.IsEnabled = false;
-            Items1 = dg_TubesGroup.Items;
-            if (null != SessionInfo.BatchTubeGroups)
-                SessionInfo.BatchTubeGroups.Clear();
+            else
+            {
+                if (int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+                {
+                    if (null == SessionInfo.BatchTubeGroups)
+                        SessionInfo.BatchTubeGroups = new List<TubeGroup>();
+                    else if (SessionInfo.BatchType == "1")
+                        SessionInfo.BatchTubeGroups.Clear();
+                    if (null == SessionInfo.BatchTestingItem)
+                        SessionInfo.BatchTestingItem = new Dictionary<Guid, int>();
+                    else if (SessionInfo.BatchType == "1")
+                        SessionInfo.BatchTestingItem.Clear();
+                    if (null == SessionInfo.BatchTubeList)
+                        SessionInfo.BatchTubeList = new List<DataTable>();
+                    else if (SessionInfo.BatchType == "1")
+                        SessionInfo.BatchTubeList.Clear();
+                    if (SessionInfo.BatchType == "1")
+                        TotalHole = 2;
+                    else
+                        TotalHole += SessionInfo.BatchTotalHoles;
+                }
+                else if (int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+                {
+                    TotalHole += SessionInfo.BatchTotalHoles;
+                }
+            }
 
-            
+            btn_Next.IsEnabled = false;
+
             if (SessionInfo.ExperimentID == new Guid())
             {
-                //NewExperiment Experiment = new NewExperiment();
-                //if (!(bool)Experiment.ShowDialog())
-                //    return;
+                NewExperiment Experiment = new NewExperiment();
+                if (!(bool)Experiment.ShowDialog())
+                    return;
                 SessionInfo.RotationIndex = 1;
             }
-            if (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0)
+            if (SystemFluid != null && (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0))
             {
                 MessageBox.Show("阴阳对照物必须有!", "系统提示!");
                 return;
             }
-            int TotalHole = 2;
-            TubeGroupList = new List<TubeGroup>();
-            CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
             bool _SystemFluid = false;
-            foreach (TubeGroup Item in Items1)
+            foreach (TubeGroup Item in dg_TubesGroup.Items)
             {
                 if (Item.TestingItemConfigurations.Count == 0)
                 {
-                     MessageBox.Show(Item.TubesGroupName + "没有选择检测项目，请选择！", "系统提示!");
-                     return;
+                    MessageBox.Show(Item.TubesGroupName + "没有选择检测项目，请选择！", "系统提示!");
+                    return;
                 }
                 foreach (TestingItemConfiguration TestingItem in Item.TestingItemConfigurations)
                 {
@@ -777,19 +859,32 @@ namespace WanTai.View
                         CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
                 }
                 TotalHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
-                if (SessionInfo.BatchType == "B") {
-                    Item.BatchType = "A";
+                if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+                {
+                    Item.BatchType = SessionInfo.BatchType;
                     SessionInfo.BatchTubeGroups.Add(Item);
                 }
-                else
-                    TubeGroupList.Add(Item);
+                else if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+                {
+                    Item.BatchType = SessionInfo.BatchType;
+                }
+                TubeGroupList.Add(Item);
                 if (Item.isComplement) _SystemFluid = true;
             }
-           
+            SessionInfo.AllowBatchMore = true;
             if (TotalHole > 96)
             {
-                MessageBox.Show("混样数大于96,无法进行混样!","系统提示!");
+                MessageBox.Show("混样数大于96, 无法进行混样!", "系统提示!");
                 return;
+            }
+            else if (TotalHole == 96)
+            {
+                if (SessionInfo.BatchTimes > 1 && !String.IsNullOrEmpty(SessionInfo.BatchType)
+                    && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+                {
+                    // forbid twice mix
+                    SessionInfo.AllowBatchMore = false;
+                }
             }
             if (_SystemFluid)
             {
@@ -799,19 +894,24 @@ namespace WanTai.View
                     // return;
                 }
             }
-            
             string ErrMsg;
             int ErrType;
             CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.RotationIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
             if (ErrType == -1)
             {
                 MessageBox.Show(ErrMsg, "系统提示!");
-                return;
-            }   
-            
-            //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
-           // MessageBox.Show("生成成功！", "系统提示!");
 
+                return;
+            }
+            // update batch a info
+            if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+            {
+                SessionInfo.BatchTotalHoles += TotalHole;
+                SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Concat(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);
+                SessionInfo.BatchTubeList.Add(Tubes.Copy());
+            }
+            //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
+            // MessageBox.Show("生成成功！", "系统提示!");
             btn_Next.IsEnabled = true;
             
         }

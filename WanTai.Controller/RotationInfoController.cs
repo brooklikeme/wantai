@@ -125,7 +125,7 @@ namespace WanTai.Controller
         }
         public void UpdateTubesBatch(Guid rotationID, Guid tuibesBatchID)
         {
-            if (SessionInfo.BatchType != "A")
+            if (!(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes))
             {
                 using (WanTaiEntities _WanTaiEntities = new WanTaiEntities())
                 {

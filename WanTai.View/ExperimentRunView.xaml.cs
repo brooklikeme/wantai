@@ -393,7 +393,7 @@ namespace WanTai.View
 
                 foreach (TestingItemConfiguration Testing in TestingItem)
                 {
-                    if (File.Exists(CSVPath + Testing.WorkListFileName) && SessionInfo.BatchType != "B")
+                    if (File.Exists(CSVPath + Testing.WorkListFileName) && !(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                     {
                         File.Delete(CSVPath + Testing.WorkListFileName);
                     }

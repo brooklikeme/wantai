@@ -37,9 +37,9 @@ namespace WanTai.View
         private bool IsPoack = false;
         private void AddColumns()
         {
-            if (SessionInfo.BatchType != "B")
+            if (SessionInfo.BatchTimes == 1 || int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
-                SessionInfo.RotationIndex++;
+                SessionInfo.RotationIndex ++;
             }
             DataGridTemplateColumn _DataGridTemplateColumn = new DataGridTemplateColumn() { Header = "检测项目", Width = new DataGridLength(100, DataGridLengthUnitType.Star) };
             var TestItems = new TestItemController().GetActiveTestItemConfigurations();
@@ -220,7 +220,7 @@ namespace WanTai.View
             {
                 //DateTime fileCreatedTime = WanTai.Controller.EVO.ProcessorFactory.GetDateTimeNow();
                 TubesController controller = new TubesController();
-                if (SessionInfo.NextTurnStep == 0 || SessionInfo.BatchType == "B")
+                if (SessionInfo.NextTurnStep == 0 || (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1))
                 {
                     if (SessionInfo.BatchScanTimes > 0)
                     {
@@ -277,7 +277,7 @@ namespace WanTai.View
             };
             worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
             {
-                if (SessionInfo.NextTurnStep == 0 || SessionInfo.BatchType == "B")
+                if (SessionInfo.NextTurnStep == 0 || (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1))
                 {
                     CloseLoadingForm(scanResult, ErrMsg);
                 }              
@@ -285,7 +285,7 @@ namespace WanTai.View
             btn_scan.IsEnabled = false;
             worker.RunWorkerAsync();
 
-            if (SessionInfo.NextTurnStep != 0 && SessionInfo.BatchType != "B")
+            if (SessionInfo.NextTurnStep != 0 && !((SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1)))
             {
                 BackgroundWorker wait_worker = new BackgroundWorker();
                 wait_worker.WorkerReportsProgress = false;
@@ -582,7 +582,7 @@ namespace WanTai.View
             }
 
             labelRotationName.Content = (SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName)
-                + (SessionInfo.BatchType == "A" ? "(第1次上样)" : "") + (SessionInfo.BatchType == "B" ? "(第2次上样)" : "");
+                + (SessionInfo.BatchTimes > 1 ? "(第" + SessionInfo.BatchType + "次上样)" : ""); 
         }
 
         public void checkBox_Checked(object sender, RoutedEventArgs e)
