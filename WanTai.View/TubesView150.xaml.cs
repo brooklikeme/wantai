@@ -592,7 +592,7 @@ namespace WanTai.View
             }
 
             labelRotationName.Content = (SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName)
-                + (SessionInfo.BatchTimes > 1 ? "(第" + SessionInfo.BatchType + "次上样)" : ""); 
+                + (SessionInfo.BatchTimes > 1 ? "(第" + SessionInfo.BatchType + "次上样, 共" + SessionInfo.BatchTimes.ToString() + "次)" : ""); 
  
         }
 
@@ -862,7 +862,6 @@ namespace WanTai.View
                 if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 {
                     Item.BatchType = SessionInfo.BatchType;
-                    SessionInfo.BatchTubeGroups.Add(Item);
                 }
                 else if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
                 {

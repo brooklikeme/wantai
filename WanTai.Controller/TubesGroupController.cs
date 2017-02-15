@@ -606,10 +606,12 @@ namespace WanTai.Controller
 
                           
                             //_WanTaiEntities.SaveChanges();
-                            if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
-                            {
-                                // 联合A轮和B轮的TubeGroup
+                            if (SessionInfo.BatchTimes > 1) {
                                 TubeGroupList = SessionInfo.BatchTubeGroups.Concat(TubeGroupList).ToList<TubeGroup>();
+                                if (int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+                                {
+                                    SessionInfo.BatchTubeGroups = (List<TubeGroup>)TubeGroupList;    
+                                }
                             }
                             foreach (TubeGroup _TubeGroup in TubeGroupList)
                             {
@@ -665,14 +667,14 @@ namespace WanTai.Controller
                                         int RowIndex = int.Parse(TubePosition.Split(',')[1]) - 1;
                                         Tube tube = new Tube();
                                         tube.BarCode = (!String.IsNullOrEmpty(SessionInfo.BatchType) && !String.IsNullOrEmpty(NewTubeGroup.BatchType) && int.Parse(SessionInfo.BatchType) > int.Parse(NewTubeGroup.BatchType))
-                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType)].Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType) - 1].Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
                                         tube.ExperimentID = ExperimentID;
                                         tube.Position = RowIndex + 1;
                                         tube.Grid = ColumnIndex;
                                         tube.TubeGroupID = NewTubeGroup.TubeGroupID;
                                         tube.TubeID = WanTaiObjectService.NewSequentialGuid();
                                         tube.TubePosBarCode = (!String.IsNullOrEmpty(SessionInfo.BatchType) && !String.IsNullOrEmpty(NewTubeGroup.BatchType) && int.Parse(SessionInfo.BatchType) > int.Parse(NewTubeGroup.BatchType))
-                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType)].Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType) - 1].Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
                                         tube.TubeType = (int)Tubetype.Tube;
                                         tube.Volume = Volume;
                                         #endregion
@@ -763,14 +765,14 @@ namespace WanTai.Controller
                                         int RowIndex = int.Parse(TubePosition.Split(',')[1]) - 1;
                                         Tube tube = new Tube();
                                         tube.BarCode = (!String.IsNullOrEmpty(SessionInfo.BatchType) && !String.IsNullOrEmpty(NewTubeGroup.BatchType) && int.Parse(SessionInfo.BatchType) > int.Parse(NewTubeGroup.BatchType))
-                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType)].Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType) - 1].Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
                                         tube.ExperimentID = ExperimentID;
                                         tube.Position = RowIndex + 1;
                                         tube.Grid = ColumnIndex;
                                         tube.TubeGroupID = NewTubeGroup.TubeGroupID;
                                         tube.TubeID = WanTaiObjectService.NewSequentialGuid();
                                         tube.TubePosBarCode = (!String.IsNullOrEmpty(SessionInfo.BatchType) && !String.IsNullOrEmpty(NewTubeGroup.BatchType) && int.Parse(SessionInfo.BatchType) > int.Parse(NewTubeGroup.BatchType))
-                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType)].Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                            ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType) - 1].Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
                                         tube.TubeType = (int)Tubetype.Tube;
                                         tube.Volume = Volume;
                                         #endregion
@@ -873,7 +875,7 @@ namespace WanTai.Controller
                                         Tube tube = new Tube();
                                         // tube.BarCode = Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
                                         tube.BarCode = (!String.IsNullOrEmpty(SessionInfo.BatchType) && !String.IsNullOrEmpty(NewTubeGroup.BatchType) && int.Parse(SessionInfo.BatchType) > int.Parse(NewTubeGroup.BatchType))
-                                             ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType)].Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
+                                             ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType) - 1].Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["BarCode" + ColumnIndex.ToString()].ToString();
                                         tube.ExperimentID = ExperimentID;
                                         tube.Position = RowIndex + 1;
                                         tube.Grid = ColumnIndex;
@@ -881,7 +883,7 @@ namespace WanTai.Controller
                                         tube.TubeID = WanTaiObjectService.NewSequentialGuid();
                                         // tube.TubePosBarCode = Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
                                         tube.TubePosBarCode = (!String.IsNullOrEmpty(SessionInfo.BatchType) && !String.IsNullOrEmpty(NewTubeGroup.BatchType) && int.Parse(SessionInfo.BatchType) > int.Parse(NewTubeGroup.BatchType))
-                                             ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType)].Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
+                                             ? SessionInfo.BatchTubeList[int.Parse(NewTubeGroup.BatchType) - 1].Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString() : Tubes.Rows[RowIndex]["TubePosBarCode" + ColumnIndex.ToString()].ToString();
 
                                         tube.TubeType = (int)Tubetype.Tube;
                                         tube.Volume = Volume;

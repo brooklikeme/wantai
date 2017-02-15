@@ -247,7 +247,7 @@ namespace WanTai.Controller
                     }
                     Tubes.TableName += builder.ToString();
                 }
-                if (!(SessionInfo.BatchTimes > 1 && SessionInfo.BatchType == SessionInfo.BatchTimes.ToString()))
+                if (SessionInfo.BatchTimes == 1 || (SessionInfo.BatchTimes > 1 && SessionInfo.BatchType == "1"))
                 {
                     string message = "";
                     foreach (LiquidType _liquidType in LiquidTypeList)

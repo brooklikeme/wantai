@@ -582,7 +582,7 @@ namespace WanTai.View
             }
 
             labelRotationName.Content = (SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName)
-                + (SessionInfo.BatchTimes > 1 ? "(第" + SessionInfo.BatchType + "次上样)" : ""); 
+                + (SessionInfo.BatchTimes > 1 ? "(第" + SessionInfo.BatchType + "次上样, 共" + SessionInfo.BatchTimes.ToString() + "次)" : ""); 
         }
 
         public void checkBox_Checked(object sender, RoutedEventArgs e)
@@ -844,7 +844,6 @@ namespace WanTai.View
                 if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 {
                     Item.BatchType = SessionInfo.BatchType;
-                    SessionInfo.BatchTubeGroups.Add(Item);
                 }
                 else if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
                 {
@@ -888,7 +887,7 @@ namespace WanTai.View
             if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
                 SessionInfo.BatchTotalHoles += TotalHole;
-                SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Concat(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);
+                SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Union(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);
                 SessionInfo.BatchTubeList.Add(Tubes.Copy());
             }
             //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
