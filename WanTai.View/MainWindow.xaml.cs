@@ -33,6 +33,7 @@ namespace WanTai.View
     {
         private Boolean EVOClosed = false;
         public delegate void ExperimentRunStatusHandler();
+        public delegate void CloseWindowHandler();
         public event WanTai.View.MainPage.SendStopRunMsg StopRunEvent;
 
         public MainWindow()
@@ -188,6 +189,7 @@ namespace WanTai.View
                     mainPage.SetEvoRestorationStatus += new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
                     mainPage.AddEvoRestorationStatusEvent();
                     mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
+                    mainPage.CloseWindowEvent += new CloseWindowHandler(CloseWindow);
                     StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
                     mainFrame.Content = mainPage;
                     this.Title = "WanTag 全自动核酸提取系统——实验 " + SessionInfo.CurrentExperimentsInfo.ExperimentName;
@@ -198,6 +200,11 @@ namespace WanTai.View
                     File.Delete("SessionInfo.bin");
                 }
             }
+        }
+
+        private void CloseWindow()
+        {
+            this.Close();
         }
 
         private void SuspendExitButtonControl()
@@ -243,8 +250,11 @@ namespace WanTai.View
                     else if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Fail || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Create
                      || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend)
                     {
-                        if (MessageBox.Show("当前实验未完成,是否继续操作?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                            return;
+                        if (!SessionInfo.WaitForSuspend)
+                        {
+                            if (MessageBox.Show("当前实验未完成,是否继续操作?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                                return;
+                        }
                         WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
                         rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);
                     }
@@ -271,6 +281,7 @@ namespace WanTai.View
               mainPage.SetEvoRestorationStatus+=new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
               mainPage.AddEvoRestorationStatusEvent();
               mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
+              mainPage.CloseWindowEvent += new CloseWindowHandler(CloseWindow);
               StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
               mainFrame.Content = mainPage;
               SessionInfo.RotationIndex = 0;
@@ -343,8 +354,11 @@ namespace WanTai.View
                     else if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Fail || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Create
                         || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend)
                     {
-                        if (MessageBox.Show("当前实验未完成,是否继续操作?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
-                            return;
+                        if (!SessionInfo.WaitForSuspend)
+                        {
+                            if (MessageBox.Show("当前实验未完成,是否继续操作?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                                return;
+                        }
                         WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
                         rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);
                     }
@@ -592,10 +606,13 @@ namespace WanTai.View
                     else if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Fail || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Create
                      || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend)
                     {
-                        if (MessageBox.Show("当前实验未完成, 是否退出?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                        if (!SessionInfo.WaitForSuspend)
                         {
-                            e.Cancel = true;
-                            return;
+                            if (MessageBox.Show("当前实验未完成, 是否退出?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
                         }
                         WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
                         rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);

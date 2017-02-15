@@ -334,6 +334,7 @@ namespace WanTai.View
         public event MainPage.ExperimentRunErrHandler ExperimentRunErrEvent;
         public event MainPage.ExperimentRunRutrnHandler ExperimentRunRutrnEvent;
         public event MainPage.EvoRestorationStatus SetEvoRestorationStatus;
+        public event MainPage.SuspendOkHandler SuspendOkEvent;
         private void WriteTimesCSV(int Value)
         {
             using (FileStream DWFile = new FileStream(EvoVariableOutputPath + "Times.CSV", FileMode.Create, FileAccess.Write))
@@ -1220,7 +1221,8 @@ namespace WanTai.View
                     SerializeStatic serialize = new SerializeStatic();
                     serialize.Save("SessionInfo.bin");
 
-                    MessageBox.Show("当前脚本执行完毕，中断成功!", "系统提示");
+                    MessageBox.Show("当前脚本执行完毕，中断成功!确定后退出系统!", "系统提示");
+                    SuspendOkEvent();
                     return;
                 }
                 else

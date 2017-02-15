@@ -34,12 +34,14 @@ namespace WanTai.View
         public delegate string NextStepScan(string message);
         public delegate string FirstStepScan(string message);
         public delegate void EvoRestorationStatus(bool isEnable);
+        public delegate void SuspendOkHandler();
         public delegate void SendNextStepRunMsg();
         public delegate void SendStopRunMsg();
         public event EvoRestorationStatus SetEvoRestorationStatus;
         private ExperimentRunView experimentRunView = new ExperimentRunView();
         private string EvoVariableOutputPath = WanTai.Common.Configuration.GetEvoVariableOutputPath();
         public event WanTai.View.MainWindow.ExperimentRunStatusHandler ExperimentRunStatusEvent;
+        public event WanTai.View.MainWindow.CloseWindowHandler CloseWindowEvent;
 
         public MainPage()
         {   
@@ -98,9 +100,19 @@ namespace WanTai.View
             experimentRunView.ExperimentRunErrEvent += new ExperimentRunErrHandler(ExperimentRunErrEvent);
             experimentRunView.ExperimentRunRutrnEvent += new ExperimentRunRutrnHandler(ExperimentRunRutrnEvent);
             experimentRunView.NextStepRunEvent += new SendNextStepRunMsg(SendNextStepRunMessage);
+            experimentRunView.SuspendOkEvent += new SuspendOkHandler(SuspendOkEvent);
 
             tabControl.SelectedIndex = 0;
         }
+
+        private void SuspendOkEvent()
+        {
+            if (null != CloseWindowEvent)
+            {
+                CloseWindowEvent();
+            }
+        }
+
         private void ExperimentRunRutrnEvent()
         {
             bindRunWithStartAction();
@@ -214,6 +226,8 @@ namespace WanTai.View
                 {
                     SessionInfo.NextTurnStep = -1;
                     ExperimentRun();
+                    if (ExperimentRunStatusEvent != null)
+                        ExperimentRunStatusEvent();
                 }
                 else if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
                 {
@@ -649,7 +663,6 @@ namespace WanTai.View
                 bool startResult = experimentRunView.Start(ExperimentRunStatus.Start);
                 if (!startResult)
                     return;
-
                 this.bindRunWithPauseAction();
                 return;
             }
