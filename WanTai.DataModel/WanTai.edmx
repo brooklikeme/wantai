@@ -19,6 +19,27 @@
           <Property Name="Type" Type="smallint" Nullable="false" />
           <Property Name="WorkDeskType" Type="varchar" MaxLength="10" Nullable="false" />
         </EntityType>
+        <EntityType Name="SystemConfiguration">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ItemValue" Type="varchar" MaxLength="255" />
+          <Property Name="ItemName" Type="varchar" MaxLength="40"  Nullable="false" />
+          <Property Name="ItemCode" Type="varchar" Nullable="false" MaxLength="40" />
+          <Property Name="WorkDeskType" Type="varchar" MaxLength="10"/>
+        </EntityType>
+        <EntityType Name="ReportConfiguration">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DisplayName" Type="varchar" Nullable="false" MaxLength="255"/>
+          <Property Name="CalculationFormula" Type="varchar" MaxLength="255"/>
+          <Property Name="Position" Type="int" Nullable="false" />
+          <Property Name="ActiveStatus" Type="bit" Nullable="false" />
+          <Property Name="WorkDeskType" Type="varchar" MaxLength="10" />
+        </EntityType>      
         <EntityType Name="DWPlatePosition">
           <Key>
             <PropertyRef Name="DWPlatePositionID" />
@@ -39,7 +60,7 @@
           <Property Name="LoginName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Remark" Type="varchar" MaxLength="2000" />
           <Property Name="State" Type="smallint" Nullable="false" />
-	  <Property Name="MixTimes" Type="smallint" Nullable="true" />
+	        <Property Name="MixTimes" Type="smallint" Nullable="true" />
         </EntityType>
         <EntityType Name="LogInfo">
           <Key>
@@ -521,6 +542,9 @@
           <EntitySet Name="Tubes" EntityType="Self.Tubes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TubesBatch" EntityType="Self.TubesBatch" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SystemConfiguration" EntityType="Self.SystemConfiguration" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReportConfiguration" EntityType="Self.ReportConfiguration" Schema="dbo" store:Type="Tables" />          
+
           <AssociationSet Name="FK_DWPlatePosition_Plates" Association="Self.FK_DWPlatePosition_Plates">
             <End Role="Plates" EntitySet="Plates" />
             <End Role="DWPlatePosition" EntitySet="DWPlatePosition" />
@@ -665,6 +689,8 @@
           </AssociationSet>
           <EntitySet Name="RoleInfoes" EntityType="WanTaiModel.RoleInfo" />
           <EntitySet Name="SampleTrackings" EntityType="WanTaiModel.SampleTracking" />
+          <EntitySet Name="SystemConfigurations" EntityType="WanTaiModel.SystemConfiguration" />
+          <EntitySet Name="ReportConfigurations" EntityType="WanTaiModel.ReportConfiguration" />
         </EntityContainer>
         <EntityType Name="Carrier">
           <Key>
@@ -1098,6 +1124,27 @@
           <Property Type="Boolean" Name="IsKeeping" />
           <Property Type="DateTime" Name="CreateTime" Precision="3" />
         </EntityType>
+        <EntityType Name="SystemConfiguration">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Guid" Nullable="false" />
+          <Property Name="ItemValue" Type="String" MaxLength="255" />
+          <Property Name="ItemName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ItemCode" Type="String" Nullable="false" MaxLength="40" />
+          <Property Name="WorkDeskType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ReportConfiguration">
+          <Key>
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="ItemID" Type="Guid" Nullable="false" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CalculationFormula" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Position" Type="Int32" Nullable="false" />
+          <Property Name="ActiveStatus" Type="Boolean" Nullable="false" />
+          <Property Name="WorkDeskType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1126,6 +1173,29 @@
                 <ScalarProperty Name="TubeGroupID" ColumnName="TubeGroupID" />
                 <ScalarProperty Name="Position" ColumnName="Position" />
                 <ScalarProperty Name="DWPlatePositionID" ColumnName="DWPlatePositionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemConfigurations">
+            <EntityTypeMapping TypeName="WanTaiModel.SystemConfiguration">
+              <MappingFragment StoreEntitySet="SystemConfiguration">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ItemValue" ColumnName="ItemValue" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="ItemCode" ColumnName="ItemCode" />
+                <ScalarProperty Name="WorkDeskType" ColumnName="WorkDeskType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReportConfigurations">
+            <EntityTypeMapping TypeName="WanTaiModel.ReportConfiguration">
+              <MappingFragment StoreEntitySet="ReportConfiguration">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="CalculationFormula" ColumnName="CalculationFormula" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
+                <ScalarProperty Name="WorkDeskType" ColumnName="WorkDeskType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1527,7 +1597,9 @@
           <ConnectorPoint PointX="10.546875" PointY="6.1177376302083388" />
         </AssociationConnector>
         <EntityTypeShape EntityType="WanTaiModel.RoleInfo" Width="1.5" PointX="0.75" PointY="0.75" Height="1.5923063151041674" />
-        <EntityTypeShape EntityType="WanTaiModel.SampleTracking" Width="1.5" PointX="5.375" PointY="13.75" Height="3.0714322916666674" />
+        <EntityTypeShape EntityType="WanTaiModel.SampleTracking" Width="1.5" PointX="5.375" PointY="13.75" Height="3.0714322916666674" IsExpanded="true" />
+        <EntityTypeShape EntityType="WanTaiModel.SystemConfiguration" Width="1.5" PointX="7.375" PointY="13.375" />
+        <EntityTypeShape EntityType="WanTaiModel.ReportConfiguration" Width="1.5" PointX="8.75" PointY="16.375" />
       </Diagram>
     </Diagrams>
   </Designer>

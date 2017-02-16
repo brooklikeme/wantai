@@ -101,6 +101,18 @@
     </Compile>
     <Compile Include="Configuration\ActiveStatusConvert.cs" />
     <Compile Include="Configuration\ButtonHeightConvert.cs" />
+    <Compile Include="Configuration\ReportConfigurationDlg.xaml.cs">
+      <DependentUpon>ReportConfigurationDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\ReportConfigurationList.xaml.cs">
+      <DependentUpon>ReportConfigurationList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\SystemConfigurationDlg.xaml.cs">
+      <DependentUpon>SystemConfigurationDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\SystemConfigurationList.xaml.cs">
+      <DependentUpon>SystemConfigurationList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Configuration\TestingItemConfigurationList.xaml.cs">
       <DependentUpon>TestingItemConfigurationList.xaml</DependentUpon>
     </Compile>
@@ -262,6 +274,9 @@
       <DependentUpon>TubesDetailView.xaml</DependentUpon>
     </Compile>
     <Compile Include="TubeShowID.cs" />
+    <Compile Include="TubesSearchDialog.xaml.cs">
+      <DependentUpon>TubesSearchDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TubesScanParameter.xaml.cs">
       <DependentUpon>TubesScanParameter.xaml</DependentUpon>
     </Compile>
@@ -301,6 +316,22 @@
     <Page Include="ConfigRotation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Configuration\ReportConfigurationDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\ReportConfigurationList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\SystemConfigurationDlg.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Configuration\SystemConfigurationList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Configuration\TestingItemConfigurationList.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -503,6 +534,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TubesDetailView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TubesSearchDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

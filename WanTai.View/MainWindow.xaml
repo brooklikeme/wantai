@@ -176,6 +176,10 @@
                                          Label="采血管位置区设定" Click="LiquidConfig_Button_Click" />
                         <my:RibbonButton x:Name="ReagentSuppliesConfig_Button"  LargeImageSource="Resources\ReagentSuppliesConfig.gif"
                                          Label="试剂、耗材配置" Click="ReagentSuppliesConfig_Button_Click" />
+                        <my:RibbonButton x:Name="SystemConfig_Button"  LargeImageSource="Resources\Maintain_icon.gif"
+                                         Label="系统参数配置" Click="SystemConfig_Button_Click" />
+                        <my:RibbonButton x:Name="ReportConfig_Button"  LargeImageSource="Resources\SearchAlarm_icon.gif"
+                                         Label="试剂耗材查询配置" Click="ReportConfig_Button_Click" />
                         <my:RibbonButton x:Name="Operation_Button"  LargeImageSource="Resources\Operation.gif"
                                          Label="操作" Click="Operation_Button_Click" />
                     </my:RibbonGroup>

@@ -96,6 +96,8 @@
     <Compile Include="ConfigRotationController.cs" />
     <Compile Include="CarrierController.cs" />
     <Compile Include="Configuration\OperationConfigurationController.cs" />
+    <Compile Include="Configuration\ReportConfigurationController.cs" />
+    <Compile Include="Configuration\SystemConfigurationController.cs" />
     <Compile Include="Configuration\ReagentSuppliesConfigurationController.cs" />
     <Compile Include="Configuration\LiquidConfigurationController.cs" />
     <Compile Include="Configuration\RoleInfoController.cs" />

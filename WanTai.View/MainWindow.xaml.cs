@@ -391,6 +391,18 @@ namespace WanTai.View
             reagentSuppliesConfiguration.ShowDialog();
         }
 
+        private void SystemConfig_Button_Click(object sender, RoutedEventArgs e)
+        {
+            Configuration.SystemConfigurationList systemConfigurationList = new Configuration.SystemConfigurationList();
+            systemConfigurationList.ShowDialog();
+        }
+
+        private void ReportConfig_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // Configuration. reportConfigurationList = new Configuration.ReportConfigurationList();
+            // reportConfigurationList.ShowDialog();
+        }
+
         private void Operation_Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.OperationConfigurationList operationConfigList = new Configuration.OperationConfigurationList();

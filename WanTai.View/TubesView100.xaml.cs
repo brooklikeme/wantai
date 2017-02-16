@@ -36,6 +36,29 @@ namespace WanTai.View
 
         private bool IsPoack = false;
         private LoadFrom loadFrom;
+
+        private void btn_search_Click(object sender, RoutedEventArgs e)
+        {
+            btn_search.IsEnabled = false;
+            TubesSearchDialog tubesSearchDialog = new TubesSearchDialog();
+            tubesSearchDialog.ShowDialog();
+            string[] lines = tubesSearchDialog.search_content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            foreach (DataRow row in Tubes.Rows)
+            {
+                for (int i = 1; i < SessionInfo.WorkDeskMaxSize + 1; i++)
+                {
+                    row["Background" + i] = null;
+                    foreach (string line in lines)
+                    {
+                        if (row["BarCode" + i].ToString().Contains(line))
+                        {
+                            row["Background" + i] = "Red";
+                        }
+                    }
+                }
+            }
+            btn_search.IsEnabled = true;
+        }
         private void AddColumns()
         {
             SessionInfo.RotationIndex++;
@@ -305,6 +328,7 @@ namespace WanTai.View
             btn_scan.IsEnabled = false;
             btn_Save.IsEnabled = false;
             btn_Next.IsEnabled = false;
+            btn_search.IsEnabled = false;
             loadFrom = new LoadFrom();
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
@@ -442,6 +466,7 @@ namespace WanTai.View
             {
                 btn_detail.IsEnabled = true;
                 btn_Group.IsEnabled = true;
+                btn_search.IsEnabled = true;
                 dg_TubesGroup.Items.Clear();
                 RowIndex = 0;
                 TuubesGroupName = 0;
@@ -793,6 +818,7 @@ namespace WanTai.View
             btn_Next.IsEnabled = false;
             btn_Save.IsEnabled = false;
             btn_scan.IsEnabled = false;
+            btn_search.IsEnabled = false;
             SessionInfo.NextButIndex = 1;
             if (SessionInfo.NextTurnStep==0)
               SessionInfo.NextTurnStep = 1;

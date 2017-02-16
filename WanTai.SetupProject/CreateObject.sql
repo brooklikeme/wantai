@@ -38,6 +38,51 @@ CREATE TABLE [dbo].[SystemFluidConfiguration](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+/****** Object:  Table [dbo].[SystemConfiguration]    Script Date: 02/10/2012 15:24:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[SystemConfiguration] (
+    [ItemID] uniqueidentifier  NOT NULL,
+    [ItemValue] nvarchar(255)  NULL,
+    [ItemName] varchar(40)  NOT NULL,
+    [ItemCode] nvarchar(40)  NOT NULL,
+    [WorkDeskType] varchar(10)  NULL,
+ CONSTRAINT [PK_SystemConfiguration] PRIMARY KEY CLUSTERED 
+(
+	[ItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
+
+/****** Object:  Table [dbo].[ReportConfiguration]    Script Date: 02/10/2012 15:24:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [dbo].[ReportConfiguration] (
+    [ItemID] uniqueidentifier  NOT NULL,
+    [DisplayName] varchar(255)  NOT NULL,
+    [CalculationFormula] varchar(255)  NULL,
+    [Position] int  NOT NULL,
+    [ActiveStatus] bit  NOT NULL,
+    [WorkDeskType] varchar(10)  NULL,
+CONSTRAINT [PK_ReportConfiguration] PRIMARY KEY CLUSTERED 
+(
+	[ItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING OFF
+GO
 /****** Object:  Table [dbo].[SampleTracking]    Script Date: 02/10/2012 15:24:13 ******/
 SET ANSI_NULLS ON
 GO

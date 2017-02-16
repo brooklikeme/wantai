@@ -434,6 +434,38 @@ namespace WanTai.DataModel
             }
         }
         private ObjectSet<SampleTracking> _SampleTrackings;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<SystemConfiguration> SystemConfigurations
+        {
+            get
+            {
+                if ((_SystemConfigurations == null))
+                {
+                    _SystemConfigurations = base.CreateObjectSet<SystemConfiguration>("SystemConfigurations");
+                }
+                return _SystemConfigurations;
+            }
+        }
+        private ObjectSet<SystemConfiguration> _SystemConfigurations;
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        public ObjectSet<ReportConfiguration> ReportConfigurations
+        {
+            get
+            {
+                if ((_ReportConfigurations == null))
+                {
+                    _ReportConfigurations = base.CreateObjectSet<ReportConfiguration>("ReportConfigurations");
+                }
+                return _ReportConfigurations;
+            }
+        }
+        private ObjectSet<ReportConfiguration> _ReportConfigurations;
 
         #endregion
 
@@ -613,6 +645,22 @@ namespace WanTai.DataModel
         public void AddToSampleTrackings(SampleTracking sampleTracking)
         {
             base.AddObject("SampleTrackings", sampleTracking);
+        }
+    
+        /// <summary>
+        /// 用于向 SystemConfigurations EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToSystemConfigurations(SystemConfiguration systemConfiguration)
+        {
+            base.AddObject("SystemConfigurations", systemConfiguration);
+        }
+    
+        /// <summary>
+        /// 用于向 ReportConfigurations EntitySet 添加新对象的方法，已弃用。请考虑改用关联的 ObjectSet&lt;T&gt; 属性的 .Add 方法。
+        /// </summary>
+        public void AddToReportConfigurations(ReportConfiguration reportConfiguration)
+        {
+            base.AddObject("ReportConfigurations", reportConfiguration);
         }
 
         #endregion
@@ -3650,6 +3698,189 @@ namespace WanTai.DataModel
     /// <summary>
     /// 没有元数据文档可用。
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="WanTaiModel", Name="ReportConfiguration")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ReportConfiguration : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 ReportConfiguration 对象。
+        /// </summary>
+        /// <param name="itemID">ItemID 属性的初始值。</param>
+        /// <param name="displayName">DisplayName 属性的初始值。</param>
+        /// <param name="position">Position 属性的初始值。</param>
+        /// <param name="activeStatus">ActiveStatus 属性的初始值。</param>
+        public static ReportConfiguration CreateReportConfiguration(global::System.Guid itemID, global::System.String displayName, global::System.Int32 position, global::System.Boolean activeStatus)
+        {
+            ReportConfiguration reportConfiguration = new ReportConfiguration();
+            reportConfiguration.ItemID = itemID;
+            reportConfiguration.DisplayName = displayName;
+            reportConfiguration.Position = position;
+            reportConfiguration.ActiveStatus = activeStatus;
+            return reportConfiguration;
+        }
+
+        #endregion
+
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ItemID
+        {
+            get
+            {
+                return _ItemID;
+            }
+            set
+            {
+                if (_ItemID != value)
+                {
+                    OnItemIDChanging(value);
+                    ReportPropertyChanging("ItemID");
+                    _ItemID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ItemID");
+                    OnItemIDChanged();
+                }
+            }
+        }
+        private global::System.Guid _ItemID;
+        partial void OnItemIDChanging(global::System.Guid value);
+        partial void OnItemIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String DisplayName
+        {
+            get
+            {
+                return _DisplayName;
+            }
+            set
+            {
+                OnDisplayNameChanging(value);
+                ReportPropertyChanging("DisplayName");
+                _DisplayName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("DisplayName");
+                OnDisplayNameChanged();
+            }
+        }
+        private global::System.String _DisplayName;
+        partial void OnDisplayNameChanging(global::System.String value);
+        partial void OnDisplayNameChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String CalculationFormula
+        {
+            get
+            {
+                return _CalculationFormula;
+            }
+            set
+            {
+                OnCalculationFormulaChanging(value);
+                ReportPropertyChanging("CalculationFormula");
+                _CalculationFormula = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("CalculationFormula");
+                OnCalculationFormulaChanged();
+            }
+        }
+        private global::System.String _CalculationFormula;
+        partial void OnCalculationFormulaChanging(global::System.String value);
+        partial void OnCalculationFormulaChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Position
+        {
+            get
+            {
+                return _Position;
+            }
+            set
+            {
+                OnPositionChanging(value);
+                ReportPropertyChanging("Position");
+                _Position = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Position");
+                OnPositionChanged();
+            }
+        }
+        private global::System.Int32 _Position;
+        partial void OnPositionChanging(global::System.Int32 value);
+        partial void OnPositionChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean ActiveStatus
+        {
+            get
+            {
+                return _ActiveStatus;
+            }
+            set
+            {
+                OnActiveStatusChanging(value);
+                ReportPropertyChanging("ActiveStatus");
+                _ActiveStatus = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ActiveStatus");
+                OnActiveStatusChanged();
+            }
+        }
+        private global::System.Boolean _ActiveStatus;
+        partial void OnActiveStatusChanging(global::System.Boolean value);
+        partial void OnActiveStatusChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String WorkDeskType
+        {
+            get
+            {
+                return _WorkDeskType;
+            }
+            set
+            {
+                OnWorkDeskTypeChanging(value);
+                ReportPropertyChanging("WorkDeskType");
+                _WorkDeskType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("WorkDeskType");
+                OnWorkDeskTypeChanged();
+            }
+        }
+        private global::System.String _WorkDeskType;
+        partial void OnWorkDeskTypeChanging(global::System.String value);
+        partial void OnWorkDeskTypeChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="WanTaiModel", Name="RoleInfo")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -4745,6 +4976,163 @@ namespace WanTai.DataModel
         private Nullable<global::System.DateTime> _CreateTime;
         partial void OnCreateTimeChanging(Nullable<global::System.DateTime> value);
         partial void OnCreateTimeChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// 没有元数据文档可用。
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="WanTaiModel", Name="SystemConfiguration")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class SystemConfiguration : EntityObject
+    {
+        #region 工厂方法
+    
+        /// <summary>
+        /// 创建新的 SystemConfiguration 对象。
+        /// </summary>
+        /// <param name="itemID">ItemID 属性的初始值。</param>
+        /// <param name="itemName">ItemName 属性的初始值。</param>
+        /// <param name="itemCode">ItemCode 属性的初始值。</param>
+        public static SystemConfiguration CreateSystemConfiguration(global::System.Guid itemID, global::System.String itemName, global::System.String itemCode)
+        {
+            SystemConfiguration systemConfiguration = new SystemConfiguration();
+            systemConfiguration.ItemID = itemID;
+            systemConfiguration.ItemName = itemName;
+            systemConfiguration.ItemCode = itemCode;
+            return systemConfiguration;
+        }
+
+        #endregion
+
+        #region 基元属性
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ItemID
+        {
+            get
+            {
+                return _ItemID;
+            }
+            set
+            {
+                if (_ItemID != value)
+                {
+                    OnItemIDChanging(value);
+                    ReportPropertyChanging("ItemID");
+                    _ItemID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ItemID");
+                    OnItemIDChanged();
+                }
+            }
+        }
+        private global::System.Guid _ItemID;
+        partial void OnItemIDChanging(global::System.Guid value);
+        partial void OnItemIDChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ItemValue
+        {
+            get
+            {
+                return _ItemValue;
+            }
+            set
+            {
+                OnItemValueChanging(value);
+                ReportPropertyChanging("ItemValue");
+                _ItemValue = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ItemValue");
+                OnItemValueChanged();
+            }
+        }
+        private global::System.String _ItemValue;
+        partial void OnItemValueChanging(global::System.String value);
+        partial void OnItemValueChanged();
+
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty = false, IsNullable = true)]
+        [DataMemberAttribute()]
+        public global::System.String WorkDeskType
+        {
+            get
+            {
+                return _WorkDeskType;
+            }
+            set
+            {
+                OnWorkDeskTypeChanging(value);
+                ReportPropertyChanging("WorkDeskType");
+                _WorkDeskType = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("WorkDeskType");
+                OnWorkDeskTypeChanged();
+            }
+        }
+        private global::System.String _WorkDeskType;
+        partial void OnWorkDeskTypeChanging(global::System.String value);
+        partial void OnWorkDeskTypeChanged();
+
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ItemName
+        {
+            get
+            {
+                return _ItemName;
+            }
+            set
+            {
+                OnItemNameChanging(value);
+                ReportPropertyChanging("ItemName");
+                _ItemName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ItemName");
+                OnItemNameChanged();
+            }
+        }
+        private global::System.String _ItemName;
+        partial void OnItemNameChanging(global::System.String value);
+        partial void OnItemNameChanged();
+    
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ItemCode
+        {
+            get
+            {
+                return _ItemCode;
+            }
+            set
+            {
+                OnItemCodeChanging(value);
+                ReportPropertyChanging("ItemCode");
+                _ItemCode = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ItemCode");
+                OnItemCodeChanged();
+            }
+        }
+        private global::System.String _ItemCode;
+        partial void OnItemCodeChanging(global::System.String value);
+        partial void OnItemCodeChanged();
 
         #endregion
 

@@ -492,16 +492,22 @@
                 </StackPanel>
             </Border>
 
-            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                    <Button Content="扫描"  Height="30" Name="btn_scan" Width="80" Click="btn_scan_Click" />
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,0" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="样品详细信息" Height="30" IsEnabled="False" Name="btn_detail" Width="100" Margin="40,0,0,0" Click="btn_detail_Click" />
                 </StackPanel>
             </Border>
+            <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Button Content="查找样品" Height="30" IsEnabled="False" Name="btn_search" Width="100" Margin="00,0,0,0" Click="btn_search_Click" />
+                </StackPanel>
+            </Border>             
+
             <Border BorderBrush="Silver" BorderThickness="0,1,0,1" Grid.Row="3" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  >
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="分组"   Height="30" IsEnabled="False" Name="btn_Group" Width="80" Margin="0,0,0,0" Click="btn_Group_Click" />
