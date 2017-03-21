@@ -1568,7 +1568,7 @@ namespace WanTai.Controller.PCR
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase(SessionInfo.InstrumentType, font));
+            cell = new PdfPCell(new Phrase(SessionInfo.GetSystemConfiguration("InstrumentType"), font));
             // cell.UseAscender = true;
             cell.BorderWidth = 0; 
             cell.FixedHeight = 15;
@@ -1617,7 +1617,7 @@ namespace WanTai.Controller.PCR
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase(WanTai.Common.Configuration.GetInstrumentNumber(), font));
+            cell = new PdfPCell((new Phrase(SessionInfo.GetSystemConfiguration("InstrumentType"), font)));
             // cell.UseAscender = true;
             cell.BorderWidth = 0;
             cell.Colspan = 3;

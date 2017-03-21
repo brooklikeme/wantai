@@ -29,7 +29,16 @@ namespace WanTai.DataModel
         public static Dictionary<Guid, int> BatchTestingItem { get; set; }
 
         public static string WorkDeskType { get; set; }
-        public static string InstrumentType { get; set; }
+
+        public static Dictionary<string, string> SystemConfigurations { get; set; }
+
+        public static string GetSystemConfiguration(string ItemCode) {
+            if (SystemConfigurations.ContainsKey(ItemCode))
+            {
+                return SystemConfigurations[ItemCode];
+            }
+            return null;
+        }
 
         public static int WorkDeskMaxSize { get; set; }
         public static int LiquidCfgCount { get; set; }

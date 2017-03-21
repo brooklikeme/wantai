@@ -142,8 +142,8 @@ namespace WanTai.View.PCR
                 this.login_name.Content = expInfo.LoginName;
                 this.sample_number.Content = controller.GetSampleNumber(expInfo.ExperimentID, rotationId);
                 this.experiment_time.Content = expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss");
-                this.instrument_type.Content = SessionInfo.InstrumentType;
-                this.instrument_number.Content = WanTai.Common.Configuration.GetInstrumentNumber();
+                this.instrument_type.Content = SessionInfo.GetSystemConfiguration("InstrumentType");
+                this.instrument_number.Content = SessionInfo.GetSystemConfiguration("InstrumentNumber");
                 string PCRTimeString = "";
                 string PCRDeviceString = "";
                 string PCRBarCodeString = "";

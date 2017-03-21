@@ -60,18 +60,16 @@ namespace WanTai.View
             this.imageExpender1.Image = bitmap;
             SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
             SessionInfo.WaitForSuspend = false;
+            SessionInfo.SystemConfigurations = new Dictionary<string,string>();
+            foreach(SystemConfiguration sc_item in  new SystemConfigurationController().GetAll()) {
+                SessionInfo.SystemConfigurations.Add(sc_item.ItemCode, sc_item.ItemValue);
+            }
             QueryNAT_Button.Visibility = WanTai.Common.Configuration.GetShowReagentExport() ? Visibility.Visible : Visibility.Collapsed;
             SessionInfo.BatchScanTimes = 0;
             if (SessionInfo.WorkDeskType == "200") {
                 SessionInfo.WorkDeskMaxSize = 72;
-                SessionInfo.InstrumentType = "1.0";
             }
             else {
-                if (SessionInfo.WorkDeskType == "150") {
-                    SessionInfo.InstrumentType = "2.0";
-                } else{
-                    SessionInfo.InstrumentType = "3.0";
-                }
                 SessionInfo.WorkDeskMaxSize = 36;
             }
             SessionInfo.FirstStepMixing = 0;
@@ -399,8 +397,8 @@ namespace WanTai.View
 
         private void ReportConfig_Button_Click(object sender, RoutedEventArgs e)
         {
-            // Configuration. reportConfigurationList = new Configuration.ReportConfigurationList();
-            // reportConfigurationList.ShowDialog();
+            Configuration.ReportConfigurationList reportConfigurationList = new Configuration.ReportConfigurationList();
+            reportConfigurationList.ShowDialog();
         }
 
         private void Operation_Button_Click(object sender, RoutedEventArgs e)
@@ -433,11 +431,13 @@ namespace WanTai.View
             {
                 SessionInfo.WaitForSuspend = false;
                 MessageBox.Show("中断已取消!", "系统提示!");
+                suspend_exit_button.Label = "中断退出";
             }
             else
             {
                 SessionInfo.WaitForSuspend = true;
                 MessageBox.Show("当前脚本执行完成后会中断并退出，下次启动可以继续执行!", "系统提示!");
+                suspend_exit_button.Label = "取消中断";
             }                
         }
 

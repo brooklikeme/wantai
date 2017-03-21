@@ -57,3 +57,48 @@ INSERT INTO [dbo].[SystemFluidConfiguration] ([ItemID], [Position], [Grid], [Ite
 INSERT INTO [dbo].[SystemFluidConfiguration] ([ItemID], [Position], [Grid], [ItemType], [Volume], [BatchType]) VALUES (N'65ef3d8c-ff2d-11e5-b655-001c4266b053', 7, 1, 4, NULL, "1")
 INSERT INTO [dbo].[SystemFluidConfiguration] ([ItemID], [Position], [Grid], [ItemType], [Volume], [BatchType]) VALUES (N'65ef3d8d-ff2d-11e5-b655-001c4266b053', 8, 1, 4, NULL, "1")
 GO
+IF NOT EXISTS(SELECT * from sysobjects where id=object_id('[dbo].[SystemConfiguration]')) BEGIN
+/****** Object:  Table [dbo].[SystemConfiguration]    Script Date: 02/10/2012 15:24:13 ******/
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+SET ANSI_PADDING ON
+CREATE TABLE [dbo].[SystemConfiguration] (
+    [ItemID] uniqueidentifier  NOT NULL,
+    [ItemValue] nvarchar(255)  NULL,
+    [ItemName] varchar(40)  NOT NULL,
+    [ItemCode] nvarchar(40)  NOT NULL,
+    [WorkDeskType] varchar(10)  NULL,
+ CONSTRAINT [PK_SystemConfiguration] PRIMARY KEY CLUSTERED 
+(
+	[ItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+SET ANSI_PADDING OFF
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9da8-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷ÐÍºÅ', N'InstrumentType', N'1.0', '200')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dab-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷±àÂë', N'InstrumentNumber', N'001', '200')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dbc-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷ÐÍºÅ', N'InstrumentType', N'2.0', '150')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dc0-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷±àÂë', N'InstrumentNumber', N'001', '150')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dc4-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷ÐÍºÅ', N'InstrumentType', N'3.0', '100')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dc8-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷±àÂë', N'InstrumentNumber', N'001', '100')
+END
+GO
+IF NOT EXISTS(SELECT * from sysobjects where id=object_id('[dbo].[ReportConfiguration]')) BEGIN
+/****** Object:  Table [dbo].[ReportConfiguration]    Script Date: 02/10/2012 15:24:13 ******/
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+SET ANSI_PADDING ON
+CREATE TABLE [dbo].[ReportConfiguration] (
+    [ItemID] uniqueidentifier  NOT NULL,
+    [DisplayName] varchar(255)  NOT NULL,
+    [CalculationFormula] varchar(255)  NULL,
+    [Position] int  NOT NULL,
+    [ActiveStatus] bit  NOT NULL,
+    [WorkDeskType] varchar(10)  NULL,
+CONSTRAINT [PK_ReportConfiguration] PRIMARY KEY CLUSTERED 
+(
+	[ItemID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+SET ANSI_PADDING OFF
+END
+GO

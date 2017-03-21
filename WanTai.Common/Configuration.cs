@@ -164,11 +164,6 @@ namespace WanTai.Common
             return ConfigurationManager.AppSettings[PCRTestResultWidthList];
         }
 
-        public static string GetInstrumentNumber()
-        {
-            return ConfigurationManager.AppSettings["InstrumentNumber"];
-        }
-
         public static List<LiquidType> GetLiquidTypes()
         {
             List<LiquidType> typeList = null;

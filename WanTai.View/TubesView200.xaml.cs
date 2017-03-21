@@ -913,7 +913,14 @@ namespace WanTai.View
             if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
                 SessionInfo.BatchTotalHoles += TotalHole;
-                SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Union(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);
+                foreach (Guid key in CurrentTubesBatch.TestingItem.Keys)
+                {
+                    if (!SessionInfo.BatchTestingItem.ContainsKey(key))
+                    {
+                        SessionInfo.BatchTestingItem.Add(key, CurrentTubesBatch.TestingItem[key]); 
+                    }
+                }
+                // SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Union(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);
                 SessionInfo.BatchTubeList.Add(Tubes.Copy());
             }
             //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();

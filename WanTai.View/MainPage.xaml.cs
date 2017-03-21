@@ -229,9 +229,16 @@ namespace WanTai.View
                     if (ExperimentRunStatusEvent != null)
                         ExperimentRunStatusEvent();
                 }
-                else if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+                else if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1)                    
                 {
-                    server.SendMessage("NextStepRun");
+                    if (int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+                    {
+                        server.SendMessage("NextStepRun");
+                    }
+                    else
+                    {
+                        server.SendMessage("WaitForSecondMix");
+                    }
                 }
                 // btnRecover.IsEnabled = false;
                 //runSelect_listBox.IsEnabled = true;

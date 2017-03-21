@@ -63,7 +63,6 @@ namespace WanTai.DataModel
                 BatchTotalHoles = SessionInfo.BatchTotalHoles;
                 BatchTestingItem = SessionInfo.BatchTestingItem;
                 WorkDeskType = SessionInfo.WorkDeskType;
-                InstrumentType = SessionInfo.InstrumentType;
                 WorkDeskMaxSize = SessionInfo.WorkDeskMaxSize;
                 LiquidCfgCount = SessionInfo.LiquidCfgCount;
                 FirstStepMixing = SessionInfo.FirstStepMixing;
@@ -109,7 +108,6 @@ namespace WanTai.DataModel
                 SessionInfo.BatchTotalHoles = obj.BatchTotalHoles;
                 SessionInfo.BatchTestingItem = obj.BatchTestingItem;
                 SessionInfo.WorkDeskType = obj.WorkDeskType;
-                SessionInfo.InstrumentType = obj.InstrumentType;
                 SessionInfo.WorkDeskMaxSize = obj.WorkDeskMaxSize;
                 SessionInfo.LiquidCfgCount = obj.LiquidCfgCount;
                 SessionInfo.FirstStepMixing = obj.FirstStepMixing;

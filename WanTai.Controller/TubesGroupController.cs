@@ -383,7 +383,7 @@ namespace WanTai.Controller
                             }                            
 
                             //
-                            if (String.IsNullOrEmpty(SessionInfo.BatchType) || int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
+                            if (String.IsNullOrEmpty(SessionInfo.BatchType) || int.Parse(SessionInfo.BatchType) == 1)
                             {
                                 foreach (string str in NegativePositive){
                                     if (!string.IsNullOrEmpty(str))

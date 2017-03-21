@@ -55,6 +55,29 @@ namespace WanTai.Controller.Configuration
             return recordList;
         }
 
+        public Dictionary<string, string> GetDictionary()
+        {
+            Dictionary<string, string> result = null;
+            try
+            {
+                using (WanTaiEntities entities = new WanTaiEntities())
+                {
+                    var records = entities.SystemConfigurations.Where(r => r.WorkDeskType == SessionInfo.WorkDeskType);
+                    foreach (SystemConfiguration item in records) {
+                        result.Add(item.ItemCode, item.ItemValue);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
+                LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->GetAll", SessionInfo.ExperimentID);
+                throw;
+            }
+
+            return result;
+        }
+
         public bool Delete(Guid itemId)
         {
             try
@@ -105,6 +128,12 @@ namespace WanTai.Controller.Configuration
                     record.ItemValue = item.ItemValue;
 
                     entities.SaveChanges();
+
+                    // update session info
+                    if (SessionInfo.SystemConfigurations.ContainsKey(item.ItemCode))
+                    {
+                        SessionInfo.SystemConfigurations[item.ItemCode] = item.ItemValue;
+                    }
                     return true;
                 }
             }

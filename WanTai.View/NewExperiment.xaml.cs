@@ -146,7 +146,7 @@ namespace WanTai.View
             SessionInfo.CurrentExperimentsInfo = experimentsInfo;
             if (controller.CreateExperiment(experimentsInfo))
             {
-                new WanTai.Controller.TubesController().AddSampleTimes((experimentsInfo.MixTimes - 1).ToString());
+                new WanTai.Controller.TubesController().AddSampleTimes((experimentsInfo.MixTimes > 1 ? experimentsInfo.MixTimes : 0).ToString());
 
                 SessionInfo.ExperimentID = experimentsInfo.ExperimentID;
                 SessionInfo.RotationFormulaParameters=new Dictionary<Guid,FormulaParameters>();

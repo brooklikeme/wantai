@@ -121,3 +121,10 @@ INSERT [dbo].[TestingItemConfiguration] ([TestingItemID], [TestingItemName], [Te
 GO
 INSERT [dbo].[UserInfo] ([UserID], [LoginName], [LoginPassWord], [RoleName], [CreateTime], [CreateName], [UpdateTime]) VALUES (N'20110907-0000-0000-0000-000000000001', N'admin', N'123', N'¹¤³ÌÊ¦', CAST(0x00009F5800000000 AS DateTime), N'', CAST(0x00009FCD01237E38 AS DateTime))
 GO
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9da8-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷ÐÍºÅ', N'InstrumentType', N'1.0', '200')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dab-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷±àÂë', N'InstrumentNumber', N'001', '200')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dbc-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷ÐÍºÅ', N'InstrumentType', N'2.0', '150')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dc0-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷±àÂë', N'InstrumentNumber', N'001', '150')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dc4-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷ÐÍºÅ', N'InstrumentType', N'3.0', '100')
+INSERT [dbo].[SystemConfiguration] ([ItemID], [ItemName], [ItemCode], [ItemValue], [WorkDeskType]) VALUES (N'e96e9dc8-f35b-11e6-9b01-001c4266b053', N'ÒÇÆ÷±àÂë', N'InstrumentNumber', N'001', '100')
+GO

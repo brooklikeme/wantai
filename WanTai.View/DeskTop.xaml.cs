@@ -1097,11 +1097,11 @@ namespace WanTai.View
                     }
                     else if (isFirstRotation && (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                     {
-                        addedVolume = item.NeedVolume - item.CurrentVolume;
+                        addedVolume = item.NeedVolume > item.CurrentVolume ? item.NeedVolume - item.CurrentVolume : 0;
                     }
                     else if (item.CurrentVolume < (item.TotalNeedValueAndConsumption + item.NeedVolume) && (item.FirstAddVolume + item.CurrentVolume) < (item.TotalNeedValueAndConsumption + item.NeedVolume))
                     {
-                        addedVolume = item.TotalNeedValueAndConsumption + item.NeedVolume - item.CurrentVolume;
+                        addedVolume = item.TotalNeedValueAndConsumption + item.NeedVolume > item.CurrentVolume ? item.TotalNeedValueAndConsumption + item.NeedVolume - item.CurrentVolume : 0;
                     }
 
                     addedVolume = Math.Ceiling(addedVolume);
@@ -1123,7 +1123,7 @@ namespace WanTai.View
                         }
                         else if (item.CurrentVolume < (item.TotalNeedValueAndConsumption + item.NeedVolume) && (item.FirstAddVolume + item.CurrentVolume) < (item.TotalNeedValueAndConsumption + item.NeedVolume))
                         {
-                            addedVolume = item.TotalNeedValueAndConsumption + item.NeedVolume - item.CurrentVolume;
+                            addedVolume = item.TotalNeedValueAndConsumption + item.NeedVolume > item.CurrentVolume ? item.TotalNeedValueAndConsumption + item.NeedVolume - item.CurrentVolume : 0;
                         }
 
                         ((dataGrid.Columns[3] as DataGridTemplateColumn).CellTemplate.FindName("txtAddVolume", dataGrid.Columns[3].GetCellContent(item)) as TextBox).Text = addedVolume.ToString();
