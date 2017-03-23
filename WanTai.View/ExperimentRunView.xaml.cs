@@ -465,9 +465,19 @@ namespace WanTai.View
                         try
                         {
                             WanTai.Common.CommonFunction.WriteLog(RunFalg.ToString() + ";ExperimentName:" + SessionInfo.CurrentExperimentsInfo.ExperimentName + "RunIndex:" + CurrentRotation.RunIndex.ToString() + ";Script--" + scriptFileName);
-                            WanTai.Common.CommonFunction.WriteLog("OperationCount:" + RunOperation.Count() + ";CurrentOperationIndex:" + CurrentRotation.CurrentOperationIndex);
+                            WanTai.Common.CommonFunction.WriteLog("RunOperationCount:" + RunOperation.Count() + ";CurrentOperationCount:" + CurrentRotation.Operations.Count() + ";CurrentOperationIndex:" + CurrentRotation.CurrentOperationIndex);
 
+                            // limit index error
+                            if (CurrentRotation.CurrentOperationIndex >= CurrentRotation.Operations.Count())
+                            {
+                                MessageBox.Show("数组指针越界，请将日志保存下来联系管理员!", "系统提示");
+                                WanTai.Common.CommonFunction.WriteLog("数组指针越界，请将日志保存下来联系管理员!");
+                                continue;
+                            }
+
+                            //
                             DateTime scriptStartTime =RunScriptTime= ExperimentStartTime = WanTai.Controller.EVO.ProcessorFactory.GetDateTimeNow();
+                            WanTai.Common.CommonFunction.WriteLog("Debug point 1");
                             if (CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].IsExistsRunScript == null)
                                 CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].IsExistsRunScript = string.Empty;
                             if (CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].IsExistsRunScript.IndexOf(CurrentRotation.RotationID.ToString() + scriptFileName) > -1)
@@ -512,6 +522,7 @@ namespace WanTai.View
                                 WanTai.Common.CommonFunction.WriteLog(RunFalg.ToString() + ";Script--" + scriptFileName);
                                 return;
                             }
+                            WanTai.Common.CommonFunction.WriteLog("Debug point 2");
                             WanTai.Common.CommonFunction.WriteLog(RunReturnValue.ToString()+";"+RunFalg.ToString() + ";Script--" + scriptFileName);
                             if (RunReturnValue)
                             {
@@ -538,7 +549,7 @@ namespace WanTai.View
                                     MessageBox.Show("Save sample  tracking error: " + e.Message, "系统提示");
                                     LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, e.Message + Environment.NewLine + e.StackTrace, SessionInfo.LoginName, this.GetType().ToString(), SessionInfo.ExperimentID);
                                 }
-
+                                WanTai.Common.CommonFunction.WriteLog("Debug point 3");
                                 if (!hasAddSameSequenceVolume && CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].OperationType == (short)OperationType.Grouping)
                                 {
                                     Guid subOpertionWithSameEquence = new OperationController().GetSameSequenceSubOperation(CurrentRotation.Operations[CurrentRotation.CurrentOperationIndex].OperationID);
@@ -1179,7 +1190,7 @@ namespace WanTai.View
                         bar.Value = bar.Maximum;
                 }
 
-                if (CurrentRotation.CurrentOperationIndex == (CurrentRotation.Operations.Count - 1))
+                if (CurrentRotation.CurrentOperationIndex >= (CurrentRotation.Operations.Count - 1))
                 {
                     FinishedRotation = CurrentRotation;
                     if (NexRotation) //读下一个轮次
