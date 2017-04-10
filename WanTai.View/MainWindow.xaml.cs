@@ -59,6 +59,7 @@ namespace WanTai.View
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
             this.imageExpender1.Image = bitmap;
             SessionInfo.WorkDeskType = WanTai.Common.Configuration.GetWorkDeskType();
+            SessionInfo.DiTi1000 = 0.0;
             SessionInfo.WaitForSuspend = false;
             SessionInfo.SystemConfigurations = new Dictionary<string,string>();
             foreach(SystemConfiguration sc_item in  new SystemConfigurationController().GetAll()) {
@@ -262,7 +263,8 @@ namespace WanTai.View
             TecanMaintainDay_Button.IsEnabled = false;
             TecanMaintainWeek_Button.IsEnabled = false;
             TecanMaintainMonth_Button.IsEnabled = false;
-          
+
+            SessionInfo.DiTi1000 = 0.0;
             SessionInfo.ExperimentID = new Guid();
             SessionInfo.PraperRotation = null;
             SessionInfo.CurrentExperimentsInfo = null;

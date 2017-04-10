@@ -12,7 +12,7 @@ namespace WanTai.Controller
     {
         public TubesBatch SaveTubesGroup(Guid ExperimentID, TubesBatch DelTubesBatch, int RotationIndex, IList<TubeGroup> TubeGroupList, DataTable Tubes, out int ErrType, out string ErrMsg)
         {
-            //try                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+            try                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
             {
                 ErrMsg = "操作成功！";
                 ErrType = 0;
@@ -1341,13 +1341,13 @@ namespace WanTai.Controller
                     return _TubesBatch;
                 }
             }
-                /*
+            
             catch (Exception e)
             {
                 string errorMessage = e.Message + System.Environment.NewLine + e.StackTrace;
                 LogInfoController.AddLogInfo(LogInfoLevelEnum.Error, errorMessage, SessionInfo.LoginName, this.GetType().ToString() + "->" + "SaveTubesGroup()", SessionInfo.ExperimentID);
                 throw;
-            }*/
+            }
         }
     }
 }

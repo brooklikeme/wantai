@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using WanTai.Controller;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -1916,13 +1917,22 @@ namespace WanTai.View.PCR
             Guid rotationId = (Guid)selectedItem.Tag;
             barcode_comboBox.Items.Clear();
             List<Plate> plateList = controller.GetPCRPlateBarcode(rotationId, currentExperimentId);
+            ExperimentsInfo experimentInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(currentExperimentId);
+            PlateController plateController = new PlateController();
             if (plateList != null && plateList.Count > 0)
             {
+                int plateIndex = 0;
                 foreach (Plate plate in plateList)
                 {
+                    plateIndex++;
                     Guid plateId = plate.PlateID;
                     bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId);
-                    barcode_comboBox.Items.Add(new ComboBoxItem() { Content = (string.IsNullOrEmpty(plate.BarCode) ? ("("+PlateName.PCRPlate+")" + (hasRecord ? "(已导入)" : "")) : (plate.BarCode + (hasRecord ? "(已导入)" : ""))), DataContext=plate});
+                    if (string.IsNullOrEmpty(plate.BarCode)) {
+
+                        plate.BarCode = experimentInfo.StartTime.ToString("yyyyMMdd") + "-" + plateIndex;
+                        plateController.UpdateBarcode(plateId, plate.BarCode);
+                    }
+                    barcode_comboBox.Items.Add(new ComboBoxItem() { Content = (string.IsNullOrEmpty(plate.BarCode) ? ("("+PlateName.PCRPlate + "-" + plateIndex.ToString() + ")" + (hasRecord ? "(已导入)" : "")) : (plate.BarCode + (hasRecord ? "(已导入)" : ""))), DataContext=plate});
                 }
                 foreach (ComboBoxItem barcode_item in barcode_comboBox.Items)
                 {

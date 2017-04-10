@@ -197,17 +197,22 @@ namespace WanTai.View
             btn_search.IsEnabled = false;
             TubesSearchDialog tubesSearchDialog = new TubesSearchDialog();
             tubesSearchDialog.ShowDialog();
-            string[] lines = tubesSearchDialog.search_content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            foreach (DataRow row in Tubes.Rows) 
-            {
-                for (int i = 1; i < SessionInfo.WorkDeskMaxSize + 1; i++)
+            if (tubesSearchDialog.DialogResult.HasValue && tubesSearchDialog.DialogResult.Value && !String.IsNullOrEmpty(tubesSearchDialog.search_content)) {
+                string[] lines = tubesSearchDialog.search_content.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                foreach (DataRow row in Tubes.Rows)
                 {
-                    row["Background" + i] = null;
-                    foreach (string line in lines) 
+                    for (int i = 1; i < SessionInfo.WorkDeskMaxSize + 1; i++)
                     {
-                        if (row["BarCode" + i].ToString().Contains(line))
+                        row["Background" + i] = null;
+                        foreach (string line in lines)
                         {
-                            row["Background" + i] = "Red";
+                            if (!String.IsNullOrEmpty(line))
+                            {
+                                if (row["BarCode" + i].ToString().Contains(line))
+                                {
+                                    row["Background" + i] = "Red";
+                                }
+                            }
                         }
                     }
                 }
@@ -801,13 +806,14 @@ namespace WanTai.View
         private IList<TubeGroup> TubeGroupList;
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
+            int NewHole = 0;
             int TotalHole = 0;
             TubeGroupList = new List<TubeGroup>();
             CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
 
             if (String.IsNullOrEmpty(SessionInfo.BatchType))
             {
-                TotalHole = 2;
+                NewHole = 2;
             }
             else
             {
@@ -826,13 +832,13 @@ namespace WanTai.View
                     else if (SessionInfo.BatchType == "1")
                         SessionInfo.BatchTubeList.Clear();
                     if (SessionInfo.BatchType == "1")
-                        TotalHole = 2;
+                        NewHole = 2;
                     else
-                        TotalHole += SessionInfo.BatchTotalHoles;
+                        TotalHole = SessionInfo.BatchTotalHoles;
                 }
                 else if (int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
                 {
-                    TotalHole += SessionInfo.BatchTotalHoles;
+                    TotalHole = SessionInfo.BatchTotalHoles;
                 }
             }
 
@@ -866,7 +872,7 @@ namespace WanTai.View
                     else
                         CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
                 }
-                TotalHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
+                NewHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
                 if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 {
                     Item.BatchType = SessionInfo.BatchType;
@@ -879,6 +885,7 @@ namespace WanTai.View
                 if (Item.isComplement) _SystemFluid = true;
             }
             SessionInfo.AllowBatchMore = true;
+            TotalHole += NewHole;
             if (TotalHole > 96)
             {
                 MessageBox.Show("混样数大于96, 无法进行混样!","系统提示!");
@@ -912,12 +919,16 @@ namespace WanTai.View
             // update batch a info
             if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
-                SessionInfo.BatchTotalHoles += TotalHole;
+                SessionInfo.BatchTotalHoles += NewHole;
                 foreach (Guid key in CurrentTubesBatch.TestingItem.Keys)
                 {
                     if (!SessionInfo.BatchTestingItem.ContainsKey(key))
                     {
-                        SessionInfo.BatchTestingItem.Add(key, CurrentTubesBatch.TestingItem[key]); 
+                        SessionInfo.BatchTestingItem.Add(key, CurrentTubesBatch.TestingItem[key]);
+                    }
+                    else
+                    {
+                        SessionInfo.BatchTestingItem[key] = CurrentTubesBatch.TestingItem[key];
                     }
                 }
                 // SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Union(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);

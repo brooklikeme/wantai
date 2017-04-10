@@ -693,9 +693,10 @@ namespace WanTai.View
             }
             item.FirstAddVolume = Math.Round(Convert.ToDouble(addVolume), 3);
 
+
             if (isFirstRotation && !(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
             {
-                if (item.FirstAddVolume < item.NeedVolume)
+                if (item.FirstAddVolume < item.NeedVolume && !(item.ItemType == 104 && item.FirstAddVolume + SessionInfo.DiTi1000 >= item.NeedVolume))
                 {
                     string message = item.DisplayName + "为" + addVolume.ToString() + item.Unit + "建议量为" +
                     (item.NeedVolume).ToString() + item.Unit + "。是否继续确认？“是”确认，“否”继续添加。";
@@ -737,6 +738,13 @@ namespace WanTai.View
                     }
                 }
 
+            }
+
+            // save batch volume
+
+            if (item.ItemType == 104)
+            {
+                SessionInfo.DiTi1000 += item.FirstAddVolume;
             }
 
             item.Correct = true;
@@ -1093,7 +1101,13 @@ namespace WanTai.View
                     double addedVolume = 0;
                     if (isFirstRotation && !(SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                     {
-                        addedVolume = item.NeedVolume;
+                        if (item.ItemType == 104)
+                        {
+                            addedVolume = item.NeedVolume > SessionInfo.DiTi1000 ? item.NeedVolume - SessionInfo.DiTi1000 : 0;
+                        } else {
+                            addedVolume = item.NeedVolume;
+                        }
+  
                     }
                     else if (isFirstRotation && (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes))
                     {

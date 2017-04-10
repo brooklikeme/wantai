@@ -21,6 +21,8 @@ namespace WanTai.DataModel
         public static int BatchTimes { get; set; }
         public static Boolean AllowBatchMore {get; set;}
         public static string BatchType { get; set; }  //"1,2,3,4,5,6"
+
+        public static double DiTi1000 { get; set; }
         public static int BatchScanTimes { get; set; }
         public static List<Guid> TestingItemIDs { get; set; }
         public static List<TubeGroup> BatchTubeGroups { get; set; }

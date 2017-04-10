@@ -336,7 +336,11 @@ namespace WanTai.Controller.Configuration
                 }
                 foreach (ReagentAndSuppliesConfiguration r in list)
                 {
-                    if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes && r.ItemType < 100)
+                    if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes && (r.ItemType < 100 || r.ItemType == 105 || r.ItemType == 103))
+                    {
+                        r.NeedVolume = 0;
+                    }
+                    else if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1 && (r.ItemType == 101 || r.ItemType == 102))
                     {
                         r.NeedVolume = 0;
                     }

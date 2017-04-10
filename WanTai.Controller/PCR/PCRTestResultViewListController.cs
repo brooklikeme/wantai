@@ -137,6 +137,8 @@ namespace WanTai.Controller.PCR
             has_bci = false;
             //try
             {
+                ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
+
                 bool ignoreSampleTracking = WanTai.Common.Configuration.GetIgnoreSampleTracking();
                 DataTable baseTable = dataTable.Clone();
                 DataTable middTable = dataTable.Clone();
@@ -715,8 +717,22 @@ namespace WanTai.Controller.PCR
 
                                 if (tubeSampleCheckResult.ContainsKey((Guid)reader["TubeID"]))
                                 {
-                                    dRow["SimpleTrackingResult"] = "[" + dRow["TubeBarCode"] + "]" + tubeSampleCheckResult[(Guid)reader["TubeID"]];
-                                    if (!string.IsNullOrEmpty(dRow["SimpleTrackingResult"].ToString()))
+                                    if (expInfo.State != (short)ExperimentStatus.Finish)
+                                    {
+                                        if (tubeSampleCheckResult[(Guid)reader["TubeID"]].Contains("加样不足")) {
+                                            dRow["SimpleTrackingResult"] = "[" + dRow["TubeBarCode"] + "]加样不足 人工操作";
+                                        }
+                                        else
+                                        {
+                                            dRow["SimpleTrackingResult"] = "人工操作";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        dRow["SimpleTrackingResult"] = "[" + dRow["TubeBarCode"] + "]" + tubeSampleCheckResult[(Guid)reader["TubeID"]];
+                                    }
+
+                                    if (!string.IsNullOrEmpty(dRow["SimpleTrackingResult"].ToString()) && dRow["SimpleTrackingResult"] != "人工操作")
                                     {
                                         // dRow["Color"] = n new Color(232, 231, 154);
                                         // dRow["Color"] = System.Windows.Media.Colors.Yellow; 

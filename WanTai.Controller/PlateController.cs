@@ -35,5 +35,18 @@ namespace WanTai.Controller
                 }
             }
         }
+
+        public void UpdateBarcode(Guid plateID, string barCode)
+        {
+            using (WanTaiEntities _WanTaiEntities = new WanTaiEntities())
+            {
+                var plate = _WanTaiEntities.Plates.FirstOrDefault(P => (P.PlateID == plateID));
+                if (plate != null)
+                {
+                    plate.BarCode = barCode;
+                    _WanTaiEntities.SaveChanges();
+                }
+            }
+        }
     }
 }

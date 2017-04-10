@@ -167,8 +167,16 @@ namespace WanTai.View
                 return;
             }
             if (tabControl.SelectedIndex < tabControl.Items.Count)
-            {               
-                tabControl.SelectedIndex++;
+            {
+                if (tabControl.SelectedIndex == 0 && SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) > 1)
+                {
+                    tabControl.SelectedIndex = 2;
+                    SessionInfo.NextButIndex = 2;
+                }
+                else
+                {
+                    tabControl.SelectedIndex++;
+                }
                 ((TabItem)tabControl.SelectedItem).IsEnabled = true;
             }
 
@@ -440,6 +448,7 @@ namespace WanTai.View
                 MessageBox.Show("请为下一次上样准备样品!", "系统提示！", MessageBoxButton.OK);
             }
             tabControl.SelectedIndex = 0;
+            ((TabItem)tabControl.SelectedItem).Focus();
             //change the lamp and set it green
             processor.SetLampStatus(0);
             //}

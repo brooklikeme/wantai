@@ -23,7 +23,7 @@ namespace WanTai.Controller.PCR
                 string connectionString = WanTai.Common.Configuration.GetConnectionString();
                 string commandText = "SELECT distinct RotationInfo.RotationID, RotationInfo.RotationName"
                     + " FROM Plates LEFT JOIN RotationInfo on Plates.RotationID = RotationInfo.RotationID"
-                    + " WHERE Plates.PlateType=@PlateType and Plates.ExperimentID=@ExperimentID and RotationInfo.State=@RotationState";
+                    + " WHERE Plates.PlateType=@PlateType and Plates.ExperimentID=@ExperimentID";// and RotationInfo.State=@RotationState";
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open(); 
@@ -32,7 +32,7 @@ namespace WanTai.Controller.PCR
                     {
                         cmd.Parameters.AddWithValue("@PlateType", PlateType.PCR_Plate);
                         cmd.Parameters.AddWithValue("@ExperimentID", experimentId);
-                        cmd.Parameters.AddWithValue("@RotationState", RotationInfoStatus.Finish);
+                        // cmd.Parameters.AddWithValue("@RotationState", RotationInfoStatus.Finish);
 
                         using (SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.Default))
                         {
