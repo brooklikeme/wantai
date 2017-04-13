@@ -64,6 +64,7 @@
                         <DataTemplate>
                             <StackPanel>
                                 <Button Content="删除" Height="23" HorizontalAlignment="Center" Visibility="{Binding CanDelete}" VerticalAlignment="Center" Width="75" Click="delete_button_Click" Name="delete_button"></Button>
+                                <Button Content="继续" Height="23" HorizontalAlignment="Center" Visibility="{Binding CanResume}" VerticalAlignment="Center" Width="75" Click="resume_button_Click" Name="resume_button"></Button>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

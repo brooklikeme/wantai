@@ -52,7 +52,14 @@ namespace WanTai.View
                 FrameworkElementFactory checkBox = new FrameworkElementFactory(typeof(CheckBox));
                 checkBox.SetValue(CheckBox.DataContextProperty, _TestingItem);
                 checkBox.SetValue(CheckBox.MarginProperty, new System.Windows.Thickness(5, 0, 5, 0));
-                checkBox.SetValue(CheckBox.IsCheckedProperty, false);
+                if (_TestingItem.TestingItemName == "HBV" || _TestingItem.TestingItemName == "HCV" || _TestingItem.TestingItemName == "HIV")
+                {
+                    checkBox.SetValue(CheckBox.IsCheckedProperty, true);
+                }
+                else
+                {
+                    checkBox.SetValue(CheckBox.IsCheckedProperty, false);
+                }
                 checkBox.SetValue(CheckBox.ContentProperty, _TestingItem.TestingItemName);
 
                 checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked));

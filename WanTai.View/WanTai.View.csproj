@@ -166,6 +166,9 @@
     <Compile Include="HistoryQuery\NATViewList.xaml.cs">
       <DependentUpon>NATViewList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManualExecScript.xaml.cs">
+      <DependentUpon>ManualExecScript.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TecanRestoration.xaml.cs">
       <DependentUpon>TecanRestoration.xaml</DependentUpon>
     </Compile>
@@ -394,6 +397,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="HistoryQuery\NATViewList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ManualExecScript.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

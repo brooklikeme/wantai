@@ -539,6 +539,8 @@ namespace WanTai.Controller.HistoryQuery
                 return "停止";
             else if (status == ExperimentStatus.Suspend)
                 return "暂停";
+            else if (status == ExperimentStatus.StopExit)
+                return "中断退出";
             else return null;
         }
 

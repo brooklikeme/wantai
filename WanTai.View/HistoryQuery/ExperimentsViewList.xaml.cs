@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,8 @@ namespace WanTai.View.HistoryQuery
         private int totalPageNumber;
         private string sortColumn;
         private string sortDirection;
+        public string resumeExperimentFileName = null;
+        public event MainWindow.ResumeExperimentHandler ResumeExperimentEvent;
 
         public ExperimentsViewList()
         {
@@ -54,6 +57,7 @@ namespace WanTai.View.HistoryQuery
             dataTable.Columns.Add("MixTimes", typeof(int));
             dataTable.Columns.Add("Color", typeof(string));
             dataTable.Columns.Add("CanDelete", typeof(string));
+            dataTable.Columns.Add("CanResume", typeof(string));
             dataGrid_view.ItemsSource = dataTable.DefaultView;
 
             WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "查看实验历史记录", SessionInfo.LoginName, this.GetType().ToString(), null);
@@ -119,6 +123,15 @@ namespace WanTai.View.HistoryQuery
                 else
                 {
                     dRow["CanDelete"] = Visibility.Hidden.ToString();
+                }
+
+                if (userRole.RoleLevel > 1 && experiment.State == (short)ExperimentStatus.StopExit)
+                {
+                    dRow["CanResume"] = Visibility.Visible.ToString();
+                }
+                else
+                {
+                    dRow["CanResume"] = Visibility.Hidden.ToString();
                 }
                 dataTable.Rows.Add(dRow);
                 startIndex++;
@@ -217,6 +230,31 @@ namespace WanTai.View.HistoryQuery
                 else
                 {
                     MessageBox.Show("删除失败", "系统提示");
+                }
+            }
+        }
+
+        private void resume_button_Click(object sender, RoutedEventArgs e)
+        {
+            if (SessionInfo.CurrentExperimentsInfo != null)
+            {
+                MessageBox.Show("请先关闭当前实验!", "系统提示!");
+                return;
+            }
+            int selectedIndex = dataGrid_view.SelectedIndex;
+            MessageBoxResult selectResult = MessageBox.Show("确定继续中断的实验[" + dataTable.Rows[selectedIndex]["ExperimentName"] + "]么?", "系统提示", MessageBoxButton.YesNo);
+            if (selectResult == MessageBoxResult.Yes)
+            {
+                string resume_file_name = "SessionInfo_" + dataTable.Rows[selectedIndex]["ExperimentID"].ToString() + ".bin";
+                if (File.Exists(resume_file_name))
+                {
+                    resumeExperimentFileName = resume_file_name;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("找不到备份的执行文件!", "系统提示!");
+                    return;
                 }
             }
         }

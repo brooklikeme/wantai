@@ -187,6 +187,27 @@ namespace WanTai.Common
             return typeList;
         }
 
+        /*
+        public static List<ManualExecScript> GetManualExecScripts()
+        {
+            List<ManualExecScript> manualExecScripts = null;
+            ManualExecScriptConfigSection section = (ManualExecScriptConfigSection)ConfigurationManager.GetSection("ManualExecScriptSettings");
+            if (section != null)
+            {
+                
+                manualExecScripts = new List<ManualExecScript>();
+                foreach (ManualExecScriptElement element in section)
+                {
+                    ManualExecScript manualExecScript = new ManualExecScript();
+                    manualExecScript.ActionName = element.ActionName;
+                    manualExecScript.ActionColor = element.ActionColor;
+                    manualExecScript.ScriptFileName = element.ScriptFileName;
+                    manualExecScripts.Add(manualExecScript);
+                }
+            }
+            return manualExecScripts;
+        }
+         */
         public static List<ReagentSuppliesType> GetReagentSuppliesTypes()
         {
             List<ReagentSuppliesType> typeList = null;

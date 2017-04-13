@@ -81,7 +81,8 @@ namespace WanTai.DataModel
         Suspend = 15,
         Finish = 20,
         Stop = 25,
-        Fail = 30
+        Fail = 30,
+        StopExit = 35
     }
 
     public class PageSetting

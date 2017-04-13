@@ -127,5 +127,27 @@ namespace WanTai.DataModel
                 throw ex;
             }
         }
+
+        public bool LoadExperimentID(string filename)
+        {
+            try
+            {
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+                stream.Position = 0;
+                SerializeStatic obj = (SerializeStatic)formatter.Deserialize(stream);
+
+                SessionInfo.ExperimentID = obj.ExperimentID;// 平台ID
+
+                stream.Close();
+
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

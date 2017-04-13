@@ -34,6 +34,7 @@ namespace WanTai.View
         private Boolean EVOClosed = false;
         public delegate void ExperimentRunStatusHandler();
         public delegate void CloseWindowHandler();
+        public delegate void ResumeExperimentHandler(string experiment_name);
         public event WanTai.View.MainPage.SendStopRunMsg StopRunEvent;
 
         public MainWindow()
@@ -53,6 +54,7 @@ namespace WanTai.View
             TecanMaintainWeek_Button.IsEnabled = false;
             TecanMaintainMonth_Button.IsEnabled = false;
             TecanRestoration_Button.IsEnabled = false;
+            ManualExecScript_Button.IsEnabled = false;
             exit_button.IsEnabled = false;
             suspend_exit_button.IsEnabled = false;
             Stream imageStream = Application.GetResourceStream(new Uri("/WanTag;component/Resources/loading.gif", UriKind.Relative)).Stream;
@@ -102,6 +104,7 @@ namespace WanTai.View
                 TecanMaintainWeek_Button.IsEnabled = true;
                 TecanMaintainMonth_Button.IsEnabled = true;
                 TecanRestoration_Button.IsEnabled = true;
+                ManualExecScript_Button.IsEnabled = true;
                 exit_button.IsEnabled = true;
                 suspend_exit_button.IsEnabled = false;
                 imageExpender1.Image = null;
@@ -178,28 +181,39 @@ namespace WanTai.View
             SessionInfo.ResumeExecution = File.Exists("SessionInfo.bin");
             if (SessionInfo.ResumeExecution)
             {
-                if (MessageBox.Show("上次实验未完成，是否继续执行？选择不继续会删除已执行结果!", "系统提示!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show("上次实验未完成，是否继续执行？", "系统提示!", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     // load last session info
-                    SerializeStatic serialize = new SerializeStatic();
-                    serialize.Load("SessionInfo.bin");
-                    // new main page
-                    MainPage mainPage = new MainPage();
-                    mainPage.SetEvoRestorationStatus += new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
-                    mainPage.AddEvoRestorationStatusEvent();
-                    mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
-                    mainPage.CloseWindowEvent += new CloseWindowHandler(CloseWindow);
-                    StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
-                    mainFrame.Content = mainPage;
-                    this.Title = "WanTag 全自动核酸提取系统——实验 " + SessionInfo.CurrentExperimentsInfo.ExperimentName;
-                    mainPage.ContinueExperiment();
+                    ResumeExperiment("SessionInfo.bin");
                 }
                 else
                 {
-                    File.Delete("SessionInfo.bin");
+                    // change file name
+                    SerializeStatic serialize = new SerializeStatic();
+                    serialize.LoadExperimentID("SessionInfo.bin");
+                    string experiment_file_name = "SessionInfo_" + SessionInfo.ExperimentID + ".bin";
+                    if (File.Exists(experiment_file_name))
+                        File.Delete(experiment_file_name);
+                    File.Move("SessionInfo.bin", experiment_file_name);
                 }
             }
         }
+
+        public void ResumeExperiment(string experiment_file_name){
+            SerializeStatic serialize = new SerializeStatic();
+            serialize.Load(experiment_file_name);
+            // new main page
+            MainPage mainPage = new MainPage();
+            mainPage.SetEvoRestorationStatus += new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
+            mainPage.AddEvoRestorationStatusEvent();
+            mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
+            mainPage.CloseWindowEvent += new CloseWindowHandler(CloseWindow);
+            StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
+            mainFrame.Content = mainPage;
+            this.Title = "WanTag 全自动核酸提取系统——实验 " + SessionInfo.CurrentExperimentsInfo.ExperimentName;
+            mainPage.ContinueExperiment();
+        }
+
 
         private void CloseWindow()
         {
@@ -368,6 +382,7 @@ namespace WanTai.View
                 TecanMaintainWeek_Button.IsEnabled = true;
                 TecanMaintainMonth_Button.IsEnabled = true;
                 TecanRestoration_Button.IsEnabled = true;
+                ManualExecScript_Button.IsEnabled = true;
                 SessionInfo.CurrentExperimentsInfo = null;
                 SessionInfo.ExperimentID = new Guid();
                 SessionInfo.PraperRotation = null;
@@ -412,7 +427,13 @@ namespace WanTai.View
         private void QueryExperiment_Button_Click(object sender, RoutedEventArgs e)
         {
             HistoryQuery.ExperimentsViewList experimentsViewList = new HistoryQuery.ExperimentsViewList();
+            // experimentsViewList.ResumeExperimentEvent += new ResumeExperimentHandler(ResumeExperiment);
             experimentsViewList.ShowDialog();
+            if (null != experimentsViewList.resumeExperimentFileName)
+            {
+                SessionInfo.ResumeExecution = true;
+                ResumeExperiment(experimentsViewList.resumeExperimentFileName);
+            }
         }
 
 
@@ -572,6 +593,12 @@ namespace WanTai.View
             frm.ShowDialog();
         }
 
+        private void ManualExecScript_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ManualExecScript frm = new ManualExecScript();
+            frm.ShowDialog();
+        }
+
         private void Help_button_Click(object sender, RoutedEventArgs e)
         {
             FileInfo fileInfo = new FileInfo("WanTagUserManual.pdf");
@@ -618,8 +645,9 @@ namespace WanTai.View
                     }
 
                     else if (SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Fail || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Create
-                     || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend)
+                     || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.Suspend || SessionInfo.CurrentExperimentsInfo.State == (short)ExperimentStatus.StopExit)
                     {
+                        WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
                         if (!SessionInfo.WaitForSuspend)
                         {
                             if (MessageBox.Show("当前实验未完成, 是否退出?", "系统提示!", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
@@ -627,9 +655,14 @@ namespace WanTai.View
                                 e.Cancel = true;
                                 return;
                             }
+                            rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);
+
                         }
-                        WanTai.Controller.RotationInfoController rotationInfoController = new WanTai.Controller.RotationInfoController();
-                        rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.Fail);
+                        else
+                        {
+                            rotationInfoController.UpdataExperimentStatus(SessionInfo.CurrentExperimentsInfo.ExperimentID, true, ExperimentStatus.StopExit);
+
+                        }
                     }
                 }
             }
@@ -659,6 +692,7 @@ namespace WanTai.View
             TecanMaintainWeek_Button.IsEnabled = false;
             TecanMaintainMonth_Button.IsEnabled = false;
             TecanRestoration_Button.IsEnabled = false;
+            ManualExecScript_Button.IsEnabled = false;
             exit_button.IsEnabled = false;
             suspend_exit_button.IsEnabled = false;
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
@@ -682,6 +716,7 @@ namespace WanTai.View
                 TecanMaintainWeek_Button.IsEnabled = true;
                 TecanMaintainMonth_Button.IsEnabled = true;
                 TecanRestoration_Button.IsEnabled = true;
+                ManualExecScript_Button.IsEnabled = true;
                 exit_button.IsEnabled = true;
                 imageExpender1.Image = null;
                 imageExpender1.Dispose();
