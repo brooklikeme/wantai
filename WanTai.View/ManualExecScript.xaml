@@ -4,7 +4,7 @@
            xmlns:local="clr-namespace:WanTai.View"
         local:WindowCustomizer.CanMaximize="False" 
          local:WindowCustomizer.CanMinimize="False" 
-        Title="手工执行脚本" Height="180" Width="500" WindowStyle="ThreeDBorderWindow"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Icon="/WanTag;component/logo.ico" ShowActivated="True" ShowInTaskbar="False" Unloaded="Window_Unloaded">
+        Title="手工分步骤运行程序"  Height="280" Width="500" WindowStyle="ThreeDBorderWindow"  Loaded="Window_Loaded" WindowStartupLocation="CenterScreen" Icon="/WanTag;component/logo.ico" ShowActivated="True" ShowInTaskbar="False" Unloaded="Window_Unloaded">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -18,14 +18,19 @@
             <RowDefinition Height="22"></RowDefinition>
             <RowDefinition Height="80"></RowDefinition>
             <RowDefinition Height="36"></RowDefinition>
+            <RowDefinition Height="80"></RowDefinition>
         </Grid.RowDefinitions>        
         <ProgressBar Grid.ColumnSpan="5"  Height="30" Name="progressBar1" Margin="5,0,5,0" Grid.Row="2"/>
-        <Button Grid.Row="1" Grid.Column="0" Content="1.加样" Height="30" DataContext="TEST_1_MIX.esc" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnScript1" Width="80" Click="btnScript_Click" />
+        <Button Grid.Row="1" Grid.Column="0" Content="1.加样" Height="30" DataContext="TEST_1_Sub_MIX.esc" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnScript1" Width="80" Click="btnScript_Click" />
         <Button Grid.Row="1" Grid.Column="1" Content="2.提取试剂添加" Height="30" DataContext="TEST_2_AddLiquidToMIX.esc" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnScript2" Width="100" Click="btnScript_Click" />
         <Button Grid.Row="1" Grid.Column="2" Content="3. 提取" Height="30" DataContext="TEST_3_Sub_tiqu.esc" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnScript3" Width="80" Click="btnScript_Click" />
         <Button Grid.Row="1" Grid.Column="3" Content="4.PCR配液" Height="30" DataContext="TEST_3_Sub_MIX.esc" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnScript4" Width="80" Click="btnScript_Click" />
         <Button Grid.Row="1" Grid.Column="4" Content="5.试剂模板分装" Height="30" DataContext="TEST_4_FENZHUANG.esc" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnScript5" Width="100" Click="btnScript_Click" />
 
-        <Label Grid.ColumnSpan="5" Content="点击按钮执行对应脚本" Name="LabPromptingMessage" Grid.Row="0" Height="28" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" />
+        <Label Grid.ColumnSpan="5" Content="点击按钮分步骤运行程序" Name="LabPromptingMessage" Grid.Row="0" Height="28" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" />
+        <Button Grid.Row="3" Grid.Column="1" Content="暂停" Height="30" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnPause" Width="80" Click="btnPause_Click" IsEnabled="False"/>
+        <Button Grid.Row="3" Grid.Column="2" Content="停止" Height="30" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnStop" Width="80" Click="btnStop_Click" IsEnabled="False"/>
+        <Button Grid.Row="3" Grid.Column="3" Content="关闭" Height="30" HorizontalAlignment="Center" Margin="0,0,0,0" Name="btnClose" Width="80" Click="btnClose_Click" IsEnabled="True"/>
+
     </Grid>
 </Window>

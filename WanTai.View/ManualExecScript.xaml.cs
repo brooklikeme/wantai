@@ -26,6 +26,7 @@ namespace WanTai.View
         }
         public string scriptFileName { get; set; }
         bool RunFalg = true;
+        bool PauseFlag = false;
         private void btnScript_Click(object sender, RoutedEventArgs e)
         {
             btnScript1.IsEnabled = false;
@@ -33,6 +34,11 @@ namespace WanTai.View
             btnScript3.IsEnabled = false;
             btnScript4.IsEnabled = false;
             btnScript5.IsEnabled = false;
+            btnPause.IsEnabled = true;
+            btnStop.IsEnabled = true;
+            btnClose.IsEnabled = false;
+            RunFalg = true;
+            PauseFlag = false;
             scriptFileName = (sender as Button).DataContext.ToString();
             Thread thread = new Thread(new ThreadStart(delegate() {
                 while (RunFalg)
@@ -40,26 +46,32 @@ namespace WanTai.View
                     this.Dispatcher.BeginInvoke((Action)delegate()
                     {
                         if (progressBar1.Value == progressBar1.Maximum)
-                            progressBar1.Maximum += 30;
-                         progressBar1.Value += 1;
+                            progressBar1.Value = progressBar1.Maximum - 30;
+                        if (!PauseFlag)
+                        {
+                            progressBar1.Value += 1;
+                        }
                     });
                     Thread.Sleep(100 * 1);
-                }
+                 }
                  this.Dispatcher.BeginInvoke((Action)delegate()
                  {
-                     if (!ExitFalg)
+                     if (!RunFalg)
                      {
+                         progressBar1.Value = 0;
                          btnScript1.IsEnabled = true;
                          btnScript2.IsEnabled = true;
                          btnScript3.IsEnabled = true;
                          btnScript4.IsEnabled = true;
                          btnScript5.IsEnabled = true;
-                         this.DialogResult = true;
+                         btnPause.IsEnabled = false;
+                         btnStop.IsEnabled = false;
+                         btnClose.IsEnabled = true;
                      }
                  });
             }));
             thread.Start();
-            Thread threadRunScript = new Thread(new ThreadStart(delegate()
+            ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object state)
             {
                 try
                 {
@@ -71,10 +83,16 @@ namespace WanTai.View
                 {
                     MessageBox.Show(ex.Message);
                 }
-                RunFalg = false;
-               
+                if (!PauseFlag)
+                    RunFalg = false;
+
             }));
-            threadRunScript.Start();
+
+            //Thread threadRunScript = new Thread(new ThreadStart(delegate()
+            //{
+            //   
+            //}));
+            //threadRunScript.Start();
         }
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
         public static extern int GetWindowLong(IntPtr hwnd, int nIndex);
@@ -112,11 +130,104 @@ namespace WanTai.View
             this.MaxWidth = this.Width;
             this.MinWidth = this.Width;
         }
-        bool ExitFalg = false;
+
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            ExitFalg = true;
+            PauseFlag = false;
             RunFalg = false;
+        }
+
+        private void btnStop_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke((Action)delegate()
+            {
+                btnStop.IsEnabled = false;
+                btnPause.IsEnabled = false;
+            });
+
+            try
+            {
+                WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+                processor.StopScript();
+                processor.StopScript();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            this.Dispatcher.BeginInvoke((Action)delegate()
+            {
+                btnStop.IsEnabled = true;
+                btnPause.IsEnabled = true;
+            });
+
+        }
+
+        private void btnPause_Click(object sender, RoutedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke((Action)delegate()
+            {
+                btnStop.IsEnabled = false;
+                btnPause.IsEnabled = false;
+            });
+            if ((String)btnPause.Content == "暂停")
+            {
+                try
+                {
+                    WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+                    if (processor.PauseScript())
+                    {
+                        PauseFlag = true;
+                        btnPause.Content = "继续";
+                    }
+                    else
+                    {
+                        MessageBox.Show("当前状态无法暂停！", "系统提示！");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                this.Dispatcher.BeginInvoke((Action)delegate()
+                {
+                    btnStop.IsEnabled = true;
+                    btnPause.IsEnabled = true;
+                });
+
+            }
+            else
+            {
+                ThreadPool.QueueUserWorkItem(new WaitCallback(delegate(object state)
+                {
+                    try
+                    {
+                        PauseFlag = false;
+                        WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+                        processor.ResumeScript();
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                    if (!PauseFlag)
+                        RunFalg = false;
+
+                }));
+                btnPause.Content = "暂停";
+                this.Dispatcher.BeginInvoke((Action)delegate()
+                {
+                    btnStop.IsEnabled = true;
+                    btnPause.IsEnabled = true;
+                });
+            }
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.DialogResult = true;
         }
 
         private void btnScript2_Click(object sender, RoutedEventArgs e)

@@ -613,10 +613,10 @@ namespace WanTai.View
             }
             IsPoack = true;
 
-            if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
-            {
-                btn_Save.IsEnabled = true;
-            }
+            // if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+            // {
+            //     btn_Save.IsEnabled = true;
+            // }
 
             labelRotationName.Content = (SessionInfo.PraperRotation == null ? "" : SessionInfo.PraperRotation.RotationName)
                 + (SessionInfo.BatchTimes > 1 ? "(第" + SessionInfo.BatchType + "次上样, 共" + SessionInfo.BatchTimes.ToString() + "次)" : ""); 

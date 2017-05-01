@@ -145,12 +145,9 @@
                                          LargeImageSource="Resources\TecanRestoration_icon.gif"
                                          Label="仪器复位" Click="TecanRestoration_Button_Click"/>
                         <my:RibbonButton x:Name="ManualExecScript_Button" 
-                                         LargeImageSource="Resources\TecanRestoration_icon.gif"
-                                         Label="手工执行" Click="ManualExecScript_Button_Click"/>
-
-                        <my:RibbonButton x:Name="OpenEVOware_Button"   
                                          LargeImageSource="Resources\Tecan.gif"
-                                         Label="EvoWare" Click="OpenEVOware_Button_Click" />                                              
+                                         Label="手工执行" Click="ManualExecScript_Button_Click"/>
+                                             
                     </my:RibbonGroup>
                     <my:RibbonGroup x:Name="Group3" VerticalAlignment="Center" >
                       

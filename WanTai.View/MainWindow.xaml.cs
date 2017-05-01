@@ -497,6 +497,7 @@ namespace WanTai.View
             }
         }
 
+        /*
         private void OpenEVOware_Button_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -528,6 +529,7 @@ namespace WanTai.View
                 MessageBox.Show(ex.Message, "系统提示");
             }
         }
+         */
 
         private void PoolingRulesConfig_Button_Click(object sender, RoutedEventArgs e)
         {
