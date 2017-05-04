@@ -441,11 +441,11 @@ namespace WanTai.View
             tabControl.SelectedIndex = 0;
             if (!SessionInfo.AllowBatchMore)
             {
-                MessageBox.Show("混样数已达96，请略过第二次上样!", "系统提示！", MessageBoxButton.OK);
+                MessageBox.Show("混样数已达96，请略过第二次上样!", "系统提示！", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
             }
             else
             {
-                MessageBox.Show("请为下一次上样准备样品!", "系统提示！", MessageBoxButton.OK);
+                MessageBox.Show("请为下一次上样准备样品!", "系统提示！", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
             }
             tabControl.SelectedIndex = 0;
             ((TabItem)tabControl.SelectedItem).Focus();

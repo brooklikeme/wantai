@@ -343,6 +343,7 @@ namespace WanTai.View
         private void LiquidConfig_Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.LiquidConfiguration liquidConfiguration = new Configuration.LiquidConfiguration();
+            liquidConfiguration.Owner = this;
             liquidConfiguration.ShowDialog();
         }
 
@@ -403,12 +404,14 @@ namespace WanTai.View
         private void ReagentSuppliesConfig_Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.ReagentSuppliesConfigurationList reagentSuppliesConfiguration = new Configuration.ReagentSuppliesConfigurationList();
+            reagentSuppliesConfiguration.Owner = this;
             reagentSuppliesConfiguration.ShowDialog();
         }
 
         private void SystemConfig_Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.SystemConfigurationList systemConfigurationList = new Configuration.SystemConfigurationList();
+            systemConfigurationList.Owner = this;
             systemConfigurationList.ShowDialog();
         }
 
@@ -421,12 +424,14 @@ namespace WanTai.View
         private void Operation_Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.OperationConfigurationList operationConfigList = new Configuration.OperationConfigurationList();
+            operationConfigList.Owner = this;
             operationConfigList.ShowDialog();
         }
 
         private void QueryExperiment_Button_Click(object sender, RoutedEventArgs e)
         {
             HistoryQuery.ExperimentsViewList experimentsViewList = new HistoryQuery.ExperimentsViewList();
+            experimentsViewList.Owner = this;
             // experimentsViewList.ResumeExperimentEvent += new ResumeExperimentHandler(ResumeExperiment);
             experimentsViewList.ShowDialog();
             if (null != experimentsViewList.resumeExperimentFileName)
@@ -440,6 +445,7 @@ namespace WanTai.View
         private void QueryNAT_Button_Click(object sender, RoutedEventArgs e)
         {
             HistoryQuery.NATViewList natViewList = new HistoryQuery.NATViewList();
+            natViewList.Owner = this;
             natViewList.ShowDialog();
         }
 
@@ -534,12 +540,14 @@ namespace WanTai.View
         private void PoolingRulesConfig_Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.PoolingRulesConfigurationList configList = new Configuration.PoolingRulesConfigurationList();
+            configList.Owner = this;
             configList.ShowDialog();
         }
 
         private void TestingItemsConfig_Button_Click(object sender, RoutedEventArgs e)
         {
             Configuration.TestingItemConfigurationList configList = new Configuration.TestingItemConfigurationList();
+            configList.Owner = this;
             configList.ShowDialog();
         }
 
@@ -547,24 +555,28 @@ namespace WanTai.View
         private void CreateUser_Button_Click(object sender, RoutedEventArgs e)
         {
             UserManagement.AddUser addUser = new UserManagement.AddUser();
+            addUser.Owner = this;
             addUser.ShowDialog();
         }
 
         private void EditUser_Button_Click(object sender, RoutedEventArgs e)
         {
             UserManagement.UserList users = new UserManagement.UserList();
+            users.Owner = this;
             users.ShowDialog();
         }
 
         private void EditPassword_Button_Click(object sender, RoutedEventArgs e)
         {
             UserManagement.ChangePassword changePassword = new UserManagement.ChangePassword();
+            changePassword.Owner = this;
             changePassword.ShowDialog();
         }
 
         private void LogView_Button_Click(object sender, RoutedEventArgs e)
         {
             HistoryQuery.LogViewList logViewList = new HistoryQuery.LogViewList();
+            logViewList.Owner = this;
             logViewList.ShowDialog();
         }
 
@@ -572,6 +584,7 @@ namespace WanTai.View
         {
             TecanMaintain frm = new TecanMaintain("day");
             frm.scriptFileName = WanTai.Common.Configuration.GetMaintainDayEvoScriptName();
+            frm.Owner = this;
             frm.ShowDialog();
         }
 
@@ -579,12 +592,14 @@ namespace WanTai.View
         {
             TecanMaintain frm = new TecanMaintain("week");
             frm.scriptFileName = WanTai.Common.Configuration.GetMaintainWeekEvoScriptName();
+            frm.Owner = this;
             frm.ShowDialog();
         }
         private void TecanMaintainMonth_Button_Click(object sender, RoutedEventArgs e)
         {
             TecanMaintain frm = new TecanMaintain("month");
             frm.scriptFileName = WanTai.Common.Configuration.GetMaintainMonthEvoScriptName();
+            frm.Owner = this;
             frm.ShowDialog();
         }
 
@@ -592,12 +607,14 @@ namespace WanTai.View
         {
             TecanRestoration frm = new TecanRestoration();
             frm.scriptFileName =  WanTai.Common.Configuration.GetTecanRestorationScriptName();
+            frm.Owner = this;
             frm.ShowDialog();
         }
 
         private void ManualExecScript_Button_Click(object sender, RoutedEventArgs e)
         {
             ManualExecScript frm = new ManualExecScript();
+            frm.Owner = this;
             frm.ShowDialog();
         }
 
