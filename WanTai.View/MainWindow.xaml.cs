@@ -282,6 +282,7 @@ namespace WanTai.View
             SessionInfo.ExperimentID = new Guid();
             SessionInfo.PraperRotation = null;
             SessionInfo.CurrentExperimentsInfo = null;
+            SessionInfo.ResumeExecution = false;
             NewExperiment newExperiment = new NewExperiment();
             ribbon.IsEnabled = false;
             mainFrame.IsEnabled = false;
