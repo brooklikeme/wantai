@@ -302,6 +302,7 @@ namespace WanTai.View
               SessionInfo.RotationIndex = 0;
               SessionInfo.NextTurnStep = -1;
               SessionInfo.FirstStepMixing = 0;
+              SessionInfo.BatchTotalHoles = 0;
               WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
               processor.OnNextTurnStepDispse();
                 //  mainFrame.Navigate(mainPage);
@@ -756,7 +757,7 @@ namespace WanTai.View
                 {
                     System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
                     sfd.FileName = db_name + "_" + DateTime.Now.ToString("yyyyMMddhhmmss") + ".bak";
-                    sfd.Filter = "Bak Files(*.bak)|All Files(*.*)";
+                    sfd.Filter = "Bak Files(*.bak)|*.bak|All Files(*.*)|*.*";
                     string fileName = string.Empty;
                     if (sfd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
@@ -797,7 +798,7 @@ namespace WanTai.View
         {
             //
             System.Windows.Forms.OpenFileDialog ofd = new System.Windows.Forms.OpenFileDialog();
-            ofd.Filter = "Bak Files(*.bak)|All Files(*.*)";
+            ofd.Filter = "Bak Files(*.bak)|*.bak|All Files(*.*)|*.*";
             string fileName = string.Empty;
             if (ofd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -813,20 +814,60 @@ namespace WanTai.View
                     {
                         try
                         {
+                            string mdf_logic_name = "";
+                            string log_logic_name = "";
+                            string mdf_file_name = "";
+                            string log_file_name = "";
+                            string new_mdf_file_name = "";
+                            string new_log_file_name = "";
                             string connectionString = WanTai.Common.Configuration.GetConnectionString();
 
                             using (SqlConnection conn = new SqlConnection(connectionString))
                             {
                                 conn.Open();
-                                string CommandText = "restore database [" + db_name + "] from disk =" + "'" + fileName + "'";
+                                // get logic file name
+                                string CommandText = "restore FILELISTONLY from disk =" + "'" + fileName + "'";
 
                                 using (SqlCommand cmd = new SqlCommand(CommandText, conn))
                                 {
                                     cmd.CommandType = CommandType.Text;
 
-                                    cmd.ExecuteNonQuery();
+                                    SqlDataReader reader = cmd.ExecuteReader();
+                                    int count = reader.FieldCount;
+                                    int line_index = 0;
+                                    while (reader.Read() && line_index < 2)
+                                    {
+                                        if (line_index == 0){
+                                            mdf_logic_name = reader.GetValue(0).ToString();
+                                            mdf_file_name = reader.GetValue(1).ToString();
+                                        } else {
+                                            log_logic_name = reader.GetValue(0).ToString();
+                                            log_file_name = reader.GetValue(1).ToString();
+                                        }
+                                        line_index++;
+                                    }
                                 }
                                 conn.Close();
+
+                                if (!String.IsNullOrEmpty(mdf_logic_name) && !String.IsNullOrEmpty(mdf_file_name) 
+                                    && !String.IsNullOrEmpty(log_logic_name) && !String.IsNullOrEmpty(log_file_name))
+                                {
+                                    conn.Open();
+                                    new_mdf_file_name = mdf_file_name.Substring(0, mdf_file_name.LastIndexOf("\\") + 1) + db_name + ".mdf";
+                                    new_log_file_name = log_file_name.Substring(0, log_file_name.LastIndexOf("\\") + 1) + db_name + "_log.ldf";
+                                    
+                                    // restore database
+                                    CommandText = "restore database [" + db_name + "] from disk =" + "'" + fileName + "' WITH MOVE '" + mdf_logic_name + "' TO '"
+                                        + new_mdf_file_name + "', MOVE '" + log_logic_name + "' TO '" + new_log_file_name + "'";
+                                    
+                                    using (SqlCommand cmd = new SqlCommand(CommandText, conn))
+                                    {
+                                        cmd.CommandType = CommandType.Text;
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                    conn.Close();
+                                }
                             }
                             System.Windows.Forms.MessageBox.Show("恢复数据库成功!");
                         }
