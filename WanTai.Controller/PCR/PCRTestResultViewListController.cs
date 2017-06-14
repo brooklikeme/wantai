@@ -407,7 +407,7 @@ namespace WanTai.Controller.PCR
                                         reagent_batch = tubeBarCode.Substring(0, tubeBarCode.Length - 2);
                                     }
                                     string batchType = reader["BatchType"].ToString();
-                                    if (batchType == null || batchType == "null")
+                                    if (batchType == null || batchType == "null" || batchType == "")
                                     {
                                         foreach (SystemFluidConfiguration sf in SystemFluid) {
                                             if (sf.BatchType == "1" && sf.Grid == (int)reader["Grid"] && sf.Position == (int)reader["Position"])

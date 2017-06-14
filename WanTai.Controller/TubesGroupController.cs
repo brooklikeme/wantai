@@ -296,6 +296,8 @@ namespace WanTai.Controller
                                         tube.TubeType = (int)Tubetype.PositiveControl;
                                     if (_tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "Tube")
                                         tube.TubeType = (int)Tubetype.Tube;
+                                    if (_tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "QC")
+                                        tube.TubeType = (int)Tubetype.QC;
                                     // 100的加500到一个板子，其它的分别加480到两个板子
                                     tube.Volume = workDeskType == "100" ? 500 : 480;
 
