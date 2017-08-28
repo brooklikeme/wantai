@@ -517,24 +517,35 @@ namespace WanTai.Controller.EVO
                     return bSuccessful;
                 }
             } while (m_evoSys.GetScriptStatus(iScriptID) == EVOAPILib.SC_ScriptStatus.SS_BUSY);
-            
-            if (m_evoSys.GetScriptStatus(iScriptID) == EVOAPILib.SC_ScriptStatus.SS_STOPPED)
+
+            try
             {
-                System.Threading.Thread.Sleep(5000);
-                if (errorList != null && errorList.Count > 0 && 
-                    (errorList[errorList.Count - 1].StartsWith("Run finished with errors") || ((errorList.Count - 2) >= 0 
-                    && errorList[errorList.Count - 2].StartsWith("Run finished with errors"))))
+                if (m_evoSys.GetScriptStatus(iScriptID) == EVOAPILib.SC_ScriptStatus.SS_STOPPED)
                 {
-                    bSuccessful = false;
+                    System.Threading.Thread.Sleep(5000);
+                    if (errorList != null && errorList.Count > 0 &&
+                        (errorList[errorList.Count - 1].StartsWith("Run finished with errors") || ((errorList.Count - 2) >= 0
+                        && errorList[errorList.Count - 2].StartsWith("Run finished with errors"))))
+                    {
+                        bSuccessful = false;
+                    }
+                }
+                else
+                {
+                    bSuccessful = true;
+                }
+
+                if (errorList != null)
+                {
+                    errorList.Clear();
+                    errorList = null;
                 }
             }
-            else
+            catch (Exception e)
             {
-                bSuccessful = true;
+                WanTai.Common.CommonFunction.WriteLog(e.Message);
+                WanTai.Common.CommonFunction.WriteLog(e.StackTrace);
             }
-
-            errorList.Clear();
-            errorList = null;
             return bSuccessful;
         }
 
@@ -582,24 +593,35 @@ namespace WanTai.Controller.EVO
                 }
             } while (m_evoSys.GetScriptStatus(iScriptID) == EVOAPILib.SC_ScriptStatus.SS_BUSY);
 
-            
-            if (m_evoSys.GetScriptStatus(iScriptID) == EVOAPILib.SC_ScriptStatus.SS_STOPPED)
+
+            try
             {
-                System.Threading.Thread.Sleep(5000);
-                if (errorList != null && errorList.Count > 0 &&
-                    (errorList[errorList.Count - 1].StartsWith("Run finished with errors") || ((errorList.Count - 2) >= 0
-                    && errorList[errorList.Count - 2].StartsWith("Run finished with errors"))))
+                if (m_evoSys.GetScriptStatus(iScriptID) == EVOAPILib.SC_ScriptStatus.SS_STOPPED)
                 {
-                    bSuccessful = false;
+                    System.Threading.Thread.Sleep(5000);
+                    if (errorList != null && errorList.Count > 0 &&
+                        (errorList[errorList.Count - 1].StartsWith("Run finished with errors") || ((errorList.Count - 2) >= 0
+                        && errorList[errorList.Count - 2].StartsWith("Run finished with errors"))))
+                    {
+                        bSuccessful = false;
+                    }
+                }
+                else
+                {
+                    bSuccessful = true;
+                }
+
+                if (errorList != null)
+                {
+                    errorList.Clear();
+                    errorList = null;
                 }
             }
-            else
+            catch (Exception e)
             {
-                bSuccessful = true;
+                WanTai.Common.CommonFunction.WriteLog(e.Message);
+                WanTai.Common.CommonFunction.WriteLog(e.StackTrace);
             }
-
-            errorList.Clear();
-            errorList = null;
             return bSuccessful;
         }
 
