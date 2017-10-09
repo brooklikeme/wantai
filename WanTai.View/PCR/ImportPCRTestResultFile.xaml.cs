@@ -1401,13 +1401,13 @@ namespace WanTai.View.PCR
                     {
                         HBVResult = PCRTest.NegativeResult;
                     }
-                    else if (!string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) > BCIValue)
-                    {
-                        HBVResult = PCRTest.InvalidResult;
-                    }
                     else if (hexNumber > BCIValue && !string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) > BCIValue)
                     {
                         HBVResult = PCRTest.InvalidResult;
+                    }
+                    else if (hexNumber <= BCIValue && (!string.IsNullOrEmpty(rox) && float.TryParse(rox, out outNumber) && float.Parse(rox) > BCIValue))
+                    {
+                        HBVResult = PCRTest.BCILowResult;
                     }
                     else
                     {
@@ -1430,13 +1430,13 @@ namespace WanTai.View.PCR
                     {
                         HCVResult = PCRTest.NegativeResult;
                     }
-                    else if (!string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber) && float.Parse(fam) > BCIValue)
-                    {
-                        HCVResult = PCRTest.InvalidResult;
-                    }
                     else if (hexNumber > BCIValue && !string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber) && float.Parse(fam) > BCIValue)
                     {
                         HCVResult = PCRTest.InvalidResult;
+                    }
+                    else if (hexNumber <= BCIValue && (!string.IsNullOrEmpty(fam) && float.TryParse(fam, out outNumber) && float.Parse(fam) > BCIValue))
+                    {
+                        HCVResult = PCRTest.BCILowResult;
                     }
                     else
                     {
@@ -1459,13 +1459,13 @@ namespace WanTai.View.PCR
                     {
                         HIVResult = PCRTest.NegativeResult;
                     }
-                    else if (!string.IsNullOrEmpty(cy5) && float.TryParse(cy5, out outNumber) && float.Parse(cy5) > BCIValue)
-                    {
-                        HIVResult = PCRTest.InvalidResult;
-                    }
                     else if (hexNumber > BCIValue && !string.IsNullOrEmpty(cy5) && float.TryParse(cy5, out outNumber) && float.Parse(cy5) > BCIValue)
                     {
                         HIVResult = PCRTest.InvalidResult;
+                    }
+                    else if (hexNumber <= BCIValue && (!string.IsNullOrEmpty(cy5) && float.TryParse(cy5, out outNumber) && float.Parse(cy5) > BCIValue))
+                    {
+                        HIVResult = PCRTest.BCILowResult;
                     }
                     else
                     {

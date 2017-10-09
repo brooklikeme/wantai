@@ -405,12 +405,12 @@ namespace WanTai.Controller.HistoryQuery
                         if (SessionInfo.WorkDeskType == "100")
                             info.Diti1000 = (int)Math.Ceiling((info.Sample + info.NC + info.PC + info.QC + info.Complement + 16) * 1.0 / 96);
                         else
-                            info.Diti1000 = (int)Math.Ceiling(((int)Math.Ceiling(info.Mix * 1.0 / 6) + info.Single * 2 + info.Split * 2 + info.NC + info.PC + info.QC + 34) * 1.0 / 96);
+                            info.Diti1000 = (int)Math.Ceiling((info.Mix + info.Single * 2 + 42) * 1.0 / 96);
                         // info.Diti200 = (int)Math.Ceiling((info.NC + info.PC + qc_single * 2 + qc_mix + info.Mix + info.Single + info.Split) * 1.0 / 2 + 24);
                         if (SessionInfo.WorkDeskType == "100")
                             info.Diti200 = (int)Math.Ceiling((info.Sample + info.NC + info.PC + info.QC + info.Complement + 10) * 1.0 / 96);
                         else
-                            info.Diti200 = (int)Math.Ceiling((info.ReagentTheory * 2 + 22) * 1.0 / 96);
+                            info.Diti200 = (int)Math.Ceiling((info.Single + info.Mix * 1.0 / 6 + 16) * 1.0 / 96);
                         if (pcrPlateType == 0)
                         {
                             commandText = "select count(*) from Plates where ExperimentID=@ExperimentID and PlateType=2";
@@ -431,7 +431,7 @@ namespace WanTai.Controller.HistoryQuery
                             if (SessionInfo.WorkDeskType == "100")
                                 info.PCR = (int)Math.Ceiling(info.ReagentTheory * 1.0 / 8);
                             else
-                                info.PCR = (int)Math.Ceiling((((info.NC + info.PC + info.QC + info.Mix + info.Single + info.Split) * 1.0 / 6 + 2) * 1.0 / 8) * 3);
+                                info.PCR = (int)Math.Ceiling((info.Mix * 1.0 / 6 + info.Split + info.Single + info.NC + info.PC + info.QC) / 8);
                         }
                     }
                 }

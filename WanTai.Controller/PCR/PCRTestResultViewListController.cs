@@ -681,7 +681,7 @@ namespace WanTai.Controller.PCR
                                 {
                                     dRow["PCRTestResult"] = reader["Result"];
 
-                                    if (reader["Result"].ToString().Contains(PCRTest.PositiveResult) || reader["Result"].ToString().Contains(PCRTest.LowResult))
+                                    if (reader["Result"].ToString().Contains(PCRTest.PositiveResult) || reader["Result"].ToString().Contains(PCRTest.LowResult) || reader["Result"].ToString().Contains(PCRTest.BCILowResult))
                                     {
                                         dRow["Color"] = WantagColor.WantagRed;
                                     }
@@ -858,7 +858,7 @@ namespace WanTai.Controller.PCR
                             {
                                 dataRow["Color"] = WantagColor.WantagYellow;
                             }
-                            else if (middRow["PCRTestResult"].ToString().Contains(PCRTest.PositiveResult) || middRow["PCRTestResult"].ToString().Contains(PCRTest.LowResult))
+                            else if (middRow["PCRTestResult"].ToString().Contains(PCRTest.PositiveResult) || middRow["PCRTestResult"].ToString().Contains(PCRTest.LowResult) || middRow["PCRTestResult"].ToString().Contains(PCRTest.BCILowResult))
                             {
                                 dataRow["Color"] = WantagColor.WantagRed;
                             }

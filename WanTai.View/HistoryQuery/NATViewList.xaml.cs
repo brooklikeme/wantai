@@ -160,8 +160,8 @@ namespace WanTai.View.HistoryQuery
                 }
                 Microtiter += expTimes * 1;
                 Microtiter_SUM += expTimes * 1;
-                ReagentSlot += expTimes * 0.43;
-                ReagentSlot_SUM += expTimes * 0.43;
+                ReagentSlot += expTimes * 0.57143;
+                ReagentSlot_SUM += expTimes * 0.57143;
 
                 System.Data.DataRow dRow = dataTable.NewRow();
                 dRow["StartTime"] = beginDate.ToString("yyyy-MM-dd");
