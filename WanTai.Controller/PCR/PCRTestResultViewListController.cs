@@ -664,7 +664,7 @@ namespace WanTai.Controller.PCR
                                             {
                                                 dRow["HCV"] = ctString;
                                             }
-                                            else if ("CY5" == Detector)
+                                            else if ("CY5" == Detector.ToUpper())
                                             {
                                                 dRow["HIV"] = ctString;
                                             }
