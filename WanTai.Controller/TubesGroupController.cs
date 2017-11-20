@@ -473,7 +473,7 @@ namespace WanTai.Controller
                                             _PCRPlatePosition.Position = posIndex;
                                             _PCRPlatePosition.DWPlatePositions.Add(pos);
                                             _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-                                            PCRCSV[pcrIndex] = PlateName.DWPlate5 + "," + pos.Position.ToString() + ",20," + PlateName.PCRPlate + "," + posIndex.ToString();
+                                            PCRCSV[pcrIndex] = PlateName.DWPlate2 + "," + (pos.Position + 48).ToString() + ",20," + PlateName.PCRPlate + "," + posIndex.ToString();
                                             pcrIndex++;
                                             posIndex ++;
                                         }
@@ -711,7 +711,7 @@ namespace WanTai.Controller
                                                 _PCRPlatePosition.DWPlatePositions.Add(DWPlate_2_Position);
                                             _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
 
-                                            PCRCSV[TestionItem.TestingItemPCR - 1] = PlateName.DWPlate5 + "," + (HolePosition + 1).ToString() + ",20," + PlateName.PCRPlate + "," + TestionItem.TestingItemPosition.ToString();
+                                            PCRCSV[TestionItem.TestingItemPCR - 1] = PlateName.DWPlate2 + "," + (HolePosition + 1 + 48).ToString() + ",20," + PlateName.PCRPlate + "," + TestionItem.TestingItemPosition.ToString();
                                             TestionItem.TestingItemPosition += 1;
                                             TestionItem.TestingItemPCR += 1;
                                         }
@@ -835,7 +835,7 @@ namespace WanTai.Controller
                                                 //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
                                                 _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
 
-                                                PCRCSV[TestionItem.TestingItemPCR - 1] = PlateName.DWPlate5 + "," + (HolePosition + demandIndex + 1).ToString() + ",20," + PlateName.PCRPlate + "," + TestionItem.TestingItemPosition.ToString();
+                                                PCRCSV[TestionItem.TestingItemPCR - 1] = PlateName.DWPlate2 + "," + (HolePosition + demandIndex + 1 + 48).ToString() + ",20," + PlateName.PCRPlate + "," + TestionItem.TestingItemPosition.ToString();
                                                 TestionItem.TestingItemPosition += 1;
                                                 TestionItem.TestingItemPCR += 1;
                                             }
@@ -923,7 +923,7 @@ namespace WanTai.Controller
                                                 //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
                                                 _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
 
-                                                PCRCSV[TestionItem.TestingItemPCR - 1] = PlateName.DWPlate5 + "," + (HolePosition + 1).ToString() + ",20," + PlateName.PCRPlate + "," + TestionItem.TestingItemPosition.ToString();
+                                                PCRCSV[TestionItem.TestingItemPCR - 1] = PlateName.DWPlate2 + "," + (HolePosition + 1 + 48).ToString() + ",20," + PlateName.PCRPlate + "," + TestionItem.TestingItemPosition.ToString();
                                                 TestionItem.TestingItemPosition += 1;
                                                 TestionItem.TestingItemPCR += 1;
                                             }

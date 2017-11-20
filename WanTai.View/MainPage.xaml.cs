@@ -64,6 +64,7 @@ namespace WanTai.View
            // runSelect_listBox.IsEnabled = false;
             btnStop.IsEnabled = false;
             //btnRStart.IsEnabled = false;
+
             for (int i = 1; i < tabControl.Items.Count; i++)
             {
                ((TabItem)tabControl.Items[i]).IsEnabled = false;
@@ -255,6 +256,7 @@ namespace WanTai.View
         private void frameDeskTop_ContentRendered(object sender, EventArgs e)
         {
             DeskTop deskTop = (DeskTop)frameDeskTop.Content;
+ 
             deskTop.labelRotationName.Content = "";
             deskTop.NextStepEvent += new NextStepHandler(Button_Click_1);
         }

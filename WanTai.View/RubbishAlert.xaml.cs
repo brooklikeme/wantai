@@ -34,9 +34,11 @@ namespace WanTai.View
         {
             InitializeComponent();
 
+            /*
             timer.Enabled = false;
             timer.Interval = 1000;
             timer.Elapsed += SwitchingAnimation;
+              */
 
             int width = 0, limit = 0; double offset = 0;
             if (SessionInfo.WorkDeskType == "100")

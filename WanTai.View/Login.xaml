@@ -305,7 +305,7 @@
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <my:ImageExpender   HorizontalAlignment="Stretch"  Stretch="Fill" x:Name="imagBackground" Source="/WanTag;component/Resources/Login_Bg.gif" VerticalAlignment="Stretch" Grid.RowSpan="3" Grid.ColumnSpan="4"  />
+        <my:ImageExpender   HorizontalAlignment="Stretch"  Stretch="Fill" x:Name="imagBackground" Source="/WanTag;component/Resources/Login_Bg.png" VerticalAlignment="Stretch" Grid.RowSpan="3" Grid.ColumnSpan="4"  />
         <Label Content="用户名" Height="24" x:Name="labLoginName" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" Foreground="Black" FontSize="13" Grid.Row="1" Grid.Column="1" FontWeight="Bold" />
         <TextBox Height="23" HorizontalAlignment="Left"  x:Name="txt_LoginName" VerticalAlignment="Center" Width="110" Margin="0" Grid.Row="1" Grid.Column="2" />
         <Label Content="密  码" Height="24" x:Name="labLoginPassWord" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0" Foreground="Black" FontSize="13" Grid.Row="2" Grid.Column="1" FontWeight="Bold" />

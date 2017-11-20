@@ -89,7 +89,7 @@ namespace WanTai.View
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Stream imageStream = Application.GetResourceStream(new Uri("/WanTag;component/Resources/Login_Bg.gif", UriKind.Relative)).Stream;
+            Stream imageStream = Application.GetResourceStream(new Uri("/WanTag;component/Resources/Login_Bg.png", UriKind.Relative)).Stream;
             System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(imageStream);
             this.imagBackground.Image = bitmap;
             txt_LoginName.Focus();
