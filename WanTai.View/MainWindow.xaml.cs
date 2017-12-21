@@ -622,8 +622,9 @@ namespace WanTai.View
 
         private void Help_button_Click(object sender, RoutedEventArgs e)
         {
-            /*RubbishAlert rubbishAlert = new RubbishAlert(new Guid());
-            rubbishAlert.ShowDialog();*/
+            PCRRubbishAlert rubbishAlert = new PCRRubbishAlert(new Guid());
+            rubbishAlert.ShowDialog();
+            return;
             FileInfo fileInfo = new FileInfo("WanTagUserManual.pdf");
             if (fileInfo.Exists)
             {

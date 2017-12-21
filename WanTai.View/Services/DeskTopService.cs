@@ -199,8 +199,8 @@ namespace WanTai.View.Services
                         position--;
                         if (i == 1)
                         {
-                            containerName = "002";
-                            position = 3;
+                            containerName = "006";
+                            position = 1;
                         }
                         if (i == 4) break;
                     }

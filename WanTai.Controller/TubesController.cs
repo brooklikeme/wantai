@@ -127,7 +127,7 @@ namespace WanTai.Controller
                         aryline = strline.Split(new char[] { ';' });
                         if ((aryline[6] == "$$$" || aryline[6] == "") && !WanTai.Common.Configuration.GetIsMock() && !WanTai.Common.Configuration.GetIsSimulation()) continue;
                         int Position = int.Parse(aryline[0]);
-                        int Grid = int.Parse(aryline[2]) - 1;
+                        int Grid = !WanTai.Common.Configuration.GetIsSimulation() ? int.Parse(aryline[2]) - 1 : 1;
                         Tubes.Rows[Grid]["Position" + Position.ToString()] = Position;
                         Tubes.Rows[Grid]["Grid" + Position.ToString()] = Grid + 1;
                         Tubes.Rows[Grid]["BarCode" + Position.ToString()] = aryline[6];

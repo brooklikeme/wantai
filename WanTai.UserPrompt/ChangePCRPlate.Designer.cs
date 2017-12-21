@@ -44,7 +44,7 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(291, 297);
+            this.btnOK.Location = new System.Drawing.Point(282, 395);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(64, 20);
             this.btnOK.TabIndex = 7;
@@ -57,10 +57,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pictureBox1.Image = global::WanTai.UserPrompt.Properties.Resources.PCRPlate_200;
-            this.pictureBox1.Location = new System.Drawing.Point(18, 38);
+            this.pictureBox1.Location = new System.Drawing.Point(80, 58);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(627, 242);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.Size = new System.Drawing.Size(487, 310);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 8;
             this.pictureBox1.TabStop = false;
             // 
@@ -68,7 +68,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(664, 329);
+            this.ClientSize = new System.Drawing.Size(672, 450);
             this.ControlBox = false;
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnOK);
@@ -80,7 +80,6 @@
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

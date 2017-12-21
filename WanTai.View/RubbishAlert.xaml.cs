@@ -91,7 +91,22 @@ namespace WanTai.View
                 plate.NeedVolume = 1;
                 plate.CurrentVolume = 1;
                 plate.Grid = 1;
-                plate.Position = 1;
+                plate.Position = 3;
+                plate.ContainerName = "001";
+                plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
+                plate.ItemType = (short)supply.ItemType;
+                plate.BarcodePrefix = supply.BarcodePrefix;
+                plate.ConfigurationItemID = supply.ItemID;
+                plate.Correct = false;
+                plates.Add(plate);
+                // add second dw96 plate
+                plate = new Control.Plate();
+                plate.DisplayName = supply.DisplayName;
+                plate.ChineseName = supply.DisplayName;
+                plate.NeedVolume = 1;
+                plate.CurrentVolume = 1;
+                plate.Grid = 1;
+                plate.Position = 2;
                 plate.ContainerName = "001";
                 plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
                 plate.ItemType = (short)supply.ItemType;
@@ -158,9 +173,10 @@ namespace WanTai.View
                 }
                 else if (supply.ItemType == 103 )//&& supply.NeedVolume>0)//PCR Plate
                 {
+                    /*
                     PCRPlateColor = color;
              
-                    int position = 2;
+                    int position = 1;
                     int grid = 1;
                     //string containerName = supply.ContainerName;
                     //for (int i = 0; i < supply.CurrentVolume; i++)
@@ -171,10 +187,16 @@ namespace WanTai.View
                     plate.NeedVolume = 1;
                     plate.CurrentVolume = 1;
                     plate.Grid = grid;
+
+                    plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
+                    plate.ItemType = (short)supply.ItemType;
+                    plate.BarcodePrefix = supply.BarcodePrefix;
+
                     plate.Position = position;
                     plate.ContainerName = "002";
-                    plate.Color = color;
-                    plate.ItemType = (short)supply.ItemType;
+
+                    // plate.Color = color;
+
                     plate.ConfigurationItemID = supply.ItemID;
                     plate.Correct = false;
                     plates.Add(plate);
@@ -182,6 +204,21 @@ namespace WanTai.View
                     //position++;
                     //if (i == 2) break;
                     //}
+                     * */
+                    PlateBase plate = new Control.Plate();
+                    plate.DisplayName = supply.DisplayName;
+                    plate.ChineseName = supply.DisplayName;
+                    plate.NeedVolume = 1;
+                    plate.CurrentVolume = 1;
+                    plate.Grid = 1;
+                    plate.Position = 1;
+                    plate.ContainerName = "001";
+                    plate.Color = new SolidColorBrush((Color)ColorConverter.ConvertFromString(supply.Color));
+                    plate.ItemType = (short)supply.ItemType;
+                    plate.BarcodePrefix = supply.BarcodePrefix;
+                    plate.ConfigurationItemID = supply.ItemID;
+                    plate.Correct = false;
+                    plates.Add(plate);
                 }
             }
             /*
