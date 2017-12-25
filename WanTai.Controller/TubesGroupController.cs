@@ -1332,6 +1332,21 @@ namespace WanTai.Controller
                                 }
                                 writer.Close();
                             }
+
+                            if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) > 1)
+                            {
+                                // generate final mix sample number file name right now
+                                if (File.Exists(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName()))
+                                    File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName());
+                                if (File.Exists(SampleNumberFileName))
+                                    File.Move(SampleNumberFileName, WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName());
+
+                                if (File.Exists(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName()))
+                                    File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName());
+                                if (File.Exists(MixSampleNumberFileName))
+                                    File.Move(MixSampleNumberFileName, WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName());
+                            }
+
                         }
                     }
                     #endregion 开始保存文件
