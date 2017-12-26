@@ -1345,6 +1345,20 @@ namespace WanTai.Controller
                                     File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName());
                                 if (File.Exists(MixSampleNumberFileName))
                                     File.Move(MixSampleNumberFileName, WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName());
+                                
+                                foreach (TestingItemConfiguration Testing in TestingItemList)
+                                {
+                                    if (File.Exists(CSVPath + (ExperimentRotation == null ? "" : ExperimentRotation.RotationID.ToString()) + Testing.WorkListFileName))
+                                    {
+                                        if (File.Exists(CSVPath + Testing.WorkListFileName))
+                                        {
+                                            File.Delete(CSVPath + Testing.WorkListFileName);
+                                        };
+                                        File.Move(CSVPath + (ExperimentRotation == null ? "" : ExperimentRotation.RotationID.ToString()) + Testing.WorkListFileName,
+                                            CSVPath + Testing.WorkListFileName);
+                                    }
+                                }
+
                             }
                         }
                     }
