@@ -1374,6 +1374,7 @@ namespace WanTai.Controller.PCR
                         bool PCRTestOK = true;
                         foreach (DataRow row in _pcrTable.Rows)
                         {
+ 
                             if ((row["Number"].ToString() == "1" && row["PCRTestResult"].ToString().Contains("重新测定"))
                                 || (row["Number"].ToString() == "2" && row["PCRTestResult"].ToString().Contains("重新测定")))
                             {

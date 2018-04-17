@@ -296,11 +296,12 @@ namespace WanTai.View.HistoryQuery
                 string insertSql = string.Empty;
                 foreach (DataRow row in dataTable.Rows)
                 {
+
                     if (SessionInfo.WorkDeskType == "100")
                     {
                         insertSql = string.Format("Insert into [汇总] (序号,日期,NC,PC,定量参考品,QC,样本数,理论试剂用量,试剂损耗,试剂总用量,Diti1000,"
-                             + "Diti200,DW96深孔板,磁头套管,试剂槽100ml, 扩增耗材) "
-                             + "values('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10}, {11},{12},{13},{14},'{15}')",
+                                + "Diti200,DW96深孔板,磁头套管,试剂槽100ml, 扩增耗材) "
+                                + "values('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10}, {11},{12},{13},{14},'{15}')",
                                 row["Number"].ToString(),
                                 row["StartTime"].ToString(),
                                 row["NC"].ToString(),
@@ -321,8 +322,8 @@ namespace WanTai.View.HistoryQuery
                     else
                     {
                         insertSql = string.Format("Insert into [汇总] (序号,日期,NC,PC,QC,6混数,拆分数,单检数,理论试剂用量,试剂损耗,试剂总用量,Diti1000,"
-                             + "Diti200,DW96深孔板,磁头套管,试剂槽100ml, 扩增耗材) "
-                             + "values('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10}, {11},{12},{13},{14},'{15}',{16})",
+                                + "Diti200,DW96深孔板,磁头套管,试剂槽100ml, 扩增耗材) "
+                                + "values('{0}','{1}',{2},{3},{4},{5},{6},{7},{8},{9},{10}, {11},{12},{13},{14},'{15}',{16})",
                                 row["Number"].ToString(),
                                 row["StartTime"].ToString(),
                                 row["NC"].ToString(),
