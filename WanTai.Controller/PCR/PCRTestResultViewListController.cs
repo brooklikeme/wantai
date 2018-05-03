@@ -1362,10 +1362,10 @@ namespace WanTai.Controller.PCR
                         
                         string createTableSql = "";
                         if (!has_bci)
-                            createTableSql = "create table [" + rotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] nvarchar,[样本位置] nvarchar,"
+                            createTableSql = "create table [" + rotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] text,[样本位置] text,"
                                 + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV_Ct] nvarchar,[HBVIC_Ct] nvarchar,[HCV_Ct] nvarchar,[HCVIC_Ct] nvarchar,[HIV_Ct] nvarchar,[HIVIC_Ct] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
                         else
-                            createTableSql = "create table [" + rotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] nvarchar,[样本位置] nvarchar,"
+                            createTableSql = "create table [" + rotationName + "] ([序号] Integer,[类型] nvarchar, [样本名称] nvarchar,[样本条码] text,[样本位置] text,"
                                 + "[检测方式] nvarchar,[检测项目] nvarchar, [PCR孔位] nvarchar,[HBV_Ct] nvarchar,[HCV_Ct] nvarchar,[HIV_Ct] nvarchar,[IC_Ct] nvarchar,[检测结果] nvarchar,[实验记录] nvarchar)";
                         command.CommandText = createTableSql;
                         command.ExecuteNonQuery();
