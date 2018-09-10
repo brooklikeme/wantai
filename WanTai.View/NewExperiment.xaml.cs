@@ -62,7 +62,7 @@ namespace WanTai.View
                 timesBox.Height = 20;
                 timesBox.Width = 50;
                 timesBox.Margin = new Thickness(5);
-                for (int i = 1; i <= 6; i ++) {
+                for (int i = 1; i <= 10; i ++) {
                     timesBox.Items.Add(i.ToString());
                 }
                 timesBox.SelectedIndex = 0;
@@ -89,7 +89,7 @@ namespace WanTai.View
                 timesBox.Height = 20;
                 timesBox.Width = 50;
                 timesBox.Margin = new Thickness(5);
-                for (int i = 1; i <= 6; i++)
+                for (int i = 1; i <= 10; i++)
                 {
                     timesBox.Items.Add(i.ToString());
                 }
