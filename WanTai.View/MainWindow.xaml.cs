@@ -23,6 +23,10 @@ using System.Threading;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Web;
+
 
 namespace WanTai.View
 {
