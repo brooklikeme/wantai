@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using WanTai.Controller.EVO;
 using WanTai.DataModel;
 using WanTai.Controller.Configuration;
+using WanTai.RESTService;
 using System.Xml;
 using System.Data;
 using System.IO;
@@ -40,6 +41,8 @@ namespace WanTai.View
         public delegate void CloseWindowHandler();
         public delegate void ResumeExperimentHandler(string experiment_name);
         public event WanTai.View.MainPage.SendStopRunMsg StopRunEvent;
+
+        WebServiceHost _serviceHost;
 
         public MainWindow()
         {
@@ -128,6 +131,16 @@ namespace WanTai.View
             worker.RunWorkerAsync();
             
             Authorize();
+
+            // Start REST Service
+            RestServices ResultServices = new RestServices();
+            WebHttpBinding binding = new WebHttpBinding();
+            WebHttpBehavior behavior = new WebHttpBehavior();
+
+            _serviceHost = new WebServiceHost(ResultServices, new Uri("http://localhost:8888/"));
+            _serviceHost.AddServiceEndpoint(typeof(IRESTServices), binding, "");
+            _serviceHost.Open();
+
         }
 
         private void Authorize()
@@ -749,6 +762,9 @@ namespace WanTai.View
                 Application.Current.Shutdown();
             };
             worker.RunWorkerAsync();
+
+            // Close REST Server
+            _serviceHost.Close();
         }
 
         private void BackupDB_Button_Click(object sender, RoutedEventArgs e)

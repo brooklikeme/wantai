@@ -73,6 +73,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -619,6 +620,10 @@
     <ProjectReference Include="..\WanTai.DataModel\WanTai.DataModel.csproj">
       <Project>{AB47AF45-8AD9-446F-AFD7-126DB3919507}</Project>
       <Name>WanTai.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WanTai.RESTService\WanTai.RESTService.csproj">
+      <Project>{c9d47d09-5930-4f42-a7a5-00908983b5d5}</Project>
+      <Name>WanTai.RESTService</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
