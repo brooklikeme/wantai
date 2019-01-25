@@ -35,6 +35,7 @@ namespace WanTai.Common
         protected static string NextTurnStepScriptName = "NextTurnStepScriptName";
 
         protected static string WorkDeskType = "WorkDeskType";
+        protected static string RESTUri = "RESTUri";
         protected static string PCRTestResultWidthList = "PCRTestResultWidthList";
 
         public static string GetNextTurnStepScriptName()
@@ -142,6 +143,11 @@ namespace WanTai.Common
         public static string GetWorkDeskType()
         {
             return ConfigurationManager.AppSettings[WorkDeskType];
+        }
+
+        public static string GetRESTUri()
+        {
+            return ConfigurationManager.AppSettings[RESTUri];
         }
 
         public static bool GetIgnoreSampleTracking()

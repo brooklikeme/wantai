@@ -12,6 +12,6 @@ namespace WanTai.RESTService
     {
         [OperationContract]
         [WebGet(UriTemplate = Routing.GetExperimentResultRoute, BodyStyle = WebMessageBodyStyle.Bare, ResponseFormat = WebMessageFormat.Json)]
-        string GetExperimentResultByName(string Name);
+        List<WanTai.Controller.PCR.RotationResult> GetExperimentResultByName(string Name);
     }
 }

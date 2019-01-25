@@ -25,6 +25,45 @@ using System.Web.Script.Serialization;
 
 namespace WanTai.Controller.PCR
 {
+    public class ExperimentResult
+    {
+        public int Number;
+        public string TubeTypeName;
+        public string PCRName;
+        public string TubeBarCode;
+        public string TubePosition;
+        public string PoolingRuleName;
+        public string TestingItemName;
+        public string PCRPosition;
+        public string HBV;
+        public string HBVIC;
+        public string HCV;
+        public string HCVIC;
+        public string HIV;
+        public string HIVIC;
+        public string PCRTestResult;
+        public string SampleTrackingResult;
+    }
+
+    public class RotationResult
+    {
+        public string ExperimentName;
+        public string RotationName;
+        public string LoginName;
+        public int SampleNumber;
+        public string ExperimentTime;
+        public string PCRTime;
+        public string PCRDevice;
+        public string PCRBarCode;
+        public string ExperimentResult;
+        public List<ExperimentResult> Results;
+        public RotationResult()
+        {
+            Results = new List<ExperimentResult>();
+        }
+
+    }
+
     public class PCRTestResultViewListController
     {
         public List<RotationInfo> GetPCRResultRotation()
@@ -1437,46 +1476,10 @@ namespace WanTai.Controller.PCR
 
         }
 
-        public class ExperimentResult
-        {
-            public int Number;
-            public string TubeTypeName;
-            public string PCRName;
-            public string TubeBarCode;
-            public string TubePosition;
-            public string PoolingRuleName;
-            public string TestingItemName;
-            public string PCRPosition;
-            public string HBV;
-            public string HBVIC;
-            public string HCV;
-            public string HCVIC;
-            public string HIV;
-            public string HIVIC;
-            public string PCRTestResult;
-            public string SampleTrackingResult;
-        }
 
-        public class RotationResult
+        public List<WanTai.Controller.PCR.RotationResult> ExportJSONResult(string experimentName)
         {
-            public string ExperimentName;
-            public string RotationName;
-            public string LoginName;
-            public int SampleNumber;
-            public string ExperimentTime;
-            public string PCRTime;
-            public string PCRDevice;
-            public string PCRBarCode;
-            public string ExperimentResult;
-            public List<ExperimentResult> Results;
-            public RotationResult() {
-                Results = new List<ExperimentResult>();
-            }
-
-        }
-
-        public string ExportJSONResult(string experimentName)
-        {
+            var rotationResults = new List<RotationResult>();
             try
             {
                 DataTable _pcrTable = new DataTable();
@@ -1522,10 +1525,9 @@ namespace WanTai.Controller.PCR
 
                 if (expInfo == null)
                 {
-                    return "Can not find experiment by name: " + experimentName;
+                    return rotationResults;
                 }
 
-                var rotationResults = new List<RotationResult>();
 
                 ConfigRotationController rotationController = new ConfigRotationController();
 
@@ -1615,9 +1617,9 @@ namespace WanTai.Controller.PCR
                             experimentResult.PCRTestResult = row["PCRTestResult"].ToString();
                             experimentResult.SampleTrackingResult = row["SimpleTrackingResult"].ToString();
                             rotationResult.Results.Add(experimentResult);
-                        }
-                        PCRTestResultDict.Add(rotationInfo.RotationID, PCRTestOK);
+                        }                       
                     }
+                    PCRTestResultDict.Add(rotationInfo.RotationID, PCRTestOK);
                     if (PCRTestResultDict.ContainsKey(rotationInfo.RotationID) && PCRTestResultDict[rotationInfo.RotationID] == false)
                     {
                         rotationResult.ExperimentResult = "QC: 质控品结果不符合标准，实验无效";
@@ -1628,11 +1630,11 @@ namespace WanTai.Controller.PCR
                     }
                     rotationResults.Add(rotationResult);
                 }
-                return new JavaScriptSerializer().Serialize(rotationResults);
+                return rotationResults;
             }
             catch (Exception e)
             {
-                return e.Message;
+                return rotationResults;
             }
         }
 

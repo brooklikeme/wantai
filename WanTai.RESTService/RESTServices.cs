@@ -13,7 +13,7 @@ namespace WanTai.RESTService
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class RestServices : IRESTServices
     {
-        public string GetExperimentResultByName(string Name)
+        public List<WanTai.Controller.PCR.RotationResult> GetExperimentResultByName(string Name)
         {
             return new WanTai.Controller.PCR.PCRTestResultViewListController().ExportJSONResult(Name);
         }

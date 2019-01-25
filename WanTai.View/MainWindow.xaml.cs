@@ -132,14 +132,18 @@ namespace WanTai.View
             
             Authorize();
 
-            // Start REST Service
-            RestServices ResultServices = new RestServices();
-            WebHttpBinding binding = new WebHttpBinding();
-            WebHttpBehavior behavior = new WebHttpBehavior();
+            // Start REST Service if configured
+            string RESTUri = WanTai.Common.Configuration.GetRESTUri();
+            if (!String.IsNullOrEmpty(RESTUri))
+            {
+                RestServices ResultServices = new RestServices();
+                WebHttpBinding binding = new WebHttpBinding();
+                WebHttpBehavior behavior = new WebHttpBehavior();
 
-            _serviceHost = new WebServiceHost(ResultServices, new Uri("http://localhost:8888/"));
-            _serviceHost.AddServiceEndpoint(typeof(IRESTServices), binding, "");
-            _serviceHost.Open();
+                _serviceHost = new WebServiceHost(ResultServices, new Uri(RESTUri));
+                _serviceHost.AddServiceEndpoint(typeof(IRESTServices), binding, "");
+                _serviceHost.Open();
+            }
 
         }
 
@@ -764,7 +768,11 @@ namespace WanTai.View
             worker.RunWorkerAsync();
 
             // Close REST Server
-            _serviceHost.Close();
+            string RESTUri = WanTai.Common.Configuration.GetRESTUri();
+            if (!String.IsNullOrEmpty(RESTUri))
+            {
+                _serviceHost.Close();
+            }
         }
 
         private void BackupDB_Button_Click(object sender, RoutedEventArgs e)
