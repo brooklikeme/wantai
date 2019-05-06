@@ -20,9 +20,50 @@ using iTextSharp.text.pdf;
 using NPOI.HSSF.Model; // InternalWorkbook
 using NPOI.HSSF.UserModel; // HSSFWorkbook, HSSFSheet
 
+using System.Web.Script.Serialization;
+
 
 namespace WanTai.Controller.PCR
 {
+    public class ExperimentResult
+    {
+        public int Number;
+        public string TubeTypeName;
+        public string PCRName;
+        public string TubeBarCode;
+        public string TubePosition;
+        public string PoolingRuleName;
+        public string TestingItemName;
+        public string PCRPosition;
+        public string HBV;
+        public string HBVIC;
+        public string HCV;
+        public string HCVIC;
+        public string HIV;
+        public string HIVIC;
+        public string PCRTestResult;
+        public string SampleTrackingResult;
+    }
+
+    public class RotationResult
+    {
+        public string ExperimentName;
+        public string RotationName;
+        public string LoginName;
+        public int SampleNumber;
+        public string ExperimentTime;
+        public string PCRTime;
+        public string PCRDevice;
+        public string PCRBarCode;
+        public string ExperimentResult;
+        public List<ExperimentResult> Results;
+        public RotationResult()
+        {
+            Results = new List<ExperimentResult>();
+        }
+
+    }
+
     public class PCRTestResultViewListController
     {
         public List<RotationInfo> GetPCRResultRotation()
@@ -1434,6 +1475,169 @@ namespace WanTai.Controller.PCR
             }
 
         }
+
+
+        public List<WanTai.Controller.PCR.RotationResult> ExportJSONResult(string experimentName)
+        {
+            var rotationResults = new List<RotationResult>();
+            try
+            {
+                DataTable _pcrTable = new DataTable();
+                _pcrTable.Columns.Add("Number", typeof(int));
+                _pcrTable.Columns.Add("Color", typeof(string));
+                _pcrTable.Columns.Add("TubeID", typeof(Guid));
+                _pcrTable.Columns.Add("TubeBarCode", typeof(string));
+                _pcrTable.Columns.Add("TubePosition", typeof(string));
+                _pcrTable.Columns.Add("TubeType", typeof(int));
+                _pcrTable.Columns.Add("TubeTypeName", typeof(string));
+                _pcrTable.Columns.Add("PCRName", typeof(string));
+                _pcrTable.Columns.Add("TubeTypeColor", typeof(string));
+                _pcrTable.Columns.Add("TubeTypeColorVisible", typeof(string));
+                _pcrTable.Columns.Add("PoolingRuleName", typeof(string));
+                _pcrTable.Columns.Add("TestingItemName", typeof(string));
+                _pcrTable.Columns.Add("PCRPlateBarCode", typeof(string));
+                _pcrTable.Columns.Add("PCRPosition", typeof(string));
+                _pcrTable.Columns.Add("HBV", typeof(string));
+                _pcrTable.Columns.Add("HBVIC", typeof(string));
+                _pcrTable.Columns.Add("HCV", typeof(string));
+                _pcrTable.Columns.Add("HCVIC", typeof(string));
+                _pcrTable.Columns.Add("HIV", typeof(string));
+                _pcrTable.Columns.Add("HIVIC", typeof(string));
+                _pcrTable.Columns.Add("PCRTestItemID", typeof(Guid));
+                _pcrTable.Columns.Add("PCRTestResult", typeof(string));
+                _pcrTable.Columns.Add("PCRTestContent", typeof(string));
+                _pcrTable.Columns.Add("SimpleTrackingResult", typeof(string));
+
+                string PCRTimeString = "";
+                string PCRDeviceString = "";
+                string PCRBarCodeString = "";
+
+                System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary = new System.Collections.Generic.Dictionary<int, string>();
+                List<LiquidType> LiquidTypeList = SessionInfo.LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
+                foreach (LiquidType liquidType in LiquidTypeList)
+                {
+                    liquidTypeDictionary.Add(liquidType.TypeId, liquidType.Color);
+                }
+
+                string errorMessage = string.Empty;
+
+                ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentByName(experimentName);
+
+                if (expInfo == null)
+                {
+                    return rotationResults;
+                }
+
+
+                ConfigRotationController rotationController = new ConfigRotationController();
+
+                List<RotationInfo> rotationList = rotationController.GetCurrentRotationInfos(expInfo.ExperimentID);
+                foreach (RotationInfo rotationInfo in rotationList)
+                {
+                    var rotationResult = new RotationResult();
+                    rotationResult.ExperimentName = experimentName;
+                    rotationResult.RotationName = rotationInfo.RotationName;
+                    rotationResult.LoginName = expInfo.LoginName;
+                    rotationResult.SampleNumber = GetSampleNumber(expInfo.ExperimentID, rotationInfo.RotationID);
+                    rotationResult.ExperimentTime = expInfo.StartTime.ToString("yyyy/MM/dd HH:mm:ss") + "--" + Convert.ToDateTime(expInfo.EndTime).ToString("yyyy/MM/dd HH:mm:ss");
+                    List<Plate> plateList = GetPCRPlateList(rotationInfo.RotationID, expInfo.ExperimentID);
+                    if (plateList != null && plateList.Count > 0)
+                    {
+                        foreach (Plate plate in plateList)
+                        {
+                            PCRBarCodeString += PCRBarCodeString == "" ? plate.BarCode : ", " + plate.BarCode;
+                            XmlDocument xdoc = new XmlDocument();
+                            if (null != plate.PCRContent)
+                            {
+                                xdoc.LoadXml(plate.PCRContent);
+                                XmlNode node = xdoc.SelectSingleNode("PCRContent");
+                                PCRDeviceString += PCRDeviceString == "" ? node.SelectSingleNode("PCRDevice").InnerText : ", " + node.SelectSingleNode("PCRDevice").InnerText;
+                                string timeString = node.SelectSingleNode("PCRStartTime").InnerText + "--" + node.SelectSingleNode("PCREndTime").InnerText;
+                                PCRTimeString += PCRTimeString == "" ? timeString : ", " + timeString;
+                            }
+                        }
+                    }
+                    rotationResult.PCRTime = PCRTimeString;
+                    rotationResult.PCRDevice = PCRDeviceString;
+                    rotationResult.PCRBarCode = PCRBarCodeString;
+ 
+                    WanTai.Controller.PCR.PCRTestResultViewListController pcrController = new WanTai.Controller.PCR.PCRTestResultViewListController();
+
+                    Dictionary<Guid, bool> PCRTestResultDict = new Dictionary<Guid, bool>();
+                    _pcrTable.Clear();
+                    string reagent_batch;
+                    string qc_batch;
+                    bool has_bci;
+                    pcrController.QueryTubesPCRTestResult(expInfo.ExperimentID, rotationInfo.RotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
+
+                    bool PCRTestOK = true;
+                    foreach (DataRow row in _pcrTable.Rows)
+                    {
+
+                        if ((row["Number"].ToString() == "1" && row["PCRTestResult"].ToString().Contains("重新测定"))
+                            || (row["Number"].ToString() == "2" && row["PCRTestResult"].ToString().Contains("重新测定")))
+                        {
+                            PCRTestOK = false;
+                        }
+                        if (!has_bci)
+                        {
+                            ExperimentResult experimentResult = new ExperimentResult();
+                            experimentResult.Number = (int)row["Number"];
+                            experimentResult.TubeTypeName = row["TubeTypeName"].ToString();
+                            experimentResult.PCRName = row["PCRName"].ToString();
+                            experimentResult.TubeBarCode = row["TubeBarCode"].ToString();
+                            experimentResult.TubePosition = row["TubePosition"].ToString();
+                            experimentResult.PoolingRuleName = row["PoolingRuleName"].ToString();
+                            experimentResult.TestingItemName = row["TestingItemName"].ToString();
+                            experimentResult.PCRPosition = row["PCRPosition"].ToString();
+                            experimentResult.HBV = row["HBV"].ToString();
+                            experimentResult.HBVIC = row["HBVIC"].ToString();
+                            experimentResult.HCV = row["HCV"].ToString();
+                            experimentResult.HCVIC = row["HCVIC"].ToString();
+                            experimentResult.HIV = row["HIV"].ToString();
+                            experimentResult.HIVIC = row["HIVIC"].ToString();
+                            experimentResult.PCRTestResult = row["PCRTestResult"].ToString();
+                            experimentResult.SampleTrackingResult = row["SimpleTrackingResult"].ToString();
+                            rotationResult.Results.Add(experimentResult);
+                        }
+                        else{
+                            ExperimentResult experimentResult = new ExperimentResult();
+                            experimentResult.Number = (int)row["Number"];
+                            experimentResult.TubeTypeName = row["TubeTypeName"].ToString();
+                            experimentResult.PCRName = row["PCRName"].ToString();
+                            experimentResult.TubeBarCode = row["TubeBarCode"].ToString();
+                            experimentResult.TubePosition = row["TubePosition"].ToString();
+                            experimentResult.PoolingRuleName = row["PoolingRuleName"].ToString();
+                            experimentResult.TestingItemName = row["TestingItemName"].ToString();
+                            experimentResult.PCRPosition = row["PCRPosition"].ToString();
+                            experimentResult.HBV = row["HBV"].ToString();
+                            experimentResult.HCV = row["HCV"].ToString();
+                            experimentResult.HIV = row["HIV"].ToString();
+                            experimentResult.HIVIC = row["HIVIC"].ToString();
+                            experimentResult.PCRTestResult = row["PCRTestResult"].ToString();
+                            experimentResult.SampleTrackingResult = row["SimpleTrackingResult"].ToString();
+                            rotationResult.Results.Add(experimentResult);
+                        }                       
+                    }
+                    PCRTestResultDict.Add(rotationInfo.RotationID, PCRTestOK);
+                    if (PCRTestResultDict.ContainsKey(rotationInfo.RotationID) && PCRTestResultDict[rotationInfo.RotationID] == false)
+                    {
+                        rotationResult.ExperimentResult = "QC: 质控品结果不符合标准，实验无效";
+                    }
+                    else
+                    {
+                        rotationResult.ExperimentResult = "";
+                    }
+                    rotationResults.Add(rotationResult);
+                }
+                return rotationResults;
+            }
+            catch (Exception e)
+            {
+                return rotationResults;
+            }
+        }
+
 
         #region ExportToPdf()
 
