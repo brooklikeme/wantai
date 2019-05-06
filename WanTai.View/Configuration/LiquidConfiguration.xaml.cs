@@ -62,7 +62,7 @@ namespace WanTai.View.Configuration
                 cbx_batchTimes.Visibility = Visibility.Visible;
             }
 
-            for (int i = 1; i <= 6; i ++)
+            for (int i = 1; i <= 10; i ++)
             {
                 cbx_batchTimes.Items.Add(i.ToString());
             }
