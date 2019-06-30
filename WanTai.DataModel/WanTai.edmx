@@ -142,6 +142,7 @@
           <Property Name="PoolingRulesName" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="TubeNumber" Type="int" Nullable="false" />
           <Property Name="ActiveStatus" Type="bit" Nullable="false" />
+          <Property Name="GroupColor" Type="varchar" MaxLength="255" Nullable="true" />
         </EntityType>
         <EntityType Name="ReagentAndSupplies">
           <Key>
@@ -810,6 +811,7 @@
           <Property Type="Int32" Name="TubeNumber" Nullable="false" />
           <NavigationProperty Name="TubeGroups" Relationship="WanTaiModel.FK_TubeGroup_PoolingRulesConfiguration" FromRole="PoolingRulesConfiguration" ToRole="TubeGroup" />
           <Property Type="Boolean" Name="ActiveStatus" Nullable="false" />
+          <Property Type="String" Name="GroupColor" Nullable="true" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ReagentAndSupply">
           <Key>
@@ -1288,6 +1290,7 @@
                 <ScalarProperty Name="ActiveStatus" ColumnName="ActiveStatus" />
                 <ScalarProperty Name="TubeNumber" ColumnName="TubeNumber" />
                 <ScalarProperty Name="PoolingRulesName" ColumnName="PoolingRulesName" />
+                <ScalarProperty Name="GroupColor" ColumnName="GroupColor" />
                 <ScalarProperty Name="PoolingRulesID" ColumnName="PoolingRulesID" />
               </MappingFragment>
             </EntityTypeMapping>

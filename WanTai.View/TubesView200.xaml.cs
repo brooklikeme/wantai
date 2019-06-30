@@ -397,6 +397,7 @@ namespace WanTai.View
         {
             if (dg_TubesGroup.SelectedItem != null)
             {
+                btn_Save.IsEnabled = true;
                 TubeGroup _TubeGroup = ((TubeGroup)dg_TubesGroup.SelectedItem);
                 foreach (string TubesPosition in ((TubeGroup)dg_TubesGroup.SelectedItem).TubesPosition.Split(']'))
                 {
@@ -706,6 +707,11 @@ namespace WanTai.View
         public event WanTai.View.MainPage.NextStepHandler NextStepEvent;
         private void btn_Next_Click(object sender, RoutedEventArgs e)
         {
+            if (btn_Save.IsEnabled == true)
+            {
+                MessageBox.Show("分组信息修改后未保存，请先保存!", "系统提示!");
+                return;
+            }
             //update batch to rotation
             if (SessionInfo.PraperRotation != null)
             {
@@ -949,6 +955,7 @@ namespace WanTai.View
             //CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
            // MessageBox.Show("生成成功！", "系统提示!");
             btn_Next.IsEnabled = true;
+            btn_Save.IsEnabled = false;
         }
 
         private void ch_Complement_Unchecked(object sender, RoutedEventArgs e)

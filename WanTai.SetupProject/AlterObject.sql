@@ -16,6 +16,10 @@ IF NOT EXISTS(SELECT * from syscolumns where id=object_id('[dbo].[ExperimentsInf
 ALTER TABLE [dbo].ExperimentsInfo ADD MixTimes smallint NULL
 END
 GO
+IF NOT EXISTS(SELECT * from syscolumns where id=object_id('[dbo].[[PoolingRulesConfiguration]]') and name='GroupColor') BEGIN
+ALTER TABLE [dbo].PoolingRulesConfiguration ADD GroupColor VARCHAR(255) NULL
+END
+GO
 ALTER VIEW [dbo].[View_Tubes_PCRPlatePosition]
 AS
 SELECT DISTINCT 

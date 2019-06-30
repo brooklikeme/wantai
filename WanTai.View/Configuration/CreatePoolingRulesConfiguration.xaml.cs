@@ -49,6 +49,7 @@ namespace WanTai.View.Configuration
 
                 name_textBox.Text = config.PoolingRulesName;
                 tubeNumber_textBox.Text = config.TubeNumber.ToString();
+                color_Control.Background = new SolidColorBrush() { Color = (Color)ColorConverter.ConvertFromString(String.IsNullOrEmpty(config.GroupColor) ? "#FFF" : config.GroupColor) };
             }
         }
 
@@ -62,6 +63,7 @@ namespace WanTai.View.Configuration
             PoolingRulesConfiguration config = new PoolingRulesConfiguration();
             config.PoolingRulesName = name_textBox.Text;
             config.TubeNumber = int.Parse(tubeNumber_textBox.Text);
+            config.GroupColor = color_Control.Background.ToString();
 
             bool result = false;
             if (string.IsNullOrEmpty(editPoolingRuleId))
@@ -113,6 +115,17 @@ namespace WanTai.View.Configuration
         private void cancel_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }        
+        }
+
+
+        private void color_Control_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Forms.ColorDialog colorDialog = new System.Windows.Forms.ColorDialog();
+            string color = color_Control.Background.ToString();
+            colorDialog.Color = System.Drawing.ColorTranslator.FromHtml(color);
+            colorDialog.ShowDialog();
+            color = System.Drawing.ColorTranslator.ToHtml(colorDialog.Color);
+            color_Control.Background = new SolidColorBrush() { Color = (Color)ColorConverter.ConvertFromString(color) };
+        }
     }
 }

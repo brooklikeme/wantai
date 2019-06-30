@@ -2684,13 +2684,15 @@ namespace WanTai.DataModel
         /// <param name="poolingRulesName">PoolingRulesName 属性的初始值。</param>
         /// <param name="tubeNumber">TubeNumber 属性的初始值。</param>
         /// <param name="activeStatus">ActiveStatus 属性的初始值。</param>
-        public static PoolingRulesConfiguration CreatePoolingRulesConfiguration(global::System.Guid poolingRulesID, global::System.String poolingRulesName, global::System.Int32 tubeNumber, global::System.Boolean activeStatus)
+        /// <param name="activeStatus">GroupColor 属性的初始值。</param>
+        public static PoolingRulesConfiguration CreatePoolingRulesConfiguration(global::System.Guid poolingRulesID, global::System.String poolingRulesName, global::System.Int32 tubeNumber, global::System.Boolean activeStatus, global::System.String groupColor)
         {
             PoolingRulesConfiguration poolingRulesConfiguration = new PoolingRulesConfiguration();
             poolingRulesConfiguration.PoolingRulesID = poolingRulesID;
             poolingRulesConfiguration.PoolingRulesName = poolingRulesName;
             poolingRulesConfiguration.TubeNumber = tubeNumber;
             poolingRulesConfiguration.ActiveStatus = activeStatus;
+            poolingRulesConfiguration.GroupColor = groupColor;
             return poolingRulesConfiguration;
         }
 
@@ -2748,7 +2750,33 @@ namespace WanTai.DataModel
         private global::System.String _PoolingRulesName;
         partial void OnPoolingRulesNameChanging(global::System.String value);
         partial void OnPoolingRulesNameChanged();
+
+
+        /// <summary>
+        /// 没有元数据文档可用。
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty = false, IsNullable = true)]
+        [DataMemberAttribute()]
+        public global::System.String GroupColor
+        {
+            get
+            {
+                return _GroupColor;
+            }
+            set
+            {
+                OnGroupColorChanging(value);
+                ReportPropertyChanging("GroupColor");
+                _GroupColor = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("GroupColor");
+                OnGroupColorChanged();
+            }
+        }
+        private global::System.String _GroupColor;
+        partial void OnGroupColorChanging(global::System.String value);
+        partial void OnGroupColorChanged();
     
+
         /// <summary>
         /// 没有元数据文档可用。
         /// </summary>

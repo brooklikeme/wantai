@@ -128,6 +128,7 @@ namespace WanTai.Controller
                     PoolingRulesConfiguration record = entities.PoolingRulesConfigurations.Where(p => p.PoolingRulesID == PoolingRulesID).FirstOrDefault();
                     record.PoolingRulesName = item.PoolingRulesName;
                     record.TubeNumber = item.TubeNumber;
+                    record.GroupColor = item.GroupColor;
 
                     entities.SaveChanges();
                     return true;

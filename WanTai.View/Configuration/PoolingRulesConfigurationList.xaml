@@ -22,6 +22,13 @@
             <DataGrid.Columns >
                 <DataGridTextColumn Header="名称" Width="200" Binding="{Binding PoolingRulesName}" CanUserSort="False" IsReadOnly="True"></DataGridTextColumn>
                 <DataGridTextColumn Header="采血管数" Width="120" Binding="{Binding TubeNumber}" CanUserSort="False" IsReadOnly="True"/>
+                <DataGridTemplateColumn Header="颜色" Width="100" CanUserSort="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Height="20" Width="20" Background="{Binding GroupColor}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTemplateColumn Width="*" CanUserSort="False">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

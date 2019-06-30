@@ -40,6 +40,7 @@ namespace WanTai.View.Configuration
             dataTable.Columns.Add("PoolingRulesName", typeof(string));
             dataTable.Columns.Add("TubeNumber", typeof(int));
             dataTable.Columns.Add("Action", typeof(string));
+            dataTable.Columns.Add("GroupColor", typeof(string));
             dataGrid_view.ItemsSource = dataTable.DefaultView;
 
             initDataGrid();
@@ -55,6 +56,7 @@ namespace WanTai.View.Configuration
                 dRow["PoolingRulesID"] = record.PoolingRulesID;
                 dRow["PoolingRulesName"] = record.PoolingRulesName;
                 dRow["TubeNumber"] = record.TubeNumber;
+                dRow["GroupColor"] = record.GroupColor;
 
                 if (controller.CanDelete(record.PoolingRulesID))
                 {

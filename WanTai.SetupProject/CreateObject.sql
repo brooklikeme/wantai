@@ -157,6 +157,7 @@ CREATE TABLE [dbo].[PoolingRulesConfiguration](
 	[PoolingRulesName] [varchar](255) NOT NULL,
 	[TubeNumber] [int] NOT NULL,
 	[ActiveStatus] [bit] NOT NULL,
+	[GroupColor] [varchar](255) NULL,
  CONSTRAINT [PK_PoolingRulesConfiguration] PRIMARY KEY CLUSTERED 
 (
 	[PoolingRulesID] ASC
