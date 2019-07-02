@@ -166,6 +166,9 @@
     <Compile Include="HistoryQuery\NATViewList.xaml.cs">
       <DependentUpon>NATViewList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HistoryQuery\ExportParams.xaml.cs">
+      <DependentUpon>ExportParams.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ManualExecScript.xaml.cs">
       <DependentUpon>ManualExecScript.xaml</DependentUpon>
     </Compile>
@@ -397,6 +400,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="HistoryQuery\NATViewList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="HistoryQuery\ExportParams.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

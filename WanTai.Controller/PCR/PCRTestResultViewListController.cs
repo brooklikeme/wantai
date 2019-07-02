@@ -130,8 +130,15 @@ namespace WanTai.Controller.PCR
             return sampleNumber;
         }
 
-        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch, out bool has_bci)
+        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch, out bool has_bci, out System.Collections.Generic.Dictionary<string, int> resultDict)
         {
+            resultDict = new Dictionary<string, int>();
+            int positivePoolNumber = 0;
+            int negativePoolNumber = 0;
+            int invalidPoolNumber = 0;
+            int negativeSampleNumber = 0;
+            int invalidSampleNumber = 0;
+
             reagent_batch = "";
             qc_batch = "";
             has_bci = false;
@@ -873,6 +880,15 @@ namespace WanTai.Controller.PCR
                     dataRow["TubePosition"] = formatTwoColumns(dataRow["TubePosition"].ToString());
                     dataIndex++;
                 }
+
+                //
+                resultDict.Add("positivePoolNumber", positivePoolNumber);
+                resultDict.Add("negativePoolNumber", negativePoolNumber);
+                resultDict.Add("invalidPoolNumber", invalidPoolNumber);
+                resultDict.Add("negativeSampleNumber", negativeSampleNumber);
+                resultDict.Add("invalidSampleNumber", invalidSampleNumber);
+
+                
                 /*
                 _pcrTable.Columns.Add("Number", typeof(int));
                 _pcrTable.Columns.Add("Color", typeof(string));
@@ -1288,7 +1304,8 @@ namespace WanTai.Controller.PCR
                     string reagent_batch;
                     string qc_batch;
                     bool has_bci;
-                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
+                    Dictionary<string, int> resultDict;
+                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict);
 
                     dt.Columns.Add("序号");
                     dt.Columns.Add("类型");
@@ -1343,7 +1360,7 @@ namespace WanTai.Controller.PCR
                         dt.Rows.Add(dr);
                     }
 
-                    return ExportToPdf(dt, fileName, expInfo, reagent_batch, qc_batch, has_bci);
+                    return ExportToPdf(dt, fileName, expInfo, reagent_batch, qc_batch, has_bci, resultDict);
                 }
                 else if (extension.Equals(".xls"))
                 {
@@ -1358,7 +1375,8 @@ namespace WanTai.Controller.PCR
                         string reagent_batch;
                         string qc_batch;
                         bool has_bci;
-                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
+                        Dictionary<string, int> resultDict;
+                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict);
                         
                         string createTableSql = "";
                         if (!has_bci)
@@ -1442,7 +1460,7 @@ namespace WanTai.Controller.PCR
         /// <param name="ds"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        private bool ExportToPdf(DataTable dt, string fileName, ExperimentsInfo expInfo, string reagent_batch, string qc_batch, bool has_bci)
+        private bool ExportToPdf(DataTable dt, string fileName, ExperimentsInfo expInfo, string reagent_batch, string qc_batch, bool has_bci, Dictionary<string, int> resultDict)
         {
             ///设置导出字体
             string FontPath = "C://WINDOWS//Fonts//msyh.ttf"; //"C://WINDOWS//Fonts//simsun.ttc,1";
@@ -1450,7 +1468,7 @@ namespace WanTai.Controller.PCR
 
             Boolean result = true;
             //竖排模式,大小为A4，四周边距均为25
-            Document document = new Document(PageSize.A4.Rotate(), 25, 25, 20, 20);
+            Document document = new Document(PageSize.A4, 25, 25, 20, 20);
 
             //调用PDF的写入方法流
             //注意FileMode-Create表示如果目标文件不存在，则创建，如果已存在，则覆盖。
@@ -1467,16 +1485,20 @@ namespace WanTai.Controller.PCR
             iTextSharp.text.Font fontWhite = new iTextSharp.text.Font(baseFont, FontSize);
             fontWhite.Color = iTextSharp.text.Color.WHITE;
 
+            iTextSharp.text.Font fontLabel = new iTextSharp.text.Font(baseFont, 9, Font.BOLD);
+
             iTextSharp.text.Font fontTitle = new iTextSharp.text.Font(baseFont, 8);
 
             iTextSharp.text.Font fontSmall = new iTextSharp.text.Font(baseFont, 4);
 
-            iTextSharp.text.Font fontWanTag = new iTextSharp.text.Font(baseFont, 12);
-            fontWanTag.IsBold();
+            iTextSharp.text.Font fontWanTag = new iTextSharp.text.Font(baseFont, 12, Font.BOLD);
+            iTextSharp.text.Font fontWanTagRed = new iTextSharp.text.Font(baseFont, 12, Font.BOLD);
+            fontWanTagRed.Color = iTextSharp.text.Color.RED;
 
             DateTime dTime = DateTime.Now;
 
-            iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("导出时间：" + dTime.ToString("yyyy/MM/dd HH:mm:ss") + "    页数: "), true);
+            // iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("导出时间：" + dTime.ToString("yyyy/MM/dd HH:mm:ss") + "    页数: "), true);
+            iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("  时间12345测试  "), true);
             footer.Border = Rectangle.NO_BORDER;
             footer.Alignment = Element.ALIGN_RIGHT;
             document.Footer = footer;
@@ -1532,19 +1554,22 @@ namespace WanTai.Controller.PCR
             document.Open();
 
             // document.Add(new Paragraph("\n"));
-
-            Paragraph p_WanTag = new Paragraph("WanTag 实验报告", fontWanTag);
+            Chunk redChunk = new Chunk("WanTag ", fontWanTagRed);
+            Chunk blackTrunk = new Chunk("检测报告", fontWanTag);
+            Paragraph p_WanTag = new Paragraph();
             p_WanTag.Alignment = Element.ALIGN_RIGHT;
+            p_WanTag.Add(redChunk);
+            p_WanTag.Add(blackTrunk);
             document.Add(p_WanTag);
 
             document.Add(new Paragraph("\n"));
 
-            PdfPTable header_table = new PdfPTable(8);
+            PdfPTable header_table = new PdfPTable(6);
             header_table.WidthPercentage = 100f;
-            header_table.SetTotalWidth(new float[] { 7, 14, 7, 28, 7, 14, 7, 14 });
+            header_table.SetTotalWidth(new float[] { 9, 18, 9, 36, 9, 18 });
 
             // 实验名称
-            PdfPCell cell = new PdfPCell(new Phrase("实验名称：", font));
+            PdfPCell cell = new PdfPCell(new Phrase("实验名称：", fontLabel));
             // cell.UseAscender = true;
             cell.BorderWidth = 0; 
             cell.FixedHeight = 15;
@@ -1561,7 +1586,7 @@ namespace WanTai.Controller.PCR
             header_table.AddCell(cell);
 
             // 提取时间
-            cell = new PdfPCell(new Phrase("提取时间：", font));
+            cell = new PdfPCell(new Phrase("提取时间：", fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1576,7 +1601,7 @@ namespace WanTai.Controller.PCR
             header_table.AddCell(cell);
 
             // 仪器型号
-            cell = new PdfPCell(new Phrase("仪器型号：", font));
+            cell = new PdfPCell(new Phrase("仪器型号：", fontLabel));
             // cell.UseAscender = true;
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
@@ -1588,13 +1613,12 @@ namespace WanTai.Controller.PCR
             // cell.UseAscender = true;
             cell.BorderWidth = 0; 
             cell.FixedHeight = 15;
-            cell.Colspan = 3;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
 
            // 操作员
-            cell = new PdfPCell(new Phrase("操作员：", font));
+            cell = new PdfPCell(new Phrase("操作员：", fontLabel));
             // cell.UseAscender = true;
             cell.BorderWidth = 0; 
             cell.FixedHeight = 15;
@@ -1611,7 +1635,7 @@ namespace WanTai.Controller.PCR
             header_table.AddCell(cell);
 
             // 扩增时间：
-            cell = new PdfPCell(new Phrase("扩增时间：", font));
+            cell = new PdfPCell(new Phrase("扩增时间：", fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1625,7 +1649,7 @@ namespace WanTai.Controller.PCR
             header_table.AddCell(cell);
 
             // 仪器编码
-            cell = new PdfPCell(new Phrase("仪器编码：", font));
+            cell = new PdfPCell(new Phrase("仪器编码：", fontLabel));
             // cell.UseAscender = true;
             cell.BorderWidth = 0; 
             cell.FixedHeight = 15;
@@ -1636,14 +1660,13 @@ namespace WanTai.Controller.PCR
             cell = new PdfPCell((new Phrase(SessionInfo.GetSystemConfiguration("InstrumentType"), font)));
             // cell.UseAscender = true;
             cell.BorderWidth = 0;
-            cell.Colspan = 3;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
 
             // 轮次
-            cell = new PdfPCell(new Phrase(rotationName, font));
+            cell = new PdfPCell(new Phrase(rotationName, fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1658,7 +1681,7 @@ namespace WanTai.Controller.PCR
             header_table.AddCell(cell);
 
             // "PCR仪：
-            cell = new PdfPCell(new Phrase("PCR仪：", font));
+            cell = new PdfPCell(new Phrase("PCR仪：", fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1674,7 +1697,7 @@ namespace WanTai.Controller.PCR
 
 
             // 试剂批号
-            cell = new PdfPCell(new Phrase("试剂批号：", font));
+            cell = new PdfPCell(new Phrase("试剂批号：", fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1688,25 +1711,8 @@ namespace WanTai.Controller.PCR
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
 
-            // 检验人
-            cell = new PdfPCell(new Phrase("检验人：", font));
-            // cell.UseAscender = true;
-            cell.BorderWidth = 0; 
-            cell.FixedHeight = 15;
-            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            cell.HorizontalAlignment = Element.ALIGN_LEFT;
-            header_table.AddCell(cell);
-
-            cell = new PdfPCell(new Phrase("___________________", font));
-            // cell.UseAscender = true;
-            cell.BorderWidth = 0; 
-            cell.FixedHeight = 15;
-            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            cell.HorizontalAlignment = Element.ALIGN_LEFT;
-            header_table.AddCell(cell);
-
             // 样本数量：
-            cell = new PdfPCell(new Phrase("样本数量：", font));
+            cell = new PdfPCell(new Phrase("样本数量：", fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1721,7 +1727,7 @@ namespace WanTai.Controller.PCR
             header_table.AddCell(cell);
 
             // PCR板条码：
-            cell = new PdfPCell(new Phrase("PCR板条码：", font));
+            cell = new PdfPCell(new Phrase("PCR板条码：", fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1736,7 +1742,7 @@ namespace WanTai.Controller.PCR
             header_table.AddCell(cell);
 
             // 质控品批号
-            cell = new PdfPCell(new Phrase("质控品批号：", font));
+            cell = new PdfPCell(new Phrase("质控品批号：", fontLabel));
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
@@ -1749,8 +1755,35 @@ namespace WanTai.Controller.PCR
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
 
+            // 检验人
+            cell = new PdfPCell(new Phrase("", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.Colspan = 5;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("检验人：_________________", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
             // 复核人
-            cell = new PdfPCell(new Phrase("复核人：", font));
+            cell = new PdfPCell(new Phrase("", font));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.Colspan = 5;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            header_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase("复核人：_________________", font));
             // cell.UseAscender = true;
             cell.BorderWidth = 0; 
             cell.FixedHeight = 15;
@@ -1758,25 +1791,23 @@ namespace WanTai.Controller.PCR
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
 
-            cell = new PdfPCell(new Phrase("___________________", font));
-            // cell.UseAscender = true;
-            cell.BorderWidth = 0; 
-            cell.FixedHeight = 15;
-            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            cell.HorizontalAlignment = Element.ALIGN_LEFT;
-            header_table.AddCell(cell);
-
+            /*
             // empty
             cell = new PdfPCell(new Phrase("", font));
             // cell.UseAscender = true;
             cell.BorderWidth = 0;
             cell.FixedHeight = 5;
-            cell.Colspan = 8;
+            cell.Colspan = 6;
             cell.VerticalAlignment = Element.ALIGN_MIDDLE;
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             header_table.AddCell(cell);
+             */
 
             document.Add(header_table);
+
+            //Paragraph pLine = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, iTextSharp.text.Color.BLACK, Element.ALIGN_LEFT, 1)));
+            // call the below to add the line when required.
+            //document.Add(pLine);
 
 
  
@@ -1784,11 +1815,127 @@ namespace WanTai.Controller.PCR
             {
                 Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, iTextSharp.text.Color.BLACK, Element.ALIGN_LEFT, 1)));
                 document.Add(p);
-                Paragraph p_QC = new Paragraph("QC: 质控品结果不符合标准，实验无效", fontTitle);
+                Paragraph p_QC = new Paragraph("QC: 质控品结果不符合标准，实验无效", fontLabel);
+                document.Add(p_QC);
+            }
+            else
+            {
+                Paragraph p = new Paragraph(new Chunk(new iTextSharp.text.pdf.draw.LineSeparator(0.0F, 100.0F, iTextSharp.text.Color.BLACK, Element.ALIGN_LEFT, 1)));
+                document.Add(p);
+                Paragraph p_QC = new Paragraph("QC: 质控品结果符合标准，实验有效", fontLabel);
                 document.Add(p_QC);
             }
 
             document.Add(new Paragraph("\n", fontSmall));
+
+            PdfPTable second_table = new PdfPTable(6);
+            second_table.WidthPercentage = 100f;
+            second_table.SetTotalWidth(new float[] { 16, 16, 16, 16, 16, 16 });
+
+            // 样本份数
+            cell = new PdfPCell(new Phrase("共检测样本 " + 10 + " 份", fontLabel));
+            // cell.UseAscender = true;
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.Colspan = 6;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            //阳性Pool数：
+            cell = new PdfPCell(new Phrase("阳性Pool数：", fontLabel));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(resultDict["positivePoolNumber"].ToString(), font));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.Colspan = 5;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            //阴性Pool数：
+            cell = new PdfPCell(new Phrase("阴性Pool数：", fontLabel));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(resultDict["negativePoolNumber"].ToString(), font));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            //阴性样本数：
+            cell = new PdfPCell(new Phrase("阴性样本数：", fontLabel));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(resultDict["negativeSampleNumber"].ToString(), font));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.Colspan = 3;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            //无效Pool数：
+            cell = new PdfPCell(new Phrase("无效Pool数：", fontLabel));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(resultDict["invalidPoolNumber"].ToString(), font));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            //无效样本数：
+            cell = new PdfPCell(new Phrase("无效样本数：", fontLabel));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            cell = new PdfPCell(new Phrase(resultDict["invalidSampleNumber"].ToString(), font));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.Colspan = 3;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            // empty
+            cell = new PdfPCell(new Phrase("", font));
+            cell.BorderWidth = 0;
+            cell.FixedHeight = 15;
+            cell.Colspan = 6;
+            cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            cell.HorizontalAlignment = Element.ALIGN_LEFT;
+            second_table.AddCell(cell);
+
+            document.Add(second_table);
+
+            Paragraph pLabel = new Paragraph("阳性样本信息", fontLabel);
+            document.Add(pLabel);
+
+            document.Add(new Paragraph("\n", fontSmall));
+
 
             //根据数据表内容创建一个PDF格式的表
             PdfPTable table = new PdfPTable(dt.Columns.Count - 1);

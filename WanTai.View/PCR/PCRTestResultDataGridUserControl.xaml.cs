@@ -133,7 +133,8 @@ namespace WanTai.View.PCR
             if (rotationId != null && rotationId != Guid.Empty)
             {                
                 PCRTestResultViewListController controller = new PCRTestResultViewListController();
-                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
+                Dictionary<string, int> resultDict;
+                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict);
                 HBVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
                 HCVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
                 HIVIC.Header = has_bci ? "IC(Ct)" : "HIVIC(Ct)";

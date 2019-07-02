@@ -160,6 +160,24 @@ namespace WanTai.View.HistoryQuery
 
         private void OnPCRTestResultExportClick(object sender, RoutedEventArgs e)
         {
+            string startRow = "";
+            string endRow = "";
+            int exportOrder = 0;
+            ExportParams exportParams = new ExportParams();
+            exportParams.ShowDialog();
+            
+            bool? exportParamsResult = exportParams.DialogResult;
+            if ((bool)exportParamsResult)
+            {
+                startRow = exportParams.txtEndRow.Text;
+                endRow = exportParams.txtEndRow.Text;
+                exportOrder = exportParams.OrderType_comboBox.SelectedIndex;
+            }
+            else
+            {
+                return;
+            }
+
             int selectedIndex = dataGrid_view.SelectedIndex;
             Guid rotationID = (Guid)dataTable.Rows[selectedIndex]["RotationID"];
             string rotationName = dataTable.Rows[selectedIndex]["RotationName"].ToString();
