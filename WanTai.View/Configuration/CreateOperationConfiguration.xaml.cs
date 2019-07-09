@@ -113,7 +113,7 @@ namespace WanTai.View.Configuration
                 string allscripts = string.Empty;
                 foreach (string script in files_listBox.Items)
                 {
-                    if (!string.IsNullOrEmpty(editOperationId) && editOperation_ScriptFileName.Contains(script))
+                    if (!string.IsNullOrEmpty(editOperationId) && !string.IsNullOrEmpty(editOperation_ScriptFileName) && editOperation_ScriptFileName.Contains(script))
                     {
                         allscripts = allscripts + "," + script;
                     }
@@ -127,8 +127,8 @@ namespace WanTai.View.Configuration
                         }
                         else
                         {
-                            fileName = System.IO.Path.GetFileNameWithoutExtension(fileName) + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + System.IO.Path.GetExtension(fileName);
-                            System.IO.File.Copy(script, scriptPath + fileName);
+                            // fileName = System.IO.Path.GetFileNameWithoutExtension(fileName) + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + System.IO.Path.GetExtension(fileName);
+                            // System.IO.File.Copy(script, scriptPath + fileName);
                         }
 
                         allscripts = allscripts + "," + fileName;

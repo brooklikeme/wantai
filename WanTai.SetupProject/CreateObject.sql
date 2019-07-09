@@ -227,7 +227,7 @@ CREATE TABLE [dbo].[OperationConfiguration](
 	[OperationName] [varchar](255) NOT NULL,
 	[OperationType] [smallint] NOT NULL,
 	[OperationSequence] [smallint] NOT NULL,
-	[SubOperationIDs] [varchar](225) NULL,
+	[SubOperationIDs] [varchar](2048) NULL,
 	[DisplayFlag] [bit] NULL,
 	[ScriptFileName] [varchar](255) NULL,
 	[RunTime] [int] NULL,

@@ -20,6 +20,11 @@ IF NOT EXISTS(SELECT * from syscolumns where id=object_id('[dbo].[[PoolingRulesC
 ALTER TABLE [dbo].PoolingRulesConfiguration ADD GroupColor VARCHAR(255) NULL
 END
 GO
+IF EXISTS(SELECT * from syscolumns where id=object_id('[dbo].[OperationConfiguration]') and name='SubOperationIDs') BEGIN
+ALTER TABLE [dbo].OperationConfiguration ALTER COLUMN SubOperationIDs VARCHAR(2048) NULL
+END
+GO
+
 ALTER VIEW [dbo].[View_Tubes_PCRPlatePosition]
 AS
 SELECT DISTINCT 

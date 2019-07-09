@@ -507,13 +507,15 @@ namespace WanTai.View
                                 canRecover = processor.CheckCanRecover(scriptFileName, out errotLineNumber);
                                 if (canRecover)
                                 {
+                                    SessionInfo.RuningScriptName = scriptFileName;
                                     RunReturnValue = processor.RecoverScript((RunScrtiptName = scriptFileName), errotLineNumber);
-                                    falg = ExperimentRunStatus.Start;
+                                    falg = ExperimentRunStatus.Start;                                    
                                 }
                             }
 
                             if (!canRecover && !isFirstStepMixing)
                             {
+                                SessionInfo.RuningScriptName = scriptFileName;
                                 RunReturnValue = processor.StartScript((RunScrtiptName = scriptFileName));
                             }
 

@@ -130,7 +130,7 @@ namespace WanTai.Controller.PCR
             return sampleNumber;
         }
 
-        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch, out bool has_bci, out System.Collections.Generic.Dictionary<string, int> resultDict)
+        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch, out bool has_bci, out System.Collections.Generic.Dictionary<string, int> resultDict, int exportOrder, string startRow, string endRow)
         {
             resultDict = new Dictionary<string, int>();
             int positivePoolNumber = 0;
@@ -498,6 +498,7 @@ namespace WanTai.Controller.PCR
                                 }
                                 dRow["TubeTypeName"] = tubeTypeStr;
 
+
                                 if ((int)dRow["TubeType"] == (int)Tubetype.PositiveControl)
                                 {
                                     dRow["TubeTypeColor"] = liquidTypeDictionary[(int)dRow["TubeType"]];
@@ -684,6 +685,13 @@ namespace WanTai.Controller.PCR
                                         }
                                     }
                                 }
+
+                                // set QC tube type name
+                                if (dRow["PCRName"].ToString().ToUpper() == "QC")
+                                {
+                                    dRow["TubeTypeName"] = "QC";
+                                }
+
                                 if (reader["Result"] != DBNull.Value)
                                 {
                                     dRow["PCRTestResult"] = reader["Result"];
@@ -875,9 +883,24 @@ namespace WanTai.Controller.PCR
                             }
                         }
                         listIndex++;
+                        if ((int)middRow["TubeType"] != (int)Tubetype.PositiveControl && (int)middRow["TubeType"] != (int)Tubetype.QC && middRow["PCRTestResult"].ToString().Contains(PCRTest.PositiveResult))
+                        {
+                            positivePoolNumber++;
+                        }
+                        else if ((int)middRow["TubeType"] != (int)Tubetype.NegativeControl)
+                        {
+                            negativePoolNumber++;
+                            negativeSampleNumber += middRow["TubePosition"].ToString().Split('\n').Length;
+                        }
+                        if (middRow["PCRTestResult"].ToString().Contains(PCRTest.LowResult) || middRow["PCRTestResult"].ToString().Contains(PCRTest.BCILowResult)
+                            || middRow["PCRTestResult"].ToString() == PCRTest.InvalidResult || middRow["PCRTestResult"].ToString() == PCRTest.NoResult)
+                        {
+                            invalidPoolNumber++;
+                            invalidSampleNumber += middRow["TubePosition"].ToString().Split('\n').Length;
+                        }
                     }
-                    dataRow["TubeBarCode"] = formatTwoColumns(dataRow["tubeBarCode"].ToString());
-                    dataRow["TubePosition"] = formatTwoColumns(dataRow["TubePosition"].ToString());
+                    // dataRow["TubeBarCode"] = formatTwoColumns(dataRow["tubeBarCode"].ToString());
+                    // dataRow["TubePosition"] = formatTwoColumns(dataRow["TubePosition"].ToString());
                     dataIndex++;
                 }
 
@@ -1244,7 +1267,7 @@ namespace WanTai.Controller.PCR
             return true;
         }
 
-        public bool SaveExcelFile(string fileName, Guid experimentId, Guid rotationID, string rotationName)
+        public bool SaveExcelFile(string fileName, Guid experimentId, Guid rotationID, string rotationName, int exportOrder, string startRow, string endRow)
         {
             try
             {
@@ -1305,7 +1328,7 @@ namespace WanTai.Controller.PCR
                     string qc_batch;
                     bool has_bci;
                     Dictionary<string, int> resultDict;
-                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict);
+                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict, exportOrder, startRow, endRow);
 
                     dt.Columns.Add("序号");
                     dt.Columns.Add("类型");
@@ -1376,7 +1399,7 @@ namespace WanTai.Controller.PCR
                         string qc_batch;
                         bool has_bci;
                         Dictionary<string, int> resultDict;
-                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict);
+                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict, exportOrder, startRow, endRow);
                         
                         string createTableSql = "";
                         if (!has_bci)
@@ -1489,6 +1512,9 @@ namespace WanTai.Controller.PCR
 
             iTextSharp.text.Font fontTitle = new iTextSharp.text.Font(baseFont, 8);
 
+            iTextSharp.text.Font fontFoot = new iTextSharp.text.Font(baseFont, 9, Font.BOLD);
+            fontFoot.Color = iTextSharp.text.Color.GRAY;
+
             iTextSharp.text.Font fontSmall = new iTextSharp.text.Font(baseFont, 4);
 
             iTextSharp.text.Font fontWanTag = new iTextSharp.text.Font(baseFont, 12, Font.BOLD);
@@ -1498,7 +1524,7 @@ namespace WanTai.Controller.PCR
             DateTime dTime = DateTime.Now;
 
             // iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("导出时间：" + dTime.ToString("yyyy/MM/dd HH:mm:ss") + "    页数: "), true);
-            iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("  时间12345测试  "), true);
+            iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("实验   " + expInfo.ExperimentName + " " + dTime.ToString("yyyy/MM/dd HH:mm:ss") + "   ", fontFoot), true);
             footer.Border = Rectangle.NO_BORDER;
             footer.Alignment = Element.ALIGN_RIGHT;
             document.Footer = footer;
@@ -1833,7 +1859,7 @@ namespace WanTai.Controller.PCR
             second_table.SetTotalWidth(new float[] { 16, 16, 16, 16, 16, 16 });
 
             // 样本份数
-            cell = new PdfPCell(new Phrase("共检测样本 " + 10 + " 份", fontLabel));
+            cell = new PdfPCell(new Phrase("共检测样本 " + GetSampleNumber(expInfo.ExperimentID, new Guid(rotationID)).ToString() + " 份", fontLabel));
             // cell.UseAscender = true;
             cell.BorderWidth = 0;
             cell.FixedHeight = 15;
@@ -1931,7 +1957,7 @@ namespace WanTai.Controller.PCR
 
             document.Add(second_table);
 
-            Paragraph pLabel = new Paragraph("阳性样本信息", fontLabel);
+            Paragraph pLabel = new Paragraph("阳性样本信息：", fontLabel);
             document.Add(pLabel);
 
             document.Add(new Paragraph("\n", fontSmall));
@@ -1973,6 +1999,13 @@ namespace WanTai.Controller.PCR
 
             // 告诉程序这行是表头，这样页数大于1时程序会自动为你加上表头。
             table.HeaderRows = 1;
+
+            // 阳性数据
+            DataTable dtPositive = dt.Select("TubeTypeName <> 'NC' AND TubeTypeName <> 'PC' AND TubeTypeName <> 'QC' AND ", "Number ASC").CopyToDataTable();
+
+            // NC、PC、QC数据
+
+            // 具体数据
 
             //遍历原datatable的数据行
             for (int i = 0; i < dt.Rows.Count; i++)

@@ -202,7 +202,7 @@ namespace WanTai.View.HistoryQuery
             {
                 try
                 {
-                    bool result = new WanTai.Controller.PCR.PCRTestResultViewListController().SaveExcelFile(fileName, experimentId, rotationID, rotationName);
+                    bool result = new WanTai.Controller.PCR.PCRTestResultViewListController().SaveExcelFile(fileName, experimentId, rotationID, rotationName, exportOrder, startRow, endRow);
                     if (result)
                     {
                         if (System.Windows.Forms.MessageBox.Show("导出文件成功! 是否打开文件?", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == (System.Windows.Forms.DialogResult.Yes))

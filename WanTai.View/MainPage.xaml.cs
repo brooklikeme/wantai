@@ -16,6 +16,7 @@ using System.ComponentModel;
 using WanTai.DataModel;
 using WanTai.Controller;
 using WanTai.View.PCR;
+using System.Text.RegularExpressions;
 
 namespace WanTai.View
 {
@@ -407,6 +408,18 @@ namespace WanTai.View
         {
             if (SessionInfo.BatchTimes > 1 && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
                 SessionInfo.BatchType = (int.Parse(SessionInfo.BatchType) + 1).ToString();
+
+            // check running script name\
+            int batchType;
+            if (!string.IsNullOrEmpty(SessionInfo.RuningScriptName) &&  Regex.Match(SessionInfo.RuningScriptName, @"AddSamples_\d.esc").Success) {
+                if (int.TryParse(Regex.Match(SessionInfo.RuningScriptName, @"\d").Value, out batchType))
+                {
+                    if (batchType.ToString() != SessionInfo.BatchType)
+                    {
+                        SessionInfo.BatchType = batchType.ToString();
+                    }
+                }
+            }
             WanTai.Common.CommonFunction.WriteLog("onShowSecondMixEvent-----else");
 
             tabControl.SelectedIndex = 0;

@@ -31,6 +31,7 @@ namespace WanTai.View
         {
             int startRow = 0;
             int endRow = 1;
+
             if (!string.IsNullOrEmpty(txtStartRow.Text) && !int.TryParse(txtStartRow.Text, out startRow)) 
             {
                 errInfo.Text = "开始记录必须是空或者有效的数字！";
