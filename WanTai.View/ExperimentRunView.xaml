@@ -251,8 +251,8 @@
                     <Label  Content="运行时间"  HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="10,0,0,0"/>
                     <Label x:Name="labRunTime" Content="00:00:00" HorizontalAlignment="Center" VerticalContentAlignment="Center" Margin="0,0,0,0"/>
                 </StackPanel>
-
-                <StackPanel  Width="580" Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" Name="spOperationView">
+                    <!--<StackPanel  Width="580" Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" Name="spOperationView">-->
+                    <StackPanel  MinWidth="100" Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Center" Name="spOperationView">
                 </StackPanel>
             </StackPanel>
             <!--</Grid>-->

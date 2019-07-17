@@ -130,7 +130,7 @@ namespace WanTai.Controller.PCR
             return sampleNumber;
         }
 
-        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable dataTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch, out bool has_bci, out System.Collections.Generic.Dictionary<string, int> resultDict, int exportOrder, string startRow, string endRow)
+        public void QueryTubesPCRTestResult(Guid experimentId, Guid rotationId, DataTable poolTable, DataTable sampleTable, System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary, System.Windows.Media.Color redColor, System.Windows.Media.Color greenColor, out string resultMessage, out string reagent_batch, out string qc_batch, out bool has_bci, out System.Collections.Generic.Dictionary<string, int> resultDict)
         {
             resultDict = new Dictionary<string, int>();
             int positivePoolNumber = 0;
@@ -147,8 +147,7 @@ namespace WanTai.Controller.PCR
                 ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
 
                 bool ignoreSampleTracking = WanTai.Common.Configuration.GetIgnoreSampleTracking();
-                DataTable baseTable = dataTable.Clone();
-                DataTable middTable = dataTable.Clone();
+                DataTable middTable = poolTable.Clone();
 
                 Dictionary<Guid, string> tubeSampleCheckResult = new Dictionary<Guid, string>();
                 List<ReagentSuppliesType> reagentSuppliesTypeList = WanTai.Common.Configuration.GetReagentSuppliesTypes();
@@ -400,7 +399,7 @@ namespace WanTai.Controller.PCR
                             int refIndex = 1;
                             while (reader.Read())
                             {
-                                System.Data.DataRow dRow = baseTable.NewRow();
+                                System.Data.DataRow dRow = sampleTable.NewRow();
                                 dRow["Number"] = index;
 
                                 dRow["TubeID"] = reader["TubeID"];
@@ -765,7 +764,7 @@ namespace WanTai.Controller.PCR
                                 }
 
                                 index++;
-                                baseTable.Rows.Add(dRow);
+                                sampleTable.Rows.Add(dRow);
                             }
                         }
                     }
@@ -774,7 +773,7 @@ namespace WanTai.Controller.PCR
                 /*
                 int dataIndex = 1;
                 dataTable.Columns[11].DataType = typeof(string);
-                foreach (DataRow baseRow in baseTable.Rows)
+                foreach (DataRow baseRow in sampleTable.Rows)
                 {
                     System.Data.DataRow dataRow = dataTable.NewRow();
                     dataRow.ItemArray = baseRow.ItemArray;
@@ -783,7 +782,7 @@ namespace WanTai.Controller.PCR
 
                 // get pcr position dict
                 Dictionary<string, List<DataRow>> pcrPosRows = new Dictionary<string, List<DataRow>>();
-                foreach (DataRow baseRow in baseTable.Rows)
+                foreach (DataRow baseRow in sampleTable.Rows)
                 {
                     string pcrPos = baseRow["PCRPosition"].ToString();
                     if (!pcrPosRows.ContainsKey(pcrPos))
@@ -825,11 +824,11 @@ namespace WanTai.Controller.PCR
                 }
                 // get data table
                 int dataIndex = 1;
-                dataTable.Columns[11].DataType = typeof(string);
+                poolTable.Columns[11].DataType = typeof(string);
                 foreach (KeyValuePair<string, List<DataRow>> pcrTubeRow in pcrTubeRows)
                 {
                     int listIndex = 0;
-                    System.Data.DataRow dataRow = dataTable.NewRow();
+                    System.Data.DataRow dataRow = poolTable.NewRow();
                     foreach (DataRow middRow in pcrTubeRow.Value)
                     {
                         if (listIndex == 0)
@@ -852,7 +851,7 @@ namespace WanTai.Controller.PCR
                             }                                
                             else
                                 dataRow["PCRTestResult"] = " ";
-                            dataTable.Rows.Add(dataRow);
+                            poolTable.Rows.Add(dataRow);
                         }
                         else
                         {
@@ -1298,6 +1297,8 @@ namespace WanTai.Controller.PCR
                 _pcrTable.Columns.Add("PCRTestContent", typeof(string));
                 _pcrTable.Columns.Add("SimpleTrackingResult", typeof(string));
 
+                DataTable _sampleTable = _pcrTable.Clone();
+
                 System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary = new System.Collections.Generic.Dictionary<int, string>();
                 List<LiquidType> LiquidTypeList = SessionInfo.LiquidTypeList = WanTai.Common.Configuration.GetLiquidTypes();
                 foreach (LiquidType liquidType in LiquidTypeList)
@@ -1324,13 +1325,14 @@ namespace WanTai.Controller.PCR
                     DataTable dt = new DataTable(rotationID + "," + rotationName);
 
                     _pcrTable.Clear();
+                    _sampleTable.Clear();
                     string reagent_batch;
                     string qc_batch;
                     bool has_bci;
                     Dictionary<string, int> resultDict;
-                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict, exportOrder, startRow, endRow);
+                    pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, _sampleTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict);
 
-                    dt.Columns.Add("序号");
+                    dt.Columns.Add("序号", typeof(Int32));
                     dt.Columns.Add("类型");
                     dt.Columns.Add("样本名称");
                     dt.Columns.Add("样本条码");
@@ -1351,6 +1353,8 @@ namespace WanTai.Controller.PCR
                     dt.Columns.Add("检测结果");
                     dt.Columns.Add("实验记录");
                     dt.Columns.Add("Color");
+
+                    DataTable sampleTable = dt.Clone();
 
                     foreach (DataRow row in _pcrTable.Rows)
                     {
@@ -1383,7 +1387,38 @@ namespace WanTai.Controller.PCR
                         dt.Rows.Add(dr);
                     }
 
-                    return ExportToPdf(dt, fileName, expInfo, reagent_batch, qc_batch, has_bci, resultDict);
+                     foreach (DataRow row in _sampleTable.Rows)
+                    {
+                        int tubeType = (int)row["TubeType"];
+
+                        DataRow dr = sampleTable.NewRow();
+                        dr["序号"] = (int)row["Number"];
+                        dr["类型"] = row["TubeTypeName"].ToString();
+                        dr["样本名称"] = row["PCRName"].ToString();
+                        dr["样本条码"] = row["TubeBarCode"].ToString();
+                        dr["样本位置"] = row["TubePosition"].ToString();
+                        dr["检测方式"] = row["PoolingRuleName"].ToString();
+                        dr["检测项目"] = row["TestingItemName"].ToString();
+                        // dr["PCR板条码"] = row["PCRPlateBarCode"].ToString();
+                        dr["PCR孔位"] = row["PCRPosition"].ToString();
+                        dr["HBV(Ct)"] = row["HBV"].ToString().Replace("Undetermined", "No Ct");
+                        if (!has_bci)
+                            dr["HBVIC(Ct)"] = row["HBVIC"].ToString().Replace("Undetermined", "No Ct");
+                        dr["HCV(Ct)"] = row["HCV"].ToString().Replace("Undetermined", "No Ct");
+                        if (!has_bci)
+                            dr["HCVIC(Ct)"] = row["HCVIC"].ToString().Replace("Undetermined", "No Ct");
+                        dr["HIV(Ct)"] = row["HIV"].ToString().Replace("Undetermined", "No Ct");
+                        if (!has_bci) 
+                            dr["HIVIC(Ct)"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
+                        else
+                            dr["IC(Ct)"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
+                        dr["检测结果"] = row["PCRTestResult"].ToString();
+                        dr["实验记录"] = row["SimpleTrackingResult"].ToString();
+                        dr["Color"] = row["Color"];
+                        sampleTable.Rows.Add(dr);
+                    }
+
+                     return ExportToPdf(dt, sampleTable, fileName, expInfo, reagent_batch, qc_batch, has_bci, resultDict, exportOrder, startRow, endRow);
                 }
                 else if (extension.Equals(".xls"))
                 {
@@ -1395,11 +1430,12 @@ namespace WanTai.Controller.PCR
                         command.Connection = connection;
 
                         _pcrTable.Clear();
+                        _sampleTable.Clear();
                         string reagent_batch;
                         string qc_batch;
                         bool has_bci;
                         Dictionary<string, int> resultDict;
-                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict, exportOrder, startRow, endRow);
+                        pcrController.QueryTubesPCRTestResult(experimentId, rotationID, _pcrTable, _sampleTable, liquidTypeDictionary, System.Windows.Media.Colors.Red, System.Windows.Media.Colors.Green, out errorMessage, out reagent_batch, out qc_batch, out has_bci, out resultDict);
                         
                         string createTableSql = "";
                         if (!has_bci)
@@ -1483,7 +1519,7 @@ namespace WanTai.Controller.PCR
         /// <param name="ds"></param>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        private bool ExportToPdf(DataTable dt, string fileName, ExperimentsInfo expInfo, string reagent_batch, string qc_batch, bool has_bci, Dictionary<string, int> resultDict)
+        private bool ExportToPdf(DataTable dt, DataTable sampleTable, string fileName, ExperimentsInfo expInfo, string reagent_batch, string qc_batch, bool has_bci, Dictionary<string, int> resultDict, int exportOrder, string startRow, string endRow)
         {
             ///设置导出字体
             string FontPath = "C://WINDOWS//Fonts//msyh.ttf"; //"C://WINDOWS//Fonts//simsun.ttc,1";
@@ -1507,6 +1543,8 @@ namespace WanTai.Controller.PCR
             iTextSharp.text.Font font = new iTextSharp.text.Font(baseFont, FontSize);
             iTextSharp.text.Font fontWhite = new iTextSharp.text.Font(baseFont, FontSize);
             fontWhite.Color = iTextSharp.text.Color.WHITE;
+            iTextSharp.text.Font fontRed = new iTextSharp.text.Font(baseFont, FontSize);
+            fontRed.Color = iTextSharp.text.Color.RED;
 
             iTextSharp.text.Font fontLabel = new iTextSharp.text.Font(baseFont, 9, Font.BOLD);
 
@@ -1868,6 +1906,19 @@ namespace WanTai.Controller.PCR
             cell.HorizontalAlignment = Element.ALIGN_LEFT;
             second_table.AddCell(cell);
 
+            if (!string.IsNullOrEmpty(startRow) && !string.IsNullOrEmpty(endRow))
+            {
+                // 样本份数
+                cell = new PdfPCell(new Phrase("打印结果样本 从 " + startRow.ToString() + " 至 " + endRow.ToString(), fontLabel));
+                // cell.UseAscender = true;
+                cell.BorderWidth = 0;
+                cell.FixedHeight = 15;
+                cell.Colspan = 6;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_LEFT;
+                second_table.AddCell(cell);
+            }
+
             //阳性Pool数：
             cell = new PdfPCell(new Phrase("阳性Pool数：", fontLabel));
             cell.BorderWidth = 0;
@@ -1957,6 +2008,10 @@ namespace WanTai.Controller.PCR
 
             document.Add(second_table);
 
+            // 阳性数据
+            DataTable dtPositive = dt.Select("类型 <> 'NC' AND 类型 <> 'PC' AND 类型 <> 'QC' AND 检测结果 like '%阳性%'", "").CopyToDataTable();
+
+            // 阳性样本数据
             Paragraph pLabel = new Paragraph("阳性样本信息：", fontLabel);
             document.Add(pLabel);
 
@@ -1964,7 +2019,7 @@ namespace WanTai.Controller.PCR
 
 
             //根据数据表内容创建一个PDF格式的表
-            PdfPTable table = new PdfPTable(dt.Columns.Count - 1);
+            PdfPTable table = new PdfPTable(dtPositive.Columns.Count - 1);
             table.WidthPercentage = 100f;
             string PCRTestResultWidths = WanTai.Common.Configuration.GetPCRTestResultWidthList();
             if (!string.IsNullOrEmpty(PCRTestResultWidths))
@@ -1982,9 +2037,9 @@ namespace WanTai.Controller.PCR
                     table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             // 添加表头，每一页都有表头
-            for (int j = 0; j < dt.Columns.Count - 1; j++)
+            for (int j = 0; j < dtPositive.Columns.Count - 1; j++)
             {
-                string cellName = dt.Columns[j].ColumnName;
+                string cellName = dtPositive.Columns[j].ColumnName;
                 cellName = cellName.Replace("BarCode", "条码").Replace("Position", "孔位");
                 cell = new PdfPCell(new Phrase(cellName, font));
 
@@ -2000,38 +2055,203 @@ namespace WanTai.Controller.PCR
             // 告诉程序这行是表头，这样页数大于1时程序会自动为你加上表头。
             table.HeaderRows = 1;
 
-            // 阳性数据
-            DataTable dtPositive = dt.Select("TubeTypeName <> 'NC' AND TubeTypeName <> 'PC' AND TubeTypeName <> 'QC' AND ", "Number ASC").CopyToDataTable();
-
-            // NC、PC、QC数据
-
-            // 具体数据
-
             //遍历原datatable的数据行
-            for (int i = 0; i < dt.Rows.Count; i++)
+            for (int i = 0; i < dtPositive.Rows.Count; i++)
             {
-                for (int j = 0; j < dt.Columns.Count - 1; j++)
+                for (int j = 0; j < dtPositive.Columns.Count - 1; j++)
                 {
                     try
                     {
-                        cell = new PdfPCell(new Phrase(dt.Rows[i][j].ToString(), font));
-                        System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(dt.Rows[i]["Color"].ToString());
+                        cell = new PdfPCell(new Phrase(dtPositive.Rows[i][j].ToString(), font));
+                        System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(dtPositive.Rows[i]["Color"].ToString());
                         cell.VerticalAlignment = Element.ALIGN_MIDDLE;
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
                         cell.BackgroundColor = new iTextSharp.text.Color(Color);
-                        if (dt.Rows[i]["Color"].ToString() == WantagColor.WantagRed)
-                            cell.Phrase = new Phrase(dt.Rows[i][j].ToString(), fontWhite);
-                        if (dt.Columns[j].ColumnName == "类型")
+                        
+                        if (dtPositive.Rows[i]["Color"].ToString() == WantagColor.WantagRed)
                         {
-                            if (dt.Rows[i][j].ToString().Contains("NC"))
+                            cell.Phrase = new Phrase(dtPositive.Rows[i][j].ToString(), fontRed);
+                            cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagWhite));
+                        }                     
+
+                        table.AddCell(cell);
+                    }
+                    catch (Exception e)
+                    {
+                        result = false;
+                    }
+                }
+            }
+
+            //在目标文档中添加转化后的表数据
+            document.Add(table);
+
+            // Make the page break
+            document.NewPage();
+
+            // NC、PC、QC数据
+            DataTable dtNCPCQC = dt.Select("类型 = 'NC' OR 类型 = 'PC' OR 类型 = 'QC'", "").CopyToDataTable();
+
+            // 阳性样本数据
+            pLabel = new Paragraph("附件：实验数据", fontLabel);
+            document.Add(pLabel);
+
+            document.Add(new Paragraph("\n", fontSmall));
+
+
+            //根据数据表内容创建一个PDF格式的表
+            table = new PdfPTable(dtNCPCQC.Columns.Count - 1);
+            table.WidthPercentage = 100f;
+            PCRTestResultWidths = WanTai.Common.Configuration.GetPCRTestResultWidthList();
+            if (!string.IsNullOrEmpty(PCRTestResultWidths))
+            {
+                if (!has_bci)
+                    table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));
+                else
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+            }
+            else
+            {
+                if (!has_bci)
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
+                else
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+            }
+            // 添加表头，每一页都有表头
+            for (int j = 0; j < dtNCPCQC.Columns.Count - 1; j++)
+            {
+                string cellName = dtNCPCQC.Columns[j].ColumnName;
+                cellName = cellName.Replace("BarCode", "条码").Replace("Position", "孔位");
+                cell = new PdfPCell(new Phrase(cellName, font));
+
+                // cell.UseAscender = true;
+                cell.FixedHeight = 20;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell.BackgroundColor = new Color(220, 220, 220);
+
+                table.AddCell(cell);
+            }
+
+            // 告诉程序这行是表头，这样页数大于1时程序会自动为你加上表头。
+            table.HeaderRows = 1;
+
+            //遍历原datatable的数据行
+            for (int i = 0; i < dtNCPCQC.Rows.Count; i++)
+            {
+                for (int j = 0; j < dtNCPCQC.Columns.Count - 1; j++)
+                {
+                    try
+                    {
+                        cell = new PdfPCell(new Phrase(dtNCPCQC.Rows[i][j].ToString(), font));
+                        System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(dtNCPCQC.Rows[i]["Color"].ToString());
+                        cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        cell.BackgroundColor = new iTextSharp.text.Color(Color);
+                        if (dtNCPCQC.Rows[i]["Color"].ToString() == WantagColor.WantagRed && !dtNCPCQC.Rows[i]["类型"].ToString().Contains("PC"))
+                        {
+                            cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontRed);
+                            cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagWhite));
+                        }
+                        if (dtNCPCQC.Columns[j].ColumnName == "类型")
+                        {
+                            if (dtNCPCQC.Rows[i][j].ToString().Contains("PC"))
                             {
-                                cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagGreen));
-                                cell.Phrase = new Phrase(dt.Rows[i][j].ToString(), fontWhite);
+                                cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontWhite);
                             }
-                            else if (dt.Rows[i][j].ToString().Contains("PC"))
+                        }
+
+                        table.AddCell(cell);
+                    }
+                    catch (Exception e)
+                    {
+                        result = false;
+                    }
+                }
+            }
+
+            //在目标文档中添加转化后的表数据
+            document.Add(table);
+
+            // 样本数据信息
+            // Make the page break
+            document.NewPage();
+            string sampleSelectStr = "类型 <> 'NC' AND 类型 <> 'PC' AND 类型 <> 'QC'";
+            if (!string.IsNullOrEmpty(startRow) && !string.IsNullOrEmpty(endRow))
+            {
+                sampleSelectStr += " AND 序号 >= " + startRow + " AND 序号 <= " + endRow ;
+            }
+            DataTable dtSample;
+            if (exportOrder == 0)
+            {
+                dtSample = dt.Select(sampleSelectStr, "").CopyToDataTable();
+            }
+            else
+            {
+                dtSample = sampleTable.Select(sampleSelectStr, "").CopyToDataTable();
+            }
+
+
+            //根据数据表内容创建一个PDF格式的表
+            table = new PdfPTable(dtSample.Columns.Count - 1);
+            table.WidthPercentage = 100f;
+            PCRTestResultWidths = WanTai.Common.Configuration.GetPCRTestResultWidthList();
+            if (!string.IsNullOrEmpty(PCRTestResultWidths))
+            {
+                if (!has_bci)
+                    table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));
+                else
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+            }
+            else
+            {
+                if (!has_bci)
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
+                else
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+            }
+            // 添加表头，每一页都有表头
+            for (int j = 0; j < dtSample.Columns.Count - 1; j++)
+            {
+                string cellName = dtSample.Columns[j].ColumnName;
+                cellName = cellName.Replace("BarCode", "条码").Replace("Position", "孔位");
+                cell = new PdfPCell(new Phrase(cellName, font));
+
+                // cell.UseAscender = true;
+                cell.FixedHeight = 20;
+                cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                cell.BackgroundColor = new Color(220, 220, 220);
+
+                table.AddCell(cell);
+            }
+
+            // 告诉程序这行是表头，这样页数大于1时程序会自动为你加上表头。
+            table.HeaderRows = 1;
+
+            //遍历原datatable的数据行
+            for (int i = 0; i < dtSample.Rows.Count; i++)
+            {
+                for (int j = 0; j < dtSample.Columns.Count - 1; j++)
+                {
+                    try
+                    {
+                        cell = new PdfPCell(new Phrase(dtSample.Rows[i][j].ToString(), font));
+                        System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(dtSample.Rows[i]["Color"].ToString());
+                        cell.VerticalAlignment = Element.ALIGN_MIDDLE;
+                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        cell.BackgroundColor = new iTextSharp.text.Color(Color);
+                        if (dtSample.Rows[i]["Color"].ToString() == WantagColor.WantagRed)
+                        {
+                            cell.Phrase = new Phrase(dtSample.Rows[i][j].ToString(), fontRed);
+                            cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagWhite));
+                        }
+                        if (dtSample.Columns[j].ColumnName == "类型")
+                        {
+                            if (dtSample.Rows[i][j].ToString().Contains("PC"))
                             {
                                 cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagRed));
-                                cell.Phrase = new Phrase(dt.Rows[i][j].ToString(), fontWhite);
+                                cell.Phrase = new Phrase(dtSample.Rows[i][j].ToString(), fontWhite);
                             }
                         }
 

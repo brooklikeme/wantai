@@ -169,7 +169,7 @@ namespace WanTai.View.HistoryQuery
             bool? exportParamsResult = exportParams.DialogResult;
             if ((bool)exportParamsResult)
             {
-                startRow = exportParams.txtEndRow.Text;
+                startRow = exportParams.txtStartRow.Text;
                 endRow = exportParams.txtEndRow.Text;
                 exportOrder = exportParams.OrderType_comboBox.SelectedIndex;
             }

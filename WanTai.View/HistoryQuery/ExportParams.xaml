@@ -24,8 +24,8 @@
         <DockPanel Grid.Row="2" VerticalAlignment="Center">
             <Label Content="排序方式：" ></Label>
             <ComboBox Name="OrderType_comboBox" Width="80" HorizontalAlignment="Left">
-                <ComboBoxItem Content="样本顺序" IsSelected="True"/>
-                <ComboBoxItem Content="Pool"/>
+                <ComboBoxItem Content="Pool" IsSelected="True"/>
+                <ComboBoxItem Content="样本顺序"/>
             </ComboBox>
         </DockPanel>
         <StackPanel Name="testPanel" Grid.Row="3"  HorizontalAlignment="Center" Orientation="Horizontal" >

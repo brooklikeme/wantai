@@ -135,6 +135,9 @@ namespace WanTai.View
                 progressBar.Uid = WidthScale.ToString();
                 if (Resources.Contains("ProgressBarStyle" + SubOperationConfiguration.StyleIndex.ToString()))
                     progressBar.Style = Resources["ProgressBarStyle" + SubOperationConfiguration.StyleIndex.ToString()] as Style;
+                else if (Resources.Contains("ProgressBarStyle" + (SubOperationConfiguration.StyleIndex % 5 == 0 ? 5 : SubOperationConfiguration.StyleIndex % 5).ToString()))
+                    progressBar.Style = Resources["ProgressBarStyle" + (SubOperationConfiguration.StyleIndex % 5 == 0 ? 5 : SubOperationConfiguration.StyleIndex % 5).ToString()] as Style;
+
                 else
                     progressBar.Style = Resources["ProgressBarStyle1"] as Style;
                 // progressBar.Width = (stackPanel.ActualWidth -120) * WidthScale;
@@ -210,6 +213,8 @@ namespace WanTai.View
                 labOperationLegend.Width = 36;
                 if (Resources.Contains("Operation" + OperationStyleIndex.ToString()))
                     labOperationLegend.Background = Resources["Operation" + OperationStyleIndex.ToString()] as LinearGradientBrush;
+                else if (Resources.Contains("Operation" + (OperationStyleIndex % 5 == 0 ? 5 :OperationStyleIndex % 5).ToString()))
+                    labOperationLegend.Background = Resources["Operation" + (OperationStyleIndex % 5 == 0 ? 5 : OperationStyleIndex % 5).ToString()] as LinearGradientBrush;
                 else
                     labOperationLegend.Background = Resources["Operation1"] as LinearGradientBrush;
 
