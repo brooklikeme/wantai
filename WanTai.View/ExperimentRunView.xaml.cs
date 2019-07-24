@@ -193,6 +193,7 @@ namespace WanTai.View
             _TestingItem = null;
             _ExperimentRotation = null;
             _OperationConfigurations = null;
+            labRotation.FontSize = 10;
             labRotation.Content = "共" + ExperimentRotation.Count.ToString() + "个轮次";
             spOperationView.Children.Clear();
             var SingleOperations = OperationConfigurations.Where(Operation => Operation.OperationType == 0).OrderBy(Operation => Operation.OperationSequence);
@@ -200,17 +201,19 @@ namespace WanTai.View
             foreach (OperationConfiguration Operation in SingleOperations)
             {
                 Label labOperationName = new Label();
+                labOperationName.FontSize = 10;
                 labOperationName.Content = Operation.OperationName;
                 labOperationName.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-                labOperationName.Margin = new Thickness(10, 0, 0, 0);
+                labOperationName.Margin = new Thickness(4, 0, 0, 0);
                 spOperationView.Children.Add(labOperationName);
 
                 Label labOperationLegend = new Label();
                 labOperationLegend.Content = Operation.RunTime.ToString();
+                labOperationLegend.FontSize = 10;
                 labOperationLegend.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                 labOperationLegend.HorizontalContentAlignment = System.Windows.HorizontalAlignment.Center;
                 labOperationLegend.Height = 24;
-                labOperationLegend.Width = 36;
+                labOperationLegend.Width = 20;
                 if (Resources.Contains("Operation" + OperationStyleIndex.ToString()))
                     labOperationLegend.Background = Resources["Operation" + OperationStyleIndex.ToString()] as LinearGradientBrush;
                 else if (Resources.Contains("Operation" + (OperationStyleIndex % 5 == 0 ? 5 :OperationStyleIndex % 5).ToString()))

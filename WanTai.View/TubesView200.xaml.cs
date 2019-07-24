@@ -32,6 +32,10 @@ namespace WanTai.View
             InitializeComponent();
             if (SessionInfo.PraperRotation != null)
                 labelRotationName.Content = SessionInfo.PraperRotation.RotationName;
+            if (WanTai.Common.Configuration.GetIsMock())
+            {
+                btn_Next.IsEnabled = true;
+            }
         }
 
         private bool IsPoack = false;

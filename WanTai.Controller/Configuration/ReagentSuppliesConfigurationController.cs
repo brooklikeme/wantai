@@ -328,6 +328,11 @@ namespace WanTai.Controller.Configuration
         public List<ReagentAndSuppliesConfiguration> GetReagentAndSuppliesNeeded(Dictionary<short, bool> operationsOrders, FormulaParameters formulaParameters)
         {
             List<ReagentAndSuppliesConfiguration> list = new List<ReagentAndSuppliesConfiguration>();
+            // temp
+            if (WanTai.Common.Configuration.GetIsMock())
+            {
+                return list;
+            }
             try
             {
                 using (WanTaiEntities wanTaiEntities = new WanTaiEntities())

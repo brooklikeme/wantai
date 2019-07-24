@@ -347,6 +347,16 @@ namespace WanTai.View
                     RotationID = SessionInfo.PraperRotation.RotationID;
                 SessionInfo.PraperRotation = rotationInfoList.FirstOrDefault();
 
+                // temp
+                if (WanTai.Common.Configuration.GetIsMock())
+                {
+                    if (SessionInfo.RotationFormulaParameters.Count == 0)
+                    {
+                        SessionInfo.RotationFormulaParameters.Add(Guid.Empty, new FormulaParameters());
+                    }
+                }
+                // temp
+
                 FormulaParameters formulaParameters = SessionInfo.RotationFormulaParameters[RotationID];
                 SessionInfo.RotationFormulaParameters.Remove(RotationID);
                 if (!SessionInfo.RotationFormulaParameters.ContainsKey(SessionInfo.PraperRotation.RotationID))
