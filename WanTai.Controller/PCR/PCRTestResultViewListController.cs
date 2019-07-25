@@ -463,7 +463,8 @@ namespace WanTai.Controller.PCR
                                 }
 
                                 dRow["TubePosition"] = reader["BatchType"] == DBNull.Value ? "Tube" + reader["Grid"].ToString() + "_" + reader["Position"].ToString() : reader["BatchType"] + ":Tube" + reader["Grid"].ToString() + "_" + reader["Position"].ToString();
-                                dRow["TubePositionNumber"] = reader["BatchType"] == DBNull.Value ? (int)reader["Grid"] * 100 + (int)reader["Position"] : System.Convert.ToInt32(reader["BatchType"].ToString()) * 10000 + (int)reader["Grid"] * 100 + (int)reader["Position"];
+                                if (sampleTable.Columns.Contains("TubePositionNumber"))
+                                    dRow["TubePositionNumber"] = reader["BatchType"] == DBNull.Value ? (int)reader["Grid"] * 100 + (int)reader["Position"] : System.Convert.ToInt32(reader["BatchType"].ToString()) * 10000 + (int)reader["Grid"] * 100 + (int)reader["Position"];
                                 dRow["TubeType"] = reader["TubeType"];
                                 dRow["TestingItemName"] = reader["TestName"];
 
@@ -2184,7 +2185,7 @@ namespace WanTai.Controller.PCR
                             cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableRed);
                             cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagWhite));
                         }
-                        if (dtNCPCQC.Rows[i]["类型"].ToString().Contains("PC"))
+                        if (dtNCPCQC.Rows[i]["类型"].ToString().Contains("PC") && dtNCPCQC.Rows[i]["Color"].ToString() == WantagColor.WantagRed)
                         {
                             cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableWhite);
                         }

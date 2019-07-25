@@ -292,6 +292,7 @@ namespace WanTai.View
             bool? newExperimentResult = newExperiment.DialogResult;
             if (newExperimentResult.HasValue && (bool)newExperimentResult)
             {
+                SessionInfo.CurrentTubesBatch = new TubesBatch() { TubesBatchID = new Guid(), TestingItem = new Dictionary<Guid, int>() };
               MainPage mainPage = new MainPage();
               mainPage.SetEvoRestorationStatus+=new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
               mainPage.AddEvoRestorationStatusEvent();

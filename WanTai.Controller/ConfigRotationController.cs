@@ -19,7 +19,7 @@ namespace WanTai.Controller
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    var records = entities.OperationConfigurations.Where(c => c.DisplayFlag == true && c.ActiveStatus == true).OrderByDescending(c => c.OperationType).ThenBy(c => c.OperationSequence);
+                    var records = entities.OperationConfigurations.Where(c => c.DisplayFlag == true && c.ActiveStatus == true).OrderBy(c => c.OperationName).ThenBy(c => c.OperationSequence);
                     List<OperationConfiguration> results = records.ToList<OperationConfiguration>();
                     
                     return results;

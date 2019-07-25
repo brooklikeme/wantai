@@ -55,6 +55,8 @@ namespace WanTai.DataModel
 
         public static RotationInfo CurrentRotation { get; set; }
 
+        public static TubesBatch CurrentTubesBatch { get; set; }
+
         public static bool NexRotation { get; set; }
 
 

@@ -18,14 +18,16 @@ namespace WanTai.Controller
                 ErrType = 0;
                 string workDeskType = WanTai.Common.Configuration.GetWorkDeskType();
 
+                TubesBatch oldTubeBatch = null;
+
                 // ExperimentID = new Guid("1C188E0B-F8A7-11E0-A935-0019D147C478");
                 using (WanTaiEntities _WanTaiEntities = new WanTaiEntities())
                 {
                     #region 删除上次操作的数据
                     if (DelTubesBatch.TubesBatchID != new Guid())
                     {
-                        TubesBatch tubeBatch = _WanTaiEntities.TubesBatches.Where(_TubeBatch => _TubeBatch.TubesBatchID == DelTubesBatch.TubesBatchID).FirstOrDefault();
-                        if (tubeBatch != null)
+                        oldTubeBatch = _WanTaiEntities.TubesBatches.Where(_TubeBatch => _TubeBatch.TubesBatchID == DelTubesBatch.TubesBatchID).FirstOrDefault();
+                        if (oldTubeBatch != null)
                         {
                             List<TubeGroup> DelTubeGroups = _WanTaiEntities.TubeGroups.Where(DelTubeGroup => DelTubeGroup.TubesBatchID == (Guid)DelTubesBatch.TubesBatchID).ToList<TubeGroup>();                           
                             foreach (TubeGroup DelTubeGroup in DelTubeGroups)
@@ -35,15 +37,15 @@ namespace WanTai.Controller
                                 {
                                     DelTube.DWPlatePositions.Clear();
                                     _WanTaiEntities.Tubes.DeleteObject(DelTube);
-                                    // _WanTaiEntities.SaveChanges();
+                                    //_WanTaiEntities.SaveChanges();
                                 }
                                 DelTubeGroup.TestingItemConfigurations.Clear();
                                 // _WanTaiEntities.SaveChanges();
                                 _WanTaiEntities.TubeGroups.DeleteObject(DelTubeGroup);
-                                // _WanTaiEntities.SaveChanges();
+                                //_WanTaiEntities.SaveChanges();
                                 //  List<TestingItemConfiguration> DelTestingItemConfigurations=_WanTaiEntities.TestingItemConfigurations.Where(DelTestingItemConfiguration=>DelTestingItemConfiguration.)
                             }
-                            List<Plate> DelPlates = _WanTaiEntities.Plates.Where(plate => plate.TubesBatchID == tubeBatch.TubesBatchID).ToList();
+                            List<Plate> DelPlates = _WanTaiEntities.Plates.Where(plate => plate.TubesBatchID == oldTubeBatch.TubesBatchID).ToList();
                             foreach(Plate plate in DelPlates)
                             {
                                 List<PCRPlatePosition> DelPCRPlatePosition = _WanTaiEntities.PCRPlatePositions.Where(Position => Position.PlateID==plate.PlateID).ToList();
@@ -51,6 +53,7 @@ namespace WanTai.Controller
                                 {
                                     position.DWPlatePositions.Clear();
                                     _WanTaiEntities.PCRPlatePositions.DeleteObject(position);
+                                    //_WanTaiEntities.SaveChanges();
                                 }
                                 List<DWPlatePosition> DelDWPlatePosition = _WanTaiEntities.DWPlatePositions.Where(Position => Position.PlateID == plate.PlateID).ToList();
                                 foreach (DWPlatePosition position in DelDWPlatePosition)
@@ -58,12 +61,12 @@ namespace WanTai.Controller
                                     position.Tubes.Clear();
                                     position.PCRPlatePositions.Clear();
                                     _WanTaiEntities.DWPlatePositions.DeleteObject(position);
+                                    //_WanTaiEntities.SaveChanges();
                                 }
                                 _WanTaiEntities.Plates.DeleteObject(plate);
+                                //_WanTaiEntities.SaveChanges();
                             }
 
-                            _WanTaiEntities.TubesBatches.DeleteObject(tubeBatch);
-                           //_WanTaiEntities.SaveChanges();
                         }
                     }
                     #endregion
@@ -1443,13 +1446,13 @@ namespace WanTai.Controller
                             if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) > 1)
                             {
                                 // generate final mix sample number file name right now
-                                if (File.Exists(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName()))
-                                    File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName());
+                                //if (File.Exists(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName()))
+                                //    File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName());
                                 if (File.Exists(SampleNumberFileName))
                                     File.Move(SampleNumberFileName, WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetSampleNumberFileName());
 
-                                if (File.Exists(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName()))
-                                    File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName());
+                                //if (File.Exists(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName()))
+                                //    File.Delete(WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName());
                                 if (File.Exists(MixSampleNumberFileName))
                                     File.Move(MixSampleNumberFileName, WanTai.Common.Configuration.GetEvoVariableOutputPath() + WanTai.Common.Configuration.GetMixSampleNumberFileName());
                                 
@@ -1457,20 +1460,28 @@ namespace WanTai.Controller
                                 {
                                     if (File.Exists(CSVPath + (ExperimentRotation == null ? "" : ExperimentRotation.RotationID.ToString()) + Testing.WorkListFileName))
                                     {
-                                        if (File.Exists(CSVPath + Testing.WorkListFileName))
-                                        {
-                                            File.Delete(CSVPath + Testing.WorkListFileName);
-                                        };
                                         File.Move(CSVPath + (ExperimentRotation == null ? "" : ExperimentRotation.RotationID.ToString()) + Testing.WorkListFileName,
-                                            CSVPath + Testing.WorkListFileName);
+                                                CSVPath + Testing.WorkListFileName);
                                     }
                                 }
 
                             }
                         }
                     }
+                    //
+                    if (null != oldTubeBatch)
+                    {
+                        RotationInfo oldRotationInfo = _WanTaiEntities.RotationInfoes.Where(Rotation => Rotation.ExperimentID == ExperimentID && Rotation.TubesBatchID == oldTubeBatch.TubesBatchID).FirstOrDefault();
+                        if (null != oldRotationInfo)
+                        {
+                            oldRotationInfo.TubesBatchID = _TubesBatch.TubesBatchID;
+                        }
+                        _WanTaiEntities.TubesBatches.DeleteObject(oldTubeBatch);
+                    }
+                    
+
                     #endregion 开始保存文件
-                    if (String.IsNullOrEmpty(SessionInfo.BatchType) || int.Parse(SessionInfo.BatchType) == SessionInfo.BatchTimes)
+                    if (String.IsNullOrEmpty(SessionInfo.BatchType) || int.Parse(SessionInfo.BatchType) <= SessionInfo.BatchTimes)
                         _WanTaiEntities.SaveChanges();
 
                     
