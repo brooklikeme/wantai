@@ -30,7 +30,16 @@ namespace WanTai.View
             InitializeComponent();
             if(SessionInfo.LoginName!=null)
                 txtOrperatorName.Text = SessionInfo.LoginName;
-            txtExperimentName.Text = SessionInfo.LoginName + System.DateTime.Now.ToString("_yyyy-MM-dd HH-mm-ss");
+            string dateStr = System.DateTime.Now.ToString("yyyy-MM-dd");
+            int expIndex = 1;
+            string expNameStr = System.DateTime.Now.ToString("yyyy-MM-dd") + "_" + expIndex.ToString();
+            ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentByName(expNameStr);
+            while (expInfo != null) {
+                expIndex++;
+                expNameStr = System.DateTime.Now.ToString("yyyy-MM-dd") + "_" + expIndex.ToString();
+                expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentByName(expNameStr);
+            }
+            txtExperimentName.Text = SessionInfo.LoginName + "_" + expNameStr;
 
             if (SessionInfo.WorkDeskType == "100")
             {

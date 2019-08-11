@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using WanTai.Controller.EVO;
 using WanTai.DataModel;
 using WanTai.Controller.Configuration;
+using WanTai.RESTService;
 using System.Xml;
 using System.Data;
 using System.IO;
@@ -23,6 +24,9 @@ using System.Threading;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.ServiceModel;
+using System.ServiceModel.Description;
+using System.ServiceModel.Web;
 
 namespace WanTai.View
 {
@@ -36,6 +40,8 @@ namespace WanTai.View
         public delegate void CloseWindowHandler();
         public delegate void ResumeExperimentHandler(string experiment_name);
         public event WanTai.View.MainPage.SendStopRunMsg StopRunEvent;
+
+        WebServiceHost _serviceHost;
 
         public MainWindow()
         {
@@ -124,6 +130,19 @@ namespace WanTai.View
             worker.RunWorkerAsync();
             
             Authorize();
+
+            // Start REST Service if configured
+            string RESTUri = WanTai.Common.Configuration.GetRESTUri();
+            if (!String.IsNullOrEmpty(RESTUri))
+            {
+                RestServices ResultServices = new RestServices();
+                WebHttpBinding binding = new WebHttpBinding();
+                WebHttpBehavior behavior = new WebHttpBehavior();
+
+                _serviceHost = new WebServiceHost(ResultServices, new Uri(RESTUri));
+                _serviceHost.AddServiceEndpoint(typeof(IRESTServices), binding, "");
+                _serviceHost.Open();
+            }
         }
 
         private void Authorize()
@@ -746,6 +765,13 @@ namespace WanTai.View
                 Application.Current.Shutdown();
             };
             worker.RunWorkerAsync();
+
+            // Close REST Server
+            string RESTUri = WanTai.Common.Configuration.GetRESTUri();
+            if (!String.IsNullOrEmpty(RESTUri))
+            {
+                _serviceHost.Close();
+            }
         }
 
         private void BackupDB_Button_Click(object sender, RoutedEventArgs e)

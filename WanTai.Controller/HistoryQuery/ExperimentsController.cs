@@ -486,6 +486,15 @@ namespace WanTai.Controller.HistoryQuery
             }
         }
 
+        public ExperimentsInfo GetExperimentByName(string experimentName)
+        {
+            using (WanTaiEntities entities = new WanTaiEntities())
+            {
+                ExperimentsInfo experimentInfo = entities.ExperimentsInfoes.FirstOrDefault(p => p.ExperimentName.Contains(experimentName));
+                return experimentInfo;
+            }
+        }
+
         public int GetEarlierRotationCount(DateTime startTime)
         {
             int count = 0;

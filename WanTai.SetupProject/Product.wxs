@@ -151,6 +151,9 @@
       <Component Id='WanTai.Common' Guid='*' Directory='INSTALLDIR'>
         <File Id='WanTai.Common.dll' Name='WanTai.Common.dll' DiskId='1' Source='../WanTai.View/bin/Debug/WanTai.Common.dll' KeyPath='yes'/>
       </Component>
+      <Component Id='WanTai.RESTService' Guid='*' Directory='INSTALLDIR'>
+        <File Id='WanTai.RESTService.dll' Name='WanTai.RESTService.dll' DiskId='1' Source='../WanTai.RESTService/bin/Debug/WanTai.RESTService.dll' KeyPath='yes'/>
+      </Component>      
       <Component Id='WanTai.Controller' Guid='*' Directory='INSTALLDIR'>
         <File Id='WanTai.Controller.dll' Name='WanTai.Controller.dll' DiskId='1' Source='../WanTai.View/bin/Debug/WanTai.Controller.dll' KeyPath='yes'/>
       </Component>
