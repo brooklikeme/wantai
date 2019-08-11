@@ -900,12 +900,12 @@ namespace WanTai.Controller.PCR
                         {
                             positivePoolNumber++;
                         }
-                        else if ((int)middRow["TubeType"] != (int)Tubetype.NegativeControl)
+                        else if ((int)middRow["TubeType"] != (int)Tubetype.NegativeControl && (string)middRow["TubeTypeName"] != "QC")
                         {
                             negativePoolNumber++;
                             negativeSampleNumber += middRow["TubePosition"].ToString().Split('\n').Length;
                         }
-                        if (middRow["PCRTestResult"].ToString().Contains(PCRTest.LowResult) || middRow["PCRTestResult"].ToString().Contains(PCRTest.BCILowResult)
+                        if (middRow["PCRTestResult"].ToString().Contains(PCRTest.LowResult)
                             || middRow["PCRTestResult"].ToString() == PCRTest.InvalidResult || middRow["PCRTestResult"].ToString() == PCRTest.NoResult)
                         {
                             invalidPoolNumber++;
@@ -1591,6 +1591,12 @@ namespace WanTai.Controller.PCR
             iTextSharp.text.Font fontTableWhite = new iTextSharp.text.Font(baseFont, 6);
             fontTableWhite.Color = iTextSharp.text.Color.WHITE;
 
+            iTextSharp.text.Font fontTableContentBigger = new iTextSharp.text.Font(baseFont, 7.5F);
+            iTextSharp.text.Font fontTableRedBigger = new iTextSharp.text.Font(baseFont, 7.5F);
+            fontTableRedBigger.Color = iTextSharp.text.Color.RED;
+            iTextSharp.text.Font fontTableWhiteBigger = new iTextSharp.text.Font(baseFont, 7.5F);
+            fontTableWhiteBigger.Color = iTextSharp.text.Color.WHITE;
+
             DateTime dTime = DateTime.Now;
 
             // iTextSharp.text.HeaderFooter footer = new iTextSharp.text.HeaderFooter(new Phrase("导出时间：" + dTime.ToString("yyyy/MM/dd HH:mm:ss") + "    页数: "), true);
@@ -2059,14 +2065,14 @@ namespace WanTai.Controller.PCR
                 if (!has_bci)
                     table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));    
                 else
-                    table.SetTotalWidth(new float[] { 5, 8, 0, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 5, 8, 0, 20, 15, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             else
             {
                 if (!has_bci)
-                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 15, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
                 else
-                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 15, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             // 添加表头，每一页都有表头
             for (int j = 0; j < dtPositive.Columns.Count - 1; j++)
@@ -2094,7 +2100,7 @@ namespace WanTai.Controller.PCR
                 {
                     try
                     {
-                        cell = new PdfPCell(new Phrase(dtPositive.Rows[i][j].ToString(), fontTableContent));
+                        cell = new PdfPCell(new Phrase(dtPositive.Rows[i][j].ToString(), fontTableContentBigger));
                         System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(dtPositive.Rows[i]["Color"].ToString());
                         cell.VerticalAlignment = Element.ALIGN_MIDDLE;
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
@@ -2102,7 +2108,7 @@ namespace WanTai.Controller.PCR
                         
                         if (dtPositive.Rows[i]["Color"].ToString() == WantagColor.WantagRed)
                         {
-                            cell.Phrase = new Phrase(dtPositive.Rows[i][j].ToString(), fontTableRed);
+                            cell.Phrase = new Phrase(dtPositive.Rows[i][j].ToString(), fontTableRedBigger);
                             cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagWhite));
                         }                     
 
@@ -2140,14 +2146,14 @@ namespace WanTai.Controller.PCR
                 if (!has_bci)
                     table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));
                 else
-                    table.SetTotalWidth(new float[] { 5, 8, 0, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 5, 8, 0, 20, 15, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             else
             {
                 if (!has_bci)
-                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 15, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
                 else
-                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 15, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             // 添加表头，每一页都有表头
             for (int j = 0; j < dtNCPCQC.Columns.Count - 1; j++)
@@ -2175,19 +2181,19 @@ namespace WanTai.Controller.PCR
                 {
                     try
                     {
-                        cell = new PdfPCell(new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableContent));
+                        cell = new PdfPCell(new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableContentBigger));
                         System.Drawing.Color Color = System.Drawing.ColorTranslator.FromHtml(dtNCPCQC.Rows[i]["Color"].ToString());
                         cell.VerticalAlignment = Element.ALIGN_MIDDLE;
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
                         cell.BackgroundColor = new iTextSharp.text.Color(Color);
                         if (dtNCPCQC.Rows[i]["Color"].ToString() == WantagColor.WantagRed && !dtNCPCQC.Rows[i]["类型"].ToString().Contains("PC"))
                         {
-                            cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableRed);
+                            cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableRedBigger);
                             cell.BackgroundColor = new iTextSharp.text.Color(System.Drawing.ColorTranslator.FromHtml(WantagColor.WantagWhite));
                         }
                         if (dtNCPCQC.Rows[i]["类型"].ToString().Contains("PC") && dtNCPCQC.Rows[i]["Color"].ToString() == WantagColor.WantagRed)
                         {
-                            cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableWhite);
+                            cell.Phrase = new Phrase(dtNCPCQC.Rows[i][j].ToString(), fontTableWhiteBigger);
                         }
 
                         table.AddCell(cell);
@@ -2218,6 +2224,9 @@ namespace WanTai.Controller.PCR
                 dtSample = dt.Select(sampleSelectStr, "").CopyToDataTable();
                 paddingTop = 2f;
                 paddingBottom = 2f;
+                fontTableContent = fontTableContentBigger;
+                fontTableRed = fontTableRedBigger;
+                fontTableWhite = fontTableWhiteBigger;
             }
             else
             {
@@ -2236,14 +2245,14 @@ namespace WanTai.Controller.PCR
                 if (!has_bci)
                     table.SetTotalWidth(Array.ConvertAll(PCRTestResultWidths.Split(','), new Converter<string, float>(float.Parse)));
                 else
-                    table.SetTotalWidth(new float[] { 5, 8, 0, 20, 11, 8, 8, 16, 9, 9, 9, 9, 22, 10 });
+                    table.SetTotalWidth(new float[] { 5, 8, 0, 20, 15, 8, 8, 16, 9, 9, 9, 9, 22, 10 });
             }
             else
             {
                 if (!has_bci)
-                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 15, 8, 8, 16, 9, 9, 9, 9, 9, 9, 14, 10 });
                 else
-                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 11, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
+                    table.SetTotalWidth(new float[] { 4, 8, 8, 20, 15, 8, 8, 16, 9, 9, 9, 9, 14, 10 });
             }
             // 添加表头，每一页都有表头
             for (int j = 0; j < dtSample.Columns.Count - 1; j++)
