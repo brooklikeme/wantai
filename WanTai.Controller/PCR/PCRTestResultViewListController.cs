@@ -937,21 +937,24 @@ namespace WanTai.Controller.PCR
                             }
                         }
                         listIndex++;
-                        if ((int)middRow["TubeType"] != (int)Tubetype.PositiveControl && (string)middRow["TubeTypeName"] != "QC" && middRow["PCRTestResult"].ToString().Contains(PCRTest.PositiveResult))
+                        // if ((int)middRow["TubeType"] != (int)Tubetype.PositiveControl && (string)middRow["TubeTypeName"] != "QC" && middRow["PCRTestResult"].ToString().Contains(PCRTest.PositiveResult))
+                        if (middRow["PCRTestResult"].ToString().Contains(PCRTest.PositiveResult))
                         {
                             positivePoolNumber++;
                         }
-                        else if ((int)middRow["TubeType"] != (int)Tubetype.NegativeControl && (string)middRow["TubeTypeName"] != "QC")
-                        {
-                            negativePoolNumber++;
-                            negativeSampleNumber += middRow["TubePosition"].ToString().Split('\n').Length;
-                        }
-                        if (middRow["PCRTestResult"].ToString().Contains(PCRTest.LowResult)
-                            || middRow["PCRTestResult"].ToString() == PCRTest.InvalidResult || middRow["PCRTestResult"].ToString() == PCRTest.NoResult)
+                        else if (middRow["PCRTestResult"].ToString().Contains(PCRTest.LowResult)
+                        || middRow["PCRTestResult"].ToString().Contains(PCRTest.InvalidResult) || middRow["PCRTestResult"].ToString().Contains(PCRTest.NoResult))
                         {
                             invalidPoolNumber++;
                             invalidSampleNumber += middRow["TubePosition"].ToString().Split('\n').Length;
                         }
+                        // else if ((int)middRow["TubeType"] != (int)Tubetype.NegativeControl && (string)middRow["TubeTypeName"] != "QC")
+                        else
+                        {
+                            negativePoolNumber++;
+                            negativeSampleNumber += middRow["TubePosition"].ToString().Split('\n').Length;
+                        }
+                        
                     }
                     // dataRow["TubeBarCode"] = formatTwoColumns(dataRow["tubeBarCode"].ToString());
                     // dataRow["TubePosition"] = formatTwoColumns(dataRow["TubePosition"].ToString());
@@ -2251,8 +2254,9 @@ namespace WanTai.Controller.PCR
 
             document.Add(second_table);
 
-            // 阳性数据
-            DataTable dtPositive = dt.Select("类型 <> 'NC' AND 类型 <> 'PC' AND 类型 <> 'QC' AND 检测结果 like '%阳性%'", "").CopyToDataTable();
+
+            var rows = dt.Select("类型 <> 'NC' AND 类型 <> 'PC' AND 类型 <> 'QC' AND 检测结果 like '%阳性%'", "序号 ASC");
+            DataTable dtPositive = rows.Any() ? rows.CopyToDataTable() : dt.Clone();
 
             // 阳性样本数据
             Paragraph pLabel = new Paragraph("阳性样本信息：", fontLabel);
