@@ -43,7 +43,7 @@ namespace WanTai.View
                 {
                     CheckBox checkBox = new CheckBox();
                     checkBox.Tag = _TestingItem;
-                    checkBox.Content = _TestingItem.TestingItemName;
+                    checkBox.Content = _TestingItem.TestingItemName == "HIV" ? "nCoV" : _TestingItem.TestingItemName;
                     checkBox.Height = 20;
                     checkBox.Width = 50;
                     checkBox.Margin = new Thickness(5);

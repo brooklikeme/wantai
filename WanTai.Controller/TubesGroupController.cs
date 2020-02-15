@@ -299,7 +299,7 @@ namespace WanTai.Controller
                                     if (_tubes.Rows[RowIndex]["TubeType" + ColumnIndex.ToString()].ToString() == "QC")
                                         tube.TubeType = (int)Tubetype.QC;
                                     // 100的加500到一个板子，其它的分别加480到两个板子
-                                    tube.Volume = workDeskType == "100" ? 500 : 480;
+                                    tube.Volume = workDeskType == "100" ? 200 : 480;
 
                                     if (tube.TubeType == (int)Tubetype.PositiveControl || tube.TubeType == (int)Tubetype.NegativeControl
                                         || (workDeskType == "100" && tube.TubeType == (int)Tubetype.Complement))
@@ -373,7 +373,7 @@ namespace WanTai.Controller
                                                         DWPlatePosition100[tubeTestingItemID].Add(DWPosition);
                                                     }
                                                 }
-                                                NegativePositive[DWPosition.Position - 1] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",500," + PlateName.DWPlate1 + "," + DWPosition.Position;
+                                                NegativePositive[DWPosition.Position - 1] = "Tube" + tube.Grid + "," + (RowIndex + 1).ToString() + ",200," + PlateName.DWPlate1 + "," + DWPosition.Position;
 
                                                 PoolingWorkListRowCount += 1;
                                             }
@@ -621,7 +621,7 @@ namespace WanTai.Controller
                                 DWPlatePosition DWPlate_2_Position = null;
 
                                 PoolingRulesConfiguration PollingRules = _WanTaiEntities.PoolingRulesConfigurations.Where(PollingRule => PollingRule.PoolingRulesID == _TubeGroup.PoolingRulesID).FirstOrDefault();
-                                float Volume = workDeskType != "100" ? 960 / PollingRules.TubeNumber : 500;
+                                float Volume = workDeskType != "100" ? 960 / PollingRules.TubeNumber : 200;
 
                                 #region  新建TubeGroup
                                 TubeGroup NewTubeGroup = new TubeGroup();
@@ -658,7 +658,7 @@ namespace WanTai.Controller
                                 if (PollingRules.TubeNumber == 1)
                                 {
                                     #region 单检
-                                    Volume = workDeskType != "100" ? 480 : 500;
+                                    Volume = workDeskType != "100" ? 480 : 200;
                                     StringBuilder ONETubesPosition2 = new StringBuilder();
                                     foreach (string str in TubesPosition)
                                     {

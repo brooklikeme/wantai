@@ -79,7 +79,7 @@ namespace WanTai.View
                 checkBox.SetValue(CheckBox.DataContextProperty, _TestingItem);
                 checkBox.SetValue(CheckBox.MarginProperty, new System.Windows.Thickness(5, 0, 5, 0));
                 checkBox.SetValue(CheckBox.IsCheckedProperty, false);
-                checkBox.SetValue(CheckBox.ContentProperty, _TestingItem.TestingItemName);
+                checkBox.SetValue(CheckBox.ContentProperty, _TestingItem.TestingItemName == "HIV" ? "nCoV" : _TestingItem.TestingItemName);
 
                 checkBox.AddHandler(CheckBox.CheckedEvent, new RoutedEventHandler(checkBox_Checked));
                 checkBox.AddHandler(CheckBox.UncheckedEvent, new RoutedEventHandler(checkBox_Unchecked));
@@ -95,7 +95,7 @@ namespace WanTai.View
                 sp_pointout.Children.Add(textBlock);
 
                 Label label = new Label();
-                label.Content = _TestingItem.TestingItemName;
+                label.Content = _TestingItem.TestingItemName == "HIV" ? "nCoV" : _TestingItem.TestingItemName;
                 label.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 label.VerticalAlignment = System.Windows.VerticalAlignment.Center;
                 label.Width = 65;
@@ -517,7 +517,7 @@ namespace WanTai.View
                 {
                     TestingItemConfiguration _TestingItemConfiguration = _TubeGroup.TestingItemConfigurations.First();
 
-                    ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName.Replace(" " + _TestingItemConfiguration.TestingItemName, "");
+                    ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName.Replace(" " + _TestingItemConfiguration.TestingItemName == "HIV" ? "nCoV" : _TestingItemConfiguration.TestingItemName, "");
 
                     //if (CurrentTubesBatch.TestingItem == null)
                     //    CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
@@ -729,10 +729,10 @@ namespace WanTai.View
                //     CurrentTubesBatch.TestingItem[_TestingItemConfiguration.TestingItemID] += TestintItemNumber;
                //else
                //     CurrentTubesBatch.TestingItem.Add(_TestingItemConfiguration.TestingItemID, TestintItemNumber);
-              
-               ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName + " " + _TestingItemConfiguration.TestingItemName;
+
+               ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName + " " + _TestingItemConfiguration.TestingItemName == "HIV" ? "nCoV" : _TestingItemConfiguration.TestingItemName;
              //  ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestingItemConfigurations.Add(IestingItemList.Where(tic => tic.TestingItemID == _TestingItemConfiguration.TestingItemID).FirstOrDefault());
-               ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestingItemConfigurations.Add(new TestingItemConfiguration() { TestingItemID = _TestingItemConfiguration.TestingItemID, TestingItemName = _TestingItemConfiguration.TestingItemName, TestingItemColor = _TestingItemConfiguration.TestingItemColor });
+               ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestingItemConfigurations.Add(new TestingItemConfiguration() { TestingItemID = _TestingItemConfiguration.TestingItemID, TestingItemName = _TestingItemConfiguration.TestingItemName == "HIV" ? "nCoV" : _TestingItemConfiguration.TestingItemName, TestingItemColor = _TestingItemConfiguration.TestingItemColor });
             }
         }
         private List<TestingItemConfiguration> _IestingItemList;
@@ -762,7 +762,7 @@ namespace WanTai.View
                     string TextItemCount = Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()].ToString();
                     Tubes.Rows[RowIndex - 1]["TextItemCount" + ColumnIndex.ToString()] = TextItemCount.Replace("," + _TubeGroup.RowIndex.ToString() + ";" + _TestingItemConfiguration.TestingItemColor, "");
                 }
-                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName.Replace(" " + _TestingItemConfiguration.TestingItemName, "");
+                ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName = ((WanTai.DataModel.TubeGroup)(dg_TubesGroup.SelectedItem)).TestintItemName.Replace(" " + _TestingItemConfiguration.TestingItemName == "HIV" ? "nCoV" : _TestingItemConfiguration.TestingItemName, "");
                 //if (CurrentTubesBatch.TestingItem == null)
                 //    CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
 
