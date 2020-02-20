@@ -61,6 +61,8 @@ namespace WanTai.View.HistoryQuery
             dataTable.Columns.Add("State", typeof(string));
             dataTable.Columns.Add("PCRTestResult", typeof(string));
             dataTable.Columns.Add("PCRTestResultExport", typeof(string));
+            dataTable.Columns.Add("NCOVTestResult", typeof(string));
+            dataTable.Columns.Add("NCOVTestResultExport", typeof(string));
             dataTable.Columns.Add("Color", typeof(string));
             dataTable.Columns.Add("logTitle", typeof(string)).DefaultValue = "查看日志";
             dataGrid_view.ItemsSource = dataTable.DefaultView;
@@ -157,7 +159,16 @@ namespace WanTai.View.HistoryQuery
             pcrView.pCRTestResultDataGridUserControl.ExperimentId = experimentId;
             pcrView.ShowDialog();            
         }
-
+        private void OnNCOVTestResultClick(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = dataGrid_view.SelectedIndex;
+            Guid rotationID = (Guid)dataTable.Rows[selectedIndex]["RotationID"];
+            PCR.PCRTestResultHistoryView pcrView = new PCR.PCRTestResultHistoryView();
+            pcrView.pCRTestResultDataGridUserControl.RotationId = rotationID;
+            pcrView.pCRTestResultDataGridUserControl.RotationName = dataTable.Rows[selectedIndex]["RotationName"].ToString();
+            pcrView.pCRTestResultDataGridUserControl.ExperimentId = experimentId;
+            pcrView.ShowDialog();
+        }
         private void OnPCRTestResultExportClick(object sender, RoutedEventArgs e)
         {
             string startRow = "";
@@ -218,6 +229,10 @@ namespace WanTai.View.HistoryQuery
             }
         }
 
+        private void OnNCOVTestResultExportClick(object sender, RoutedEventArgs e)
+        { 
+        }
+
         private void OnRotationNameClick(object sender, RoutedEventArgs e)
         {
             int selectedIndex = dataGrid_view.SelectedIndex;
@@ -241,6 +256,15 @@ namespace WanTai.View.HistoryQuery
             importPCR.ShowDialog();
             dataTable.Rows.Clear();
             initDataGrid();  
+        }
+
+
+        private void btnImportNCOVResult_Click(object sender, RoutedEventArgs e)
+        {
+            PCR.ImportPCRTestResultFile importPCR = new PCR.ImportPCRTestResultFile(experimentId);
+            importPCR.ShowDialog();
+            dataTable.Rows.Clear();
+            initDataGrid();
         }
 
         private void btnExportPCRResult_Click(object sender, RoutedEventArgs e)
@@ -283,6 +307,13 @@ namespace WanTai.View.HistoryQuery
         }
 
         private void btnAutoImportPCRResult_Click(object sender, RoutedEventArgs e)
+        {
+            PCR.ImportPCRTestResultFile importPCR = new PCR.ImportPCRTestResultFile(experimentId);
+            importPCR.AutoImportPCRResults();
+            dataTable.Rows.Clear();
+            initDataGrid();
+        }
+        private void btnAutoImportNCOVResult_Click(object sender, RoutedEventArgs e)
         {
             PCR.ImportPCRTestResultFile importPCR = new PCR.ImportPCRTestResultFile(experimentId);
             importPCR.AutoImportPCRResults();

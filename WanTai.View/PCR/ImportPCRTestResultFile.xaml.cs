@@ -1483,7 +1483,149 @@ namespace WanTai.View.PCR
                 return PCRTest.NoResult;
             }            
         }
+        
+        private string checkNCOVResult(PCRColumnData data, string testItemName, bool isSingle, Tubetype tubeType)
+        {
+            string rox = null;
+            string hex = null;
+            string fam = null;
 
+            if ("ROX" == data.Detector)
+            {
+                rox = data.Ct.ToUpper();
+            }
+            else if ("FAM" == data.Detector)
+            {
+                fam = data.Ct.ToUpper();
+            }
+            else if ("HEX" == data.Detector || "VIC" == data.Detector)
+            {
+                hex = data.Ct.ToUpper();
+            }
+
+            if (data.DataList != null)
+            {
+                foreach (PCRColumnData subData in data.DataList)
+                {
+                    if ("ROX" == subData.Detector)
+                    {
+                        rox = subData.Ct.ToUpper();
+                    }
+                    else if ("FAM" == subData.Detector)
+                    {
+                        fam = subData.Ct.ToUpper();
+                    }
+                    else if ("HEX" == subData.Detector || "VIC" == subData.Detector)
+                    {
+                        hex = subData.Ct.ToUpper();
+                    }
+                }
+            }
+            float EMPTY = -99;
+            float outNumber;
+            float famNumber = EMPTY;
+            float hexNumber = EMPTY;
+            float roxNumber = EMPTY;
+            float MINValue = 40;
+            float MAXValue = 45;
+
+            if (!(string.IsNullOrEmpty(fam) || fam == "UNDETERMINED" || fam == "NO CT" || fam == "N/A" || fam == "NAN" || !float.TryParse(fam, out outNumber)))
+            {
+                famNumber = outNumber;
+            }
+            if (!(string.IsNullOrEmpty(hex) || hex == "UNDETERMINED" || hex == "NO CT" || hex == "N/A" || hex == "NAN" || !float.TryParse(hex, out outNumber)))
+            {
+                hexNumber = outNumber;
+            }
+            if (!(string.IsNullOrEmpty(rox) || rox == "UNDETERMINED" || rox == "NO CT" || rox == "N/A" || rox == "NAN" || !float.TryParse(rox, out outNumber)))
+            {
+                roxNumber = outNumber;
+            }
+
+
+
+            //阴性对照
+            if (tubeType == Tubetype.NegativeControl)
+            {
+                if (testItemName == "nCoV")
+                {
+                    if ((famNumber == EMPTY || famNumber >= MAXValue) && (hexNumber == EMPTY || hexNumber >= MAXValue) && roxNumber != EMPTY && roxNumber <= 35)
+                    {
+                        return "nCoV|" + PCRTest.NegativeResult;
+                    }
+                    else
+                    {
+                        return "nCoV|" + PCRTest.InvalidResult;
+                    }
+                }
+                else
+                {
+                    return PCRTest.NoResult;
+                }
+            }
+            else if (tubeType == Tubetype.PositiveControl)
+            {
+                if (testItemName == "nCoV")
+                {
+                    if (famNumber != EMPTY && famNumber <= MINValue && hexNumber != EMPTY && hexNumber <= MINValue)
+                    {
+                        return "nCoV|" + PCRTest.PositiveResult;
+                    } 
+                    else {
+                        return "nCoV|" + PCRTest.InvalidResult;
+                    }
+                }
+                else
+                {
+                    return PCRTest.NoResult;
+                }
+            }
+
+            if (testItemName == "nCoV")
+            {
+                if ((famNumber == EMPTY || famNumber >= MAXValue) && (hexNumber == EMPTY || hexNumber >= MAXValue) && roxNumber != EMPTY && roxNumber <= 35)
+                {
+                    return "nCoV|" + PCRTest.NegativeResult;
+                }
+                else if (famNumber != EMPTY && famNumber <= MINValue && hexNumber != EMPTY && hexNumber <= MINValue)
+                {
+                    return "nCoV|" + PCRTest.PositiveResult;
+                }
+                else if (famNumber != EMPTY && famNumber <= MINValue && (hexNumber == EMPTY || hexNumber >= MAXValue))
+                {
+                    return "nCoV|" + PCRTest.OPositive;
+                }
+                else if ((famNumber == EMPTY || famNumber >= MAXValue) && hexNumber != EMPTY && hexNumber <= MINValue)
+                {
+                    return "nCoV|" + PCRTest.NPositive; 
+                }
+                else if (famNumber > MINValue && famNumber < MAXValue && hexNumber > MINValue && hexNumber < MAXValue)
+                {
+                    return "nCoV|" + PCRTest.nCoVLowResult; ;
+                }
+                else if (famNumber > MINValue && famNumber < MAXValue && (hexNumber == EMPTY || hexNumber >= MAXValue)) 
+                {
+                    return "nCoV|" + PCRTest.nCoVLowResult; ;
+                }
+                else if ((famNumber == EMPTY || famNumber >= MAXValue) && hexNumber > MINValue && hexNumber < MAXValue)
+                {
+                    return "nCoV|" + PCRTest.nCoVLowResult;
+                }
+                else if ((famNumber == EMPTY || famNumber >= MAXValue) && (hexNumber == EMPTY || hexNumber >= MAXValue) && roxNumber > 35)
+                {
+                    return "nCoV|" + PCRTest.InvalidResult;
+                }
+                else
+                {
+                    return PCRTest.NoResult;
+                }
+            }
+            else
+            {
+                return PCRTest.NoResult;
+            }
+        }
+        
         private string checkPCRResult100(PCRColumnData data, string testItemName, bool isSingle, Tubetype tubeType)
         {
             string CT = null, IC = null, Quantity = null, DR = null;
