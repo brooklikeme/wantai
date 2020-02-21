@@ -57,7 +57,7 @@ namespace WanTai.View.PCR
         {
             ComboBoxItem selectedItem = (ComboBoxItem)rotation_comboBox.SelectedItem;
             Guid rotationId = (Guid)selectedItem.Tag;
-            bool result = controller.CheckRotationHasPCRTestResult(rotationId,SessionInfo.ExperimentID);
+            bool result = controller.CheckRotationHasPCRTestResult(rotationId,SessionInfo.ExperimentID, false);
 
             if (result)
             {
@@ -76,7 +76,7 @@ namespace WanTai.View.PCR
             {
                 ComboBoxItem selectedItem = (ComboBoxItem)rotation_comboBox.SelectedItem;
                 Guid rotationId = (Guid)selectedItem.Tag;
-                bool result = controller.DeleteRotationPCRTestResult(rotationId);
+                bool result = controller.DeleteRotationPCRTestResult(rotationId, false);
                 WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "删除PCR检测结果" + " " + (result == true ? "成功" : "失败"), SessionInfo.LoginName, this.GetType().ToString(), SessionInfo.ExperimentID);
                 if (result)
                 {

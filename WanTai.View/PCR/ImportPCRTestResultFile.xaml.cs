@@ -36,15 +36,18 @@ namespace WanTai.View.PCR
         string PCRFilePath = Common.Configuration.GetPCRFilePath();
         Guid currentExperimentId;
         Boolean hasEmptyResults = true;
+        Boolean nCoV = false;
 
-        public ImportPCRTestResultFile()
-        {           
+        public ImportPCRTestResultFile(bool ncov)
+        {
+            nCoV = ncov;
             InitializeComponent();
             currentExperimentId = SessionInfo.ExperimentID;
         }
 
-        public ImportPCRTestResultFile(Guid _importedexperimentID)
+        public ImportPCRTestResultFile(Guid _importedexperimentID, bool ncov)
         {
+            nCoV = ncov;
             InitializeComponent();
             currentExperimentId = _importedexperimentID;
         }  
@@ -82,7 +85,7 @@ namespace WanTai.View.PCR
             ComboBoxItem barcodeSelectedItem = (ComboBoxItem)barcode_comboBox.SelectedItem;
             Plate plate = (Plate)barcodeSelectedItem.DataContext;
             Guid plateId = plate.PlateID;
-            bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId);
+            bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId, nCoV);
             if (hasRecord)
             {
                 MessageBox.Show("此条码的PCR板已经导入记录，不能重复导入，请删除旧的再次导入。", "系统提示");
@@ -295,7 +298,7 @@ namespace WanTai.View.PCR
                 OleDbDataAdapter da = new OleDbDataAdapter("select [Well],[Reporter],[Cт],[Sample Name] from [" + Sheet1 + "]", con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId, nCoV);
                 System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
 
                 foreach (DataRow row in dt.Rows)
@@ -358,7 +361,7 @@ namespace WanTai.View.PCR
                         DataRow dcrow = dc[info.Position];
                         bool isSingle = (int)dcrow["TubeNumber"] == 1 ? true : false;
                         Tubetype tubeType = (Tubetype)((short)dcrow["TubeType"]);
-                        info.Result = checkPCRResult(sData, dcrow["TestName"].ToString(), isSingle, tubeType);
+                        info.Result = nCoV ? checkNCOVResult(sData, dcrow["TestName"].ToString(), isSingle, tubeType) : checkPCRResult(sData, dcrow["TestName"].ToString(), isSingle, tubeType);
 
                         info.ExperimentID = currentExperimentId;
                         if (plate.BarCode != null)
@@ -446,7 +449,7 @@ namespace WanTai.View.PCR
                 OleDbDataAdapter da = new OleDbDataAdapter("select [Well],[Reporter],[Cт],[Quantity],[Sample Name] from [" + Sheet1 + "]", con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId, nCoV);
                 System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
 
                 foreach (DataRow row in dt.Rows)
@@ -604,7 +607,7 @@ namespace WanTai.View.PCR
             if (!isRightFormat)
                 return isRightFormat;            
 
-            Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+            Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId, nCoV);
             if (dc.Count != dataList.Count)
             {
                 isRightPositionNumber = false;
@@ -636,7 +639,7 @@ namespace WanTai.View.PCR
                     DataRow row = dc[info.Position];
                     bool isSingle = (int)row["TubeNumber"] == 1 ? true : false;
                     Tubetype tubeType = (Tubetype)((short)row["TubeType"]);
-                    info.Result = checkPCRResult(bioData, row["TestName"].ToString(), isSingle, tubeType);                   
+                    info.Result = nCoV ? checkNCOVResult(bioData, row["TestName"].ToString(), isSingle, tubeType) : checkPCRResult(bioData, row["TestName"].ToString(), isSingle, tubeType);                   
                     info.ExperimentID = currentExperimentId;
                     if (plate.BarCode != null)
                     {
@@ -732,7 +735,7 @@ namespace WanTai.View.PCR
             if (!isRightFormat)
                 return isRightFormat;
 
-            Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+            Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId, nCoV);
             if (dc.Count != dataList.Count)
             {
                 isRightPositionNumber = false;
@@ -837,7 +840,7 @@ namespace WanTai.View.PCR
                 OleDbDataAdapter da = new OleDbDataAdapter("select [Well],[Dye],[Ct (dR)],[Well Name] from [" + Sheet1 + "]", con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId, nCoV);
                 System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
             
                 foreach (DataRow row in dt.Rows)
@@ -895,7 +898,7 @@ namespace WanTai.View.PCR
                         DataRow dcrow = dc[info.Position];
                         bool isSingle = (int)dcrow["TubeNumber"] == 1 ? true : false;
                         Tubetype tubeType = (Tubetype)((short)dcrow["TubeType"]);
-                        info.Result = checkPCRResult(sData, dcrow["TestName"].ToString(), isSingle, tubeType);
+                        info.Result = nCoV ? checkNCOVResult(sData, dcrow["TestName"].ToString(), isSingle, tubeType) : checkPCRResult(sData, dcrow["TestName"].ToString(), isSingle, tubeType);
 
                         info.ExperimentID = currentExperimentId;
                         if (plate.BarCode != null)
@@ -979,7 +982,7 @@ namespace WanTai.View.PCR
                 OleDbDataAdapter da = new OleDbDataAdapter("select [Well],[Dye],[Ct (dR)],[Well Name] from [" + Sheet1 + "]", con);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId);
+                Dictionary<int, DataRow> dc = controller.GetPCRPositionsByPlateID(plate.PlateID, currentExperimentId, nCoV);
                 System.Collections.Generic.Dictionary<string, PCRColumnData> dataList = new System.Collections.Generic.Dictionary<string, PCRColumnData>();
 
                 foreach (DataRow row in dt.Rows)
@@ -2068,7 +2071,7 @@ namespace WanTai.View.PCR
                 {
                     plateIndex++;
                     Guid plateId = plate.PlateID;
-                    bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId);
+                    bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId, nCoV);
                     if (string.IsNullOrEmpty(plate.BarCode)) {
 
                         plate.BarCode = experimentInfo.StartTime.ToString("yyyyMMdd") + "-" + plateIndex;
@@ -2099,7 +2102,7 @@ namespace WanTai.View.PCR
                     foreach (Plate plate in plateList)
                     {
                         Guid plateId = plate.PlateID;
-                        bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId);
+                        bool hasRecord = controller.IsPlateHasImportedResult(rotationId, plateId, currentExperimentId, nCoV);
                         if (!hasRecord)
                         {
                             rotation_item.IsSelected = false;
@@ -2132,7 +2135,7 @@ namespace WanTai.View.PCR
                     {
                         plateIndex++;
                         Guid plateId = plate.PlateID;
-                        bool hasRecord = controller.IsPlateHasImportedResult(info.RotationID, plateId, currentExperimentId);
+                        bool hasRecord = controller.IsPlateHasImportedResult(info.RotationID, plateId, currentExperimentId, nCoV);
                         if (!hasRecord)
                         {
                             // get item names
@@ -2140,6 +2143,10 @@ namespace WanTai.View.PCR
                             Dictionary<string, int> matchedFileNameDict = new Dictionary<string,int>();
                             foreach (string testItemName in testItemNames)
                             {
+                                if ((nCoV && testItemName.ToUpper() != "NCOV") || (!nCoV && testItemName.ToUpper() == "NCOV"))
+                                {
+                                    continue;
+                                } 
                                 string needFileName = experimentInfo.StartTime.ToString("yyyy-M-d-") + rotationIndex + "-*" + testItemName + "*.*";
                                 string[] matchFileNames = System.IO.Directory.GetFiles(PCRFilePath, needFileName);
                                 foreach (string filename in matchFileNames) {

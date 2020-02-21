@@ -24,8 +24,10 @@ namespace WanTai.View.PCR
     /// </summary>
     public partial class PCRTestResultHistoryView : Window
     {
-        public PCRTestResultHistoryView()
+        bool nCoV = false;
+        public PCRTestResultHistoryView(bool ncov)
         {
+            nCoV = ncov;
             InitializeComponent();
         }
 
@@ -55,7 +57,7 @@ namespace WanTai.View.PCR
             if (selectResult == MessageBoxResult.Yes)
             {
                 Guid rotationId = pCRTestResultDataGridUserControl.RotationId;
-                bool result = new PCRTestResultViewListController().DeleteRotationPCRTestResult(rotationId);
+                bool result = new PCRTestResultViewListController().DeleteRotationPCRTestResult(rotationId, nCoV);
 
                 //WanTai.Controller.LogInfoController.AddLogInfo(LogInfoLevelEnum.Operate, "O"PCR?9~S" + " " + (result == true ? "?`x" : "??"), SessionInfo.LoginName, this.GetType().ToString(), SessionInfo.ExperimentID);
                 if (result)

@@ -143,14 +143,23 @@ namespace WanTai.Controller.PCR
             }
         }
 
-        public bool IsPlateHasImportedResult(Guid rotationId, Guid plateId, Guid experimentId)
+        public bool IsPlateHasImportedResult(Guid rotationId, Guid plateId, Guid experimentId, bool nCoV)
         {
             bool result = false;
             try
             {
                 using (WanTaiEntities entities = new WanTaiEntities())
                 {
-                    int count = entities.PCRTestResults.Where(p => p.RotationID == rotationId && p.PlateID == plateId).Count();
+                    int count = 0;
+                    if (nCoV)
+                    {
+                        count = entities.PCRTestResults.Where(p => p.RotationID == rotationId && p.PlateID == plateId && p.Result.Contains("nCoV")).Count();
+                    }
+                    else
+                    {
+                        count = entities.PCRTestResults.Where(p => p.RotationID == rotationId && p.PlateID == plateId && !p.Result.Contains("nCoV")).Count();
+                    }
+                   
                     result = count > 0 ? true : false;                    
                 }
             }
@@ -164,15 +173,24 @@ namespace WanTai.Controller.PCR
             return result;
         }
 
-        public Dictionary<int, DataRow> GetPCRPositionsByPlateID(Guid PCRPlateID, Guid experimentId)
+        public Dictionary<int, DataRow> GetPCRPositionsByPlateID(Guid PCRPlateID, Guid experimentId, bool nCoV)
         {
             DataTable dataTable = new DataTable();
             Dictionary<int, DataRow> result = new Dictionary<int, DataRow>();
             try
             {
                 string connectionString = WanTai.Common.Configuration.GetConnectionString();
-                string commandText = "SELECT TubeNumber, TestName, TubeType, PCRPosition FROM View_Tubes_PCRPlatePosition"
-                    + " WHERE PCRPlateID=@PCRPlateID order by PCRPosition";
+                string commandText = "";
+                if (nCoV)
+                {
+                    commandText = "SELECT TubeNumber, TestName, TubeType, PCRPosition FROM View_Tubes_PCRPlatePosition"
+                     + " WHERE PCRPlateID=@PCRPlateID AND TestName ='nCoV' order by PCRPosition";
+                }
+                else
+                {
+                    commandText = "SELECT TubeNumber, TestName, TubeType, PCRPosition FROM View_Tubes_PCRPlatePosition"
+                     + " WHERE PCRPlateID=@PCRPlateID AND TestName !='nCoV' order by PCRPosition";
+                }
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
