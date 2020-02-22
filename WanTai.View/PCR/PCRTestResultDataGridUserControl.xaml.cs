@@ -148,8 +148,8 @@ namespace WanTai.View.PCR
                     HBVIC.Visibility = Visibility.Hidden;
                     HCVIC.Visibility = Visibility.Hidden;
                     HIVIC.Visibility = Visibility.Hidden;
-                    HBV.Header = "ORF1ab";
-                    HCV.Header = "N";
+                    HBV.Header = "ORF1ab(Ct)";
+                    HCV.Header = "N(Ct)";
                     HIV.Header = "IC(Ct)";
                 }
                 else

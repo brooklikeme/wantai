@@ -414,6 +414,7 @@ namespace WanTai.Controller
 
                             foreach (TestingItemConfiguration TestingItem in TestingItemList)
                             {
+                                PCRPosition = 1;
                                 if (!DelTubesBatch.TestingItem.ContainsKey(TestingItem.TestingItemID) || DelTubesBatch.TestingItem[TestingItem.TestingItemID] == 0)
                                 {
                                     PoolCountOfTestItem.Add(TestingItem.TestingItemName, 0);
@@ -499,109 +500,6 @@ namespace WanTai.Controller
                                     formulaParameters.TestItemCountInTotal++;
                             }
 
-                            #endregion
-
-                            #region 废除的代码
-                            //foreach (KeyValuePair<Guid, int> _TestingItem in DelTubesBatch.TestingItem)
-                            //{
-                            //    TotalTestingItem += _TestingItem.Value + 2;
-                            //    NewTubeGroupNull.TestingItemConfigurations.Add(_WanTaiEntities.TestingItemConfigurations.Where(TestingItem => TestingItem.TestingItemID == _TestingItem.Key).FirstOrDefault());
-                            //}
-                           
-
-                            //int HBVPosition = 2;
-                            //int HCVPosition = 2;
-                            //int HIVPosition = 2;
-                            //if (DelTubesBatch.HBVNumber > 0)
-                            //{
-                            //    PCRPlatePosition _PCRPlatePosition = new PCRPlatePosition();
-                            //    _PCRPlatePosition.PCRPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                            //    _PCRPlatePosition.PlateID = PCRPlate.PlateID;
-                            //    _PCRPlatePosition.TestName = "HBV";
-                            //    _PCRPlatePosition.Position = 1;
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_2);
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_1.DWPlatePositionID).FirstOrDefault());
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
-                            //    _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-
-                            //    _PCRPlatePosition = new PCRPlatePosition();
-                            //    _PCRPlatePosition.PCRPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                            //    _PCRPlatePosition.PlateID = PCRPlate.PlateID;
-                            //    _PCRPlatePosition.TestName = "HBV";
-                            //    _PCRPlatePosition.Position = 2;
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_2);
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_1.DWPlatePositionID).FirstOrDefault());
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
-                            //    _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-
-
-                            //    PCRCSV[0] = PlateName.DWPlate5+",1,20,"+PlateName.PCRPlate+",1";
-                            //    PCRCSV[1] = PlateName.DWPlate5+",2,20,"+PlateName.PCRPlate+",2";
-                            //}
-                            //if (DelTubesBatch.HCVNumber > 0)
-                            //{
-                            //    if (DelTubesBatch.HBVNumber > 0)
-                            //        HCVPosition = 2 + DelTubesBatch.HBVNumber + 2;
-
-
-                            //    PCRPlatePosition _PCRPlatePosition = new PCRPlatePosition();
-                            //    _PCRPlatePosition.PCRPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                            //    _PCRPlatePosition.PlateID = PCRPlate.PlateID;
-                            //    _PCRPlatePosition.TestName = "HCV";
-                            //    _PCRPlatePosition.Position = (HCVPosition - 1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_2);
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_1.DWPlatePositionID).FirstOrDefault());
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
-                            //    _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-
-                            //    _PCRPlatePosition = new PCRPlatePosition();
-                            //    _PCRPlatePosition.PCRPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                            //    _PCRPlatePosition.PlateID = PCRPlate.PlateID;
-                            //    _PCRPlatePosition.TestName = "HCV";
-                            //    _PCRPlatePosition.Position = HCVPosition;
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_2);
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_1.DWPlatePositionID).FirstOrDefault());
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
-                            //    _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-
-                            //    PCRCSV[HCVPosition - 2] = PlateName.DWPlate5+",1,20,"+PlateName.PCRPlate+"," + (HCVPosition - 1).ToString();
-                            //    PCRCSV[HCVPosition - 1] = PlateName.DWPlate5+",2,20,"+PlateName.PCRPlate+"," + HCVPosition.ToString();
-                            //}
-                            //if (DelTubesBatch.HIVNumber > 0)
-                            //{
-                            //    if (DelTubesBatch.HBVNumber > 0)
-                            //        HIVPosition = 2 + DelTubesBatch.HBVNumber + 2;
-                            //    if (DelTubesBatch.HCVNumber > 0)
-                            //        HIVPosition = 2 + DelTubesBatch.HCVNumber + 2;
-
-                            //    PCRPlatePosition _PCRPlatePosition = new PCRPlatePosition();
-                            //    _PCRPlatePosition.PCRPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                            //    _PCRPlatePosition.PlateID = PCRPlate.PlateID;
-                            //    _PCRPlatePosition.TestName = "HIV";
-                            //    _PCRPlatePosition.Position = (HIVPosition - 1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_2);
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_1.DWPlatePositionID).FirstOrDefault());
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
-                            //    _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-
-                            //    _PCRPlatePosition = new PCRPlatePosition();
-                            //    _PCRPlatePosition.PCRPlatePositionID = WanTaiObjectService.NewSequentialGuid();
-                            //    _PCRPlatePosition.PlateID = PCRPlate.PlateID;
-                            //    _PCRPlatePosition.TestName = "HIV";
-                            //    _PCRPlatePosition.Position = HIVPosition;
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_1);
-                            //    _PCRPlatePosition.DWPlatePositions.Add(DWPlate_NegativeControl_2);
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_1.DWPlatePositionID).FirstOrDefault());
-                            //    //_PCRPlatePosition.DWPlatePositions.Add(_WanTaiEntities.DWPlatePositions.Where(d => d.DWPlatePositionID == DWPlate_NegativeControl_2.DWPlatePositionID).FirstOrDefault());
-                            //    _WanTaiEntities.AddToPCRPlatePositions(_PCRPlatePosition);
-                            //    PCRCSV[HIVPosition - 2] = PlateName.DWPlate5+",1,20,"+PlateName.PCRPlate+"," + (HIVPosition - 1).ToString();
-                            //    PCRCSV[HIVPosition - 1] = PlateName.DWPlate5+",2,20,"+PlateName.PCRPlate+"," + HIVPosition.ToString();
-                            //}
                             #endregion
 
                             int HolePosition = workDeskType != "100" ? 2 : Total100NPItem; //96孔板起始位置

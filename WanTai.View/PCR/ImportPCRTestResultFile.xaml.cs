@@ -1594,11 +1594,11 @@ namespace WanTai.View.PCR
                 {
                     return "nCoV|" + PCRTest.PositiveResult;
                 }
-                else if (famNumber != EMPTY && famNumber <= MINValue && (hexNumber == EMPTY || hexNumber >= MAXValue))
+                else if (famNumber != EMPTY && famNumber <= MINValue)
                 {
                     return "nCoV|" + PCRTest.OPositive;
                 }
-                else if ((famNumber == EMPTY || famNumber >= MAXValue) && hexNumber != EMPTY && hexNumber <= MINValue)
+                else if (hexNumber != EMPTY && hexNumber <= MINValue)
                 {
                     return "nCoV|" + PCRTest.NPositive; 
                 }
@@ -1620,7 +1620,7 @@ namespace WanTai.View.PCR
                 }
                 else
                 {
-                    return PCRTest.NoResult;
+                    return "nCoV|" + PCRTest.NoResult;
                 }
             }
             else
