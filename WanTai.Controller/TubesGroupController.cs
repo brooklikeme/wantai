@@ -411,6 +411,7 @@ namespace WanTai.Controller
 
                             foreach (TestingItemConfiguration TestingItem in TestingItemList)
                             {
+                                PCRPosition = 1;
                                 if (!DelTubesBatch.TestingItem.ContainsKey(TestingItem.TestingItemID) || DelTubesBatch.TestingItem[TestingItem.TestingItemID] == 0)
                                 {
                                     PoolCountOfTestItem.Add(TestingItem.TestingItemName, 0);

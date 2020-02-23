@@ -27,10 +27,17 @@ namespace WanTai.View.PCR
     public partial class PCRTestResultDataGridUserControl : UserControl
     {
         DataTable dataTable = new DataTable();
+        private bool nCoV = false;
         private Guid rotationId;
         private string rotationName;
         private Guid experimentId;
-        System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary = new System.Collections.Generic.Dictionary<int, string>();        
+        System.Collections.Generic.Dictionary<int, string> liquidTypeDictionary = new System.Collections.Generic.Dictionary<int, string>();
+
+        public bool ncov
+        {
+            set { nCoV = value; }
+            get { return nCoV; }
+        }
 
         public PCRTestResultDataGridUserControl()
         {
@@ -133,10 +140,22 @@ namespace WanTai.View.PCR
             if (rotationId != null && rotationId != Guid.Empty)
             {                
                 PCRTestResultViewListController controller = new PCRTestResultViewListController();
-                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
-                HBVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
-                HCVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
-                HIVIC.Header = has_bci ? "IC(Ct)" : "HIVIC(Ct)";
+                controller.QueryTubesPCRTestResult(experimentId, rotationId, dataTable, liquidTypeDictionary, WindowCustomizer.redColor, WindowCustomizer.greenColor, nCoV, out errorMessage, out reagent_batch, out qc_batch, out has_bci);
+                if (nCoV)
+                {
+                    HBVIC.Visibility = Visibility.Hidden;
+                    HCVIC.Visibility = Visibility.Hidden;
+                    HIVIC.Visibility = Visibility.Hidden;
+                    HBV.Header = "ORF1ab(Ct)";
+                    HCV.Header = "N(Ct)";
+                    HIV.Header = "IC(Ct)";
+                }
+                else
+                {
+                    HBVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
+                    HCVIC.Visibility = has_bci ? Visibility.Hidden : Visibility.Visible;
+                    HIVIC.Header = has_bci ? "IC(Ct)" : "HIVIC(Ct)";
+                }
                 ExperimentsInfo expInfo = new WanTai.Controller.HistoryQuery.ExperimentsController().GetExperimentById(experimentId);
                 this.experiment_name.Content = expInfo.ExperimentName;
                 this.login_name.Content = expInfo.LoginName;

@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:s="clr-namespace:System;assembly=mscorlib"
-    Title="实验详细信息查看" Height="600" Width="800" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Icon="/WanTag;component/Resources/logo.ico">
+    Title="实验详细信息查看" Height="600" Width="1000" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" Icon="/WanTag;component/Resources/logo.ico">
     <Window.Resources>
         <Style TargetType="{x:Type DataGridRow}">
             <Style.Setters>
@@ -41,6 +41,22 @@
                     <StackPanel Orientation="Horizontal">
                         <Image Source="/WanTag;component/Resources/PCR_Importing_hover.gif" Width="20" Height="20" />
                         <Label Content="PCR结果手动导入" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="btnAutoImportNCOVResult" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Click="btnAutoImportNCOVResult_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/WanTag;component/Resources/PCR_Importing_hover.gif" Width="20" Height="20" />
+                        <Label Content="nCoV结果自动导入" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="btnImportNCOVResult" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0" Click="btnImportNCOVResult_Click">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="/WanTag;component/Resources/PCR_Importing_hover.gif" Width="20" Height="20" />
+                        <Label Content="nCoV结果手动导入" HorizontalContentAlignment="Center"  VerticalContentAlignment="Center" />
                     </StackPanel>
                 </Button.Content>
             </Button>
@@ -107,6 +123,22 @@
                     <DataGridHyperlinkColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <EventSetter Event="Hyperlink.Click" Handler="OnPCRTestResultExportClick">
+                            </EventSetter>
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>
+                <DataGridHyperlinkColumn Header="nCoV结果查看" ContentBinding="{Binding Path=NCOVTestResult}" Width="*" CanUserSort="False" IsReadOnly="True">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="Hyperlink.Click" Handler="OnNCOVTestResultClick">
+                            </EventSetter>
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>
+                <DataGridHyperlinkColumn Header="nCoV结果导出" ContentBinding="{Binding Path=NCOVTestResultExport}" Width="*" CanUserSort="False" IsReadOnly="True">
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="Hyperlink.Click" Handler="OnNCOVTestResultExportClick">
                             </EventSetter>
                         </Style>
                     </DataGridHyperlinkColumn.ElementStyle>

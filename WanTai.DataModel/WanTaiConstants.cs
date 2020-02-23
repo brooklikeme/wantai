@@ -134,6 +134,9 @@ namespace WanTai.DataModel
         public static string NoResult = "计算无结果";
         public static string LowResult = "低于检测限";
         public static string BCILowResult = "低于检测下限，以拆分结果为准，若拆分结果Ct＜40则判为阳性";
+        public static string NPositive = "靶标N阳性";
+        public static string OPositive = "靶标ORF1ab阳性";
+        public static string nCoVLowResult = "需复检，以复检结果为准";
 
     }
 

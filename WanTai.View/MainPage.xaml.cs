@@ -596,7 +596,7 @@ namespace WanTai.View
         #endregion
         private void PCRResultImport_button_Click(object sender, RoutedEventArgs e)
         {
-            ImportPCRTestResultFile importPcrFile = new ImportPCRTestResultFile();
+            ImportPCRTestResultFile importPcrFile = new ImportPCRTestResultFile(false);
             importPcrFile.ShowDialog();
 		}
 		
