@@ -435,6 +435,7 @@ namespace WanTai.Controller.PCR
                 + " and View_Tubes_PCRPlatePosition.PCRPlateID = PCRTestResult.PlateID"
                 + " WHERE View_Tubes_PCRPlatePosition.RotationID=@RotationID"
                 + (nCoV ? " and View_Tubes_PCRPlatePosition.TestName='nCoV'" : " and View_Tubes_PCRPlatePosition.TestName!='nCoV'")
+                + (nCoV ? " and PCRTestResult.Result like '%nCoV%'" : " and PCRTestResult.Result not like '%nCoV%'")
                 + " order by PCRPlateID, PCRPosition";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
