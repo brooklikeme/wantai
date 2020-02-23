@@ -292,24 +292,25 @@ namespace WanTai.View
             bool? newExperimentResult = newExperiment.DialogResult;
             if (newExperimentResult.HasValue && (bool)newExperimentResult)
             {
-              MainPage mainPage = new MainPage();
-              mainPage.SetEvoRestorationStatus+=new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
-              mainPage.AddEvoRestorationStatusEvent();
-              mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
-              mainPage.CloseWindowEvent += new CloseWindowHandler(CloseWindow);
-              StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
-              mainFrame.Content = mainPage;
-              SessionInfo.RotationIndex = 0;
-              SessionInfo.NextTurnStep = -1;
-              SessionInfo.FirstStepMixing = 0;
-              SessionInfo.BatchTotalHoles = 0;
-              WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
-              processor.OnNextTurnStepDispse();
+                SessionInfo.CurrentTubesBatch = new TubesBatch() { TubesBatchID = new Guid(), TestingItem = new Dictionary<Guid, int>() };
+                MainPage mainPage = new MainPage();
+                mainPage.SetEvoRestorationStatus+=new MainPage.EvoRestorationStatus(SetEvoRestorationButtonStatus);
+                mainPage.AddEvoRestorationStatusEvent();
+                mainPage.ExperimentRunStatusEvent += new ExperimentRunStatusHandler(SuspendExitButtonControl);
+                mainPage.CloseWindowEvent += new CloseWindowHandler(CloseWindow);
+                StopRunEvent += new WanTai.View.MainPage.SendStopRunMsg(mainPage.SendStopRunMessage);
+                mainFrame.Content = mainPage;
+                SessionInfo.RotationIndex = 0;
+                SessionInfo.NextTurnStep = -1;
+                SessionInfo.FirstStepMixing = 0;
+                SessionInfo.BatchTotalHoles = 0;
+                WanTai.Controller.EVO.IProcessor processor = WanTai.Controller.EVO.ProcessorFactory.GetProcessor();
+                processor.OnNextTurnStepDispse();
                 //  mainFrame.Navigate(mainPage);
                 //mainFrame.Source = new Uri("MainPage.xaml", UriKind.Relative);
                 // mainFrame.Navigate(new Uri("MainPage.xaml", UriKind.Relative));
 
-              this.Title = "WanTag 全自动核酸提取系统——实验 " + newExperiment.txtExperimentName.Text;
+                this.Title = "WanTag 全自动核酸提取系统——实验 " + newExperiment.txtExperimentName.Text;
             }
             mainFrame.IsEnabled = true;
             ribbon.IsEnabled = true;

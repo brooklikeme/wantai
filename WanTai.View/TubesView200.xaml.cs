@@ -374,11 +374,12 @@ namespace WanTai.View
                 MessageBox.Show("execute scan error", "系统提示");
                 return;
             }
-            if (SystemFluid.IndexOf("2,") > 0 || SystemFluid.IndexOf("3,") > 0)
-            {
-                MessageBox.Show("阴阳对照物必须有!", "系统提示!");
-                return;
-            }
+            // 去限制
+            //if (SystemFluid.IndexOf("2,") > 0 || SystemFluid.IndexOf("3,") > 0)
+            //{
+            //    MessageBox.Show("阴阳对照物必须有!", "系统提示!");
+            //    return;
+            //}
             if (ErrMsg != "success")
                 MessageBox.Show(ErrMsg, "系统提示!");
             else
@@ -709,7 +710,8 @@ namespace WanTai.View
             //update batch to rotation
             if (SessionInfo.PraperRotation != null)
             {
-                new RotationInfoController().UpdateTubesBatch(SessionInfo.PraperRotation.RotationID, CurrentTubesBatch.TubesBatchID);
+                // new RotationInfoController().UpdateTubesBatch(SessionInfo.PraperRotation.RotationID, CurrentTubesBatch.TubesBatchID);
+                new RotationInfoController().UpdateTubesBatch(SessionInfo.PraperRotation.RotationID, SessionInfo.CurrentTubesBatch.TubesBatchID);
                 if (SessionInfo.PraperRotation != null)
                 {
                     FormulaParameters formulaParameters = SessionInfo.RotationFormulaParameters[Guid.Empty];
@@ -723,7 +725,8 @@ namespace WanTai.View
                         SessionInfo.RotationFormulaParameters[SessionInfo.PraperRotation.RotationID] = formulaParameters;
                     }
                 }
-                new PlateController().UpdateRotationId(CurrentTubesBatch.TubesBatchID, SessionInfo.PraperRotation.RotationID);
+                // new PlateController().UpdateRotationId(CurrentTubesBatch.TubesBatchID, SessionInfo.PraperRotation.RotationID);
+                new PlateController().UpdateRotationId(SessionInfo.CurrentTubesBatch.TubesBatchID, SessionInfo.PraperRotation.RotationID);
             }
             dg_TubesGroup.IsEnabled = false;
             dg_Bules.IsEnabled = false;
@@ -814,14 +817,15 @@ namespace WanTai.View
                  Tubes.Rows[RowIndex]["Background" + ColumnIndex.ToString()] = "Green";
              }
         }
-        private TubesBatch CurrentTubesBatch = new TubesBatch() { TubesBatchID = new Guid(),TestingItem= new Dictionary<Guid,int>() };
+        // private TubesBatch CurrentTubesBatch = new TubesBatch() { TubesBatchID = new Guid(),TestingItem= new Dictionary<Guid,int>() };
         private IList<TubeGroup> TubeGroupList;
         private void btn_Save_Click(object sender, RoutedEventArgs e)
         {
             int NewHole = 0;
             int TotalHole = 0;
             TubeGroupList = new List<TubeGroup>();
-            CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
+            // CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
+            SessionInfo.CurrentTubesBatch.TestingItem = new Dictionary<Guid, int>();
 
             if (String.IsNullOrEmpty(SessionInfo.BatchType))
             {
@@ -863,11 +867,12 @@ namespace WanTai.View
                     return;
                 SessionInfo.RotationIndex = 1;
             }
-            if (SystemFluid != null && (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0))
-            {
-                MessageBox.Show("阴阳对照物必须有!", "系统提示!");
-                return;
-            }
+            // 
+            //if (SystemFluid != null && (SystemFluid.IndexOf("2,") >= 0 || SystemFluid.IndexOf("3,") >= 0))
+            //{
+            //   MessageBox.Show("阴阳对照物必须有!", "系统提示!");
+            //    return;
+            //}
             bool _SystemFluid = false;
             foreach (TubeGroup Item in dg_TubesGroup.Items)
             {
@@ -879,10 +884,13 @@ namespace WanTai.View
                 foreach (TestingItemConfiguration TestingItem in Item.TestingItemConfigurations)
                 {
                     int TestintItemNumber = Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
-                    if (CurrentTubesBatch.TestingItem.ContainsKey(TestingItem.TestingItemID))
-                        CurrentTubesBatch.TestingItem[TestingItem.TestingItemID] += TestintItemNumber;
+                    //if (CurrentTubesBatch.TestingItem.ContainsKey(TestingItem.TestingItemID))
+                    //    CurrentTubesBatch.TestingItem[TestingItem.TestingItemID] += TestintItemNumber;
+                    if (SessionInfo.CurrentTubesBatch.TestingItem.ContainsKey(TestingItem.TestingItemID))
+                        SessionInfo.CurrentTubesBatch.TestingItem[TestingItem.TestingItemID] += TestintItemNumber;   
                     else
-                        CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
+                        SessionInfo.CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
+                        // CurrentTubesBatch.TestingItem.Add(TestingItem.TestingItemID, TestintItemNumber);
                 }
                 NewHole += Item.TubesNumber / Item.PoolingRulesTubesNumber + (Item.TubesNumber % Item.PoolingRulesTubesNumber > 0 ? 1 : 0);
                 if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
@@ -921,7 +929,8 @@ namespace WanTai.View
             }
             string ErrMsg;
             int ErrType;
-            CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.RotationIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
+            // CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, CurrentTubesBatch, SessionInfo.RotationIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
+            SessionInfo.CurrentTubesBatch = new WanTai.Controller.TubesGroupController().SaveTubesGroup(SessionInfo.ExperimentID, SessionInfo.CurrentTubesBatch, SessionInfo.RotationIndex, TubeGroupList, Tubes, out ErrType, out ErrMsg);
             if (ErrType == -1)
             {
                 MessageBox.Show(ErrMsg, "系统提示!");
@@ -932,15 +941,18 @@ namespace WanTai.View
             if (!String.IsNullOrEmpty(SessionInfo.BatchType) && int.Parse(SessionInfo.BatchType) < SessionInfo.BatchTimes)
             {
                 SessionInfo.BatchTotalHoles += NewHole;
-                foreach (Guid key in CurrentTubesBatch.TestingItem.Keys)
+                // foreach (Guid key in CurrentTubesBatch.TestingItem.Keys)
+                foreach (Guid key in SessionInfo.CurrentTubesBatch.TestingItem.Keys)
                 {
                     if (!SessionInfo.BatchTestingItem.ContainsKey(key))
                     {
-                        SessionInfo.BatchTestingItem.Add(key, CurrentTubesBatch.TestingItem[key]);
+                        // SessionInfo.BatchTestingItem.Add(key, CurrentTubesBatch.TestingItem[key]);
+                        SessionInfo.BatchTestingItem.Add(key, SessionInfo.CurrentTubesBatch.TestingItem[key]);
                     }
                     else
                     {
-                        SessionInfo.BatchTestingItem[key] = CurrentTubesBatch.TestingItem[key];
+                        // SessionInfo.BatchTestingItem[key] = CurrentTubesBatch.TestingItem[key];
+                        SessionInfo.BatchTestingItem[key] = SessionInfo.CurrentTubesBatch.TestingItem[key];
                     }
                 }
                 // SessionInfo.BatchTestingItem = SessionInfo.BatchTestingItem.Union(CurrentTubesBatch.TestingItem).ToDictionary(k => k.Key, v => v.Value);
