@@ -1398,7 +1398,6 @@ namespace WanTai.Controller.PCR
                             dr["IC(Ct)"] = row["HIV"].ToString().Replace("Undetermined", "No Ct");
                         }
                         else
-                            dr["IC(Ct)"] = row["HIVIC"].ToString().Replace("Undetermined", "No Ct");
                         {
                             dr["HBV(Ct)"] = row["HBV"].ToString().Replace("Undetermined", "No Ct");
                             if (!has_bci)
