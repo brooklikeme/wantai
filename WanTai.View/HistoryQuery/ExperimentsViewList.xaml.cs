@@ -116,7 +116,7 @@ namespace WanTai.View.HistoryQuery
                     dRow["Color"] = WindowCustomizer.defaultColor;
                 }
 
-                if (SessionInfo.LoginName == experiment.LoginName || userRole.RoleLevel > 1)
+                if (userRole.RoleLevel > 2)
                 {
                     dRow["CanDelete"] = Visibility.Visible.ToString();
                 }

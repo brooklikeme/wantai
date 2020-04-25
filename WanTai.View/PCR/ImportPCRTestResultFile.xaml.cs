@@ -1251,19 +1251,19 @@ namespace WanTai.View.PCR
                     bool hbvValid = false;
                     bool hcvValid = false;
                     bool hivValid = false;
-                    if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
-                    {
-                        float hexNumber = float.Parse(hex);
-                        if (hexNumber <= 35)
-                        {
-                            // check HBV
-                            hbvValid = float.TryParse(rox, out outNumber) && float.Parse(rox) <= 33;
-                            // check HCV
-                            hcvValid = float.TryParse(fam, out outNumber) && float.Parse(fam) <= 33;
-                            // check HIV
-                            hivValid = float.TryParse(cy5, out outNumber) && float.Parse(cy5) <= 33;
-                        }
-                    }
+                    //if (!string.IsNullOrEmpty(hex) && float.TryParse(hex, out outNumber))
+                    //{
+                    //    float hexNumber = float.Parse(hex);
+                    //    if (hexNumber <= 35)
+                    //    {
+                    // check HBV
+                    hbvValid = float.TryParse(rox, out outNumber) && float.Parse(rox) <= 33;
+                    // check HCV
+                    hcvValid = float.TryParse(fam, out outNumber) && float.Parse(fam) <= 33;
+                    // check HIV
+                    hivValid = float.TryParse(cy5, out outNumber) && float.Parse(cy5) <= 33;
+                    //    }
+                    //}
                     HBVResult = hbvValid ? PCRTest.PositiveResult : PCRTest.InvalidResult;
                     HCVResult = hcvValid ? PCRTest.PositiveResult : PCRTest.InvalidResult;
                     HIVResult = hivValid ? PCRTest.PositiveResult : PCRTest.InvalidResult;
